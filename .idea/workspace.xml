@@ -11,28 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e74c3257-afc1-47d5-8621-3afc08364061" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_151735_create_products_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_151735_create_products_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_151826_create_sell_prices_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_151826_create_sell_prices_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_162919_create_inventories_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_162919_create_inventories_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_163006_create_purchases_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_163006_create_purchases_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_163156_create_purchase_details_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_163156_create_purchase_details_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_163248_create_suppliers_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_163248_create_suppliers_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_163314_create_suppliers_payments_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_163314_create_suppliers_payments_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_163517_create_money_receipts_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_163517_create_money_receipts_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_181403_create_stores_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_181403_create_stores_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_181551_create_customers_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_181551_create_customers_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_181618_create_invoices_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_181618_create_invoices_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_181639_create_invoice_details_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_181639_create_invoice_details_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_181726_create_sell_orders_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_181726_create_sell_orders_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_181747_create_sell_order_details_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_181747_create_sell_order_details_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_181902_create_invoice_return_details_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_181902_create_invoice_return_details_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_182042_create_journal_details_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_182042_create_journal_details_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_18_174301_create_employees_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_18_174301_create_employees_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_18_175326_create_salary_setups_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_18_175326_create_salary_setups_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,7 +183,7 @@
       <workItem from="1610895170783" duration="13372000" />
       <workItem from="1610991260403" duration="4474000" />
       <workItem from="1611071358209" duration="1075000" />
-      <workItem from="1611072496298" duration="2439000" />
+      <workItem from="1611072496298" duration="2645000" />
     </task>
     <task id="LOCAL-00001" summary="htaccess changed">
       <created>1611071482120</created>
@@ -212,7 +192,14 @@
       <option name="project" value="LOCAL" />
       <updated>1611071482120</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="database table migration updated">
+      <created>1611075124845</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1611075124845</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -232,6 +219,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="htaccess changed" />
-    <option name="LAST_COMMIT_MESSAGE" value="htaccess changed" />
+    <MESSAGE value="database table migration updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="database table migration updated" />
   </component>
 </project>
