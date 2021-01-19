@@ -21,11 +21,6 @@ class CreateInvoiceReturnDetailsTable extends Migration
             $table->foreign('product_id')->references('id')->on('products');
             $table->double('qty');
             $table->double('price');
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->foreign('created_by')->references('id')->on('users');
-            $table->unsignedBigInteger('updated_by')->nullable();
-            $table->foreign('updated_by')->references('id')->on('users');
-            $table->timestamps();
         });
     }
 

@@ -20,7 +20,7 @@ class CreateInvoicesTable extends Migration
             $table->foreign('store_id')->references('id')->on('stores');
             $table->unsignedBigInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers');
-            $table->double('discount_amount')->nullable();
+            $table->double('discount_amount')->default(0)->nullable();
             $table->double('grand_total');
             $table->date('date');
             $table->unsignedBigInteger('created_by')->nullable();

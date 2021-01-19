@@ -21,13 +21,8 @@ class CreateInvoiceDetailsTable extends Migration
             $table->foreign('product_id')->references('id')->on('products');
             $table->double('qty');
             $table->double('sell_price');
-            $table->double('discount')->nullable();
+            $table->double('discount')->nullable()->default(0);
             $table->double('row_total');
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->foreign('created_by')->references('id')->on('users');
-            $table->unsignedBigInteger('updated_by')->nullable();
-            $table->foreign('updated_by')->references('id')->on('users');
-            $table->timestamps();
         });
     }
 

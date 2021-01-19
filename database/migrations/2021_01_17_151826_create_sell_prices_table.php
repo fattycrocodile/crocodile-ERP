@@ -21,7 +21,7 @@ class CreateSellPricesTable extends Migration
             $table->double('whole_sell_price');
             $table->double('min_sell_price')->nullable();
             $table->double('min_whole_sell_price')->nullable();
-            $table->boolean('status')->default('1');
+            $table->boolean('status')->default(1);
             $table->date('date');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users');

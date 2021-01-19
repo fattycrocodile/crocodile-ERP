@@ -21,7 +21,7 @@ class CreatePurchasesTable extends Migration
             $table->string('shipping_method')->nullable();
             $table->string('payment_type')->nullable();
             $table->double('grand_total');
-            $table->double('others_charge')->nullable();
+            $table->double('others_charge')->nullable()->default(0);
             $table->boolean('is_receive')->default(0);
             $table->date('date');
             $table->unsignedBigInteger('created_by')->nullable();

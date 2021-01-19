@@ -23,13 +23,8 @@ class CreatePurchaseDetailsTable extends Migration
             $table->double('purchase_price');
             $table->double('others_charges')->nullable();
             $table->double('total_purchase_price');
-            $table->double('total_charges')->nullable();
+            $table->double('total_charges')->nullable()->default(0);
             $table->double('row_total');
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->foreign('created_by')->references('id')->on('users');
-            $table->unsignedBigInteger('updated_by')->nullable();
-            $table->foreign('updated_by')->references('id')->on('users');
-            $table->timestamps();
         });
     }
 

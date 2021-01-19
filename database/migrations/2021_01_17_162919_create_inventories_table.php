@@ -19,9 +19,9 @@ class CreateInventoriesTable extends Migration
             $table->foreign('store_id')->references('id')->on('stores');
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
-            $table->double('stock_in')->nullable();
-            $table->double('stock_out')->nullable();
-            $table->string('ref_type')->nullable();
+            $table->double('stock_in')->nullable()->default(0);
+            $table->double('stock_out')->nullable()->default(0);
+            $table->integer('ref_type')->nullable();
             $table->string('ref_id')->nullable();
             $table->date('date');
             $table->unsignedBigInteger('created_by')->nullable();

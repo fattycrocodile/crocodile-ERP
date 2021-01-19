@@ -19,10 +19,10 @@ class CreateSalarySetupsTable extends Migration
             $table->foreign('employee_id')->references('id')->on('employees');
             $table->double('basic_amount');
             $table->double('home_allowance');
-            $table->double('medical_allowance')->nullable();
-            $table->double('ta')->nullable();
-            $table->double('da')->nullable();
-            $table->double('other_allowances')->nullable();
+            $table->double('medical_allowance')->nullable()->default(0);
+            $table->double('ta')->nullable()->default(0);
+            $table->double('da')->nullable()->default(0);
+            $table->double('other_allowances')->nullable()->default(0);
             $table->boolean('status')->default(1);
             $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users');
