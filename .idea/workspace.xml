@@ -11,11 +11,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e74c3257-afc1-47d5-8621-3afc08364061" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/CompanyDetails.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/CompanyDetailsController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/LookupController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Lookup.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2021_01_20_152847_create_company_details_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2021_01_20_155207_create_lookups_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/auth/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/auth/login.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/public.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/public.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_151550_create_stores_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_151550_create_stores_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_static.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_static.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,17 +162,12 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/layouts" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\xampp\htdocs\laravel_erp\resources\views\layouts" />
-      <recent name="C:\xampp\htdocs\laravel_erp\template" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\xampp\htdocs\laravel_erp\resources\views" />
       <recent name="C:\xampp\htdocs\laravel\laravel_erp\" />
     </key>
   </component>
@@ -192,6 +193,7 @@
       <workItem from="1610991260403" duration="4474000" />
       <workItem from="1611071358209" duration="1075000" />
       <workItem from="1611072496298" duration="2645000" />
+      <workItem from="1611156451089" duration="1812000" />
     </task>
     <task id="LOCAL-00001" summary="htaccess changed">
       <created>1611071482120</created>
@@ -207,14 +209,7 @@
       <option name="project" value="LOCAL" />
       <updated>1611075124845</updated>
     </task>
-    <task id="LOCAL-00003" summary="Merge branch 'main' of github.com:amdadul/laravel_erp into main&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
-      <created>1611156683582</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1611156683582</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -235,7 +230,6 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="htaccess changed" />
     <MESSAGE value="database table migration updated" />
-    <MESSAGE value="Merge branch 'main' of github.com:amdadul/laravel_erp into main&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'main' of github.com:amdadul/laravel_erp into main&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="database table migration updated" />
   </component>
 </project>

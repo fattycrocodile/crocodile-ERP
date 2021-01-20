@@ -20,6 +20,9 @@ class CreateStoresTable extends Migration
             $table->string('code')->nullable();
             $table->string('contact')->nullable();
             $table->boolean('status')->default(1);
+            $table->string('pad_header')->nullable();
+            $table->string('pad_footer')->nullable();
+            $table->string('pad')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users');
             $table->unsignedBigInteger('updated_by')->nullable();
