@@ -12,13 +12,9 @@
   <component name="ChangeListManager">
     <list default="true" id="e74c3257-afc1-47d5-8621-3afc08364061" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/database.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/database.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_151150_create_categories_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_151150_create_categories_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_163248_create_suppliers_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_163005_create_suppliers_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_181403_create_stores_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_151550_create_stores_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_181955_create_chart_of_accounts_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_181955_create_chart_of_accounts_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_18_174400_create_departments_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_18_174299_create_departments_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_18_174436_create_designations_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_18_174300_create_designations_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_151550_create_stores_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_151550_create_stores_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_static.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_static.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -190,6 +186,7 @@
       <workItem from="1610991260403" duration="4474000" />
       <workItem from="1611071358209" duration="1075000" />
       <workItem from="1611072496298" duration="2645000" />
+      <workItem from="1611156451089" duration="1812000" />
     </task>
     <task id="LOCAL-00001" summary="htaccess changed">
       <created>1611071482120</created>
