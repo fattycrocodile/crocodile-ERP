@@ -9,9 +9,9 @@
                             class="ft-menu font-large-1"></i></a></li>
                 <li class="nav-item">
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        <img class="brand-logo" alt="{{ config('app.name') }}"
+                        <img class="brand-logo" alt="{{ config('settings.site_name') }}" title="{{ config('settings.site_name') }}"
                              src="{{ asset('app-assets/images/logo/stack-logo-light.png') }}">
-                        <h2 class="brand-text">{{ config('app.name') }}</h2>
+                        <h2 class="brand-text">{{ config('settings.site_name') }}</h2>
                     </a>
                 </li>
                 <li class="nav-item d-md-none">
