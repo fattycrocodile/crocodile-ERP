@@ -14,8 +14,8 @@
                                 <div class="card-header border-0">
                                     <div class="card-title text-center">
                                         <div class="p-1">
-                                            <img src="{{ asset('app-assets/images/logo/stack-logo-dark.png') }}"
-                                                 alt="branding logo">
+                                            <img src="{{ asset('app-assets/images/logo/login-logo.png') }}"
+                                                 alt="{{ config('settings.site_title') }}"  title="{{ config('settings.site_name') }}" style="width: 117px;">
                                         </div>
                                     </div>
                                     <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2">
@@ -74,15 +74,15 @@
                                             </button>
                                         </form>
                                     </div>
-                                    <p class="card-subtitle line-on-side text-muted text-center font-small-3 mx-2 my-1">
-                                        <span>New to Stack ?</span>
-                                    </p>
-                                    @if (Route::has('register'))
-                                        <div class="card-body">
-                                            <a href="{{ route('register') }}" class="btn btn-outline-danger btn-block"><i
-                                                    class="ft-user"></i> {{ __('Register') }}</a>
-                                        </div>
-                                    @endif
+{{--                                    <p class="card-subtitle line-on-side text-muted text-center font-small-3 mx-2 my-1">--}}
+{{--                                        <span>New to Stack ?</span>--}}
+{{--                                    </p>--}}
+{{--                                    @if (Route::has('register'))--}}
+{{--                                        <div class="card-body">--}}
+{{--                                            <a href="{{ route('register') }}" class="btn btn-outline-danger btn-block"><i--}}
+{{--                                                    class="ft-user"></i> {{ __('Register') }}</a>--}}
+{{--                                        </div>--}}
+{{--                                    @endif--}}
                                 </div>
                             </div>
                         </div>
