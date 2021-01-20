@@ -74,15 +74,15 @@
                                             </button>
                                         </form>
                                     </div>
-                                    <p class="card-subtitle line-on-side text-muted text-center font-small-3 mx-2 my-1">
-                                        <span>New to Stack ?</span>
-                                    </p>
-                                    @if (Route::has('register'))
-                                        <div class="card-body">
-                                            <a href="{{ route('register') }}" class="btn btn-outline-danger btn-block"><i
-                                                    class="ft-user"></i> {{ __('Register') }}</a>
-                                        </div>
-                                    @endif
+{{--                                    <p class="card-subtitle line-on-side text-muted text-center font-small-3 mx-2 my-1">--}}
+{{--                                        <span>New to Stack ?</span>--}}
+{{--                                    </p>--}}
+{{--                                    @if (Route::has('register'))--}}
+{{--                                        <div class="card-body">--}}
+{{--                                            <a href="{{ route('register') }}" class="btn btn-outline-danger btn-block"><i--}}
+{{--                                                    class="ft-user"></i> {{ __('Register') }}</a>--}}
+{{--                                        </div>--}}
+{{--                                    @endif--}}
                                 </div>
                             </div>
                         </div>
