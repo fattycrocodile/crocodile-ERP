@@ -17,6 +17,8 @@ class CreateStoreTransferDetailsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('transfer_id');
             $table->foreign('transfer_id')->references('id')->on('store_transfers');
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products');
             $table->double('qty');
             $table->double('rcv_qty')->nullable();
             $table->date('rcv_date');

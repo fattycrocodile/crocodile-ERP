@@ -12,9 +12,44 @@
   <component name="ChangeListManager">
     <list default="true" id="e74c3257-afc1-47d5-8621-3afc08364061" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_151550_create_stores_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_151550_create_stores_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_static.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_static.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Attendance.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Attendance.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Brand.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Brand.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Category.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Category.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ChartOfAccoounts.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/ChartOfAccoounts.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/CompanyDetails.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/CompanyDetails.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Customers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Customers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Departments.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Departments.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Designations.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Designations.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Employees.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Employees.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/HolidaySetup.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/HolidaySetup.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Inventory.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Inventory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Invoice.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Invoice.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/InvoiceDetails.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/InvoiceDetails.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/InvoiceReturn.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/InvoiceReturn.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/InvoiceReturnDetails.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/InvoiceReturnDetails.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Journal.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Journal.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/JournalDetails.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/JournalDetails.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/LeaveApplication.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/LeaveApplication.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Lookup.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Lookup.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/MoneyReceipt.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/MoneyReceipt.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Product.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Purchase.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Purchase.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/PurchaseDetails.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/PurchaseDetails.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/PurchaseReturn.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/PurchaseReturn.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/PurchaseReturnDetails.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/PurchaseReturnDetails.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ReceivePurchase.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/ReceivePurchase.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ReceivePurchaseDetails.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/ReceivePurchaseDetails.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/SalarySetup.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/SalarySetup.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/SellOrder.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/SellOrder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/SellOrderDetails.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/SellOrderDetails.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/SellPrice.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/SellPrice.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/StoreTransfer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/StoreTransfer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/StoreTransferDetails.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/StoreTransferDetails.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Stores.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Stores.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Suppliers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Suppliers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/SuppliersPayment.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/SuppliersPayment.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Unit.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Unit.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_17_162831_create_store_transfer_details_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_17_162831_create_store_transfer_details_table.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,7 +221,7 @@
       <workItem from="1610991260403" duration="4474000" />
       <workItem from="1611071358209" duration="1075000" />
       <workItem from="1611072496298" duration="2645000" />
-      <workItem from="1611156451089" duration="1812000" />
+      <workItem from="1611156451089" duration="11712000" />
     </task>
     <task id="LOCAL-00001" summary="htaccess changed">
       <created>1611071482120</created>
