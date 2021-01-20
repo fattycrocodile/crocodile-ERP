@@ -7,7 +7,7 @@
     <meta name="description" content="ERP">
     <meta name="keywords" content="ERP">
     <meta name="author" content="RAIHAN">
-    <title>{{ config('app.name', 'ERP') }}</title>
+    <title>@yield('title') {{ config('settings.site_title') }}</title>
     <link rel="apple-touch-icon" href="{{ asset('app-assets/images/ico/apple-icon-120.png') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('app-assets/images/ico/favicon.ico') }}">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i"

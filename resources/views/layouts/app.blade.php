@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta name="description" content="ERP">
     <meta name="keywords" content="ERP">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @stack('meta_tags')
     <meta name="author" content="RAIHAN">
     <title>@yield('title') {{ config('app.name') }}</title>
