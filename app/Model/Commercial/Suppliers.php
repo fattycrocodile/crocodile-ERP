@@ -2,6 +2,8 @@
 
 namespace App\Model\Commercial;
 
+use App\Model\Accounting\SuppliersPayment;
+use App\Model\Inventory\PurchaseReturn;
 use App\Model\User\User;
 use Illuminate\Database\Eloquent\Model;
 

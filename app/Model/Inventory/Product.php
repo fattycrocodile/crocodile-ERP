@@ -3,8 +3,6 @@
 namespace App\Model\Inventory;
 
 use App\Model\Commercial\PurchaseDetails;
-use App\Model\Commercial\PurchaseReturnDetails;
-use App\Model\Commercial\ReceivePurchaseDetails;
 use App\Model\Crm\InvoiceDetails;
 use App\Model\Crm\InvoiceReturnDetails;
 use App\Model\Crm\SellOrderDetails;

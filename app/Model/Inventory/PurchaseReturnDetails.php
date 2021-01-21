@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Model\Commercial;
+namespace App\Model\Inventory;
 
-use App\Model\Inventory\Product;
 use Illuminate\Database\Eloquent\Model;
 
 class PurchaseReturnDetails extends Model

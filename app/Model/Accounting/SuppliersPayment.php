@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Model\Commercial;
+namespace App\Model\Accounting;
 
+use App\Model\Commercial\Suppliers;
 use App\Model\User\User;
 use Illuminate\Database\Eloquent\Model;
 
