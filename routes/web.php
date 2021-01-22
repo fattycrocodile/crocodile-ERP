@@ -33,6 +33,15 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::get('/{id}/delete', 'CategoryController@delete')->name('admin.categories.delete');
     });
 
+    Route::group(['prefix' => 'config/brand'], function () {
+        Route::get('/', 'BrandController@index')->name('admin.brands.index');
+        Route::get('/create', 'BrandController@create')->name('admin.brands.create');
+        Route::post('/store', 'BrandController@store')->name('admin.brands.store');
+        Route::get('/{id}/edit', 'BrandController@edit')->name('admin.brands.edit');
+        Route::post('/update', 'BrandController@update')->name('admin.brands.update');
+        Route::get('/{id}/delete', 'BrandController@delete')->name('admin.brands.delete');
+    });
+
 });
 
 // it should be at the bottom of every routes

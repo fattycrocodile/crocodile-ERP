@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Accounting\Accounting\Accounting\Accounting\Accounting\Commercial\Commercial\Commercial\Commercial\Config;
 
-use App\Models\Setting;
+use App\Http\Controllers\Accounting\Accounting\Accounting\Accounting\Accounting\Commercial\Commercial\Commercial\Commercial\BaseController;
+use App\Model\Config\Setting;
 use App\Traits\UploadAble;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use App\Http\Controllers\BaseController;
 
 /**
  * Class SettingController

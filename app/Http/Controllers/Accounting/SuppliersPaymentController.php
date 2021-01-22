@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Accounting;
 
+use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 
-class SuppliersPaymentController extends Controller
+class SuppliersPaymentController extends BaseController
 {
     //
 }
