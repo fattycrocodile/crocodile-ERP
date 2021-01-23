@@ -15,6 +15,7 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
+            $table->integer('max_sn');
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('id')->on('stores');
             $table->string('name');
