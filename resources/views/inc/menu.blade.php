@@ -65,7 +65,7 @@
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Brand
+                                <a class="dropdown-item" href="{{ url('/store-inventory/brand') }}" data-toggle="dropdown">Brand
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
