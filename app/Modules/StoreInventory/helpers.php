@@ -1,0 +1,5 @@
+<?php
+
+/**
+ *	StoreInventory Helpers
+ */

@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Model\Config\Setting;
+use App\Modules\Config\Models\Setting;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;

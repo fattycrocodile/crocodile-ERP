@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Modules\Crm\Models;
+
+use App\Modules\StoreInventory\Models\Product;
+use Illuminate\Database\Eloquent\Model;
+
+class SellOrderDetails extends Model
+{
+    protected $guarded=[];
+
+    public function sellOrder()
+    {
+        return $this->belongsTo(SellOrder::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+}
