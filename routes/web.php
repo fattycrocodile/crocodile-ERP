@@ -18,6 +18,9 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::group(['middleware' => ['auth:web']], function () {
+    Route::get('/dashboard', 'HomeController@index')->name('dashboard');
+});
 
 // it should be at the bottom of every routes
 Route::get('/{path}', function () {

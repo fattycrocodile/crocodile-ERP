@@ -1,11 +1,9 @@
 <?php
-
+use Illuminate\Support\Facades\Route;
 Route::get('store-inventory', 'StoreInventoryController@welcome');
 
 
-
 Route::group(['middleware' => ['auth:web']], function () {
-    Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 
     Route::get('/settings', 'SettingController@index')->name('admin.settings');
     Route::post('/settings', 'SettingController@update')->name('admin.settings.update');
@@ -27,5 +25,4 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/update', 'BrandController@update')->name('admin.brands.update');
         Route::get('/{id}/delete', 'BrandController@delete')->name('admin.brands.delete');
     });
-
 });
