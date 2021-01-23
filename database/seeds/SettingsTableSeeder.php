@@ -1,6 +1,7 @@
 <?php
 
-use App\Setting;
+
+use App\Modules\Config\Models\Setting;
 use Illuminate\Database\Seeder;
 
 class SettingsTableSeeder extends Seeder
