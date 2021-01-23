@@ -2,9 +2,11 @@
 
 namespace App\Modules\StoreInventory\Http\Controllers;
 
+use App\DataTables\BrandsDataTable;
 use App\Http\Controllers\BaseController;
 use App\Modules\StoreInventory\Models\Brand;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -16,29 +18,25 @@ class BrandController extends BaseController
 {
 
     /**
+     * @param Request $request
      * @return Factory|View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $brands = [];
         $this->setPageTitle('Brands', 'List of all brands');
-        return view("StoreInventory::brands.index", compact('brands'));
+        return view("StoreInventory::brands.index");
     }
 
-    public function getBrands(Request $request)
+    /**
+     * Process datatables ajax request.
+     *
+     * @return JsonResponse
+     */
+    public function getBrands()
     {
-        if ($request->ajax()) {
-            $data = Brand::latest()->get();
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
-                    return $actionBtn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
+        return Datatables::of(Brand::query())->make(true);
     }
+
 
     /**
      * @return Factory|View

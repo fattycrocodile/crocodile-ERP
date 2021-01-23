@@ -20,7 +20,7 @@ class BrandsTableSeeder extends Seeder
 //            'logo' => Str::random(5),
 //        ]);
 
-        factory(\App\Modules\StoreInventory\Models\Brand::class, 10000)->create()->each(function($brand){
+        factory(\App\Modules\StoreInventory\Models\Brand::class, 100)->create()->each(function($brand){
             $brand->save();
         });
     }
