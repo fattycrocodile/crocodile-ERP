@@ -23,6 +23,6 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/store', 'BrandController@store')->name('storeInventory.brands.store');
         Route::get('/{id}/edit', 'BrandController@edit')->name('storeInventory.brands.edit');
         Route::post('/update', 'BrandController@update')->name('storeInventory.brands.update');
-        Route::get('/{id}/delete', 'BrandController@delete')->name('storeInventory.brands.delete');
+        Route::delete('/{id}/delete', 'BrandController@delete')->name('storeInventory.brands.delete');
     });
 });

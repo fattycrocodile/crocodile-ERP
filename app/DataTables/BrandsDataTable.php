@@ -24,7 +24,16 @@ class BrandsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('action', 'brands.action');
+            ->addColumn('action', function ($data) {
+                return "
+                    <div class='form-group'>
+                        <div class='btn-group' role='group' aria-label='Basic example'>
+                            <a href='brand/$data->id/edit' class='btn btn-icon btn-secondary'><i class='fa fa-pencil-square-o'></i> Edit</a>
+                            <button data-remote='brand/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
+                        </div>
+                   </div>";
+            })
+            ->removeColumn('id');
     }
 
     /**
@@ -48,17 +57,26 @@ class BrandsDataTable extends DataTable
     {
         return $this->builder()
             ->setTableId('brands-table')
+            ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
             ->columns($this->getColumns())
             ->minifiedAjax()
+            ->addAction(['width' => '80px'])
+            ->parameters([
+                'initComplete' => "function () {
+                            this.api().columns().every(function () {
+                                var column = this;
+                                var input = document.createElement(\"input\");
+                                input.className = 'form-control';
+                                $(input).appendTo($(column.footer()).empty())
+                                .on('change', function () {
+                                    column.search($(this).val(), false, false, true).draw();
+                                });
+                            });
+                        }",
+
+            ])
             ->dom('Bfrtip')
-            ->orderBy(1)
-            ->buttons(
-                Button::make('create'),
-                Button::make('export'),
-                Button::make('print'),
-                Button::make('reset'),
-                Button::make('reload')
-            );
+            ->orderBy(1);
     }
 
     /**
@@ -69,15 +87,15 @@ class BrandsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::computed('action')
-                ->exportable(true)
-                ->printable(true)
-                ->width(60)
-                ->addClass('text-center'),
-//            Column::make('id'),
+//            Column::computed('action')
+//                ->exportable(true)
+//                ->printable(true)
+//                ->width(60)
+//                ->addClass('text-center'),
             Column::make('name'),
             Column::make('description'),
             Column::make('logo'),
+//            Column::computed('action'),
 //            Column::make('created_at'),
 //            Column::make('updated_at'),
         ];
