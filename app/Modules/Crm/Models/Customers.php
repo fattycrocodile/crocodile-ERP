@@ -3,6 +3,7 @@
 namespace App\Modules\Crm\Models;
 
 use App\Model\User\User;
+use App\Modules\StoreInventory\Models\Stores;
 use Illuminate\Database\Eloquent\Model;
 
 class Customers extends Model
@@ -22,6 +23,11 @@ class Customers extends Model
     public function invoiceReturn()
     {
         return $this->hasMany(InvoiceReturn::class);
+    }
+
+    public function store()
+    {
+        return $this->belongsTo(Stores::class);
     }
 
     public function updatedBy()

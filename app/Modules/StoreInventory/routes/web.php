@@ -10,7 +10,7 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::get('/create', 'CategoryController@create')->name('storeInventory.categories.create');
         Route::post('/store', 'CategoryController@store')->name('storeInventory.categories.store');
         Route::get('/{id}/edit', 'CategoryController@edit')->name('storeInventory.categories.edit');
-        Route::post('/update', 'CategoryController@update')->name('storeInventory.categories.update');
+        Route::post('/{id}/update', 'CategoryController@update')->name('storeInventory.categories.update');
         Route::get('/{id}/delete', 'CategoryController@delete')->name('storeInventory.categories.delete');
     });
 

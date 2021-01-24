@@ -166,7 +166,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Category
+                                <a class="dropdown-item" href="{{ route('crm.customers.index') }}" data-toggle="dropdown">Customer
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>

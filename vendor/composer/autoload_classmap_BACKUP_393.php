@@ -241,6 +241,8 @@ return array(
     'Carbon\\Traits\\Units' => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Units.php',
     'Carbon\\Traits\\Week' => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Week.php',
     'Carbon\\Translator' => $vendorDir . '/nesbot/carbon/src/Carbon/Translator.php',
+<<<<<<< HEAD
+=======
     'Collective\\Html\\Componentable' => $vendorDir . '/laravelcollective/html/src/Componentable.php',
     'Collective\\Html\\Eloquent\\FormAccessible' => $vendorDir . '/laravelcollective/html/src/Eloquent/FormAccessible.php',
     'Collective\\Html\\FormBuilder' => $vendorDir . '/laravelcollective/html/src/FormBuilder.php',
@@ -250,6 +252,8 @@ return array(
     'Collective\\Html\\HtmlServiceProvider' => $vendorDir . '/laravelcollective/html/src/HtmlServiceProvider.php',
     'Complex\\Complex' => $vendorDir . '/markbaker/complex/classes/src/Complex.php',
     'Complex\\Exception' => $vendorDir . '/markbaker/complex/classes/src/Exception.php',
+    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+>>>>>>> 34de045278c19030481979d46dc8a36674a2dc35
     'Cron\\AbstractField' => $vendorDir . '/dragonmantank/cron-expression/src/Cron/AbstractField.php',
     'Cron\\CronExpression' => $vendorDir . '/dragonmantank/cron-expression/src/Cron/CronExpression.php',
     'Cron\\DayOfMonthField' => $vendorDir . '/dragonmantank/cron-expression/src/Cron/DayOfMonthField.php',
@@ -1279,9 +1283,6 @@ return array(
     'HTMLPurifier_Printer' => $vendorDir . '/ezyang/htmlpurifier/library/HTMLPurifier/Printer.php',
     'HTMLPurifier_Printer_CSSDefinition' => $vendorDir . '/ezyang/htmlpurifier/library/HTMLPurifier/Printer/CSSDefinition.php',
     'HTMLPurifier_Printer_ConfigForm' => $vendorDir . '/ezyang/htmlpurifier/library/HTMLPurifier/Printer/ConfigForm.php',
-    'HTMLPurifier_Printer_ConfigForm_NullDecorator' => $vendorDir . '/ezyang/htmlpurifier/library/HTMLPurifier/Printer/ConfigForm.php',
-    'HTMLPurifier_Printer_ConfigForm_bool' => $vendorDir . '/ezyang/htmlpurifier/library/HTMLPurifier/Printer/ConfigForm.php',
-    'HTMLPurifier_Printer_ConfigForm_default' => $vendorDir . '/ezyang/htmlpurifier/library/HTMLPurifier/Printer/ConfigForm.php',
     'HTMLPurifier_Printer_HTMLDefinition' => $vendorDir . '/ezyang/htmlpurifier/library/HTMLPurifier/Printer/HTMLDefinition.php',
     'HTMLPurifier_PropertyList' => $vendorDir . '/ezyang/htmlpurifier/library/HTMLPurifier/PropertyList.php',
     'HTMLPurifier_PropertyListIterator' => $vendorDir . '/ezyang/htmlpurifier/library/HTMLPurifier/PropertyListIterator.php',
