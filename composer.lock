@@ -1108,10 +1108,13 @@
                 "framework",
                 "laravel"
             ],
+<<<<<<< HEAD
+=======
             "support": {
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
+>>>>>>> 34de045278c19030481979d46dc8a36674a2dc35
             "time": "2021-01-21T14:10:48+00:00"
         },
         {
@@ -1564,6 +1567,8 @@
                 }
             ],
             "time": "2021-01-18T20:58:21+00:00"
+<<<<<<< HEAD
+=======
         },
         {
             "name": "maatwebsite/excel",
@@ -1886,6 +1891,7 @@
                 "source": "https://github.com/MarkBaker/PHPMatrix/tree/2.1.1"
             },
             "time": "2021-01-21T13:53:09+00:00"
+>>>>>>> 34de045278c19030481979d46dc8a36674a2dc35
         },
         {
             "name": "monolog/monolog",
@@ -2861,10 +2867,13 @@
                 "interactive",
                 "shell"
             ],
+<<<<<<< HEAD
+=======
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
                 "source": "https://github.com/bobthecow/psysh/tree/v0.10.6"
             },
+>>>>>>> 34de045278c19030481979d46dc8a36674a2dc35
             "time": "2021-01-18T15:53:43+00:00"
         },
         {
@@ -8330,5 +8339,5 @@
         "php": "^7.2.5|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "1.1.0"
 }
