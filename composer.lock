@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7137cf1f3b7c530b7205063a31f2069e",
+    "content-hash": "781ad74f85f08c004ad62aa20e886de3",
     "packages": [
         {
             "name": "artem-schander/l5-modular",
@@ -1108,13 +1108,10 @@
                 "framework",
                 "laravel"
             ],
-<<<<<<< HEAD
-=======
             "support": {
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
->>>>>>> 34de045278c19030481979d46dc8a36674a2dc35
             "time": "2021-01-21T14:10:48+00:00"
         },
         {
@@ -1567,8 +1564,6 @@
                 }
             ],
             "time": "2021-01-18T20:58:21+00:00"
-<<<<<<< HEAD
-=======
         },
         {
             "name": "maatwebsite/excel",
@@ -1891,7 +1886,6 @@
                 "source": "https://github.com/MarkBaker/PHPMatrix/tree/2.1.1"
             },
             "time": "2021-01-21T13:53:09+00:00"
->>>>>>> 34de045278c19030481979d46dc8a36674a2dc35
         },
         {
             "name": "monolog/monolog",
@@ -2866,15 +2860,7 @@
                 "console",
                 "interactive",
                 "shell"
-            ],
-<<<<<<< HEAD
-=======
-            "support": {
-                "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.10.6"
-            },
->>>>>>> 34de045278c19030481979d46dc8a36674a2dc35
-            "time": "2021-01-18T15:53:43+00:00"
+            ]
         },
         {
             "name": "ralouphie/getallheaders",
@@ -5695,6 +5681,82 @@
             "time": "2021-01-13T08:07:18+00:00"
         },
         {
+            "name": "yajra/laravel-datatables-editor",
+            "version": "v1.22.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yajra/laravel-datatables-editor.git",
+                "reference": "149f0560bd02ce6475a0911157b6da6d27396a7e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yajra/laravel-datatables-editor/zipball/149f0560bd02ce6475a0911157b6da6d27396a7e",
+                "reference": "149f0560bd02ce6475a0911157b6da6d27396a7e",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "*",
+                "illuminate/database": "*",
+                "illuminate/http": "*",
+                "illuminate/validation": "*",
+                "php": ">=7.0",
+                "yajra/laravel-datatables-buttons": "3.*|4.*"
+            },
+            "require-dev": {
+                "orchestra/testbench": "~3.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Yajra\\DataTables\\EditorServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Yajra\\DataTables\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Arjay Angeles",
+                    "email": "aqangeles@gmail.com"
+                }
+            ],
+            "description": "Laravel DataTables Editor plugin for Laravel 5.5+.",
+            "keywords": [
+                "JS",
+                "datatables",
+                "editor",
+                "html",
+                "jquery",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/yajra/laravel-datatables-editor/issues",
+                "source": "https://github.com/yajra/laravel-datatables-editor/tree/v1.22.0"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/yajra",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/yajra",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2020-09-09T05:22:02+00:00"
+        },
+        {
             "name": "yajra/laravel-datatables-html",
             "version": "v4.36.1",
             "source": {
@@ -8339,5 +8401,5 @@
         "php": "^7.2.5|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }

@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '493abc500392f2626ff2805c6502fb688308a874',
+    'reference' => '9a0fefa3da0d7ae439928e0d7a1e3bf4bfa1ab6f',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -440,7 +440,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '493abc500392f2626ff2805c6502fb688308a874',
+      'reference' => '9a0fefa3da0d7ae439928e0d7a1e3bf4bfa1ab6f',
     ),
     'laravel/tinker' => 
     array (
@@ -1348,6 +1348,15 @@
       array (
       ),
       'reference' => 'b1311d031ba38c4f378afdf5cd1617cc706153f6',
+    ),
+    'yajra/laravel-datatables-editor' => 
+    array (
+      'pretty_version' => 'v1.22.0',
+      'version' => '1.22.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '149f0560bd02ce6475a0911157b6da6d27396a7e',
     ),
     'yajra/laravel-datatables-html' => 
     array (

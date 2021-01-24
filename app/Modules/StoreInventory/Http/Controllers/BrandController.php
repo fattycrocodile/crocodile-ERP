@@ -27,15 +27,6 @@ class BrandController extends BaseController
         return view("StoreInventory::brands.index");
     }
 
-    /**
-     * Process datatables ajax request.
-     *
-     * @return JsonResponse
-     */
-    public function getBrands()
-    {
-        return Datatables::of(Brand::query())->make(true);
-    }
 
 
     /**
@@ -103,14 +94,23 @@ class BrandController extends BaseController
 
     /**
      * @param $id
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function delete($id)
     {
-        $category = $this->categoryRepository->deleteCategory($id);
-        if (!$category) {
-            return $this->responseRedirectBack('Error occurred while deleting category.', 'error', true, true);
+        $data = Brand::find($id);
+        if($data->delete()) {
+            return response()->json([
+                'success' => true,
+                'status_code' => 200,
+                'message' => 'Record has been deleted successfully!',
+            ]);
+        } else{
+            return response()->json([
+                'success' => false,
+                'status_code' => 200,
+                'message' => 'Please try again!',
+            ]);
         }
-        return $this->responseRedirect('storeInventory.brands.index', 'Category deleted successfully', 'success', false, false);
     }
 }
