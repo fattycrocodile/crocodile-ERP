@@ -1,26 +1,39 @@
 @extends('layouts.app')
-@section('title') {{ isset($pageTitle) ? $pageTitle : '' }} @endsection
-
+@section('title') {{ isset($pageTitle) ? $pageTitle : 'Brands' }} @endsection
+@push('styles')
+    <!-- BEGIN VENDOR CSS-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/vendors.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/tables/extensions/buttons.dataTables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/tables/datatable/select.dataTables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/tables/extensions/colReorder.dataTables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/tables/extensions/fixedHeader.dataTables.min.css') }}">
+    <!-- END VENDOR CSS-->
+@endpush
 @section('content')
 
-    <section id="bootstrap3">
+    <!-- Responsive integration (Bootstrap) table -->
+    <section id="bs-responsive">
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Brands</h4>
+                        <h4 class="card-title">BRANDS</h4>
                         <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                         <div class="heading-elements">
                             <ul class="list-inline mb-0">
-                                {{--                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>--}}
+                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
                                 <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
                                 <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-                                {{--                                <li><a data-action="close"><i class="ft-x"></i></a></li>--}}
+                                <li><a data-action="close"><i class="ft-x"></i></a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="card-content collapse show">
                         <div class="card-body card-dashboard">
+                            <button id="addRow" class="btn btn-primary mb-2"><i class="ft-plus"></i>&nbsp; Add new row</button>
                             {!! $dataTable->table() !!}
                         </div>
                     </div>
@@ -28,12 +41,18 @@
             </div>
         </div>
     </section>
+    <!--/ Responsive integration (Bootstrap) table -->
 @endsection
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('app-assets/vendors/js/vendors.min.js') }}" type="text/javascript"></script>
+    <!-- BEGIN PAGE VENDOR JS-->
+    <script type="text/javascript" src="{{ asset('app-assets/vendors/js/ui/jquery.sticky.js') }}"></script>
+    <script src="{{ asset('app-assets/vendors/js/tables/datatable/datatables.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('app-assets/vendors/js/tables/datatable/buttons.bootstrap4.min.js') }}" type="text/javascript"></script>
+{{--    <script src="{{ asset('app-assets/vendors/js/tables/datatable/dataTables.fixedHeader.min.js') }}" type="text/javascript"></script>--}}
+{{--    <script src="{{ asset('app-assets/js/scripts/tables/datatables-extensions/datatable-fixed-header.js') }}" type="text/javascript"></script>--}}
 
     {!! $dataTable->scripts() !!}
 @endpush

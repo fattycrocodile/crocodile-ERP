@@ -48,17 +48,11 @@ class BrandsDataTable extends DataTable
     {
         return $this->builder()
             ->setTableId('brands-table')
+            ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
-            ->orderBy(1)
-            ->buttons(
-                Button::make('create'),
-                Button::make('export'),
-                Button::make('print'),
-                Button::make('reset'),
-                Button::make('reload')
-            );
+            ->orderBy(1);
     }
 
     /**
