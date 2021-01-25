@@ -4,7 +4,7 @@
 @section('content')
     <div class="row">
         <div class="col-12 text-right">
-            <a type="button" class="btn btn-info btn-min-width mr-1 mb-1" href="{{route('crm.customers.create')}}"><i
+            <a type="button" class="btn btn-info btn-min-width mr-1 mb-1" href="{{route('storeInventory.categories.create')}}"><i
                     class="fa fa-plus"></i> Add New</a>
         </div>
     </div>
@@ -32,22 +32,20 @@
                                 <thead>
                                 <tr>
                                     <th>SL NO</th>
-                                    <th>Customer Name</th>
-                                    <th>Customer Contact</th>
-                                    <th>Customer Address</th>
-                                    <th>Store</th>
+                                    <th>Category Name</th>
+                                    <th>Parent Category</th>
+                                    <th>Category Image</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($customers as $k=>$customer)
+                                @foreach($categories as $k=>$category)
                                     <tr>
                                         <th>{{$k+1}}</th>
-                                        <td>{{$customer->name}}</td>
-                                        <td>{{$customer->contact_no}}</td>
-                                        <td>{{$customer->address}}</td>
-                                        <td>{{$customer->store->name}}</td>
-                                        <td><a class="btn btn-primary" href="{{route('crm.customers.edit',$customer->id)}}">Edit</a> </td>
+                                        <td>{{$category->name}}</td>
+                                        <td>{{$category->root_id}}</td>
+                                        <td><img src="{{asset($category->image)}}" width="40" /></td>
+                                        <td><a class="btn btn-primary" href="{{route('storeInventory.categories.edit',$category->id)}}">Edit</a> </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
