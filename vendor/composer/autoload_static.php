@@ -270,9 +270,9 @@ class ComposerStaticInitb20e0c43184310ec6720a8451e270455
         'Yajra\\DataTables\\' => 
         array (
             0 => __DIR__ . '/..' . '/yajra/laravel-datatables-buttons/src',
-            1 => __DIR__ . '/..' . '/yajra/laravel-datatables-html/src',
-            2 => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src',
-            3 => __DIR__ . '/..' . '/yajra/laravel-datatables-editor/src',
+            1 => __DIR__ . '/..' . '/yajra/laravel-datatables-editor/src',
+            2 => __DIR__ . '/..' . '/yajra/laravel-datatables-html/src',
+            3 => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src',
         ),
         'XdgBaseDir\\' => 
         array (
@@ -863,6 +863,7 @@ class ComposerStaticInitb20e0c43184310ec6720a8451e270455
         'Collective\\Html\\HtmlServiceProvider' => __DIR__ . '/..' . '/laravelcollective/html/src/HtmlServiceProvider.php',
         'Complex\\Complex' => __DIR__ . '/..' . '/markbaker/complex/classes/src/Complex.php',
         'Complex\\Exception' => __DIR__ . '/..' . '/markbaker/complex/classes/src/Exception.php',
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Cron\\AbstractField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/AbstractField.php',
         'Cron\\CronExpression' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/CronExpression.php',
         'Cron\\DayOfMonthField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/DayOfMonthField.php',
@@ -1892,9 +1893,6 @@ class ComposerStaticInitb20e0c43184310ec6720a8451e270455
         'HTMLPurifier_Printer' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier/Printer.php',
         'HTMLPurifier_Printer_CSSDefinition' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier/Printer/CSSDefinition.php',
         'HTMLPurifier_Printer_ConfigForm' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier/Printer/ConfigForm.php',
-        'HTMLPurifier_Printer_ConfigForm_NullDecorator' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier/Printer/ConfigForm.php',
-        'HTMLPurifier_Printer_ConfigForm_bool' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier/Printer/ConfigForm.php',
-        'HTMLPurifier_Printer_ConfigForm_default' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier/Printer/ConfigForm.php',
         'HTMLPurifier_Printer_HTMLDefinition' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier/Printer/HTMLDefinition.php',
         'HTMLPurifier_PropertyList' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier/PropertyList.php',
         'HTMLPurifier_PropertyListIterator' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier/PropertyListIterator.php',
@@ -5239,7 +5237,6 @@ class ComposerStaticInitb20e0c43184310ec6720a8451e270455
         'Symfony\\Component\\EventDispatcher\\Debug\\TraceableEventDispatcher' => __DIR__ . '/..' . '/symfony/event-dispatcher/Debug/TraceableEventDispatcher.php',
         'Symfony\\Component\\EventDispatcher\\Debug\\WrappedListener' => __DIR__ . '/..' . '/symfony/event-dispatcher/Debug/WrappedListener.php',
         'Symfony\\Component\\EventDispatcher\\DependencyInjection\\AddEventAliasesPass' => __DIR__ . '/..' . '/symfony/event-dispatcher/DependencyInjection/AddEventAliasesPass.php',
-        'Symfony\\Component\\EventDispatcher\\DependencyInjection\\ExtractingEventDispatcher' => __DIR__ . '/..' . '/symfony/event-dispatcher/DependencyInjection/RegisterListenersPass.php',
         'Symfony\\Component\\EventDispatcher\\DependencyInjection\\RegisterListenersPass' => __DIR__ . '/..' . '/symfony/event-dispatcher/DependencyInjection/RegisterListenersPass.php',
         'Symfony\\Component\\EventDispatcher\\EventDispatcher' => __DIR__ . '/..' . '/symfony/event-dispatcher/EventDispatcher.php',
         'Symfony\\Component\\EventDispatcher\\EventDispatcherInterface' => __DIR__ . '/..' . '/symfony/event-dispatcher/EventDispatcherInterface.php',
@@ -5608,7 +5605,6 @@ class ComposerStaticInitb20e0c43184310ec6720a8451e270455
         'Symfony\\Component\\Routing\\Loader\\GlobFileLoader' => __DIR__ . '/..' . '/symfony/routing/Loader/GlobFileLoader.php',
         'Symfony\\Component\\Routing\\Loader\\ObjectLoader' => __DIR__ . '/..' . '/symfony/routing/Loader/ObjectLoader.php',
         'Symfony\\Component\\Routing\\Loader\\PhpFileLoader' => __DIR__ . '/..' . '/symfony/routing/Loader/PhpFileLoader.php',
-        'Symfony\\Component\\Routing\\Loader\\ProtectedPhpFileLoader' => __DIR__ . '/..' . '/symfony/routing/Loader/PhpFileLoader.php',
         'Symfony\\Component\\Routing\\Loader\\XmlFileLoader' => __DIR__ . '/..' . '/symfony/routing/Loader/XmlFileLoader.php',
         'Symfony\\Component\\Routing\\Loader\\YamlFileLoader' => __DIR__ . '/..' . '/symfony/routing/Loader/YamlFileLoader.php',
         'Symfony\\Component\\Routing\\Matcher\\CompiledUrlMatcher' => __DIR__ . '/..' . '/symfony/routing/Matcher/CompiledUrlMatcher.php',
