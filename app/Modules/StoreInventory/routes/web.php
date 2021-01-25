@@ -6,7 +6,9 @@ Route::get('store-inventory', 'StoreInventoryController@welcome');
 Route::group(['middleware' => ['auth:web']], function () {
 
     Route::group(['prefix' => 'store-inventory/categories'], function () {
-        Route::get('/', 'CategoryController@index')->name('storeInventory.categories.index');
+        Route::get('/', function (\App\DataTables\CategoriesDataTable $dataTable){
+            return $dataTable->render('StoreInventory::categories.index');
+        })->name('storeInventory.categories.index');
         Route::get('/create', 'CategoryController@create')->name('storeInventory.categories.create');
         Route::post('/store', 'CategoryController@store')->name('storeInventory.categories.store');
         Route::get('/{id}/edit', 'CategoryController@edit')->name('storeInventory.categories.edit');
