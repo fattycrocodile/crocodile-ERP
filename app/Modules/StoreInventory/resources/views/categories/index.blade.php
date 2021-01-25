@@ -43,7 +43,7 @@
                                     <tr>
                                         <th>{{$k+1}}</th>
                                         <td>{{$category->name}}</td>
-                                        <td>{{$category->root_id}}</td>
+                                        <td>{{$category->parent->name}}</td>
                                         <td><img src="{{asset($category->image)}}" width="40" /></td>
                                         <td><a class="btn btn-primary" href="{{route('storeInventory.categories.edit',$category->id)}}">Edit</a> </td>
                                     </tr>

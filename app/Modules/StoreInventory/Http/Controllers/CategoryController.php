@@ -18,7 +18,7 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::where('root_id','>',1)->get();
         $this->setPageTitle('Categories', 'List of all categories');
         return view('StoreInventory::categories.index', compact('categories'));
     }

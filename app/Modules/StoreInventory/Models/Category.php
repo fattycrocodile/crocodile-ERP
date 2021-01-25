@@ -16,12 +16,12 @@ class Category extends Model
 
     public function children()
     {
-        return $this->hasMany(Category::class,root_id);
+        return $this->hasMany(Category::class,'root_id');
     }
 
     public function parent()
     {
-        return $this->belongsTo(Category::class,root_id);
+        return $this->belongsTo(Category::class,'root_id');
     }
 
     public function updatedBy()
