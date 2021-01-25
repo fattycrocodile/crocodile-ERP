@@ -6,7 +6,7 @@
 @section('content')
     <div class="row">
         <div class="col-12 text-right">
-            <a type="button" class="btn btn-info btn-min-width mr-1 mb-1" href="{{route('storeInventory.categories.create')}}"><i
+            <a type="button" class="btn btn-info btn-min-width mr-1 mb-1" href="{{route('storeInventory.units.create')}}"><i
                     class="fa fa-plus"></i> Add New</a>
         </div>
     </div>
@@ -15,7 +15,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Categories list</h4>
+                    <h4 class="card-title">Units list</h4>
                     <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                     <div class="heading-elements">
                         <ul class="list-inline mb-0">
@@ -34,26 +34,25 @@
                                 <thead>
                                 <tr>
                                     <th>SL NO</th>
-                                    <th>Category Name</th>
-                                    <th>Parent Category</th>
-                                    <th>Category Image</th>
+                                    <th>Unit Name</th>
+                                    <th>Description</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($categories as $k=>$category)
+                                @foreach($units as $k=>$unit)
                                     <tr>
                                         <th>{{$k+1}}</th>
-                                        <td>{{$category->name}}</td>
-                                        <td>{{$category->parent->name}}</td>
-                                        <td><img src="{{asset($category->image)}}" width="40" /></td>
-                                        <td><a class="btn btn-primary" href="{{route('storeInventory.categories.edit',$category->id)}}">Edit</a> </td>
+                                        <td>{{$unit->name}}</td>
+                                        <td>{{$unit->description}}</td>
+                                        <td><a class="btn btn-primary" href="{{route('storeInventory.units.edit',$unit->id)}}">Edit</a> </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
+                </div>
 @endsection
 @push('scripts')
                         <script src="{{asset('app-assets/vendors/js/tables/datatable/datatables.min.js')}}" type="text/javascript"></script>
