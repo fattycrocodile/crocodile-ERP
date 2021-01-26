@@ -40,7 +40,7 @@
                                               rows="3"
                                               placeholder="Description"
                                               name="description">{{ old('description') }}</textarea>
-                                    @error('description') {{ $message }} @enderror
+                                    @error('description')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                 </fieldset>
                                 <fieldset class="form-group">
                                     <label for="description">Logo</label>
@@ -49,7 +49,8 @@
                                            placeholder="Brand Logo"
                                            name="logo"
                                            onchange="document.getElementById('imageview').src = window.URL.createObjectURL(this.files[0])">
-                                    @error('logo') {{ $message }} @enderror
+
+                                    @error('logo')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                 </fieldset>
                                 <img id="imageview" src="" alt="" width="100">
                                 <div class="form-actions">
