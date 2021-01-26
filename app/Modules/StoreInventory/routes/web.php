@@ -6,14 +6,21 @@ Route::get('store-inventory', 'StoreInventoryController@welcome');
 Route::group(['middleware' => ['auth:web']], function () {
 
     Route::group(['prefix' => 'store-inventory/categories'], function () {
-        Route::get('/', function (\App\DataTables\CategoriesDataTable $dataTable){
-            return $dataTable->render('StoreInventory::categories.index');
-        })->name('storeInventory.categories.index');
+        Route::get('/', 'CategoryController@index')->name('storeInventory.categories.index');
         Route::get('/create', 'CategoryController@create')->name('storeInventory.categories.create');
         Route::post('/store', 'CategoryController@store')->name('storeInventory.categories.store');
         Route::get('/{id}/edit', 'CategoryController@edit')->name('storeInventory.categories.edit');
         Route::post('/{id}/update', 'CategoryController@update')->name('storeInventory.categories.update');
         Route::get('/{id}/delete', 'CategoryController@delete')->name('storeInventory.categories.delete');
+    });
+
+    Route::group(['prefix' => 'store-inventory/units'], function () {
+        Route::get('/', 'UnitController@index')->name('storeInventory.units.index');
+        Route::get('/create', 'UnitController@create')->name('storeInventory.units.create');
+        Route::post('/store', 'UnitController@store')->name('storeInventory.units.store');
+        Route::get('/{id}/edit', 'UnitController@edit')->name('storeInventory.units.edit');
+        Route::post('/{id}/update', 'UnitController@update')->name('storeInventory.units.update');
+        Route::get('/{id}/delete', 'UnitController@delete')->name('storeInventory.units.delete');
     });
 
     Route::group(['prefix' => 'store-inventory/brand'], function () {
