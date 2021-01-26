@@ -40,7 +40,8 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="description" class="sr-only">Description</label>
-                                            <textarea id="description" name="description" rows="5" class="form-control" placeholder="Enter Description">{{$unit->description}}</textarea>
+                                            <textarea id="description" name="description" rows="5" class="form-control"
+                                                      placeholder="Enter Description">{{$unit->description}}</textarea>
                                         </div>
                                     </div>
                                 </div>

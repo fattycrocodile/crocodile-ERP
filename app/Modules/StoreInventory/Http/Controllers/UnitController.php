@@ -11,20 +11,20 @@ class UnitController extends BaseController
     public function index()
     {
         $units = Unit::all();
-        $this->setPageTitle('Units','List of Units');
-        return view('StoreInventory::units.index',compact('units'));
+        $this->setPageTitle('Units', 'List of Units');
+        return view('StoreInventory::units.index', compact('units'));
     }
 
     public function create()
     {
-        $this->setPageTitle('Create Units','Create new Units');
+        $this->setPageTitle('Create Units', 'Create new Units');
         return view('StoreInventory::units.create');
     }
 
     public function store(Request $req)
     {
         $req->validate([
-            'name' =>'required|min:2'
+            'name' => 'required|min:2'
         ]);
         $units = new Unit();
         $units->name = $req->name;
@@ -41,14 +41,14 @@ class UnitController extends BaseController
     public function edit($id)
     {
         $unit = Unit::findOrFail($id);
-        $this->setPageTitle('Edit Unit','Edit a unit');
-        return view('StoreInventory::units.edit',compact('unit'));
+        $this->setPageTitle('Edit Unit', 'Edit a unit');
+        return view('StoreInventory::units.edit', compact('unit'));
     }
 
-    public function update(Request $req,$id)
+    public function update(Request $req, $id)
     {
         $req->validate([
-            'name' =>'required|min:2'
+            'name' => 'required|min:2'
         ]);
         $units = Unit::findOrFail($id);
         $units->name = $req->name;

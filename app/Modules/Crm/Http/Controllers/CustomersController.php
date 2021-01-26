@@ -66,7 +66,7 @@ class CustomersController extends BaseController
 
     public function edit($id)
     {
-        $data = Customers::find($id)->first();
+        $data = Customers::find($id);
         $stores = Stores::all();
         $this->setPageTitle('Edit Customer', 'Edit selected customer');
         return view('Crm::customers.edit', compact('data', 'stores'));
