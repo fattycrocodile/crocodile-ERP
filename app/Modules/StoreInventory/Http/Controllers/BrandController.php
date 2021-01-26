@@ -5,17 +5,24 @@ namespace App\Modules\StoreInventory\Http\Controllers;
 use App\DataTables\BrandsDataTable;
 use App\Http\Controllers\BaseController;
 use App\Modules\StoreInventory\Models\Brand;
+use App\Traits\UploadAble;
+use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\QueryException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
-use DataTables;
 
 class BrandController extends BaseController
 {
+
+    use UploadAble;
+
 
     /**
      * @param BrandsDataTable $dataTable
@@ -35,8 +42,8 @@ class BrandController extends BaseController
     public function create()
     {
         $brands = [];
-        $this->setPageTitle('brands', 'Create Category');
-        return view('storeInventory.brands.create', compact('brands'));
+        $this->setPageTitle('Create Brands', 'Create Brands');
+        return view('StoreInventory::brands.create', compact('brands'));
     }
 
     /**
@@ -48,15 +55,29 @@ class BrandController extends BaseController
     {
         $this->validate($request, [
             'name' => 'required|max:191',
-            'parent_id' => 'required|not_in:0',
             'image' => 'mimes:jpg,jpeg,png|max:1000'
         ]);
         $params = $request->except('_token');
-        $category = $this->categoryRepository->createCategory($params);
-        if (!$category) {
+
+        try {
+            $collection = collect($params);
+            $image = null;
+            if ($collection->has('logo') && ($params['logo'] instanceof  UploadedFile)) {
+                $logo = $this->uploadOne($params['logo'], 'brands');
+            }
+
+            $merge = $collection->merge(compact('logo'));
+            $brand = new Brand($merge->all());
+            if ($brand->save()){
+                return $this->responseRedirect('storeInventory.brands.index', 'Brand added successfully', 'success', false, false);
+            } else {
+                return $this->responseRedirectBack('Error occurred while creating category.', 'error', true, true);
+            }
+
+        } catch (QueryException $exception) {
+            //throw new InvalidArgumentException($exception->getMessage());
             return $this->responseRedirectBack('Error occurred while creating category.', 'error', true, true);
         }
-        return $this->responseRedirect('storeInventory.brands.index', 'Category added successfully', 'success', false, false);
     }
 
     /**
