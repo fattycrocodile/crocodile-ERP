@@ -13,4 +13,15 @@ class ChartOfAccounts extends Model
         return $this->hasMany(JournalDetails::class);
     }
 
+    public function children()
+    {
+        return $this->hasMany(ChartOfAccounts::class,'root_id');
+    }
+
+    public  function parent()
+    {
+        return $this->belongsTo(ChartOfAccounts::class,'root_id');
+    }
+
+
 }

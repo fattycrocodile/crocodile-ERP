@@ -15,7 +15,7 @@ class CreateChartOfAccountsTable extends Migration
     {
         Schema::create('chart_of_accounts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('root_id');
+            $table->unsignedBigInteger('root_id')->nullable();
             $table->foreign('root_id')->references('id')->on('chart_of_accounts');
             $table->string('name');
             $table->string('code')->nullable();
