@@ -24,10 +24,7 @@ Route::group(['middleware' => ['auth:web']], function () {
     });
 
     Route::group(['prefix' => 'store-inventory/brand'], function () {
-//        Route::get('/', 'BrandController@index')->name('storeInventory.brands.index');
-        Route::get('/', function (\App\DataTables\BrandsDataTable $dataTable){
-            return $dataTable->render('StoreInventory::brands.index');
-        })->name('storeInventory.brands.index');
+        Route::get('/', 'BrandController@index')->name('storeInventory.brands.index');
         Route::get('/create', 'BrandController@create')->name('storeInventory.brands.create');
         Route::post('/store', 'BrandController@store')->name('storeInventory.brands.store');
         Route::get('/{id}/edit', 'BrandController@edit')->name('storeInventory.brands.edit');

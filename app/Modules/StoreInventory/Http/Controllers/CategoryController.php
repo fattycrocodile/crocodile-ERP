@@ -2,6 +2,7 @@
 
 namespace App\Modules\StoreInventory\Http\Controllers;
 
+use App\DataTables\CategoriesDataTable;
 use App\Http\Controllers\BaseController;
 use App\Modules\StoreInventory\Models\Category;
 use Illuminate\Contracts\View\Factory;
@@ -14,13 +15,13 @@ use Illuminate\View\View;
 class CategoryController extends BaseController
 {
     /**
+     * @param CategoriesDataTable $dataTable
      * @return Factory|View
      */
-    public function index()
+    public function index(CategoriesDataTable $dataTable)
     {
-        $categories = Category::where('root_id','>',0)->get();
         $this->setPageTitle('Categories', 'List of all categories');
-        return view('StoreInventory::categories.index', compact('categories'));
+        return $dataTable->render('StoreInventory::categories.index');
     }
 
     /**
