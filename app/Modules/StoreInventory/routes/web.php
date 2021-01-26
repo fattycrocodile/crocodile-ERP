@@ -11,7 +11,7 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/store', 'CategoryController@store')->name('storeInventory.categories.store');
         Route::get('/{id}/edit', 'CategoryController@edit')->name('storeInventory.categories.edit');
         Route::post('/{id}/update', 'CategoryController@update')->name('storeInventory.categories.update');
-        Route::get('/{id}/delete', 'CategoryController@delete')->name('storeInventory.categories.delete');
+        Route::delete('/{id}/delete', 'CategoryController@delete')->name('storeInventory.categories.delete');
     });
 
     Route::group(['prefix' => 'store-inventory/units'], function () {
@@ -20,7 +20,7 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/store', 'UnitController@store')->name('storeInventory.units.store');
         Route::get('/{id}/edit', 'UnitController@edit')->name('storeInventory.units.edit');
         Route::post('/{id}/update', 'UnitController@update')->name('storeInventory.units.update');
-        Route::get('/{id}/delete', 'UnitController@delete')->name('storeInventory.units.delete');
+        Route::delete('/{id}/delete', 'UnitController@delete')->name('storeInventory.units.delete');
     });
 
     Route::group(['prefix' => 'store-inventory/brand'], function () {

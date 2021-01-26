@@ -6,6 +6,7 @@
 @endpush
 
 @section('content')
+    @include('inc.flash')
     <div class="d-flex justify-content-center">
         <div class="col-md-6">
             <div class="card">
@@ -27,45 +28,50 @@
                             @csrf
                             <div class="form-body">
                                 <div class="form-group">
-                                    <label for="customerName" class="sr-only">Customer Name</label>
-                                    <input type="text" id="customerName" class="form-control"
-                                           placeholder="Customer Name"
+                                    <label for="customerName">Customer Name</label>
+                                    <input type="text" id="customerName" class="form-control @error('name') is-invalid @enderror"
+                                           placeholder="Customer Name" value="{{ old('name') }}"
                                            name="name">
+                                    @error('name')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="customerContact" class="sr-only">Customer Contact</label>
-                                            <input type="text" id="customerContact" class="form-control"
-                                                   placeholder="Customer Contact"
+                                            <label for="customerContact">Customer Contact</label>
+                                            <input type="text" id="customerContact" class="form-control @error('contact_no') is-invalid @enderror"
+                                                   placeholder="Customer Contact" value="{{ old('contact_no') }}"
                                                    name="contact_no">
+                                            @error('contact_no')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="store" class="sr-only">Store</label>
-                                            <select id="store" name="store_id" class="select2 form-control">
+                                            <label for="store" >Store</label>
+                                            <select id="store" name="store_id" class="select2 form-control @error('store_id') is-invalid @enderror">
                                                 <option value="none" selected="" disabled="">Select Store</option>
                                                 @foreach($stores as $store)
-                                                    <option value="{{$store->id}}">{{$store->name}}</option>
+                                                    <option value="{{$store->id}}" {{ old('store_id')==$store->id?'selected':'' }}>{{$store->name}}</option>
                                                 @endforeach
                                             </select>
+                                            @error('store_id')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="address" class="sr-only">Customer Address</label>
-                                    <textarea id="address" rows="5" class="form-control" name="address"
-                                              placeholder="Customer Address"></textarea>
+                                    <label for="address">Customer Address</label>
+                                    <textarea id="address" rows="5" class="form-control @error('address') is-invalid @enderror" name="address"
+                                              placeholder="Customer Address">{{ old('address') }}</textarea>\
+                                    @error('address')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                 </div>
 
                                 <div class="form-actions">
-                                    <button type="button" class="btn btn-outline-warning mr-1">
+                                    <a type="button" href="{{ route('crm.customers.index') }}"
+                                       class="btn btn-warning mr-1">
                                         <i class="ft-x"></i> Cancel
-                                    </button>
-                                    <button type="submit" class="btn btn-outline-primary">
-                                        <i class="ft-check"></i> Save
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa fa-check-square-o"></i> Save
                                     </button>
                                 </div>
                         </form>

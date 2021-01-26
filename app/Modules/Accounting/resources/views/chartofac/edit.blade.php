@@ -6,11 +6,12 @@
 @endpush
 
 @section('content')
+    @include('inc.flash')
     <div class="d-flex justify-content-center">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Create New Categories</h4>
+                    <h4 class="card-title">Edit Categories</h4>
                     <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                     <div class="heading-elements">
                         <ul class="list-inline mb-0">
@@ -23,55 +24,42 @@
                 </div>
                 <div class="card-content collpase show">
                     <div class="card-body">
-                        <form class="form" method="post" action="{{route('storeInventory.categories.update',$targetCategory->id)}}"
+                        <form class="form" method="post" action="{{route('accounting.chartofaccounts.update',$chartof->id)}}"
                               enctype="multipart/form-data">
-                            @method('post')
                             @csrf
                             <div class="form-body">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="categoryName" class="sr-only">Category Name</label>
-                                            <input type="text" id="categoryName" class="form-control"
+                                            <label for="categoryName" >Chart Of Accounts Name <span class="required text-danger">*</span></label>
+                                            <input type="text" id="categoryName" class="form-control  @error('name') is-invalid @enderror"
                                                    placeholder="Category Name"
-                                                   name="name" value="{{$targetCategory->name}}">
+                                                   name="name" value="{{ old('name')?old('name'):$chartof->name }}">
+                                            @error('name')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="parentCategory" class="sr-only">Store</label>
-                                            <select id="parentCategory" name="root_id" class="select2 form-control">
-                                                <option value="none" selected="" disabled="">Select Parent Category
+                                            <label for="parentCategory">Root Chart Of Accounts <span class="required text-danger">*</span></label>
+                                            <select id="parentCategory" name="root_id" class="select2 form-control  @error('root_id') is-invalid @enderror">
+                                                <option value="none" selected="" disabled="">Select Parent Head
                                                 </option>
-                                                @foreach($categories as $category)
-                                                    <option value="{{$category->id}}" {{$category->id==$targetCategory->root_id?'selected':''}}>{{$category->name}}</option>
+                                                @foreach($chartofacs as $chartofac)
+                                                    <option value="{{$chartofac->id}}" {{ (old('root_id')?old('root_id'):$chartof->root_id)==$chartofac->id?'selected':''}}>{{$chartofac->name}}</option>
                                                 @endforeach
                                             </select>
+                                            @error('root_id')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="image" class="sr-only">Category Image</label>
-                                            <input type="file" id="image" class="form-control"
-                                                   placeholder="Category Image"
-                                                   name="image"
-                                                   onchange="document.getElementById('imageview').src = window.URL.createObjectURL(this.files[0])">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <img id="imageview" src="{{asset($targetCategory->image)}}" alt="" width="100">
                                     </div>
                                 </div>
 
                                 <div class="form-actions">
-                                    <button type="button" class="btn btn-outline-warning mr-1">
+                                    <a type="button" href="{{ route('accounting.chartofaccounts.index') }}"
+                                       class="btn btn-warning mr-1">
                                         <i class="ft-x"></i> Cancel
-                                    </button>
-                                    <button type="submit" class="btn btn-outline-primary">
-                                        <i class="ft-check"></i> Update
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa fa-check-square-o"></i> Save
                                     </button>
                                 </div>
                         </form>

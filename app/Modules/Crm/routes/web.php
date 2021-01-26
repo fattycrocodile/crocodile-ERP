@@ -14,6 +14,6 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/store', 'CustomersController@store')->name('crm.customers.store');
         Route::get('/{id}/edit', 'CustomersController@edit')->name('crm.customers.edit');
         Route::post('/{id}/update', 'CustomersController@update')->name('crm.customers.update');
-        Route::get('/{id}/delete', 'CustomersController@delete')->name('crm.customers.delete');
+        Route::delete('/{id}/delete', 'CustomersController@delete')->name('crm.customers.delete');
     });
 });

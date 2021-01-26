@@ -57,10 +57,10 @@ class CustomersController extends BaseController
         //save all data to customer table
         if ($customers->save()) {
             //redirect to create customer page
-            return redirect()->back();
+            return $this->responseRedirect('crm.customers.index', 'Customer added successfully', 'success', false, false);
         } else {
             //redirect to create customer page with previous input
-            return redirect()->back()->withInput();
+            return $this->responseRedirectBack('Error occurred while creating Customer.', 'error', true, true);
         }
     }
 
@@ -102,11 +102,29 @@ class CustomersController extends BaseController
 
         if ($customers->update()) {
             //redirect to create customer page
-            return redirect()->back();
+            return $this->responseRedirect('crm.customers.index', 'Customer edited successfully', 'success', false, false);
         } else {
             //redirect to create customer page with previous input
-            return redirect()->back()->withInput();
+            return $this->responseRedirectBack('Error occurred while editing Customer.', 'error', true, true);
         }
 
+    }
+
+    public function delete($id)
+    {
+        $data = Customers::find($id);
+        if($data->delete()) {
+            return response()->json([
+                'success' => true,
+                'status_code' => 200,
+                'message' => 'Record has been deleted successfully!',
+            ]);
+        } else{
+            return response()->json([
+                'success' => false,
+                'status_code' => 200,
+                'message' => 'Please try again!',
+            ]);
+        }
     }
 }

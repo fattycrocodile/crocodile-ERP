@@ -3,8 +3,8 @@
 namespace App\DataTables;
 
 
-use App\Modules\Crm\Models\Customers;
-use App\Modules\StoreInventory\Models\Category;
+use App\Modules\StoreInventory\Models\Brand;
+use App\Modules\StoreInventory\Models\Unit;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
@@ -13,7 +13,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class CategoriesDataTable extends DataTable
+class UnitsDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -26,39 +26,27 @@ class CategoriesDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addIndexColumn()
-            ->editColumn('root_id', function ($data) {
-                return isset($data->parent->name) ? $data->parent->name : 'N/A';
-            })
             ->addColumn('action', function ($data) {
                 return "
                     <div class='form-group'>
                         <div class='btn-group' role='group' aria-label='Basic example'>
-                            <a href='categories/$data->id/edit' class='btn btn-icon btn-secondary'><i class='fa fa-pencil-square-o'></i> Edit</a>
-                            <button data-remote='categories/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
+                            <a href='units/$data->id/edit' class='btn btn-icon btn-secondary'><i class='fa fa-pencil-square-o'></i> Edit</a>
+                            <button data-remote='units/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
                         </div>
                    </div>";
             })
-            ->editColumn('image', function ($data) {
-                if ($photo = $data->image) {
-                    $url = asset($data->image);
-                    return "<img class='img' style='height: 100px; width: 100px; text-align: center;' src='$url'></img>";
-                }
-                return '';
-            })
-            ->rawColumns(['image', 'action'])
             ->removeColumn('id');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param Category $model
+     * @param Unit $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Category $model)
+    public function query(Unit $model)
     {
-        return $model->newQuery()->where('id', '>', 1);
-//        return $model->newQuery()->select('*');
+        return $model->newQuery();
     }
 
     /**
@@ -69,7 +57,7 @@ class CategoriesDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('categories-table')
+            ->setTableId('units-table')
             ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
             ->columns($this->getColumns())
             ->minifiedAjax()
@@ -102,7 +90,6 @@ class CategoriesDataTable extends DataTable
                 }",
 
             ])
-//            ->dom('Bfrtip')
             ->orderBy(1);
     }
 
@@ -124,20 +111,8 @@ class CategoriesDataTable extends DataTable
                 ->footer('')
                 ->exportable(true)
                 ->printable(true),
-
             Column::make('name'),
-
-            Column::make('root_id')->title('Root'),
-
-            Column::make('image')
-                ->title('Image')
-                ->searchable(false)
-                ->orderable(false)
-                ->footer('')
-                ->width(100)
-                ->addClass('text-center')
-                ->exportable(true)
-                ->printable(true),
+            Column::make('description'),
         ];
     }
 
@@ -148,6 +123,6 @@ class CategoriesDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Categories_' . date('YmdHis');
+        return 'Units_' . date('YmdHis');
     }
 }

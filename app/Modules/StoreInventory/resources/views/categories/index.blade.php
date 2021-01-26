@@ -10,6 +10,7 @@
 @endpush
 
 @section('content')
+    @include('inc.flash')
     <div class="row">
         <div class="col-12 text-right">
             <a type="button" class="btn btn-info btn-min-width mr-1 mb-1"

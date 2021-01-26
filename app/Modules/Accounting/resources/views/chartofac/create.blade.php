@@ -6,6 +6,7 @@
 @endpush
 
 @section('content')
+    @include('inc.flash')
     <div class="d-flex justify-content-center">
         <div class="col-md-6">
             <div class="card">
@@ -30,32 +31,35 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="categoryName" class="sr-only">Chart Of Accounts Name</label>
-                                            <input type="text" id="categoryName" class="form-control"
+                                            <label for="categoryName" >Chart Of Accounts Name <span class="required text-danger">*</span></label>
+                                            <input type="text" id="categoryName" class="form-control  @error('name') is-invalid @enderror"
                                                    placeholder="Category Name"
-                                                   name="name">
+                                                   name="name" value="{{ old('name') }}">
+                                            @error('name')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="parentCategory" class="sr-only">Root Chart Of Accounts</label>
-                                            <select id="parentCategory" name="root_id" class="select2 form-control">
+                                            <label for="parentCategory">Root Chart Of Accounts <span class="required text-danger">*</span></label>
+                                            <select id="parentCategory" name="root_id" class="select2 form-control  @error('root_id') is-invalid @enderror">
                                                 <option value="none" selected="" disabled="">Select Parent Head
                                                 </option>
                                                 @foreach($chartofacs as $chartofac)
-                                                    <option value="{{$chartofac->id}}">{{$chartofac->name}}</option>
+                                                    <option value="{{$chartofac->id}}" {{ old('root_id')==$chartofac->id?'selected':''}}>{{$chartofac->name}}</option>
                                                 @endforeach
                                             </select>
+                                            @error('root_id')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-actions">
-                                    <button type="button" class="btn btn-outline-warning mr-1">
+                                    <a type="button" href="{{ route('accounting.chartofaccounts.index') }}"
+                                       class="btn btn-warning mr-1">
                                         <i class="ft-x"></i> Cancel
-                                    </button>
+                                    </a>
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="ft-check"></i> Save
+                                        <i class="fa fa-check-square-o"></i> Save
                                     </button>
                                 </div>
                         </form>

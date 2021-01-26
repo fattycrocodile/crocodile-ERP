@@ -56,7 +56,7 @@ class CustomersDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('brands-table')
+            ->setTableId('customer-table')
             ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
             ->columns($this->getColumns())
             ->minifiedAjax()

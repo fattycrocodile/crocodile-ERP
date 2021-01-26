@@ -6,6 +6,7 @@ use App\DataTables\CategoriesDataTable;
 use App\Http\Controllers\BaseController;
 use App\Modules\StoreInventory\Models\Category;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -110,21 +111,31 @@ class CategoryController extends BaseController
         $category->updated_by = auth()->user()->id;
 
         if (!$category->update()) {
-            return $this->responseRedirectBack('Error occurred while creating category.', 'error', true, true);
+            return $this->responseRedirectBack('Error occurred while updating category.', 'error', true, true);
         }
-        return $this->responseRedirect('storeInventory.categories.index', 'Category added successfully', 'success', false, false);
+        return $this->responseRedirect('storeInventory.categories.index', 'Category Edited successfully', 'success', false, false);
     }
 
     /**
      * @param $id
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function delete($id)
     {
-        $category = $this->categoryRepository->deleteCategory($id);
-        if (!$category) {
-            return $this->responseRedirectBack('Error occurred while deleting category.', 'error', true, true);
+        $data = Category::find($id);
+        if($data->delete()) {
+            return response()->json([
+                'success' => true,
+                'status_code' => 200,
+                'message' => 'Record has been deleted successfully!',
+            ]);
+        } else{
+            return response()->json([
+                'success' => false,
+                'status_code' => 200,
+                'message' => 'Please try again!',
+            ]);
         }
-        return $this->responseRedirect('admin.categories.index', 'Category deleted successfully', 'success', false, false);
     }
+
 }

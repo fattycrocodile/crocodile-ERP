@@ -36,7 +36,7 @@
                                 </fieldset>
                                 <fieldset class="form-group">
                                     <label for="description">Description</label>
-                                    <textarea class="form-control  @error('name') is-invalid @enderror" id="description"
+                                    <textarea class="form-control  @error('description') is-invalid @enderror" id="description"
                                               rows="3"
                                               placeholder="Description"
                                               name="description">{{ old('description') }}</textarea>
@@ -55,10 +55,10 @@
                                 <img id="imageview" src="" alt="" width="100">
                                 <div class="form-actions">
                                     <a type="button" href="{{ route('storeInventory.brands.index') }}"
-                                       class="btn btn btn-warning mr-1">
+                                       class="btn btn-warning mr-1">
                                         <i class="ft-x"></i> Cancel
                                     </a>
-                                    <button type="submit" class="btn btn btn-primary">
+                                    <button type="submit" class="btn btn-primary">
                                         <i class="fa fa-check-square-o"></i> Save
                                     </button>
                                 </div>

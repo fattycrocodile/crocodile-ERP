@@ -50,19 +50,47 @@ class ChartOfAccountsController extends BaseController
 
     public function edit($id)
     {
-        $chartofacs = ChartOfAccounts::find($id);
+        $chartof = ChartOfAccounts::find($id);
+        $chartofacs = ChartOfAccounts::all();
         $this->setPageTitle('Edit Chart Of Accounts','Edit a Chart Of Accounts');
-        return view('Accounting::chartofac.edit',compact('chartofacs'));
+        return view('Accounting::chartofac.edit',compact('chartofacs','chartof'));
     }
 
     public function update(Request $req,$id)
     {
+        $req->validate([
+            'name' => 'required',
+            'root_id'=>'required',
+        ]);
+
+        $COA = ChartOfAccounts::findOrFail($id);
+        $COA->name = $req->name;
+        $COA->root_id = $req->root_id;
+        $COA->updated_by = auth()->user()->id;
+
+        if (!$COA->update()) {
+            return $this->responseRedirectBack('Error occurred while Editing Chart Of Accounts.', 'error', true, true);
+        }
+        return $this->responseRedirect('accounting.chartofaccounts.index', 'Chart Of Accounts edited successfully', 'success', false, false);
 
     }
 
-    public function Delete(Request $req)
+    public function Delete($id)
     {
-
+        $data = ChartOfAccounts::find($id);
+        if($data->delete()) {
+            return response()->json([
+                'success' => true,
+                'status_code' => 200,
+                'message' => 'Record has been deleted successfully!',
+            ]);
+        } else{
+            return response()->json([
+                'success' => false,
+                'status_code' => 200,
+                'message' => 'Please try again!',
+            ]);
+        }
     }
 
 }
