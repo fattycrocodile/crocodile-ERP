@@ -25,6 +25,10 @@ class CategoriesDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            ->addIndexColumn()
+            ->editColumn('root_id', function ($data) {
+                return isset($data->parent->name) ? $data->parent->name : 'N/A';
+            })
             ->addColumn('action', function ($data) {
                 return "
                     <div class='form-group'>
@@ -34,6 +38,14 @@ class CategoriesDataTable extends DataTable
                         </div>
                    </div>";
             })
+            ->editColumn('image', function ($row) {
+                if ($photo = $row->image) {
+                    $url = asset($row->image);
+                    return "<img class='img' style='height: 100px; width: 100px; text-align: center;' src='$url'></img>";
+                }
+                return '';
+            })
+            ->rawColumns(['image', 'action'])
             ->removeColumn('id');
     }
 
@@ -45,7 +57,7 @@ class CategoriesDataTable extends DataTable
      */
     public function query(Category $model)
     {
-        return $model->newQuery();
+        return $model->newQuery()->where('id', '>', 1);
 //        return $model->newQuery()->select('*');
     }
 
@@ -76,7 +88,23 @@ class CategoriesDataTable extends DataTable
                         }",
 
             ])
-            ->dom('Bfrtip')
+            ->parameters([
+                'dom' => 'Bfrtip',
+                'stateSave' => true,
+                'order' => [[0, 'desc']],
+                'select' => [
+                    'style' => 'os',
+                    'selector' => 'td:first-child',
+                ],
+                'buttons' => [
+                    ['extend' => 'csv', 'className' => 'btn btn-default btn-md no-corner', 'text' => '<span><i class="fa fa-file-excel-o"></i> csv</span>'],
+                    ['extend' => 'excel', 'className' => 'btn btn-default btn-md no-corner', 'text' => '<span><i class="fa fa-download"></i> excel<span class="caret"></span></span>'],
+                    ['extend' => 'pdf', 'className' => 'btn btn-default btn-md no-corner', 'text' => '<span><i class="fa fa-file-pdf-o"></i> pdf<span class="caret"></span></span>'],
+                    ['extend' => 'print', 'className' => 'btn btn-default btn-md no-corner', 'text' => '<span><i class="fa fa-print"></i> print</span>'],
+                    'colvis'
+                ],
+            ])
+//            ->dom('Bfrtip')
             ->orderBy(1);
     }
 
@@ -88,18 +116,31 @@ class CategoriesDataTable extends DataTable
     protected function getColumns()
     {
         return [
-//            Column::computed('action')
-//                ->exportable(true)
-//                ->printable(true)
-//                ->width(60)
-//                ->addClass('text-center'),
+            Column::make('DT_RowIndex')
+                ->title('SL')
+                ->render(null)
+                ->orderable(false)
+                ->width(100)
+                ->addClass('text-center')
+                ->searchable(false)
+                ->orderable(false)
+                ->footer('')
+                ->exportable(true)
+                ->printable(true),
+
             Column::make('name'),
-//            Column::make('address'),
-//            Column::make('contact_no'),
-//            Column::make('code'),
-//            Column::computed('action'),
-//            Column::make('created_at'),
-//            Column::make('updated_at'),
+
+            Column::make('root_id')->title('Root'),
+
+            Column::make('image')
+                ->title('Image')
+                ->searchable(false)
+                ->orderable(false)
+                ->footer('')
+                ->width(100)
+                ->addClass('text-center')
+                ->exportable(true)
+                ->printable(true),
         ];
     }
 
