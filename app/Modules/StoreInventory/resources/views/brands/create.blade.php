@@ -27,13 +27,12 @@
                             @csrf
                             <div class="form-body">
                                 <fieldset class="form-group">
-                                    <label for="placeTextarea">Brand Name<span
-                                            class="m-l-5 text-danger"> *</span></label>
+                                    <label for="placeTextarea">Brand Name<span class="required text-danger">*</span></label>
                                     <input type="text" id="name"
                                            class="form-control  @error('name') is-invalid @enderror"
                                            placeholder="Brand Name"
-                                           name="name" value="{{ old('name') }}">
-                                    @error('name') {{ $message }} @enderror
+                                           name="name" value="{{ old('name') }}" >
+                                    @error('name')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                 </fieldset>
                                 <fieldset class="form-group">
                                     <label for="description">Description</label>

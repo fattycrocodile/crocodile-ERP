@@ -61,7 +61,7 @@ class BrandController extends BaseController
 
         try {
             $collection = collect($params);
-            $image = null;
+            $logo = null;
             if ($collection->has('logo') && ($params['logo'] instanceof  UploadedFile)) {
                 $logo = $this->uploadOne($params['logo'], 'brands');
             }
