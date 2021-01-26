@@ -24,6 +24,7 @@ class BrandsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            ->addIndexColumn()
             ->addColumn('action', function ($data) {
                 return "
                     <div class='form-group'>
@@ -62,20 +63,33 @@ class BrandsDataTable extends DataTable
             ->minifiedAjax()
             ->addAction(['width' => '80px'])
             ->parameters([
+                'dom' => 'Bfrtip',
+                'stateSave' => true,
+                'order' => [[0, 'desc']],
+                'select' => [
+                    'style' => 'os',
+                    'selector' => 'td:first-child',
+                ],
+                'buttons' => [
+                    ['extend' => 'csv', 'className' => 'btn btn-default btn-md no-corner', 'text' => '<span><i class="fa fa-file-excel-o"></i> csv</span>'],
+                    ['extend' => 'excel', 'className' => 'btn btn-default btn-md no-corner', 'text' => '<span><i class="fa fa-download"></i> excel<span class="caret"></span></span>'],
+                    ['extend' => 'pdf', 'className' => 'btn btn-default btn-md no-corner', 'text' => '<span><i class="fa fa-file-pdf-o"></i> pdf<span class="caret"></span></span>'],
+                    ['extend' => 'print', 'className' => 'btn btn-default btn-md no-corner', 'text' => '<span><i class="fa fa-print"></i> print</span>'],
+                    'colvis'
+                ],
                 'initComplete' => "function () {
-                            this.api().columns().every(function () {
-                                var column = this;
-                                var input = document.createElement(\"input\");
-                                input.className = 'form-control';
-                                $(input).appendTo($(column.footer()).empty())
-                                .on('change', function () {
-                                    column.search($(this).val(), false, false, true).draw();
-                                });
+                        this.api().columns().every(function () {
+                            var column = this;
+                            var input = document.createElement(\"input\");
+                            input.className = 'form-control';
+                            $(input).appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                column.search($(this).val(), false, false, true).draw();
                             });
-                        }",
+                        });
+                }",
 
             ])
-            ->dom('Bfrtip')
             ->orderBy(1);
     }
 
@@ -87,11 +101,16 @@ class BrandsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-//            Column::computed('action')
-//                ->exportable(true)
-//                ->printable(true)
-//                ->width(60)
-//                ->addClass('text-center'),
+            Column::make('DT_RowIndex')
+                ->title('SL')
+                ->render(null)
+                ->width(100)
+                ->addClass('text-center')
+                ->searchable(false)
+                ->orderable(false)
+                ->footer('')
+                ->exportable(true)
+                ->printable(true),
             Column::make('name'),
             Column::make('description'),
             Column::make('logo'),

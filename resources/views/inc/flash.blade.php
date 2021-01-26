@@ -6,7 +6,8 @@
 @endphp
 
 @if($errors) @foreach($errors as $key => $value)
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-icon-right alert-info alert-dismissible mb-2" role="alert">
+        <span class="alert-icon"><i class="fa fa-bug"></i></span>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">×</span>
         </button>
@@ -15,7 +16,8 @@
 @endforeach @endif
 
 @if($messages) @foreach($messages as $key => $value)
-    <div class="alert alert-success" role="alert">
+    <div class="alert alert-icon-right alert-success alert-dismissible mb-2" role="alert">
+        <span class="alert-icon"><i class="fa fa-info"></i></span>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">×</span>
         </button>
@@ -24,7 +26,8 @@
 @endforeach @endif
 
 @if($info) @foreach($info as $key => $value)
-    <div class="alert alert-info" role="alert">
+    <div class="alert alert-icon-right alert-info alert-dismissible mb-2" role="alert">
+        <span class="alert-icon"><i class="fa fa-info"></i></span>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">×</span>
         </button>
@@ -33,7 +36,8 @@
 @endforeach @endif
 
 @if($warnings) @foreach($warnings as $key => $value)
-    <div class="alert alert-warning" role="alert">
+    <div class="alert alert-icon-right alert-info alert-dismissible mb-2" role="alert">
+        <span class="alert-icon"><i class="fa fa-warning"></i></span>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">×</span>
         </button>
