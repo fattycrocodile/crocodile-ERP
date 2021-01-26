@@ -6,6 +6,7 @@
 @endpush
 
 @section('content')
+    @include('inc.flash')
     <div class="d-flex justify-content-center">
         <div class="col-md-6">
             <div class="card">

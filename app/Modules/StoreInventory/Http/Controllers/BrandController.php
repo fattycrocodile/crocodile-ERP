@@ -18,13 +18,13 @@ class BrandController extends BaseController
 {
 
     /**
-     * @param Request $request
+     * @param BrandsDataTable $dataTable
      * @return Factory|View
      */
-    public function index(Request $request)
+    public function index(BrandsDataTable $dataTable)
     {
         $this->setPageTitle('Brands', 'List of all brands');
-        return view("StoreInventory::brands.index");
+        return $dataTable->render('StoreInventory::brands.index');
     }
 
 

@@ -17,12 +17,22 @@
           href="{{ asset('app-assets/vendors/css/tables/extensions/colReorder.dataTables.min.css') }}">
     <link rel="stylesheet" type="text/css"
           href="{{ asset('app-assets/vendors/css/tables/extensions/fixedHeader.dataTables.min.css') }}">
+
     <!-- END VENDOR CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/extensions/toastr.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/plugins/extensions/toastr.css') }}">
 @endpush
 
 @section('content')
+    @include('inc.flash')
+    <div class="row">
+        <div class="col-12 text-right">
+            <button type="button" class="btn btn-info btn-min-width mr-1 mb-1" data-toggle="modal"
+                    data-target="#bootstrap"><i
+                    class="fa fa-plus"></i> Add New
+            </button>
+        </div>
+    </div>
 
     <!-- Responsive integration (Bootstrap) table -->
     <section id="bs-responsive">
@@ -43,8 +53,6 @@
                     </div>
                     <div class="card-content collapse show">
                         <div class="card-body card-dashboard">
-                            <button id="addRow" class="btn btn-primary mb-2"><i class="ft-plus"></i>&nbsp; Add new row
-                            </button>
                             {!! $dataTable->table([], true) !!}
                         </div>
                     </div>
@@ -53,6 +61,47 @@
         </div>
     </section>
     <!--/ Responsive integration (Bootstrap) table -->
+
+
+
+
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="form-group">
+            <!-- Modal -->
+            <div class="modal fade text-left" id="bootstrap" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel35"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="myModalLabel35"> Create</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form>
+                            <div class="modal-body">
+                                <fieldset class="form-group floating-label-form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Brands Name">
+                                </fieldset>
+                                <fieldset class="form-group floating-label-form-group">
+                                    <label for="title1">Description</label>
+                                    <textarea class="form-control" id="description" rows="3"
+                                              placeholder="Description"></textarea>
+                                </fieldset>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="reset" class="btn btn-outline-secondary btn-lg" data-dismiss="modal"
+                                       value="close">
+                                <input type="submit" class="btn btn-outline-primary btn-lg" value="Save">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('scripts')
 
