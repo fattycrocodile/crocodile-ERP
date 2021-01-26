@@ -17,13 +17,14 @@
           href="{{ asset('app-assets/vendors/css/tables/extensions/colReorder.dataTables.min.css') }}">
     <link rel="stylesheet" type="text/css"
           href="{{ asset('app-assets/vendors/css/tables/extensions/fixedHeader.dataTables.min.css') }}">
+
     <!-- END VENDOR CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/extensions/toastr.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/plugins/extensions/toastr.css') }}">
 @endpush
 
 @section('content')
-
+    @include('inc.flash')
     <div class="row">
         <div class="col-12 text-right">
             <button type="button" class="btn btn-info btn-min-width mr-1 mb-1" data-toggle="modal"

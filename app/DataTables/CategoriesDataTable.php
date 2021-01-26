@@ -38,9 +38,9 @@ class CategoriesDataTable extends DataTable
                         </div>
                    </div>";
             })
-            ->editColumn('image', function ($row) {
-                if ($photo = $row->image) {
-                    $url = asset($row->image);
+            ->editColumn('image', function ($data) {
+                if ($photo = $data->image) {
+                    $url = asset($data->image);
                     return "<img class='img' style='height: 100px; width: 100px; text-align: center;' src='$url'></img>";
                 }
                 return '';
@@ -75,20 +75,6 @@ class CategoriesDataTable extends DataTable
             ->minifiedAjax()
             ->addAction(['width' => '80px'])
             ->parameters([
-                'initComplete' => "function () {
-                            this.api().columns().every(function () {
-                                var column = this;
-                                var input = document.createElement(\"input\");
-                                input.className = 'form-control';
-                                $(input).appendTo($(column.footer()).empty())
-                                .on('change', function () {
-                                    column.search($(this).val(), false, false, true).draw();
-                                });
-                            });
-                        }",
-
-            ])
-            ->parameters([
                 'dom' => 'Bfrtip',
                 'stateSave' => true,
                 'order' => [[0, 'desc']],
@@ -103,6 +89,18 @@ class CategoriesDataTable extends DataTable
                     ['extend' => 'print', 'className' => 'btn btn-default btn-md no-corner', 'text' => '<span><i class="fa fa-print"></i> print</span>'],
                     'colvis'
                 ],
+                'initComplete' => "function () {
+                        this.api().columns().every(function () {
+                            var column = this;
+                            var input = document.createElement(\"input\");
+                            input.className = 'form-control';
+                            $(input).appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                column.search($(this).val(), false, false, true).draw();
+                            });
+                        });
+                }",
+
             ])
 //            ->dom('Bfrtip')
             ->orderBy(1);
@@ -119,7 +117,6 @@ class CategoriesDataTable extends DataTable
             Column::make('DT_RowIndex')
                 ->title('SL')
                 ->render(null)
-                ->orderable(false)
                 ->width(100)
                 ->addClass('text-center')
                 ->searchable(false)
