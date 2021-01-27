@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '0b511f0e795667dc0e52ec47525ed88cce79a16a',
+    'reference' => '883f2b1680911bb60516c765d235ad5ca50782c3',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -426,6 +426,15 @@
         0 => 'v7.30.4',
       ),
     ),
+    'intervention/image' => 
+    array (
+      'pretty_version' => '2.5.1',
+      'version' => '2.5.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'abbf18d5ab8367f96b3205ca3c89fb2fa598c69e',
+    ),
     'kodova/hamcrest-php' => 
     array (
       'replaced' => 
@@ -458,7 +467,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '0b511f0e795667dc0e52ec47525ed88cce79a16a',
+      'reference' => '883f2b1680911bb60516c765d235ad5ca50782c3',
     ),
     'laravel/tinker' => 
     array (
