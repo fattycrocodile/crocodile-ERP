@@ -40,7 +40,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="parentCategory" >Store</label>
+                                            <label for="parentCategory" >Parent Category</label>
                                             <select id="parentCategory" name="root_id" class="select2 form-control @error('root_id') is-invalid @enderror">
                                                 <option value="none" selected="" disabled="">Select Parent Category
                                                 </option>

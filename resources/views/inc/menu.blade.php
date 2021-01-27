@@ -78,7 +78,7 @@
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Products
+                                <a class="dropdown-item" href="{{ url('/store-inventory/products') }}" data-toggle="dropdown">Products
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>

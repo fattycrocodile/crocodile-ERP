@@ -5,6 +5,7 @@ namespace App\DataTables;
 
 use App\Modules\Crm\Models\Customers;
 use App\Modules\StoreInventory\Models\Category;
+use App\Modules\StoreInventory\Models\Product;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
@@ -13,7 +14,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class CategoriesDataTable extends DataTable
+class ProductsDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -26,26 +27,31 @@ class CategoriesDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addIndexColumn()
-            ->editColumn('root_id', function ($data) {
-                return isset($data->parent->name) ? $data->parent->name : 'N/A';
+            ->editColumn('category_id', function ($data) {
+                return isset($data->category->name) ? $data->category->name : 'N/A';
+            })
+            ->editColumn('brand_id', function ($data) {
+                return isset($data->brand->name) ? $data->brand->name : 'N/A';
+            })
+            ->editColumn('unit_id', function ($data) {
+                return isset($data->unit->name) ? $data->unit->name : 'N/A';
+            })
+            ->editColumn('sell_price', function ($data) {
+                return isset($data->sellPrice->sell_price) ? $data->sellPrice->sell_price : 'N/A';
+            })
+            ->editColumn('description', function ($data) {
+                return isset($data->description) ? $data->description: 'N/A';
             })
             ->addColumn('action', function ($data) {
                 return "
                     <div class='form-group'>
                         <div class='btn-group' role='group' aria-label='Basic example'>
-                            <a href='categories/$data->id/edit' class='btn btn-icon btn-secondary'><i class='fa fa-pencil-square-o'></i> Edit</a>
-                            <button data-remote='categories/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
+                            <a href='products/$data->id/edit' class='btn btn-icon btn-secondary'><i class='fa fa-pencil-square-o'></i> Edit</a>
+                            <button data-remote='products/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
                         </div>
                    </div>";
             })
-            ->editColumn('image', function ($data) {
-                if ($photo = $data->image) {
-                    $url = asset($data->image);
-                    return "<img class='img' style='height: 100px; width: 100px; text-align: center;' src='$url'></img>";
-                }
-                return '';
-            })
-            ->rawColumns(['image', 'action'])
+            ->rawColumns([ 'description','action'])
             ->removeColumn('id');
     }
 
@@ -55,10 +61,9 @@ class CategoriesDataTable extends DataTable
      * @param Category $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Category $model)
+    public function query(Product $model)
     {
-        return $model->newQuery()->where('id', '>', 1);
-//        return $model->newQuery()->select('*');
+        return Product::with('sellPrice')->select('products.*');
     }
 
     /**
@@ -69,7 +74,7 @@ class CategoriesDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('categories-table')
+            ->setTableId('products-table')
             ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
             ->columns($this->getColumns())
             ->minifiedAjax()
@@ -102,7 +107,6 @@ class CategoriesDataTable extends DataTable
                 }",
 
             ])
-//            ->dom('Bfrtip')
             ->orderBy(1);
     }
 
@@ -127,17 +131,17 @@ class CategoriesDataTable extends DataTable
 
             Column::make('name'),
 
-            Column::make('root_id')->title('Root'),
+            Column::make('description'),
 
-            Column::make('image')
-                ->title('Image')
-                ->searchable(false)
-                ->orderable(false)
-                ->footer('')
-                ->width(100)
-                ->addClass('text-center')
-                ->exportable(true)
-                ->printable(true),
+            Column::make('category_id')->title('Category'),
+
+            Column::make('brand_id')->title('Brand'),
+
+            Column::make('unit_id')->title('Unit'),
+
+            Column::make('code')->title('Product Code'),
+            Column::make('sell_price')->title('Price'),
+
         ];
     }
 
@@ -148,6 +152,6 @@ class CategoriesDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Categories_' . date('YmdHis');
+        return 'Products_' . date('YmdHis');
     }
 }
