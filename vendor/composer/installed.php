@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '883f2b1680911bb60516c765d235ad5ca50782c3',
+    'reference' => '115695198680491365875d6759764f8634d703b4',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -222,6 +222,15 @@
       array (
       ),
       'reference' => '8c3d0a3f6af734494ad8f6fbbee0ba92422859f3',
+    ),
+    'haruncpi/laravel-id-generator' => 
+    array (
+      'pretty_version' => 'v1.0.5',
+      'version' => '1.0.5.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '5d81b7a8232b434e07a84376ec6c63f43bc055cf',
     ),
     'illuminate/auth' => 
     array (
@@ -467,7 +476,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '883f2b1680911bb60516c765d235ad5ca50782c3',
+      'reference' => '115695198680491365875d6759764f8634d703b4',
     ),
     'laravel/tinker' => 
     array (
