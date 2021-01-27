@@ -2,17 +2,19 @@
 
 namespace App\Modules\StoreInventory\Http\Controllers;
 
+use App\DataTables\UnitsDataTable;
 use App\Http\Controllers\BaseController;
 use App\Modules\StoreInventory\Models\Unit;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UnitController extends BaseController
 {
-    public function index()
+    public function index(UnitsDataTable $dataTable)
     {
         $units = Unit::all();
         $this->setPageTitle('Units', 'List of Units');
-        return view('StoreInventory::units.index', compact('units'));
+        return $dataTable->render('StoreInventory::units.index');
     }
 
     public function create()
@@ -56,8 +58,31 @@ class UnitController extends BaseController
         $units->updated_by = auth()->user()->id;
 
         if (!$units->update()) {
-            return $this->responseRedirectBack('Error occurred while creating Unit.', 'error', true, true);
+            return $this->responseRedirectBack('Error occurred while Editing Unit.', 'error', true, true);
         }
-        return $this->responseRedirect('storeInventory.units.index', 'Unit added successfully', 'success', false, false);
+        return $this->responseRedirect('storeInventory.units.index', 'Unit Updated successfully', 'success', false, false);
     }
+
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function delete($id)
+    {
+        $data = Unit::find($id);
+        if($data->delete()) {
+            return response()->json([
+                'success' => true,
+                'status_code' => 200,
+                'message' => 'Record has been deleted successfully!',
+            ]);
+        } else{
+            return response()->json([
+                'success' => false,
+                'status_code' => 200,
+                'message' => 'Please try again!',
+            ]);
+        }
+    }
+
 }

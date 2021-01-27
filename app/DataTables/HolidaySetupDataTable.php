@@ -3,7 +3,9 @@
 namespace App\DataTables;
 
 
-use App\Modules\StoreInventory\Models\Brand;
+use App\Modules\Crm\Models\Customers;
+use App\Modules\Hr\Models\HolidaySetup;
+use App\Modules\StoreInventory\Models\Category;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
@@ -12,7 +14,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class BrandsDataTable extends DataTable
+class HolidaySetupDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -25,36 +27,31 @@ class BrandsDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addIndexColumn()
+            ->editColumn('root_id', function ($data) {
+                return isset($data->parent->name) ? $data->parent->name : 'N/A';
+            })
             ->addColumn('action', function ($data) {
                 return "
                     <div class='form-group'>
                         <div class='btn-group' role='group' aria-label='Basic example'>
-                            <a href='brand/$data->id/edit' class='btn btn-icon btn-secondary'><i class='fa fa-pencil-square-o'></i> Edit</a>
-                            <button data-remote='brand/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
+                            <a href='holidaysetup/$data->id/edit' class='btn btn-icon btn-secondary'><i class='fa fa-pencil-square-o'></i> Edit</a>
+                            <button data-remote='holidaysetup/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
                         </div>
                    </div>";
             })
-            ->editColumn('logo', function ($data) {
-                if ($photo = $data->logo) {
-                    $url = asset('public/uploads/'.$data->logo);
-                    return "<img class='img' style='height: 100px; width: 100px; text-align: center;' src='$url'></img>";
-                }
-                return '';
-            })
-            ->rawColumns(['logo', 'action'])
+            ->rawColumns(['action'])
             ->removeColumn('id');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param Brand $model
+     * @param HolidaySetup $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Brand $model)
+    public function query(HolidaySetup $model)
     {
         return $model->newQuery();
-//        return $model->newQuery()->select('*');
     }
 
     /**
@@ -65,7 +62,7 @@ class BrandsDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('brands-table')
+            ->setTableId('holidays-table')
             ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
             ->columns($this->getColumns())
             ->minifiedAjax()
@@ -119,12 +116,11 @@ class BrandsDataTable extends DataTable
                 ->footer('')
                 ->exportable(true)
                 ->printable(true),
-            Column::make('name'),
-            Column::make('description'),
-            Column::make('logo'),
-//            Column::computed('action'),
-//            Column::make('created_at'),
-//            Column::make('updated_at'),
+
+            Column::make('type'),
+
+            Column::make('date'),
+
         ];
     }
 
@@ -135,6 +131,6 @@ class BrandsDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Brands_' . date('YmdHis');
+        return 'holidays_' . date('YmdHis');
     }
 }

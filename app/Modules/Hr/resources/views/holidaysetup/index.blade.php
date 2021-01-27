@@ -10,10 +10,11 @@
 @endpush
 
 @section('content')
+    @include('inc.flash')
     <div class="row">
         <div class="col-12 text-right">
             <a type="button" class="btn btn-info btn-min-width mr-1 mb-1"
-               href="{{route('storeInventory.categories.create')}}"><i
+               href="{{route('hr.holidaysetup.create')}}"><i
                     class="fa fa-plus"></i> Add New</a>
         </div>
     </div>
@@ -23,7 +24,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">CATEGOIRES</h4>
+                        <h4 class="card-title">Holidays Setup</h4>
                         <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                         <div class="heading-elements">
                             <ul class="list-inline mb-0">
@@ -55,7 +56,7 @@
     {!! $dataTable->scripts() !!}
 
     <script>
-        $('#categories-table').on('click', '.btn-delete[data-remote]', function (e) {
+        $('#holidays-table').on('click', '.btn-delete[data-remote]', function (e) {
 
             e.preventDefault();
             $.ajaxSetup({
@@ -72,7 +73,7 @@
                     dataType: 'json',
                     data: {method: '_DELETE', submit: true}
                 }).always(function (data) {
-                    $('#categories-table').DataTable().draw(false);
+                    $('#holidays-table').DataTable().draw(false);
                     var message = data.message;
                     if (data.success === true) {
                         toastr.success(message, 'Message <i class="fa fa-bell faa-ring animated"></i>');

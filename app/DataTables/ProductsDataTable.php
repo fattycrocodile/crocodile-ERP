@@ -3,7 +3,8 @@
 namespace App\DataTables;
 
 
-use App\Modules\StoreInventory\Models\Brand;
+use App\Modules\Crm\Models\Customers;
+use App\Modules\StoreInventory\Models\Category;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
@@ -12,7 +13,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class BrandsDataTable extends DataTable
+class CategoriesDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -25,35 +26,38 @@ class BrandsDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addIndexColumn()
+            ->editColumn('root_id', function ($data) {
+                return isset($data->parent->name) ? $data->parent->name : 'N/A';
+            })
             ->addColumn('action', function ($data) {
                 return "
                     <div class='form-group'>
                         <div class='btn-group' role='group' aria-label='Basic example'>
-                            <a href='brand/$data->id/edit' class='btn btn-icon btn-secondary'><i class='fa fa-pencil-square-o'></i> Edit</a>
-                            <button data-remote='brand/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
+                            <a href='categories/$data->id/edit' class='btn btn-icon btn-secondary'><i class='fa fa-pencil-square-o'></i> Edit</a>
+                            <button data-remote='categories/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
                         </div>
                    </div>";
             })
-            ->editColumn('logo', function ($data) {
-                if ($photo = $data->logo) {
-                    $url = asset('public/uploads/'.$data->logo);
+            ->editColumn('image', function ($data) {
+                if ($photo = $data->image) {
+                    $url = asset($data->image);
                     return "<img class='img' style='height: 100px; width: 100px; text-align: center;' src='$url'></img>";
                 }
                 return '';
             })
-            ->rawColumns(['logo', 'action'])
+            ->rawColumns(['image', 'action'])
             ->removeColumn('id');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param Brand $model
+     * @param Category $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Brand $model)
+    public function query(Category $model)
     {
-        return $model->newQuery();
+        return $model->newQuery()->where('id', '>', 1);
 //        return $model->newQuery()->select('*');
     }
 
@@ -65,7 +69,7 @@ class BrandsDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('brands-table')
+            ->setTableId('categories-table')
             ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
             ->columns($this->getColumns())
             ->minifiedAjax()
@@ -98,6 +102,7 @@ class BrandsDataTable extends DataTable
                 }",
 
             ])
+//            ->dom('Bfrtip')
             ->orderBy(1);
     }
 
@@ -119,12 +124,20 @@ class BrandsDataTable extends DataTable
                 ->footer('')
                 ->exportable(true)
                 ->printable(true),
+
             Column::make('name'),
-            Column::make('description'),
-            Column::make('logo'),
-//            Column::computed('action'),
-//            Column::make('created_at'),
-//            Column::make('updated_at'),
+
+            Column::make('root_id')->title('Root'),
+
+            Column::make('image')
+                ->title('Image')
+                ->searchable(false)
+                ->orderable(false)
+                ->footer('')
+                ->width(100)
+                ->addClass('text-center')
+                ->exportable(true)
+                ->printable(true),
         ];
     }
 
@@ -135,6 +148,6 @@ class BrandsDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Brands_' . date('YmdHis');
+        return 'Categories_' . date('YmdHis');
     }
 }

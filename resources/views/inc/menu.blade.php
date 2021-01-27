@@ -149,7 +149,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Category
+                                <a class="dropdown-item" href="{{ route('hr.holidaysetup.index') }}" data-toggle="dropdown">Holidays Setup
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>

@@ -33,7 +33,7 @@
                                         <div class="form-group">
                                             <label for="categoryName" >Chart Of Accounts Name <span class="required text-danger">*</span></label>
                                             <input type="text" id="categoryName" class="form-control  @error('name') is-invalid @enderror"
-                                                   placeholder="Category Name"
+                                                   placeholder="Chart Of Accounts Name"
                                                    name="name" value="{{ old('name') }}">
                                             @error('name')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
