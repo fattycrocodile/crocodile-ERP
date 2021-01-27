@@ -4,9 +4,13 @@ namespace App\Modules\StoreInventory\Models;
 
 use App\Model\User\User;
 use Illuminate\Database\Eloquent\Model;
+use TypiCMS\NestableTrait;
 
 class Category extends Model
 {
+    use NestableTrait;
+
+    protected $table = 'categories';
     protected $guarded=[];
 
     public function product()
@@ -32,5 +36,16 @@ class Category extends Model
     public function createdBy()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function treeList()
+    {
+        return Category::orderByRaw('-name ASC')
+            ->get()
+            ->nest()
+            ->listsFlattened('name');
     }
 }

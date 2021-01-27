@@ -15,6 +15,13 @@ use Illuminate\View\View;
 
 class CategoryController extends BaseController
 {
+    public $category;
+
+    public function __construct()
+    {
+        $this->category = new Category;
+    }
+
     /**
      * @param CategoriesDataTable $dataTable
      * @return Factory|View
@@ -30,7 +37,7 @@ class CategoryController extends BaseController
      */
     public function create()
     {
-        $categories = Category::all();
+        $categories = $this->category->treeList();
         $this->setPageTitle('Categories', 'Create Category');
         return view('StoreInventory::categories.create', compact('categories'));
     }
@@ -74,7 +81,7 @@ class CategoryController extends BaseController
     public function edit($id)
     {
         $targetCategory = Category::findOrFail($id);
-        $categories = Category::all();
+        $categories = $this->category->treeList();
         $this->setPageTitle('Edit Categories', 'Edit Category : ' . $targetCategory->name);
         return view('StoreInventory::categories.edit', compact('categories', 'targetCategory'));
     }

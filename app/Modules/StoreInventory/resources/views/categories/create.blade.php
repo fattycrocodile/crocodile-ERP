@@ -44,8 +44,8 @@
                                             <select id="parentCategory" name="root_id" class="select2 form-control @error('root_id') is-invalid @enderror">
                                                 <option value="none" selected="" disabled="">Select Parent Category
                                                 </option>
-                                                @foreach($categories as $category)
-                                                    <option value="{{$category->id}}" {{ old('root_id')==$category->id?'selected':'' }}>{{$category->name}}</option>
+                                                @foreach($categories as $key => $category)
+                                                    <option value="{{ $key }}"> {{ $category }} </option>
                                                 @endforeach
                                             </select>
                                             @error('root_id')<div class="help-block text-danger">{{ $message }} </div> @enderror
