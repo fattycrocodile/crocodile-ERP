@@ -1,5 +1,15 @@
 <?php
 
+
+
+
+
+
+
+
+
+
+
 namespace Composer;
 
 use Composer\Semver\VersionParser;
@@ -19,7 +29,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '46ae5ed735a1e00ee9b1ba5ac906635656f7504b',
+    'reference' => 'b60b249ec7ad1a2fb472b3b324311d1bb0caa3b2',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -139,12 +149,12 @@ private static $installed = array (
     ),
     'facade/ignition' => 
     array (
-      'pretty_version' => '2.5.8',
-      'version' => '2.5.8.0',
+      'pretty_version' => '2.5.9',
+      'version' => '2.5.9.0',
       'aliases' => 
       array (
       ),
-      'reference' => '8e907d81244649c5ea746e2ec30c32c5f59df472',
+      'reference' => '66b3138ecce38024723fb3bfc66ef8852a779ea9',
     ),
     'facade/ignition-contracts' => 
     array (
@@ -175,12 +185,12 @@ private static $installed = array (
     ),
     'filp/whoops' => 
     array (
-      'pretty_version' => '2.9.1',
-      'version' => '2.9.1.0',
+      'pretty_version' => '2.9.2',
+      'version' => '2.9.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => '307fb34a5ab697461ec4c9db865b20ff2fd40771',
+      'reference' => 'df7933820090489623ce0be5e85c7e693638e536',
     ),
     'fruitcake/laravel-cors' => 
     array (
@@ -462,7 +472,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '46ae5ed735a1e00ee9b1ba5ac906635656f7504b',
+      'reference' => 'b60b249ec7ad1a2fb472b3b324311d1bb0caa3b2',
     ),
     'laravel/tinker' => 
     array (
@@ -547,12 +557,12 @@ private static $installed = array (
     ),
     'markbaker/matrix' => 
     array (
-      'pretty_version' => '2.1.1',
-      'version' => '2.1.1.0',
+      'pretty_version' => '2.1.2',
+      'version' => '2.1.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => '35a2d1a919a1de732402f694925168c53c17c838',
+      'reference' => '361c0f545c3172ee26c3d596a0aa03f0cef65e6a',
     ),
     'mockery/mockery' => 
     array (
@@ -1334,6 +1344,15 @@ private static $installed = array (
       array (
       ),
       'reference' => 'b43b05cf43c1b6d849478965062b6ef73e223bb5',
+    ),
+    'typicms/nestablecollection' => 
+    array (
+      'pretty_version' => '1.1.20',
+      'version' => '1.1.20.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'f98feb398cde33d577acac0d8fc74c0d5d25207b',
     ),
     'vlucas/phpdotenv' => 
     array (
