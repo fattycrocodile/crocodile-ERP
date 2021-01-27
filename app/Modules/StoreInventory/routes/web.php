@@ -40,4 +40,13 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/{id}/update', 'ProductController@update')->name('storeInventory.products.update');
         Route::delete('/{id}/delete', 'ProductController@delete')->name('storeInventory.products.delete');
     });
+
+    Route::group(['prefix' => 'store-inventory/sellprices'], function () {
+        Route::get('/', 'SellPriceController@index')->name('storeInventory.sellprices.index');
+        Route::get('/create', 'SellPriceController@create')->name('storeInventory.sellprices.create');
+        Route::post('/store', 'SellPriceController@store')->name('storeInventory.sellprices.store');
+        Route::get('/{id}/edit', 'SellPriceController@edit')->name('storeInventory.sellprices.edit');
+        Route::post('/{id}/update', 'SellPriceController@update')->name('storeInventory.sellprices.update');
+        Route::delete('/{id}/delete', 'SellPriceController@delete')->name('storeInventory.sellprices.delete');
+    });
 });

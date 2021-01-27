@@ -83,7 +83,7 @@
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Sell Price
+                                <a class="dropdown-item" href="{{ url('/store-inventory/sellprices') }}" data-toggle="dropdown">Sell Price
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
