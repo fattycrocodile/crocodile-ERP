@@ -48,7 +48,7 @@
                                         <div class="form-group">
                                             <label for="parentCategory">Holiday Date</label>
                                             <div class='input-group date' id='datetimepicker1' data-provide="datepicker">
-                                                <input type='text' name="date" value="{{old('date')}}" class="form-control @error('date') is-invalid @enderror" data-date-format="Y-MM-DD"/>
+                                                <input type='text' name="date" value="{{old('date')}}" class="form-control @error('date') is-invalid @enderror" data-date-format="Y-MM-DD" autocomplete="off"/>
                                                 <div class="input-group-append">
                                                 <span class="input-group-text">
                                                   <span class="fa fa-calendar"></span>

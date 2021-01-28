@@ -11,7 +11,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Create New Categories</h4>
+                    <h4 class="card-title">Create New Product</h4>
                     <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                     <div class="heading-elements">
                         <ul class="list-inline mb-0">
@@ -29,7 +29,7 @@
                             @csrf
                             <div class="form-body">
                                 <div class="form-group">
-                                    <label for="productName">Product Name</label>
+                                    <label for="productName">Product Name <span class="required text-danger">*</span></label>
                                     <input type="text" id="productName"
                                            class="form-control @error('name') is-invalid @enderror"
                                            placeholder="Product Name" value="{{ old('name')?old('name'):$product->name }}"
@@ -40,7 +40,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="category">Category</label>
+                                            <label for="category">Category <span class="required text-danger">*</span></label>
                                             <select id="category" name="category_id"
                                                     class="select2 form-control @error('category_id') is-invalid @enderror">
                                                 <option value="none" selected="" disabled="">Select Category
@@ -56,7 +56,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="brand">Brand</label>
+                                            <label for="brand">Brand <span class="required text-danger">*</span></label>
                                             <select id="brand" name="brand_id"
                                                     class="select2 form-control @error('brand_id') is-invalid @enderror">
                                                 <option value="none" selected="" disabled="">Select Brand
@@ -74,7 +74,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="unit">Unit</label>
+                                            <label for="unit">Unit <span class="required text-danger">*</span></label>
                                             <select id="unit" name="unit_id"
                                                     class="select2 form-control @error('unit_id') is-invalid @enderror">
                                                 <option value="none" selected="" disabled="">Select Unit
@@ -90,7 +90,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="productCode">Product Code</label>
+                                            <label for="productCode">Product Code <span class="required text-danger">*</span></label>
                                             <input type="text" id="productCode"
                                                    class="form-control @error('code') is-invalid @enderror"
                                                    placeholder="Product code" value="{{ old('code')?old('code'):$product->code }}"
@@ -103,7 +103,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="stockQty">Minimum Stock Qty</label>
+                                            <label for="stockQty">Minimum Stock Qty <span class="required text-danger">*</span></label>
                                             <input type="text" id="stockQty"
                                                    class="form-control @error('min_stock_qty') is-invalid @enderror"
                                                    placeholder="Minimum Order Qty" value="{{ old('min_stock_qty')?old('min_stock_qty'):$product->min_stock_qty }}"
@@ -114,7 +114,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="orderQty">Minimum Order Qty</label>
+                                            <label for="orderQty">Minimum Order Qty <span class="required text-danger">*</span></label>
                                             <input type="text" id="orderQty"
                                                    class="form-control @error('min_order_qty') is-invalid @enderror"
                                                    placeholder="Minimum Order Qty" value="{{ old('min_order_qty')?old('min_order_qty'):$product->min_order_qty }}"
@@ -128,7 +128,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="sellPrice">Sell Price</label>
+                                            <label for="sellPrice">Sell Price <span class="required text-danger">*</span></label>
                                             <input type="text" id="sellPrice"
                                                    class="form-control @error('sell_price') is-invalid @enderror"
                                                    placeholder="Sell Price" value="{{ old('sell_price')?old('sell_price'):$sellPrice->sell_price }}"
@@ -139,7 +139,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="wholesalePrice">Wholesale Price</label>
+                                            <label for="wholesalePrice">Wholesale Price <span class="required text-danger">*</span></label>
                                             <input type="text" id="wholesalePrice"
                                                    class="form-control @error('whole_sell_price') is-invalid @enderror"
                                                    placeholder="Wholesale Price" value="{{ old('whole_sell_price')?old('whole_sell_price'):$sellPrice->whole_sell_price }}"
@@ -150,9 +150,34 @@
                                     </div>
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="minsellPrice">Min Sell Price</label>
+                                            <input type="text" id="minsellPrice"
+                                                   class="form-control @error('min_sell_price') is-invalid @enderror"
+                                                   placeholder="Min Sell Price" value="{{ old('min_sell_price')?old('min_sell_price'):$sellPrice->min_sell_price }}"
+                                                   name="min_sell_price">
+                                            @error('min_sell_price')
+                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="minwholesalePrice">Min Wholesale Price</label>
+                                            <input type="text" id="minwholesalePrice"
+                                                   class="form-control @error('min_whole_sell_price') is-invalid @enderror"
+                                                   placeholder="Min Wholesale Price" value="{{ old('min_whole_sell_price')?old('min_whole_sell_price'):$sellPrice->min_whole_sell_price }}"
+                                                   name="min_whole_sell_price">
+                                            @error('min_whole_sell_price')
+                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
 
                                 <div class="form-group">
-                                    <label for="desc">Description</label>
+                                    <label for="desc">Description <span class="required text-danger">*</span></label>
                                     <textarea name="description" id="desc" cols="50" rows="20"
                                               class="form-control @error('description') is-invalid @enderror">{{old('description')?old('description'):$product->description}}</textarea>
                                     @error('description')

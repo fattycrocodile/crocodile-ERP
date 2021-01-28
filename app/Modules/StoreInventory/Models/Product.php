@@ -35,7 +35,7 @@ class Product extends Model
 
     public function sellPrice()
     {
-        return $this->hasMany(SellPrice::class);
+        return $this->hasMany(SellPrice::class)->orderBy('id','desc');
     }
 
     public function inventory()

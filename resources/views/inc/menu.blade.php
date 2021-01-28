@@ -108,7 +108,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Category
+                                <a class="dropdown-item" href="{{ url('/commercial/suppliers') }}" data-toggle="dropdown">Supplier
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>

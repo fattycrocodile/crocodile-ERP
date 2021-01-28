@@ -24,54 +24,55 @@
                 </div>
                 <div class="card-content collpase show">
                     <div class="card-body">
-                        <form class="form" method="post" action="{{route('crm.customers.store')}}">
+                        <form class="form" method="post" action="{{route('commercial.suppliers.update',$data->id)}}">
+                            @method('POST')
                             @csrf
                             <div class="form-body">
-                                <div class="form-group">
-                                    <label for="customerName">Customer Name</label>
-                                    <input type="text" id="customerName" class="form-control @error('name') is-invalid @enderror"
-                                           placeholder="Customer Name" value="{{ old('name') }}"
-                                           name="name">
-                                    @error('name')<div class="help-block text-danger">{{ $message }} </div> @enderror
-                                </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="customerContact">Customer Contact</label>
-                                            <input type="text" id="customerContact" class="form-control @error('contact_no') is-invalid @enderror"
-                                                   placeholder="Customer Contact" value="{{ old('contact_no') }}"
-                                                   name="contact_no">
-                                            @error('contact_no')<div class="help-block text-danger">{{ $message }} </div> @enderror
+                                            <label for="SupplierName">Supplier Name</label>
+                                            <input type="text" id="SupplierName"
+                                                   class="form-control @error('name') is-invalid @enderror"
+                                                   value="{{old('name')?old('name'):$data->name}}"
+                                                   placeholder="Supplier Name"
+                                                   name="name">
+                                            @error('name')
+                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="store" >Store</label>
-                                            <select id="store" name="store_id" class="select2 form-control @error('store_id') is-invalid @enderror">
-                                                <option value="none" selected="" disabled="">Select Store</option>
-                                                @foreach($stores as $store)
-                                                    <option value="{{$store->id}}" {{ old('store_id')==$store->id?'selected':'' }}>{{$store->name}}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('store_id')<div class="help-block text-danger">{{ $message }} </div> @enderror
+                                            <label for="SupplierContact">Supplier Contact</label>
+                                            <input type="text" id="SupplierContact"
+                                                   class="form-control @error('contact_no') is-invalid @enderror"
+                                                   placeholder="Supplier Contact"
+                                                   value="{{old('contact_no')?old('contact_no'):$data->contact_no}}"
+                                                   name="contact_no">
+                                            @error('contact_no')
+                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
                                     </div>
+
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="address">Customer Address</label>
-                                    <textarea id="address" rows="5" class="form-control @error('address') is-invalid @enderror" name="address"
-                                              placeholder="Customer Address">{{ old('address') }}</textarea>
-                                    @error('address')<div class="help-block text-danger">{{ $message }} </div> @enderror
+                                    <label for="address">Supplier Address</label>
+                                    <textarea id="address" rows="5"
+                                              class="form-control @error('address') is-invalid @enderror" name="address"
+                                              placeholder="Supplier Address">{{old('address')?old('address'):$data->address}}</textarea>
+                                    @error('address')
+                                    <div class="help-block text-danger">{{ $message }} </div> @enderror
                                 </div>
 
                                 <div class="form-actions">
-                                    <a type="button" href="{{ route('crm.customers.index') }}"
+                                    <a type="button" href="{{ route('commercial.suppliers.index') }}"
                                        class="btn btn-warning mr-1">
                                         <i class="ft-x"></i> Cancel
                                     </a>
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="fa fa-check-square-o"></i> Save
+                                        <i class="fa fa-check-square-o"></i> Update
                                     </button>
                                 </div>
                         </form>

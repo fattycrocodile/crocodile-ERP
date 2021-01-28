@@ -11,7 +11,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Create New Customers</h4>
+                    <h4 class="card-title">Create New Suppliers</h4>
                     <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                     <div class="heading-elements">
                         <ul class="list-inline mb-0">
@@ -24,49 +24,39 @@
                 </div>
                 <div class="card-content collpase show">
                     <div class="card-body">
-                        <form class="form" method="post" action="{{route('crm.customers.store')}}">
+                        <form class="form" method="post" action="{{route('commercial.suppliers.store')}}">
                             @csrf
                             <div class="form-body">
-                                <div class="form-group">
-                                    <label for="customerName">Customer Name</label>
-                                    <input type="text" id="customerName" class="form-control @error('name') is-invalid @enderror"
-                                           placeholder="Customer Name" value="{{ old('name') }}"
-                                           name="name">
-                                    @error('name')<div class="help-block text-danger">{{ $message }} </div> @enderror
-                                </div>
                                 <div class="row">
                                     <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="supplierName">Supplier Name</label>
+                                                <input type="text" id="supplierName" class="form-control @error('name') is-invalid @enderror"
+                                                       placeholder="Supplier Name" value="{{ old('name') }}"
+                                                       name="name">
+                                                @error('name')<div class="help-block text-danger">{{ $message }} </div> @enderror
+                                            </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="customerContact">Customer Contact</label>
-                                            <input type="text" id="customerContact" class="form-control @error('contact_no') is-invalid @enderror"
-                                                   placeholder="Customer Contact" value="{{ old('contact_no') }}"
+                                            <label for="supplierContact">Supplier Contact</label>
+                                            <input type="text" id="supplierContact" class="form-control @error('contact_no') is-invalid @enderror"
+                                                   placeholder="Supplier Contact" value="{{ old('contact_no') }}"
                                                    name="contact_no">
                                             @error('contact_no')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="store" >Store</label>
-                                            <select id="store" name="store_id" class="select2 form-control @error('store_id') is-invalid @enderror">
-                                                <option value="none" selected="" disabled="">Select Store</option>
-                                                @foreach($stores as $store)
-                                                    <option value="{{$store->id}}" {{ old('store_id')==$store->id?'selected':'' }}>{{$store->name}}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('store_id')<div class="help-block text-danger">{{ $message }} </div> @enderror
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="address">Customer Address</label>
+                                    <label for="address">Supplier Address</label>
                                     <textarea id="address" rows="5" class="form-control @error('address') is-invalid @enderror" name="address"
-                                              placeholder="Customer Address">{{ old('address') }}</textarea>
+                                              placeholder="Suppliers Address">{{ old('address') }}</textarea>
                                     @error('address')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                 </div>
 
                                 <div class="form-actions">
-                                    <a type="button" href="{{ route('crm.customers.index') }}"
+                                    <a type="button" href="{{ route('commercial.suppliers.index') }}"
                                        class="btn btn-warning mr-1">
                                         <i class="ft-x"></i> Cancel
                                     </a>

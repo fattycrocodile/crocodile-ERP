@@ -58,6 +58,8 @@ class ProductController extends BaseController
 
         $sellPrice->sell_price = $req->sell_price;
         $sellPrice->whole_sell_price = $req->whole_sell_price;
+        $sellPrice->min_sell_price = $req->min_sell_price;
+        $sellPrice->min_whole_sell_price = $req->min_whole_sell_price;
         $sellPrice->created_by = auth()->user()->id;
         $sellPrice->updated_by = auth()->user()->id;
         $sellPrice->date = date('Y-m-d');
@@ -117,6 +119,8 @@ class ProductController extends BaseController
 
         $sellPrice->sell_price = $req->sell_price;
         $sellPrice->whole_sell_price = $req->whole_sell_price;
+        $sellPrice->min_sell_price = $req->min_sell_price;
+        $sellPrice->min_whole_sell_price = $req->min_whole_sell_price;
         $sellPrice->created_by = auth()->user()->id;
         $sellPrice->updated_by = auth()->user()->id;
         $sellPrice->date = date('Y-m-d');
