@@ -147,7 +147,7 @@ class ProductController extends BaseController
     public function delete($id)
     {
         $data = Product::find($id);
-        if ($data->delete()) {
+        if ($data->sellPrice()->delete() && $data->delete()) {
             return response()->json([
                 'success' => true,
                 'status_code' => 200,

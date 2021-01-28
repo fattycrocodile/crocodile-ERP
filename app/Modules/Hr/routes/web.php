@@ -11,4 +11,22 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/{id}//update', 'HolidaySetupController@update')->name('hr.holidaysetup.update');
         Route::delete('/{id}/delete', 'HolidaySetupController@delete')->name('hr.holidaysetup.delete');
     });
+
+    Route::group(['prefix' => 'hr/departments'], function () {
+        Route::get('/', 'DepartmentsController@index')->name('hr.departments.index');
+        Route::get('/create', 'DepartmentsController@create')->name('hr.departments.create');
+        Route::post('/store', 'DepartmentsController@store')->name('hr.departments.store');
+        Route::get('/{id}/edit', 'DepartmentsController@edit')->name('hr.departments.edit');
+        Route::post('/{id}//update', 'DepartmentsController@update')->name('hr.departments.update');
+        Route::delete('/{id}/delete', 'DepartmentsController@delete')->name('hr.departments.delete');
+    });
+
+    Route::group(['prefix' => 'hr/designations'], function () {
+        Route::get('/', 'DesignationsController@index')->name('hr.designations.index');
+        Route::get('/create', 'DesignationsController@create')->name('hr.designations.create');
+        Route::post('/store', 'DesignationsController@store')->name('hr.designations.store');
+        Route::get('/{id}/edit', 'DesignationsController@edit')->name('hr.designations.edit');
+        Route::post('/{id}//update', 'DesignationsController@update')->name('hr.designations.update');
+        Route::delete('/{id}/delete', 'DesignationsController@delete')->name('hr.designations.delete');
+    });
 });

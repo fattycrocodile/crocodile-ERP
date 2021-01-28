@@ -88,7 +88,7 @@
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Store
+                                <a class="dropdown-item" href="{{ url('/store-inventory/stores') }}" data-toggle="dropdown">Stores
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
@@ -150,6 +150,16 @@
                         <ul class="dropdown-menu">
                             <li data-menu="">
                                 <a class="dropdown-item" href="{{ route('hr.holidaysetup.index') }}" data-toggle="dropdown">Holidays Setup
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('hr.departments.index') }}" data-toggle="dropdown">Departments
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('hr.designations.index') }}" data-toggle="dropdown">Designations
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
