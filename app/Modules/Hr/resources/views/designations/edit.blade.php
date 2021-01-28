@@ -35,7 +35,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="categoryName">Designation Name</label>
+                                            <label for="categoryName">Designation Name <span class="required text-danger">*</span></label>
                                             <input type="text" id="categoryName"
                                                    class="form-control @error('name') is-invalid @enderror"
                                                    placeholder="Designation Name" value="{{ old('name')?old('name'):$designation->name }}"
@@ -46,7 +46,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="status">Designation Status</label>
+                                            <label for="status">Designation Status <span class="required text-danger">*</span></label>
                                             <select id="status" name="status"
                                                     class="select2 form-control @error('status') is-invalid @enderror">
                                                 <option value="none" selected="" disabled="">Select Status

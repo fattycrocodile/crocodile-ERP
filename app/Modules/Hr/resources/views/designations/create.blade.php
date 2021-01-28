@@ -33,7 +33,7 @@
                             @csrf
                             <div class="form-body">
                                 <div class="form-group">
-                                    <label for="categoryName">Designation Name</label>
+                                    <label for="categoryName">Designation Name <span class="required text-danger">*</span></label>
                                     <input type="text" id="categoryName"
                                            class="form-control @error('name') is-invalid @enderror"
                                            placeholder="Designations Name" value="{{ old('name') }}"

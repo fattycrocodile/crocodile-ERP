@@ -187,7 +187,7 @@
 
 
                                 <div class="form-actions">
-                                    <a type="button" href="{{ route('storeInventory.categories.index') }}"
+                                    <a type="button" href="{{ route('storeInventory.products.index') }}"
                                        class="btn btn-warning mr-1">
                                         <i class="ft-x"></i> Cancel
                                     </a>
