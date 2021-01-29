@@ -29,4 +29,13 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/{id}//update', 'DesignationsController@update')->name('hr.designations.update');
         Route::delete('/{id}/delete', 'DesignationsController@delete')->name('hr.designations.delete');
     });
+
+    Route::group(['prefix' => 'hr/employees'], function () {
+        Route::get('/', 'EmployeesController@index')->name('hr.employees.index');
+        Route::get('/create', 'EmployeesController@create')->name('hr.employees.create');
+        Route::post('/store', 'EmployeesController@store')->name('hr.employees.store');
+        Route::get('/{id}/edit', 'EmployeesController@edit')->name('hr.employees.edit');
+        Route::post('/{id}//update', 'EmployeesController@update')->name('hr.employees.update');
+        Route::delete('/{id}/delete', 'EmployeesController@delete')->name('hr.employees.delete');
+    });
 });
