@@ -17,12 +17,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li data-menu="">
-                        <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Category
-                            <submenu class="name"></submenu>
-                        </a>
-                    </li>
-                    <li data-menu="">
-                        <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Brand
+                        <a class="dropdown-item" href="{{ route('admin.settings') }}" data-toggle="dropdown">Settings
                             <submenu class="name"></submenu>
                         </a>
                     </li>

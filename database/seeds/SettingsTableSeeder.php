@@ -35,6 +35,10 @@ class SettingsTableSeeder extends Seeder
             'value' => '+(880) 15151515'
         ],
         [
+            'key' => 'phone_3',
+            'value' => '+(880) 15151515'
+        ],
+        [
             'key' => 'address',
             'value' => 'Dhaka International University'
         ],
