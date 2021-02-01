@@ -20,8 +20,14 @@ use Illuminate\View\View;
 
 class BrandController extends BaseController
 {
-
     use UploadAble;
+
+    public $model;
+
+    public function __construct(Brand $model)
+    {
+        $this->model = $model;
+    }
 
 
     /**
@@ -33,8 +39,6 @@ class BrandController extends BaseController
         $this->setPageTitle('Brands', 'List of all brands');
         return $dataTable->render('StoreInventory::brands.index');
     }
-
-
 
     /**
      * @return Factory|View
@@ -86,11 +90,13 @@ class BrandController extends BaseController
      */
     public function edit($id)
     {
-        $targetCategory = $this->categoryRepository->findCategoryById($id);
-//        $brands = $this->categoryRepository->listbrands();
-        $brands = $this->categoryRepository->treeList();
-        $this->setPageTitle('brands', 'Edit Category : ' . $targetCategory->name);
-        return view('storeInventory.brands.edit', compact('brands', 'targetCategory'));
+        try {
+            $brands =  Brand::findOrFail($id);
+            $this->setPageTitle('Brands', 'Edit Brands : ' . $brands->name);
+        } catch (ModelNotFoundException $e) {
+            throw new ModelNotFoundException($e);
+        }
+        return view('StoreInventory::brands.edit', compact('brands'));
     }
 
     /**
@@ -102,15 +108,29 @@ class BrandController extends BaseController
     {
         $this->validate($request, [
             'name' => 'required|max:191',
-            'parent_id' => 'required|not_in:0',
             'image' => 'mimes:jpg,jpeg,png|max:1000'
         ]);
         $params = $request->except('_token');
-        $category = $this->categoryRepository->updateCategory($params);
-        if (!$category) {
-            return $this->responseRedirectBack('Error occurred while updating category.', 'error', true, true);
+        try {
+            $brand = Brand::findOrFail($params['id']);
+            $collection = collect($params)->except('_token');
+            $logo = $brand->logo;
+            if ($collection->has('logo') && ($params['logo'] instanceof  UploadedFile)) {
+                if ($brand->logo != null) {
+                    $this->deleteOne($brand->logo);
+                }
+                $logo = $this->uploadOne($params['logo'], 'brands');
+            }
+            $merge = $collection->merge(compact('logo'));
+            $brand->update($merge->all());
+
+            if (!$brand) {
+                return $this->responseRedirectBack('Error occurred while updating brand.', 'error', true, true);
+            }
+            return $this->responseRedirect('storeInventory.brands.index','Brand updated successfully', 'success', false, false);
+        } catch (ModelNotFoundException $e) {
+            throw new ModelNotFoundException($e);
         }
-        return $this->responseRedirectBack('Category updated successfully', 'success', false, false);
     }
 
     /**
