@@ -140,7 +140,11 @@ class BrandController extends BaseController
     public function delete($id)
     {
         $data = Brand::find($id);
+        $logo = $data->logo;
         if($data->delete()) {
+            if ($logo != null) {
+                $this->deleteOne($logo);
+            }
             return response()->json([
                 'success' => true,
                 'status_code' => 200,

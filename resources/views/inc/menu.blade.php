@@ -17,32 +17,12 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li data-menu="">
+                        <a class="dropdown-item" href="{{ route('admin.settings') }}" data-toggle="dropdown">Settings
+                            <submenu class="name"></submenu>
+                        </a>
+                    </li>
+                    <li data-menu="">
                         <a class="dropdown-item" href="{{ url('/config/lookups') }}" data-toggle="dropdown">Lookups
-                            <submenu class="name"></submenu>
-                        </a>
-                    </li>
-                    <li data-menu="">
-                        <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Brand
-                            <submenu class="name"></submenu>
-                        </a>
-                    </li>
-                    <li data-menu="">
-                        <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Unit
-                            <submenu class="name"></submenu>
-                        </a>
-                    </li>
-                    <li data-menu="">
-                        <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Products
-                            <submenu class="name"></submenu>
-                        </a>
-                    </li>
-                    <li data-menu="">
-                        <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Sell Price
-                            <submenu class="name"></submenu>
-                        </a>
-                    </li>
-                    <li data-menu="">
-                        <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Store
                             <submenu class="name"></submenu>
                         </a>
                     </li>
@@ -160,11 +140,6 @@
                             </li>
                             <li data-menu="">
                                 <a class="dropdown-item" href="{{ route('hr.designations.index') }}" data-toggle="dropdown">Designations
-                                    <submenu class="name"></submenu>
-                                </a>
-                            </li>
-                            <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('hr.employees.index') }}" data-toggle="dropdown">Employees
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
