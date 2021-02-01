@@ -374,6 +374,7 @@
                                         <i class="fa fa-check-square-o"></i> Save
                                     </button>
                                 </div>
+                            </div>
                         </form>
                     </div>
                 </div>
