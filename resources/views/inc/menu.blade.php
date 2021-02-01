@@ -21,26 +21,6 @@
                             <submenu class="name"></submenu>
                         </a>
                     </li>
-                    <li data-menu="">
-                        <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Unit
-                            <submenu class="name"></submenu>
-                        </a>
-                    </li>
-                    <li data-menu="">
-                        <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Products
-                            <submenu class="name"></submenu>
-                        </a>
-                    </li>
-                    <li data-menu="">
-                        <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Sell Price
-                            <submenu class="name"></submenu>
-                        </a>
-                    </li>
-                    <li data-menu="">
-                        <a class="dropdown-item" href="{{ url('/') }}" data-toggle="dropdown">Store
-                            <submenu class="name"></submenu>
-                        </a>
-                    </li>
                 </ul>
             </li>
 
