@@ -184,6 +184,19 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Invoice
+                            <submenu class="name"></submenu>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('crm.invoice.create') }}"
+                                   data-toggle="dropdown">Invoice Create
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
         </ul>
