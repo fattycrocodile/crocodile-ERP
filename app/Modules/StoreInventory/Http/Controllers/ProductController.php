@@ -66,14 +66,11 @@ class ProductController extends BaseController
 
         if (!$product->save()) {
             return $this->responseRedirectBack('Error occurred while creating Product.', 'error', true, true);
-        }
-        else
-        {
+        } else {
             $sellPrice->product_id = $product->id;
-            if($sellPrice->save()) {
+            if ($sellPrice->save()) {
                 return $this->responseRedirect('storeInventory.products.index', 'Product added successfully', 'success', false, false);
-            }
-            else{
+            } else {
                 return $this->responseRedirectBack('Error occurred while creating Product.', 'error', true, true);
             }
         }
@@ -85,9 +82,9 @@ class ProductController extends BaseController
         $categories = Category::all();
         $brands = Brand::all();
         $units = Unit::all();
-        $sellPrice = SellPrice::where('product_id','=',$id)->where('status','=',1)->orderby('id','desc')->first();
+        $sellPrice = SellPrice::where('product_id', '=', $id)->where('status', '=', 1)->orderby('id', 'desc')->first();
         $this->setPageTitle('Edit product', 'Edit a Product');
-        return view('StoreInventory::products.edit', compact('product','categories','brands','units','sellPrice'));
+        return view('StoreInventory::products.edit', compact('product', 'categories', 'brands', 'units', 'sellPrice'));
     }
 
     public function update(Request $req, $id)
@@ -127,14 +124,11 @@ class ProductController extends BaseController
 
         if (!$product->update()) {
             return $this->responseRedirectBack('Error occurred while editing Product.', 'error', true, true);
-        }
-        else
-        {
+        } else {
             $sellPrice->product_id = $id;
-            if($sellPrice->save()) {
+            if ($sellPrice->save()) {
                 return $this->responseRedirect('storeInventory.products.index', 'Product updated successfully', 'success', false, false);
-            }
-            else{
+            } else {
                 return $this->responseRedirectBack('Error occurred while editing Product.', 'error', true, true);
             }
         }
@@ -159,6 +153,13 @@ class ProductController extends BaseController
                 'status_code' => 200,
                 'message' => 'Please try again!',
             ]);
+        }
+    }
+
+    public function getAutocompleteData(Request $request)
+    {
+        if ($request->has('term')) {
+            return Product::where('name', 'like', '%' . $request->input('term') . '%')->get();
         }
     }
 }

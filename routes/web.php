@@ -22,6 +22,8 @@ Route::group(['middleware' => ['auth:web']], function () {
     Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 });
 
+Route::get('/api/product-list','ProductController@getAutocompleteData');
+
 // it should be at the bottom of every routes
 Route::get('/{path}', function () {
     return view('home');

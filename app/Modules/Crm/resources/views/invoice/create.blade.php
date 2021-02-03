@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('title') {{ isset($pageTitle) ? $pageTitle : 'Create Invoice' }} @endsection
 
-
+@push('styles')
+    <link href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"/>
+@endpush
 @section('content')
 
     @include('inc.flash')
@@ -18,8 +20,8 @@
                             <div class="row">
                                 <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
                                     <fieldset class="form-group">
-                                        <label for="basicInput">Basic Input</label>
-                                        <input type="text" class="form-control" id="basicInput">
+                                        <label for="product_id">Basic Input</label>
+                                        <input type="text" class="form-control" id="product_id">
                                     </fieldset>
                                 </div>
                                 <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
@@ -162,3 +164,36 @@
     </section>
 
 @endsection
+
+@push('scripts')
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            $('#product_id').autocomplete({
+                source:function(request,response){
+
+                    $.getJSON('?term='+request.term,function(data){
+                        var array = $.map(data,function(row){
+                            return {
+                                value:row.id,
+                                label:row.name,
+                                name:row.name,
+                                buy_rate:row.buy_rate,
+                                sale_price:row.sale_price
+                            }
+                        })
+
+                        response($.ui.autocomplete.filter(array,request.term));
+                    })
+                },
+                minLength:1,
+                delay:500,
+                select:function(event,ui){
+                    $('#name').val(ui.item.name)
+                    $('#buy_rate').val(ui.item.buy_rate)
+                    $('#sale_price').val(ui.item.sale_price)
+                }
+            })
+        })
+    </script>
+@endpush
