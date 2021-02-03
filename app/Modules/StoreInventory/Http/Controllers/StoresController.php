@@ -10,6 +10,13 @@ use Illuminate\Http\Request;
 
 class StoresController extends BaseController
 {
+    public $model;
+
+    public function __construct()
+    {
+        $this->model = new Stores;
+    }
+
     public function index(StoresDataTable $dataTable)
     {
         $this->setPageTitle('Products', 'List of Products');

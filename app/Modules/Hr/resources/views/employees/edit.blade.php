@@ -13,7 +13,8 @@
 
 @section('content')
     @include('inc.flash')
-    <div class="d-flex justify-content-center">
+    <section class="basic-elements">
+        <div class="d-flex justify-content-center">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
@@ -385,6 +386,7 @@
             </div>
         </div>
     </div>
+    </section>
 @endsection
 
 @push('scripts')

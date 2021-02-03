@@ -13,6 +13,18 @@ class Category extends Model
     protected $table = 'categories';
     protected $guarded=[];
 
+
+    /**
+     * @return mixed
+     */
+    public function treeList()
+    {
+        return Category::orderByRaw('-name ASC')
+            ->get()
+            ->nest()
+            ->listsFlattened('name');
+    }
+
     public function product()
     {
         return $this->hasMany(Product::class);
@@ -36,16 +48,5 @@ class Category extends Model
     public function createdBy()
     {
         return $this->belongsTo(User::class);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function treeList()
-    {
-        return Category::orderByRaw('-name ASC')
-            ->get()
-            ->nest()
-            ->listsFlattened('name');
     }
 }

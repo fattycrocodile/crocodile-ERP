@@ -66,14 +66,11 @@ class ProductController extends BaseController
 
         if (!$product->save()) {
             return $this->responseRedirectBack('Error occurred while creating Product.', 'error', true, true);
-        }
-        else
-        {
+        } else {
             $sellPrice->product_id = $product->id;
-            if($sellPrice->save()) {
+            if ($sellPrice->save()) {
                 return $this->responseRedirect('storeInventory.products.index', 'Product added successfully', 'success', false, false);
-            }
-            else{
+            } else {
                 return $this->responseRedirectBack('Error occurred while creating Product.', 'error', true, true);
             }
         }
@@ -85,9 +82,9 @@ class ProductController extends BaseController
         $categories = Category::all();
         $brands = Brand::all();
         $units = Unit::all();
-        $sellPrice = SellPrice::where('product_id','=',$id)->where('status','=',1)->orderby('id','desc')->first();
+        $sellPrice = SellPrice::where('product_id', '=', $id)->where('status', '=', 1)->orderby('id', 'desc')->first();
         $this->setPageTitle('Edit product', 'Edit a Product');
-        return view('StoreInventory::products.edit', compact('product','categories','brands','units','sellPrice'));
+        return view('StoreInventory::products.edit', compact('product', 'categories', 'brands', 'units', 'sellPrice'));
     }
 
     public function update(Request $req, $id)
@@ -127,14 +124,11 @@ class ProductController extends BaseController
 
         if (!$product->update()) {
             return $this->responseRedirectBack('Error occurred while editing Product.', 'error', true, true);
-        }
-        else
-        {
+        } else {
             $sellPrice->product_id = $id;
-            if($sellPrice->save()) {
+            if ($sellPrice->save()) {
                 return $this->responseRedirect('storeInventory.products.index', 'Product updated successfully', 'success', false, false);
-            }
-            else{
+            } else {
                 return $this->responseRedirectBack('Error occurred while editing Product.', 'error', true, true);
             }
         }
@@ -160,5 +154,57 @@ class ProductController extends BaseController
                 'message' => 'Please try again!',
             ]);
         }
+    }
+
+    public function getProductListByName(Request $request): ?JsonResponse
+    {
+        $response = array();
+        if ($request->has('search')) {
+            $search = trim($request->search);
+            $data = new Product();
+            $data = $data->select('id', 'name', 'code');
+            if ($search != '') {
+                $data = $data->where('name', 'like', '%' . $search . '%');
+            }
+            $data = $data->limit(20);
+            $data = $data->orderby('name', 'asc');
+            $data = $data->get();
+            if (!$data->isEmpty()) {
+                foreach ($data as $dt) {
+                    $response[] = array("value" => $dt->id, "label" => $dt->name, "name" => $dt->name, 'code' => $dt->code);
+                }
+            } else {
+                $response[] = array("value" => '', "label" => 'No data found!', "name" => '', 'code' => '');
+            }
+        } else {
+            $response[] = array("value" => '', "label" => 'No data found!', "name" => '', 'code' => '');
+        }
+        return response()->json($response);
+    }
+
+    public function getProductListByCode(Request $request): ?JsonResponse
+    {
+        $response = array();
+        if ($request->has('search')) {
+            $search = trim($request->search);
+            $data = new Product();
+            $data = $data->select('id', 'name', 'code');
+            if ($search != '') {
+                $data = $data->where('code', 'like', '%' . $search . '%');
+            }
+            $data = $data->limit(20);
+            $data = $data->orderby('code', 'asc');
+            $data = $data->get();
+            if (!$data->isEmpty()) {
+                foreach ($data as $dt) {
+                    $response[] = array("value" => $dt->id, "label" => $dt->code, "name" => $dt->name, 'code' => $dt->code);
+                }
+            } else {
+                $response[] = array("value" => '', "label" => 'No data found!', "name" => '', 'code' => '');
+            }
+        } else {
+            $response[] = array("value" => '', "label" => 'No data found!', "name" => '', 'code' => '');
+        }
+        return response()->json($response);
     }
 }

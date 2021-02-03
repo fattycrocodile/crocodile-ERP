@@ -166,6 +166,10 @@ class SettingsTableSeeder extends Seeder
             'key' => 'google_map_api_key',
             'value' => ''
         ],
+        [
+            'key' => 'developed_by',
+            'value' => 'AMDADUL, RAIHAN, RONEY, SHOMA, MAJEDUL'
+        ],
     ];
 
     /**
