@@ -160,17 +160,24 @@ class ProductController extends BaseController
     {
         $response = array();
         if ($request->has('search')) {
-            $search = $request->search;
-            if ($search == '') {
-                $data = Product::orderby('name', 'asc')->select('id', 'name', 'code')->limit(10)->get();
-            } else {
-                $data = Product::orderby('name', 'asc')->select('id', 'name', 'code')->where('name', 'like', '%' . trim($search) . '%')->limit(10)->get();
+            $search = trim($request->search);
+            $data = new Product();
+            $data = $data->select('id', 'name', 'code');
+            if ($search != '') {
+                $data = $data->where('name', 'like', '%' . $search . '%');
             }
-            foreach ($data as $dt) {
-                $response[] = array("value" => $dt->id, "label" => $dt->name, 'code' => $dt->code);
+            $data = $data->limit(20);
+            $data = $data->orderby('name', 'asc');
+            $data = $data->get();
+            if (!$data->isEmpty()) {
+                foreach ($data as $dt) {
+                    $response[] = array("value" => $dt->id, "label" => $dt->name, "name" => $dt->name, 'code' => $dt->code);
+                }
+            } else {
+                $response[] = array("value" => '', "label" => 'No data found!', "name" => '', 'code' => '');
             }
         } else {
-            $response[] = array("value" => '', "label" => 'No data found!', 'code' => '');
+            $response[] = array("value" => '', "label" => 'No data found!', "name" => '', 'code' => '');
         }
         return response()->json($response);
     }
@@ -179,17 +186,24 @@ class ProductController extends BaseController
     {
         $response = array();
         if ($request->has('search')) {
-            $search = $request->search;
-            if ($search == '') {
-                $data = Product::orderby('code', 'asc')->select('id', 'code', 'name')->limit(10)->get();
-            } else {
-                $data = Product::orderby('code', 'asc')->select('id', 'code', 'name')->where('code', 'like', '%' . trim($search) . '%')->limit(10)->get();
+            $search = trim($request->search);
+            $data = new Product();
+            $data = $data->select('id', 'name', 'code');
+            if ($search != '') {
+                $data = $data->where('code', 'like', '%' . $search . '%');
             }
-            foreach ($data as $dt) {
-                $response[] = array("value" => $dt->id, "label" => $dt->code, 'name' => 'name');
+            $data = $data->limit(20);
+            $data = $data->orderby('code', 'asc');
+            $data = $data->get();
+            if (!$data->isEmpty()) {
+                foreach ($data as $dt) {
+                    $response[] = array("value" => $dt->id, "label" => $dt->code, "name" => $dt->name, 'code' => $dt->code);
+                }
+            } else {
+                $response[] = array("value" => '', "label" => 'No data found!', "name" => '', 'code' => '');
             }
         } else {
-            $response[] = array("value" => '', "label" => 'No data found!', 'name' => '');
+            $response[] = array("value" => '', "label" => 'No data found!', "name" => '', 'code' => '');
         }
         return response()->json($response);
     }

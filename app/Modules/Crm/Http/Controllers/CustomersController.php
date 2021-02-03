@@ -5,7 +5,6 @@ namespace App\Modules\Crm\Http\Controllers;
 
 use App\DataTables\CustomersDataTable;
 use App\Http\Controllers\BaseController;
-use App\Model\User\User;
 use App\Modules\Crm\Models\Customers;
 use App\Modules\StoreInventory\Models\Stores;
 use Illuminate\Http\JsonResponse;
@@ -134,17 +133,30 @@ class CustomersController extends BaseController
     {
         $response = array();
         if ($request->has('search')) {
-            $search = $request->search;
-            if ($search == '') {
-                $data = Customers::orderby('name', 'asc')->select('id', 'name', 'code')->limit(10)->get();
-            } else {
-                $data = Customers::orderby('name', 'asc')->select('id', 'name', 'code')->where('name', 'like', '%' . trim($search) . '%')->limit(10)->get();
+            $search = trim($request->search);
+            $data = new Customers();
+            $data = $data->select('id', 'name', 'code', 'store_id', 'contact_no');
+            if ($search != '') {
+                $data = $data->where('name', 'like', '%' . $search . '%');
             }
-            foreach ($data as $dt) {
-                $response[] = array("value" => $dt->id, "label" => $dt->name, 'code' => $dt->code);
+            if ($request->has('store_id')) {
+                $store_id = trim($request->store_id);
+                if ($store_id > 0) {
+                    $data = $data->where('store_id', '=', $store_id);
+                }
+            }
+            $data = $data->limit(20);
+            $data = $data->orderby('name', 'asc');
+            $data = $data->get();
+            if (!$data->isEmpty()) {
+                foreach ($data as $dt) {
+                    $response[] = array("value" => $dt->id, "label" => $dt->name, 'name' => $dt->name, 'code' => $dt->code, 'store_id' => $dt->store_id, 'contact_no' => $dt->contact_no);
+                }
+            } else {
+                $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'code' => '', 'store_id' => '', 'contact_no' => '');
             }
         } else {
-            $response[] = array("value" => '', "label" => 'No data found!', 'code' => '');
+            $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'code' => '', 'store_id' => '', 'contact_no' => '');
         }
         return response()->json($response);
     }
@@ -153,17 +165,30 @@ class CustomersController extends BaseController
     {
         $response = array();
         if ($request->has('search')) {
-            $search = $request->search;
-            if ($search == '') {
-                $data = Customers::orderby('code', 'asc')->select('id', 'code', 'name')->limit(10)->get();
-            } else {
-                $data = Customers::orderby('code', 'asc')->select('id', 'code', 'name')->where('code', 'like', '%' . trim($search) . '%')->limit(10)->get();
+            $search = trim($request->search);
+            $data = new Customers();
+            $data = $data->select('id', 'name', 'code', 'store_id', 'contact_no');
+            if ($search != '') {
+                $data = $data->where('code', 'like', '%' . $search . '%');
             }
-            foreach ($data as $dt) {
-                $response[] = array("value" => $dt->id, "label" => $dt->code, 'name' => 'name');
+            if ($request->has('store_id')) {
+                $store_id = trim($request->store_id);
+                if ($store_id > 0) {
+                    $data = $data->where('store_id', '=', $store_id);
+                }
+            }
+            $data = $data->limit(20);
+            $data = $data->orderby('code', 'asc');
+            $data = $data->get();
+            if (!$data->isEmpty()) {
+                foreach ($data as $dt) {
+                    $response[] = array("value" => $dt->id, "label" => $dt->code, 'name' => $dt->name, 'code' => $dt->code, 'store_id' => $dt->store_id, 'contact_no' => $dt->contact_no);
+                }
+            } else {
+                $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'code' => '', 'store_id' => '', 'contact_no' => '');
             }
         } else {
-            $response[] = array("value" => '', "label" => 'No data found!', 'name' => '');
+            $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'code' => '', 'store_id' => '', 'contact_no' => '');
         }
         return response()->json($response);
     }

@@ -5,6 +5,7 @@ namespace App\Modules\Crm\Http\Controllers;
 use App\DataTables\InvoiceDataTable;
 use App\Http\Controllers\BaseController;
 use App\Modules\Crm\Models\Invoice;
+use App\Modules\StoreInventory\Models\Stores;
 use App\Traits\UploadAble;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -20,10 +21,12 @@ class InvoiceController extends BaseController
 {
     use UploadAble;
     public $model;
+    public $store;
 
     public function __construct(Invoice $model)
     {
         $this->model = $model;
+        $this->store = new Stores();
     }
 
     /**
@@ -41,9 +44,9 @@ class InvoiceController extends BaseController
      */
     public function create()
     {
-        $customers = [];
+        $stores = $this->store->treeList();
         $this->setPageTitle('Create Invoice', 'Create Invoice');
-        return view('Crm::invoice.create', compact('customers'));
+        return view('Crm::invoice.create', compact('stores'));
     }
 
     /**

@@ -4,166 +4,91 @@
 @push('styles')
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="{{asset('css/jquery-ui.min.css')}}">
+    <style>
+        .ui-datepicker {
+            z-index: 999 !important;
+        }
+    </style>
 @endpush
 @section('content')
 
     @include('inc.flash')
-
-    https://laravelarticle.com/laravel-autocomplete
 
     <section class="basic-elements">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Basic Elements</h4>
+                        <h4 class="card-title">Information's</h4>
                     </div>
                     <div class="card-content">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
                                     <fieldset class="form-group">
-                                        <label for="product_id">Basic Input</label>
-                                        <input type="text" class="form-control typeahead " id="product_id">
+                                        <label for="date">Date</label>
+                                        <input type="text" class="form-control @error('date') is-invalid @enderror"
+                                               id="date" value="{!! date('Y-m-d') !!}" name="date">
+                                        @error('date')
+                                        <div class="help-block text-danger">{{ $message }} </div> @enderror
                                     </fieldset>
                                 </div>
                                 <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
                                     <fieldset class="form-group">
-                                        <label for="helpInputTop">Input text with help</label>
-                                        <small class="text-muted">eg.<i>someone@example.com</i></small>
-                                        <input type="text" class="form-control" id="helpInputTop">
+                                        <label for="store_id">Store</label>
+                                        <select id="store_id" name="store_id"
+                                                class="select2 form-control @error('store_id') is-invalid @enderror">
+                                            <option value="none" selected="">Select Store</option>
+                                            @foreach($stores as $key => $store)
+                                                <option value="{{ $key }}"> {{ $store }} </option>
+                                            @endforeach
+                                        </select>
+                                        @error('store_id')
+                                        <div class="help-block text-danger">{{ $message }} </div> @enderror
                                     </fieldset>
                                 </div>
                                 <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
                                     <fieldset class="form-group">
-                                        <label for="disabledInput">Disabled Input</label>
-                                        <input type="text" class="form-control" id="disabledInput" disabled="">
-                                    </fieldset>
-                                </div>
-                                <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
-                                    <fieldset class="form-group">
-                                        <label for="disabledInput">Readonly Input</label>
-                                        <input type="text" class="form-control" id="readonlyInput" readonly="readonly"
-                                               value="You can't update me :P">
-                                    </fieldset>
-                                </div>
-                                <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
-                                    <fieldset class="form-group">
-                                        <label for="disabledInput">Input with Placeholder</label>
-                                        <input type="email" class="form-control" id="placeholderInput"
-                                               placeholder="Enter Email Address">
-                                    </fieldset>
-                                </div>
-                                <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
-                                    <fieldset class="form-group">
-                                        <label for="disabledInput">Static Text</label>
-                                        <p class="form-control-static" id="staticInput">email@pixinvent.com</p>
-                                    </fieldset>
-                                </div>
-                                <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
-                                    <fieldset class="form-group">
-                                        <label for="roundText">Rounded Input</label>
-                                        <input type="text" id="roundText" class="form-control round"
-                                               placeholder="Rounded Input">
-                                    </fieldset>
-                                </div>
-                                <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
-                                    <fieldset class="form-group">
-                                        <label for="squareText">Square Input</label>
-                                        <input type="text" id="squareText" class="form-control square"
-                                               placeholder="square Input">
-                                    </fieldset>
-                                </div>
-                                <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
-                                    <fieldset class="form-group">
-                                        <label for="helperText">With Helper Text</label>
-                                        <input type="text" id="helperText" class="form-control" placeholder="Name">
-                                        <p>
-                                            <small class="text-muted">Find helper text here for given textbox.</small>
-                                        </p>
+                                        <label for="invoice_no">Invoice</label>
+                                        <input type="text" class="form-control" id="invoice_no" readonly disabled
+                                               value="Invoice no will auto generate!">
                                     </fieldset>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section id="form-repeater">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title" id="repeat-form">Repeating Forms</h4>
-                        <a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
-                        <div class="heading-elements">
-                            <ul class="list-inline mb-0">
-                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                                <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-                                <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-                                <li><a data-action="close"><i class="ft-x"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card-content collapse show">
-                        <div class="card-body">
-                            <div class="repeater-default">
-                                <div data-repeater-list="car">
-                                    <div data-repeater-item="">
-                                        <form class="form row">
-                                            <div class="form-group mb-1 col-sm-12 col-md-2">
-                                                <label for="email-addr">Email address</label>
-                                                <br>
-                                                <input type="email" class="form-control" id="email-addr"
-                                                       placeholder="Enter email">
-                                            </div>
-                                            <div class="form-group mb-1 col-sm-12 col-md-2">
-                                                <label for="pass">Password</label>
-                                                <br>
-                                                <input type="password" class="form-control" id="pass"
-                                                       placeholder="Password">
-                                            </div>
-                                            <div class="form-group mb-1 col-sm-12 col-md-2">
-                                                <label for="bio" class="cursor-pointer">Bio</label>
-                                                <br>
-                                                <textarea class="form-control" id="bio" rows="2"></textarea>
-                                            </div>
-                                            <div class="skin skin-flat form-group mb-1 col-sm-12 col-md-2">
-                                                <label for="tel-input">Gender</label>
-                                                <br>
-                                                <input class="form-control" type="tel" value="1-(555)-555-5555"
-                                                       id="tel-input">
-                                            </div>
-                                            <div class="form-group mb-1 col-sm-12 col-md-2">
-                                                <label for="profession">Profession</label>
-                                                <br>
-                                                <select class="form-control" id="profession">
-                                                    <option>Select Option</option>
-                                                    <option>Option 1</option>
-                                                    <option>Option 2</option>
-                                                    <option>Option 3</option>
-                                                    <option>Option 4</option>
-                                                    <option>Option 5</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-sm-12 col-md-2 text-center mt-2">
-                                                <button type="button" class="btn btn-danger" data-repeater-delete=""><i
-                                                        class="ft-x"></i> Delete
-                                                </button>
-                                            </div>
-                                        </form>
-                                        <hr>
-                                    </div>
+
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                    <fieldset class="form-group">
+                                        <label for="customer_name">Customer Name</label>
+                                        <input type="text"
+                                               class="form-control @error('customer_name') is-invalid @enderror"
+                                               id="customer_name">
+                                        <input type="hidden"
+                                               class="form-control @error('customer_id') is-invalid @enderror"
+                                               id="customer_id" name="customer_id">
+                                        @error('customer_id')
+                                        <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                    </fieldset>
                                 </div>
-                                <div class="form-group overflow-hidden">
-                                    <div class="col-12">
-                                        <button data-repeater-create="" class="btn btn-primary btn-lg">
-                                            <i class="icon-plus4"></i> Add
-                                        </button>
-                                    </div>
+                                <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                    <fieldset class="form-group">
+                                        <label for="customer_code">Customer Code</label>
+                                        <input type="text"
+                                               class="form-control @error('customer_code') is-invalid @enderror"
+                                               id="customer_code">
+                                        @error('customer_code')
+                                        <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                    </fieldset>
+                                </div>
+                                <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                    <fieldset class="form-group">
+                                        <label for="contact_no">Contact</label>
+                                        <input type="text" class="form-control" id="contact_no" readonly disabled
+                                               value="">
+                                    </fieldset>
                                 </div>
                             </div>
+                            <hr>
                         </div>
                     </div>
                 </div>
@@ -183,18 +108,35 @@
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $(document).ready(function () {
 
-            $("input.typeahead").autocomplete({
+            // datepicker
+            $(function () {
+                $("#date").datepicker({
+                    // appendText:"(yy-mm-dd)",
+                    dateFormat: "yy-mm-dd",
+                    altField: "#datepicker",
+                    altFormat: "DD, d MM, yy",
+                    prevText: "click for previous months",
+                    nextText: "click for next months",
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
+                    maxDate: new Date()
+                });
+            });
+
+            // customer name wise search start
+            $("#customer_name").autocomplete({
                 minLength: 1,
                 autoFocus: true,
                 source: function (request, response) {
-                    // Fetch data
+                    var store_id = $("#store_id").val();
                     $.ajax({
-                        url: "{{ route('productNameAutoComplete') }}",
+                        url: "{{ route('customerNameAutoComplete') }}",
                         type: 'post',
                         dataType: "json",
                         data: {
                             _token: CSRF_TOKEN,
-                            search: request.term
+                            search: request.term,
+                            store_id: store_id,
                         },
                         success: function (data) {
                             response(data);
@@ -207,18 +149,81 @@
                     return false;
                 },
                 select: function (event, ui) {
-                    // Set selection
-                    $('input.typeahead').val(ui.item.label); // display the selected text
-                    // $('#employeeid').val(ui.item.value); // save selected id to input
+                    if (ui.item.value != '' || ui.item.value > 0) {
+                        $('#customer_name').val(ui.item.name);
+                        $('#customer_code').val(ui.item.code);
+                        $('#store_id').val(ui.item.store_id);
+                        $('#customer_id').val(ui.item.value);
+                        $('#contact_no').val(ui.item.contact_no);
+                    } else {
+                        resetCustomer();
+                    }
                     return false;
                 },
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
+
                 var inner_html = '<div>' + item.label + ' (<i>' + item.code + ')</i></div>';
                 return $("<li>")
                     .data("item.autocomplete", item)
                     .append(inner_html)
                     .appendTo(ul);
             };
+            // customer name wise search end
+
+            // customer name wise search start
+            $("#customer_code").autocomplete({
+                minLength: 1,
+                autoFocus: true,
+                source: function (request, response) {
+                    console.log('customer_code');
+                    var store_id = $("#store_id").val();
+                    $.ajax({
+                        url: "{{ route('customerCodeAutoComplete') }}",
+                        type: 'post',
+                        dataType: "json",
+                        data: {
+                            _token: CSRF_TOKEN,
+                            search: request.term,
+                            store_id: store_id,
+                        },
+                        success: function (data) {
+                            response(data);
+                        }
+                    });
+                },
+                focus: function (event, ui) {
+                    // console.log(event);
+                    // console.log(ui);
+                    return false;
+                },
+                select: function (event, ui) {
+                    if (ui.item.value != '' || ui.item.value > 0) {
+                        $('#customer_name').val(ui.item.name);
+                        $('#customer_code').val(ui.item.code);
+                        $('#store_id').val(ui.item.store_id);
+                        $('#customer_id').val(ui.item.value);
+                        $('#contact_no').val(ui.item.contact_no);
+                    } else {
+                        resetCustomer();
+                    }
+                    return false;
+                },
+            }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                var inner_html = '<div>' + item.label + ' (<i>' + item.name + ')</i></div>';
+                return $("<li>")
+                    .data("item.autocomplete", item)
+                    .append(inner_html)
+                    .appendTo(ul);
+            };
+            // customer code wise search end
         });
+
+
+        function resetCustomer() {
+            $('#customer_name').val("");
+            $('#customer_code').val("");
+            $('#customer_id').val("");
+            $('#contact_no').val("");
+        }
     </script>
 @endpush

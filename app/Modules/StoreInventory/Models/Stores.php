@@ -10,10 +10,25 @@ use App\Model\Crm\InvoiceReturn;
 use App\Model\Crm\SellOrder;
 use App\Model\User\User;
 use Illuminate\Database\Eloquent\Model;
+use TypiCMS\NestableTrait;
 
 class Stores extends Model
 {
+    use NestableTrait;
+
+    protected $table = 'stores';
     protected $guarded=[];
+
+    /**
+     * @return mixed
+     */
+    public function treeList()
+    {
+        return Stores::orderByRaw('-name ASC')
+            ->get()
+            ->nest()
+            ->listsFlattened('name');
+    }
 
     public function sellOrder()
     {

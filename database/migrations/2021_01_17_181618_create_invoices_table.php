@@ -15,6 +15,7 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
             $table->string('invoice_no');
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('id')->on('stores');
@@ -22,7 +23,6 @@ class CreateInvoicesTable extends Migration
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->double('discount_amount')->default(0)->nullable();
             $table->double('grand_total');
-            $table->date('date');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users');
             $table->unsignedBigInteger('updated_by')->nullable();
