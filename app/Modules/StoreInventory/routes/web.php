@@ -58,8 +58,4 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/{id}/update', 'StoresController@update')->name('storeInventory.stores.update');
         Route::delete('/{id}/delete', 'StoresController@delete')->name('storeInventory.stores.delete');
     });
-
-    Route::group(['prefix' => 'api'], function () {
-        Route::get('/product-list', 'ProductController@getProductListByName')->name('productNameAutoComplete');
-    });
 });

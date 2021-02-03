@@ -8,6 +8,7 @@ use App\Http\Controllers\BaseController;
 use App\Model\User\User;
 use App\Modules\Crm\Models\Customers;
 use App\Modules\StoreInventory\Models\Stores;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CustomersController extends BaseController
@@ -113,18 +114,57 @@ class CustomersController extends BaseController
     public function delete($id)
     {
         $data = Customers::find($id);
-        if($data->delete()) {
+        if ($data->delete()) {
             return response()->json([
                 'success' => true,
                 'status_code' => 200,
                 'message' => 'Record has been deleted successfully!',
             ]);
-        } else{
+        } else {
             return response()->json([
                 'success' => false,
                 'status_code' => 200,
                 'message' => 'Please try again!',
             ]);
         }
+    }
+
+
+    public function getCustomerListByName(Request $request): ?JsonResponse
+    {
+        $response = array();
+        if ($request->has('search')) {
+            $search = $request->search;
+            if ($search == '') {
+                $data = Customers::orderby('name', 'asc')->select('id', 'name', 'code')->limit(10)->get();
+            } else {
+                $data = Customers::orderby('name', 'asc')->select('id', 'name', 'code')->where('name', 'like', '%' . trim($search) . '%')->limit(10)->get();
+            }
+            foreach ($data as $dt) {
+                $response[] = array("value" => $dt->id, "label" => $dt->name, 'code' => $dt->code);
+            }
+        } else {
+            $response[] = array("value" => '', "label" => 'No data found!', 'code' => '');
+        }
+        return response()->json($response);
+    }
+
+    public function getCustomerListByCode(Request $request): ?JsonResponse
+    {
+        $response = array();
+        if ($request->has('search')) {
+            $search = $request->search;
+            if ($search == '') {
+                $data = Customers::orderby('code', 'asc')->select('id', 'code', 'name')->limit(10)->get();
+            } else {
+                $data = Customers::orderby('code', 'asc')->select('id', 'code', 'name')->where('code', 'like', '%' . trim($search) . '%')->limit(10)->get();
+            }
+            foreach ($data as $dt) {
+                $response[] = array("value" => $dt->id, "label" => $dt->code, 'name' => 'name');
+            }
+        } else {
+            $response[] = array("value" => '', "label" => 'No data found!', 'name' => '');
+        }
+        return response()->json($response);
     }
 }

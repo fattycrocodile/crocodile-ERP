@@ -2,17 +2,8 @@
 @section('title') {{ isset($pageTitle) ? $pageTitle : 'Create Invoice' }} @endsection
 
 @push('styles')
-<style>
-    ul .typeahead li a,
-    ul .typeahead li a:active,
-    ul .typeahead li a:focus,
-    ul .typeahead li a:hover{
-        border: 1px solid #aaaaaa;
-        background: #cfd8e0;
-        font-weight: normal;
-        color: #212121;
-    }
-</style>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="{{asset('css/jquery-ui.min.css')}}">
 @endpush
 @section('content')
 
@@ -183,46 +174,51 @@
 @endsection
 
 @push('scripts')
-    {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>--}}
+    <script src="{{asset('js/jquery-ui.min.js')}}" type="text/javascript"></script>
 
-    <script src="{{asset('js/bootstrap3-typeahead.min.js')}}" type="text/javascript"></script>
-
-
+    <!-- Script -->
     <script type="text/javascript">
-        var path = "{{ route('productNameAutoComplete') }}";
-        $('input.typeahead').typeahead({
-            hint: true,
-            highlight: true,
-            minLength: 1,
-            fitToElement: true,
-            autoSelect: true,
-            // showHintOnFocus: true,
-            source: function (query, process) {
-                return $.get(path, {term: query}, function (data) {
-                    console.log(data);
-                    return process(data);
-                });
-            },
-            updater: function (item) {
-                // do what you want with the item here
-                console.log(item.name);
-                console.log(item.code);
-                console.log(item.id);
-                $("#helpInputTop").val(item.code);
-                $("#placeholderInput").val(item.description);
-                return item;
-            },
-            highlighter: function (item, data) {
-                var html = '<div class="row">';
-                html += '<div class="col-md-12 pl-0">';
-                html += '<span>' + data.name + '</span>';
-                html += '<p>' + data.code + '</p>';
-                html += '</div>';
-                html += '</div>';
-                return html;
-            },
+
+        // CSRF Token
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        $(document).ready(function () {
+
+            $("input.typeahead").autocomplete({
+                minLength: 1,
+                autoFocus: true,
+                source: function (request, response) {
+                    // Fetch data
+                    $.ajax({
+                        url: "{{ route('productNameAutoComplete') }}",
+                        type: 'post',
+                        dataType: "json",
+                        data: {
+                            _token: CSRF_TOKEN,
+                            search: request.term
+                        },
+                        success: function (data) {
+                            response(data);
+                        }
+                    });
+                },
+                focus: function (event, ui) {
+                    // console.log(event);
+                    // console.log(ui);
+                    return false;
+                },
+                select: function (event, ui) {
+                    // Set selection
+                    $('input.typeahead').val(ui.item.label); // display the selected text
+                    // $('#employeeid').val(ui.item.value); // save selected id to input
+                    return false;
+                },
+            }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                var inner_html = '<div>' + item.label + ' (<i>' + item.code + ')</i></div>';
+                return $("<li>")
+                    .data("item.autocomplete", item)
+                    .append(inner_html)
+                    .appendTo(ul);
+            };
         });
     </script>
-
-
 @endpush

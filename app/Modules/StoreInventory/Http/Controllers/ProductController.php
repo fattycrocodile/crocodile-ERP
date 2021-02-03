@@ -156,14 +156,41 @@ class ProductController extends BaseController
         }
     }
 
-    public function getProductListByName(Request $request)
+    public function getProductListByName(Request $request): ?JsonResponse
     {
-        if ($request->has('term')) {
-            $data = Product::where("name", "LIKE", "%{$request->term}%")
-                ->get();
-
-            return response()->json($data);
+        $response = array();
+        if ($request->has('search')) {
+            $search = $request->search;
+            if ($search == '') {
+                $data = Product::orderby('name', 'asc')->select('id', 'name', 'code')->limit(10)->get();
+            } else {
+                $data = Product::orderby('name', 'asc')->select('id', 'name', 'code')->where('name', 'like', '%' . trim($search) . '%')->limit(10)->get();
+            }
+            foreach ($data as $dt) {
+                $response[] = array("value" => $dt->id, "label" => $dt->name, 'code' => $dt->code);
+            }
+        } else {
+            $response[] = array("value" => '', "label" => 'No data found!', 'code' => '');
         }
-        return NULL;
+        return response()->json($response);
+    }
+
+    public function getProductListByCode(Request $request): ?JsonResponse
+    {
+        $response = array();
+        if ($request->has('search')) {
+            $search = $request->search;
+            if ($search == '') {
+                $data = Product::orderby('code', 'asc')->select('id', 'code', 'name')->limit(10)->get();
+            } else {
+                $data = Product::orderby('code', 'asc')->select('id', 'code', 'name')->where('code', 'like', '%' . trim($search) . '%')->limit(10)->get();
+            }
+            foreach ($data as $dt) {
+                $response[] = array("value" => $dt->id, "label" => $dt->code, 'name' => 'name');
+            }
+        } else {
+            $response[] = array("value" => '', "label" => 'No data found!', 'name' => '');
+        }
+        return response()->json($response);
     }
 }
