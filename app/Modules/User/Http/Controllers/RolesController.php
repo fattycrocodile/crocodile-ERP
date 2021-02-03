@@ -48,30 +48,31 @@ class RolesController extends BaseController
 
     public function edit($id)
     {
-        $permissions = Permission::find($id);
-        $this->setPageTitle('Edit Permissions', 'Edit selected Permissions');
-        return view('User::permissions.edit', compact('permissions'));
+        $role = Role::find($id);
+        $all_permissions = Permission::all();
+        $permission_group = DB::table('permissions')->select('group')->groupBy('group')->orderBy('group', 'asc')->get();
+        $this->setPageTitle('Edit Role', 'Edit selected Role');
+        return view('User::roles.edit', compact('permission_group','role','all_permissions'));
     }
 
     public function update(Request $req, $id)
     {
-        //validate Form Data
         $req->validate([
             'name' => "required|min:3",
-            'group' => "required",
+            'permissions' => "required",
         ]);
 
-        //include Customer model
-        $permissions = Permission::findOrFail($id);
-        $permissions->name = $req->name;
-        $permissions->group = $req->group;
+        $role = Role::findById($id);
+        $role->name = $req->name;
+        $permissions = $req->permissions;
 
-        if ($permissions->update()) {
-            //redirect to create customer page
-            return $this->responseRedirect('users.permissions.index', 'Permission edited successfully', 'success', false, false);
+        //save all data to customer table
+        if (!empty($permissions)) {
+            $role->syncPermissions($permissions);
+            return $this->responseRedirect('users.roles.index', 'Role edited successfully', 'success', false, false);
         } else {
             //redirect to create customer page with previous input
-            return $this->responseRedirectBack('Error occurred while editing Permission.', 'error', true, true);
+            return $this->responseRedirectBack('Error occurred while updating Role.', 'error', true, true);
         }
 
     }

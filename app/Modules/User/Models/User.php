@@ -11,4 +11,18 @@ class User extends Model
     {
         return DB::table('permissions')->where('group','=',$id)->get();
     }
+
+    public static function roleHasPermission($role,$permissions)
+    {
+        $hasPermission = true;
+        foreach ($permissions as $permission)
+        {
+            if(!$role->hasPermissionTo($permission->name))
+            {
+                $hasPermission = false;
+                return $hasPermission;
+            }
+        }
+        return $hasPermission;
+    }
 }

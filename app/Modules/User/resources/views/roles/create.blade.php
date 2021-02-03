@@ -33,44 +33,63 @@
                             <div class="form-body">
                                 <div class="form-group">
                                     <label for="roles">Roles Name</label>
-                                    <input type="text" id="roles" class="form-control @error('name') is-invalid @enderror"
+                                    <input type="text" id="roles"
+                                           class="form-control @error('name') is-invalid @enderror"
                                            placeholder="Role Name" value="{{ old('name') }}"
                                            name="name">
-                                    @error('name')<div class="help-block text-danger">{{ $message }} </div> @enderror
+                                    @error('name')
+                                    <div class="help-block text-danger">{{ $message }} </div> @enderror
                                 </div>
                                 @php
-                                $i =1;
+                                    $i =1;
                                 @endphp
-
-                                @foreach($permission_group as $group)
-                                    <hr>
                                 <div class="row skin skin-square">
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <fieldset >
-                                                <input type="checkbox" id="group{{$i}}permission" class="group{{$i}}" onclick="checkGroup('permission_group{{ $i }}permissions',this)" >
-                                                <label for="group{{$i}}permission" >{{$group->group}}</label>
+                                            <fieldset>
+                                                <input type="checkbox" id="all"
+                                                       class="all"
+                                                       onclick="checkAll(this)">
+                                                <label for="all">All</label>
                                             </fieldset>
                                         </div>
-                                    </div>
-                                    @php
-                                        $permissions = \App\Modules\User\Models\User::getPermissionByGroup($group->group);
-                                        $j =1;
-                                    @endphp
-                                    <div class="col-md-9 permission_group{{ $i }}permissions">
-                                        @foreach($permissions as $permission)
-                                        <div class="form-group">
-                                            <fieldset >
-                                                <input type="checkbox" name="permissions[]" id="permissions{{$permission->id}}" value="{{$permission->name}}" class="icheckbox_square-green">
-                                                <label for="permissions{{$permission->id}}">{{$permission->name}}</label>
-                                            </fieldset>
-                                        </div>
-                                            @php
-                                                $j++;
-                                            @endphp
-                                        @endforeach
                                     </div>
                                 </div>
+                                @foreach($permission_group as $group)
+                                    <hr>
+                                    <div class="row skin skin-square">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <fieldset>
+                                                    <input type="checkbox" id="group{{$i}}permission"
+                                                           class="group{{$i}}"
+                                                           onclick="checkGroup('permission_group{{ $i }}permissions',this)">
+                                                    <label for="group{{$i}}permission">{{$group->group}}</label>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                        @php
+                                            $permissions = \App\Modules\User\Models\User::getPermissionByGroup($group->group);
+                                            $j =1;
+                                        @endphp
+                                        <div class="col-md-9 permission_group{{ $i }}permissions">
+                                            @foreach($permissions as $permission)
+                                                <div class="form-group">
+                                                    <fieldset>
+                                                        <input type="checkbox" name="permissions[]"
+                                                               id="permissions{{$permission->id}}"
+                                                               value="{{$permission->name}}"
+                                                               class="icheckbox_square-green">
+                                                        <label
+                                                            for="permissions{{$permission->id}}">{{$permission->name}}</label>
+                                                    </fieldset>
+                                                </div>
+                                                @php
+                                                    $j++;
+                                                @endphp
+                                            @endforeach
+                                        </div>
+                                    </div>
                                     @php
                                         $i++;
                                     @endphp
@@ -103,19 +122,32 @@
     <script src="{{asset('app-assets/vendors/js/forms/icheck/icheck.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('app-assets/js/scripts/forms/checkbox-radio.js')}}" type="text/javascript"></script>
     <script>
-        function checkGroup(className,group)
-        {
-            console.log('work');
-            const groupId = $("#"+group.id);
-            const permissionClass = $("."+className+" input");
 
-            if(groupId.is(':checked'))
-            {
-                permissionClass.prop('checked',true);
+        $('input[type="checkbox"], input[type="radio"]').on('ifToggled', function (e) {
+            $(this).trigger("onclick", e);
+        });
+
+        function checkAll(check) {
+            const getId = $("#" + check.id);
+            const allInput = $("input");
+
+
+            if (getId.iCheck('update')[0].checked) {
+                allInput.iCheck('check');
+            } else {
+                allInput.iCheck('uncheck');
             }
-            else
-            {
-                permissionClass.prop('checked',false);
+        }
+
+        function checkGroup(className, group) {
+            const groupId = $("#" + group.id);
+            const permissionClass = $("." + className + " input");
+
+
+            if (groupId.iCheck('update')[0].checked) {
+                permissionClass.iCheck('check');
+            } else {
+                permissionClass.iCheck('uncheck');
             }
         }
     </script>
