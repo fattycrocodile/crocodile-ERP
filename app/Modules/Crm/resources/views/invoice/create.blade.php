@@ -8,6 +8,8 @@
 
     @include('inc.flash')
 
+    https://laravelarticle.com/laravel-autocomplete
+
     <section class="basic-elements">
         <div class="row">
             <div class="col-md-12">
