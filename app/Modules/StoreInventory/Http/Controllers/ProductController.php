@@ -156,10 +156,14 @@ class ProductController extends BaseController
         }
     }
 
-    public function getAutocompleteData(Request $request)
+    public function getProductListByName(Request $request)
     {
         if ($request->has('term')) {
-            return Product::where('name', 'like', '%' . $request->input('term') . '%')->get();
+            $data = Product::where("name", "LIKE", "%{$request->term}%")
+                ->get();
+
+            return response()->json($data);
         }
+        return NULL;
     }
 }

@@ -2,7 +2,17 @@
 @section('title') {{ isset($pageTitle) ? $pageTitle : 'Create Invoice' }} @endsection
 
 @push('styles')
-    <link href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"/>
+<style>
+    ul .typeahead li a,
+    ul .typeahead li a:active,
+    ul .typeahead li a:focus,
+    ul .typeahead li a:hover{
+        border: 1px solid #aaaaaa;
+        background: #cfd8e0;
+        font-weight: normal;
+        color: #212121;
+    }
+</style>
 @endpush
 @section('content')
 
@@ -23,7 +33,7 @@
                                 <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
                                     <fieldset class="form-group">
                                         <label for="product_id">Basic Input</label>
-                                        <input type="text" class="form-control" id="product_id">
+                                        <input type="text" class="form-control typeahead " id="product_id">
                                     </fieldset>
                                 </div>
                                 <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
@@ -114,12 +124,14 @@
                                             <div class="form-group mb-1 col-sm-12 col-md-2">
                                                 <label for="email-addr">Email address</label>
                                                 <br>
-                                                <input type="email" class="form-control" id="email-addr" placeholder="Enter email">
+                                                <input type="email" class="form-control" id="email-addr"
+                                                       placeholder="Enter email">
                                             </div>
                                             <div class="form-group mb-1 col-sm-12 col-md-2">
                                                 <label for="pass">Password</label>
                                                 <br>
-                                                <input type="password" class="form-control" id="pass" placeholder="Password">
+                                                <input type="password" class="form-control" id="pass"
+                                                       placeholder="Password">
                                             </div>
                                             <div class="form-group mb-1 col-sm-12 col-md-2">
                                                 <label for="bio" class="cursor-pointer">Bio</label>
@@ -129,7 +141,8 @@
                                             <div class="skin skin-flat form-group mb-1 col-sm-12 col-md-2">
                                                 <label for="tel-input">Gender</label>
                                                 <br>
-                                                <input class="form-control" type="tel" value="1-(555)-555-5555" id="tel-input">
+                                                <input class="form-control" type="tel" value="1-(555)-555-5555"
+                                                       id="tel-input">
                                             </div>
                                             <div class="form-group mb-1 col-sm-12 col-md-2">
                                                 <label for="profession">Profession</label>
@@ -144,7 +157,9 @@
                                                 </select>
                                             </div>
                                             <div class="form-group col-sm-12 col-md-2 text-center mt-2">
-                                                <button type="button" class="btn btn-danger" data-repeater-delete=""> <i class="ft-x"></i> Delete</button>
+                                                <button type="button" class="btn btn-danger" data-repeater-delete=""><i
+                                                        class="ft-x"></i> Delete
+                                                </button>
                                             </div>
                                         </form>
                                         <hr>
@@ -168,34 +183,46 @@
 @endsection
 
 @push('scripts')
-    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-    <script>
-        $(function () {
-            $('#product_id').autocomplete({
-                source:function(request,response){
+    {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>--}}
 
-                    $.getJSON('?term='+request.term,function(data){
-                        var array = $.map(data,function(row){
-                            return {
-                                value:row.id,
-                                label:row.name,
-                                name:row.name,
-                                buy_rate:row.buy_rate,
-                                sale_price:row.sale_price
-                            }
-                        })
+    <script src="{{asset('js/bootstrap3-typeahead.min.js')}}" type="text/javascript"></script>
 
-                        response($.ui.autocomplete.filter(array,request.term));
-                    })
-                },
-                minLength:1,
-                delay:500,
-                select:function(event,ui){
-                    $('#name').val(ui.item.name)
-                    $('#buy_rate').val(ui.item.buy_rate)
-                    $('#sale_price').val(ui.item.sale_price)
-                }
-            })
-        })
+
+    <script type="text/javascript">
+        var path = "{{ route('productNameAutoComplete') }}";
+        $('input.typeahead').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            fitToElement: true,
+            autoSelect: true,
+            // showHintOnFocus: true,
+            source: function (query, process) {
+                return $.get(path, {term: query}, function (data) {
+                    console.log(data);
+                    return process(data);
+                });
+            },
+            updater: function (item) {
+                // do what you want with the item here
+                console.log(item.name);
+                console.log(item.code);
+                console.log(item.id);
+                $("#helpInputTop").val(item.code);
+                $("#placeholderInput").val(item.description);
+                return item;
+            },
+            highlighter: function (item, data) {
+                var html = '<div class="row">';
+                html += '<div class="col-md-12 pl-0">';
+                html += '<span>' + data.name + '</span>';
+                html += '<p>' + data.code + '</p>';
+                html += '</div>';
+                html += '</div>';
+                return html;
+            },
+        });
     </script>
+
+
 @endpush
