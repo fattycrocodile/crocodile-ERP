@@ -3,10 +3,9 @@
 namespace App\DataTables;
 
 
+use App\Model\User\User;
 use App\Modules\Crm\Models\Customers;
 use App\Modules\StoreInventory\Models\Category;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
@@ -15,7 +14,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class RolesDataTable extends DataTable
+class AdminsDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -28,37 +27,35 @@ class RolesDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addIndexColumn()
-            ->editColumn('permissions', function ($data) {
-                $value = "";
-                if(isset($data->permissions[0]->name) ){
-                    foreach ($data->permissions as $key => $p){
-                        $color = $key % 2 == 0 ? "primary" : "success";
-                        $value .= "<span class='badge badge-$color'>$p->name</span>&nbsp;";
-                    }
-                } else
-                    $value = "N/A";
-                return $value;
+            ->editColumn('root_id', function ($data) {
+                return isset($data->parent->name) ? $data->parent->name : 'N/A';
             })
             ->addColumn('action', function ($data) {
                 return "
                     <div class='form-group'>
                         <div class='btn-group' role='group' aria-label='Basic example'>
-                            <a href='roles/$data->id/edit' class='btn btn-icon btn-secondary'><i class='fa fa-pencil-square-o'></i> Edit</a>
-                            <button data-remote='roles/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
+                            <a href='admins/$data->id/edit' class='btn btn-icon btn-secondary'><i class='fa fa-pencil-square-o'></i> Edit</a>
+                            <button data-remote='admins/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
                         </div>
                    </div>";
             })
-            ->rawColumns(['permissions','action'])
+            ->editColumn('store_id', function ($data) {
+                return isset($data->store->name) ? $data->store->name : 'N/A';
+            })
+            ->editColumn('roles', function ($data) {
+                return isset($data->roles[0]->name) ? $data->roles->pluck('name')->toArray() : 'N/A';
+            })
+            ->rawColumns(['store_id', 'action'])
             ->removeColumn('id');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param Role $model
+     * @param User $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Role $model)
+    public function query(User $model)
     {
         return $model->newQuery();
     }
@@ -71,7 +68,7 @@ class RolesDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('roles-table')
+            ->setTableId('admins-table')
             ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
             ->columns($this->getColumns())
             ->minifiedAjax()
@@ -126,9 +123,15 @@ class RolesDataTable extends DataTable
                 ->exportable(true)
                 ->printable(true),
 
-            Column::make('name')->title('Roles Name'),
+            Column::make('name'),
 
-            Column::make('permissions')->title('Permissions'),
+            Column::make('username')->title('User Name'),
+
+            Column::make('email'),
+
+            Column::make('roles'),
+
+            Column::make('store_id')->title('Store'),
         ];
     }
 
@@ -139,6 +142,6 @@ class RolesDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Permissions_' . date('YmdHis');
+        return 'Admins_' . date('YmdHis');
     }
 }

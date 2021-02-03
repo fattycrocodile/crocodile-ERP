@@ -44,6 +44,11 @@
                             <submenu class="name"></submenu>
                         </a>
                     </li>
+                    <li data-menu="">
+                        <a class="dropdown-item" href="{{ url('/users/admins') }}" data-toggle="dropdown">Admins
+                            <submenu class="name"></submenu>
+                        </a>
+                    </li>
                 </ul>
             </li>
 
