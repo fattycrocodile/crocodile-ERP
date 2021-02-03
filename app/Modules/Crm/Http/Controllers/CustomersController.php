@@ -3,6 +3,7 @@
 namespace App\Modules\Crm\Http\Controllers;
 
 
+use App\DataTables\CategoriesDataTable;
 use App\Http\Controllers\BaseController;
 use App\Model\User\User;
 use App\Modules\Crm\Models\Customers;
@@ -11,11 +12,10 @@ use Illuminate\Http\Request;
 
 class CustomersController extends BaseController
 {
-    public function index()
+    public function index(CategoriesDataTable $dataTable)
     {
-        $customers = Customers::all();
         $this->setPageTitle('Customers', 'List of all customers');
-        return view('Crm::customers.index', compact('customers'));
+        return $dataTable->render('Crm::customers.index');
     }
 
     public function create()

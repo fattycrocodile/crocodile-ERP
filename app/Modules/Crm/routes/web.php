@@ -6,10 +6,7 @@ Route::get('crm', 'CrmController@welcome');
 Route::group(['middleware' => ['auth:web']], function () {
 
     Route::group(['prefix' => 'crm/customers'], function () {
-        Route::get('/', function (\App\DataTables\CustomersDataTable $dataTable){
-            return $dataTable->render('Crm::customers.index');
-        })->name('crm.customers.index');
-//        Route::get('/', 'CustomersController@index')->name('crm.customers.index');
+        Route::get('/', 'CustomersController@index')->name('crm.customers.index');
         Route::get('/create', 'CustomersController@create')->name('crm.customers.create');
         Route::post('/store', 'CustomersController@store')->name('crm.customers.store');
         Route::get('/{id}/edit', 'CustomersController@edit')->name('crm.customers.edit');
@@ -18,10 +15,7 @@ Route::group(['middleware' => ['auth:web']], function () {
     });
 
     Route::group(['prefix' => 'crm/sales'], function () {
-        Route::get('/', function (\App\DataTables\CustomersDataTable $dataTable){
-            return $dataTable->render('Crm::customers.index');
-        })->name('crm.customers.index');
-
+        Route::get('/', 'InvoiceController@index')->name('crm.invoice.index');
         Route::get('/create', 'InvoiceController@create')->name('crm.invoice.create');
         Route::post('/store', 'InvoiceController@store')->name('crm.invoice.store');
         Route::get('/{id}/edit', 'InvoiceController@edit')->name('crm.invoice.edit');
