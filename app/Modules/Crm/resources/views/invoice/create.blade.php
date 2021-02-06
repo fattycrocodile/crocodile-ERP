@@ -102,20 +102,28 @@
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="cash_credit">Cash/Credit</label>
-                                                <input type="text"
-                                                       class="form-control @error('cash_credit') is-invalid @enderror"
-                                                       id="cash_credit">
-                                                @error('cash_credit')
-                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                                <select id="cash_credit" name="cash_credit"
+                                                        class="select2 form-control @error('cash_credit') is-invalid @enderror">
+                                                    <option value="none" selected="">Select Cash/Credit</option>
+                                                    @foreach($cash_credit as $key => $value)
+                                                        <option value="{{ $key }}"> {{ $value }} </option>
+                                                    @endforeach
+                                                </select>
+
+                                                @error('cash_credit')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
 
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="payment_method">Payment Method</label>
-                                                <input type="text"
-                                                       class="form-control @error('payment_method') is-invalid @enderror"
-                                                       id="payment_method">
+                                                <select id="payment_method" name="payment_method"
+                                                        class="select2 form-control @error('payment_method') is-invalid @enderror">
+                                                    <option value="none" selected="">Select Payment method</option>
+                                                    @foreach($payment_type as $key => $value)
+                                                        <option value="{{ $key }}"> {{ $value }} </option>
+                                                    @endforeach
+                                                </select>
                                                 @error('payment_method')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
@@ -123,10 +131,14 @@
 
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="bank_id">Bank Name</label>
-                                                <input type="text"
-                                                       class="form-control @error('bank_id') is-invalid @enderror"
-                                                       id="bank_id">
+                                                <label for="bank_id">Bank</label>
+                                                <select id="bank_id" name="bank_id"
+                                                        class="select2 form-control @error('bank_id') is-invalid @enderror">
+                                                    <option value="none" selected="">Select Bank</option>
+                                                    @foreach($bank as $key => $bnk)
+                                                        <option value="{{ $key }}"> {{ $bnk }} </option>
+                                                    @endforeach
+                                                </select>
                                                 @error('bank_id')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
@@ -137,7 +149,7 @@
                                                 <label for="cheque_no">Cheque/Transaction No</label>
                                                 <input type="text"
                                                        class="form-control @error('cheque_no') is-invalid @enderror"
-                                                       id="cash_credit">
+                                                       id="cheque_no">
                                                 @error('cheque_no')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
@@ -245,7 +257,7 @@
                                 </div>
                                 <div class="form-actions right">
                                     <button type="button" class="btn btn-warning mr-1">
-                                        <i class="ft-x"></i> Reload
+                                        <i class="ft-refresh-ccw"></i> Reload
                                     </button>
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fa fa-check-square-o"></i> Save
@@ -499,10 +511,10 @@
                     $("#sell_price").val(0);
                     $("#min_sell_price").val(0);
                 }
-            }).done(function( data ) {
+            }).done(function (data) {
                 $("#sell_price").val(data.sell_price);
                 $("#min_sell_price").val(data.min_whole_sell_price);
-            }).fail(function( jqXHR, textStatus ) {
+            }).fail(function (jqXHR, textStatus) {
                 $("#sell_price").val(0);
                 $("#min_sell_price").val(0);
             });
@@ -520,8 +532,15 @@
                     store_id: store_id,
                 },
                 success: function (data) {
-                    console.dir("product stock" + data);
+                    $("#stock_qty").val(data.closing_balance);
+                },
+                error: function (xhr, status, error) {
+                    $("#stock_qty").val(0);
                 }
+            }).done(function (data) {
+                $("#stock_qty").val(data.closing_balance);
+            }).fail(function (jqXHR, textStatus) {
+                $("#stock_qty").val(0);
             });
         }
 

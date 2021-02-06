@@ -4,6 +4,7 @@ namespace App\Modules\Crm\Http\Controllers;
 
 use App\DataTables\InvoiceDataTable;
 use App\Http\Controllers\BaseController;
+use App\Modules\Config\Models\Lookup;
 use App\Modules\Crm\Models\Invoice;
 use App\Modules\StoreInventory\Models\Stores;
 use App\Traits\UploadAble;
@@ -22,11 +23,13 @@ class InvoiceController extends BaseController
     use UploadAble;
     public $model;
     public $store;
+    public $lookup;
 
     public function __construct(Invoice $model)
     {
         $this->model = $model;
         $this->store = new Stores();
+        $this->lookup = new Lookup();
     }
 
     /**
@@ -45,8 +48,11 @@ class InvoiceController extends BaseController
     public function create()
     {
         $stores = $this->store->treeList();
+        $payment_type = Lookup::items('payment_method', 1);
+        $cash_credit = Lookup::items('cash_credit', 1);
+        $bank = Lookup::items('bank', 1);
         $this->setPageTitle('Create Invoice', 'Create Invoice');
-        return view('Crm::invoice.create', compact('stores'));
+        return view('Crm::invoice.create', compact('stores', 'payment_type', 'cash_credit', 'bank'));
     }
 
     /**
