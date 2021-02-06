@@ -484,7 +484,7 @@
 
         function getProductPrice(product_id){
             $.ajax({
-                url: "{{ route('productNameAutoComplete') }}",
+                url: "{{ route('productPrice') }}",
                 type: 'post',
                 dataType: "json",
                 data: {
@@ -492,7 +492,7 @@
                     search: product_id,
                 },
                 success: function (data) {
-                    console.log("product price"  + data);
+                    console.dir("product price"  + data);
                 }
             });
         }
@@ -500,7 +500,7 @@
         function getProductStock(product_id){
             var store_id = $("#store_id").val();
             $.ajax({
-                url: "{{ route('productNameAutoComplete') }}",
+                url: "{{ route('productStockQty') }}",
                 type: 'post',
                 dataType: "json",
                 data: {
@@ -509,7 +509,7 @@
                     store_id: store_id,
                 },
                 success: function (data) {
-                    console.log("product stock"  + data);
+                    console.dir("product stock"  + data);
                 }
             });
         }
