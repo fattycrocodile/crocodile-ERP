@@ -57,6 +57,7 @@ class InventoryController extends Controller
         } else {
             $response[] = array("stock_in" => 0, "stock_out" => 0, "closing_balance" => 0);
         }
+        dd($response);
         return response()->json($response);
     }
 }
