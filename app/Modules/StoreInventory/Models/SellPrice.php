@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class SellPrice extends Model
 {
+
+    protected $table = 'sell_prices';
     protected $guarded=[];
 
     const PRICE_ACTIVE = 1;
