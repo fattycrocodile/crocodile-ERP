@@ -9,6 +9,9 @@ class SellPrice extends Model
 {
     protected $guarded=[];
 
+    const PRICE_ACTIVE = 1;
+    const PRICE_INACTIVE = 0;
+
     public function product()
     {
         return $this->belongsTo(Product::class);
