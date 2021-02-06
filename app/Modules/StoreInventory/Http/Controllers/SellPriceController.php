@@ -18,8 +18,16 @@ class SellPriceController extends BaseController
 
     public function create()
     {
-        return 'Its work';
+        $this->setPageTitle('Add Products Price', 'Add a Products price');
+        return view('StoreInventory::sellprices.create');
     }
+
+    public function store()
+    {
+        $this->setPageTitle('Add Products Price', 'Add a Products price');
+        return view('StoreInventory::sellprices.create');
+    }
+
     /**
      * @param $id
      * @return JsonResponse
