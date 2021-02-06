@@ -57,12 +57,12 @@ class LookupTableSeeder extends Seeder
         ],
         [
             'name' => 'Cash',
-            'type' => 'cashcredit',
+            'type' => 'cash_credit',
             'code' => '1'
         ],
         [
             'name' => 'Credit',
-            'type' => 'cashcredit',
+            'type' => 'cash_credit',
             'code' => '2'
         ],
         [
