@@ -51,7 +51,7 @@ class SellpricesDataTable extends DataTable
      */
     public function query(SellPrice $model)
     {
-        return $model->newQuery()->orderBy('id','desc');
+        return $model->newQuery()->where('status','=',1)->orderBy('id','desc');
     }
 
     /**

@@ -43,9 +43,9 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="sellPrice">Sell Price <span
+                                            <label for="sell_price">Sell Price <span
                                                     class="required text-danger">*</span></label>
-                                            <input type="text" id="sellPrice"
+                                            <input type="text" id="sell_price"
                                                    class="form-control @error('sell_price') is-invalid @enderror"
                                                    placeholder="Sell Price" value="{{ old('sell_price') }}"
                                                    name="sell_price">
@@ -55,9 +55,8 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="wholesalePrice">Wholesale Price <span
-                                                    class="required text-danger">*</span></label>
-                                            <input type="text" id="wholesalePrice"
+                                            <label for="whole_sell_price">Wholesale Price</label>
+                                            <input type="text" id="whole_sell_price"
                                                    class="form-control @error('whole_sell_price') is-invalid @enderror"
                                                    placeholder="Wholesale Price" value="{{ old('whole_sell_price') }}"
                                                    name="whole_sell_price">
@@ -71,8 +70,8 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="minsellPrice">Min Sell Price</label>
-                                            <input type="text" id="minsellPrice"
+                                            <label for="min_sell_price">Min Sell Price</label>
+                                            <input type="text" id="min_sell_price"
                                                    class="form-control @error('min_sell_price') is-invalid @enderror"
                                                    placeholder="Min Sell Price" value="{{ old('min_sell_price') }}"
                                                    name="min_sell_price">
@@ -82,8 +81,9 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="minwholesalePrice">Min Wholesale Price</label>
-                                            <input type="text" id="minwholesalePrice"
+                                            <label for="min_whole_sell_price">Min Wholesale Price<span
+                                                    class="required text-danger">*</span></label>
+                                            <input type="text" id="min_whole_sell_price"
                                                    class="form-control @error('min_whole_sell_price') is-invalid @enderror"
                                                    placeholder="Min Wholesale Price"
                                                    value="{{ old('min_whole_sell_price') }}"
@@ -114,52 +114,82 @@
 @endsection
 
 @push('scripts')
-    <script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}" type="text/javascript"></script>
-    <script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}" type="text/javascript"></script>
-    <script src="{{asset('assets/ckeditor/ckeditor.js')}}" type="text/javascript"></script>
 
     <script>
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
-    $("#product_name").autocomplete({
-    minLength: 1,
-    autoFocus: true,
-    source: function (request, response) {
-    $.ajax({
-    url: "{{ route('productNameAutoComplete') }}",
-    type: 'post',
-    dataType: "json",
-    data: {
-    _token: CSRF_TOKEN,
-    search: request.term,
-    },
-    success: function (data) {
-    response(data);
-    }
-    });
-    },
-    focus: function (event, ui) {
-    return false;
-    },
-    select: function (event, ui) {
-    if (ui.item.value != '' || ui.item.value > 0) {
-    getProductPrice(ui.item.value);
-    getProductStock(ui.item.value);
-    $('#product_name').val(ui.item.name);
-    $('#product_id').val(ui.item.value);
-    } else {
-    resetProduct();
-    }
-    return false;
-    },
-    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+        $("#product_name").autocomplete({
+            minLength: 1,
+            autoFocus: true,
+            source: function (request, response) {
+                $.ajax({
+                    url: "{{ route('productNameAutoComplete') }}",
+                    type: 'post',
+                    dataType: "json",
+                    data: {
+                        _token: CSRF_TOKEN,
+                        search: request.term,
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            focus: function (event, ui) {
+                return false;
+            },
+            select: function (event, ui) {
+                if (ui.item.value != '' || ui.item.value > 0) {
+                    getProductPrice(ui.item.value);
+                    $('#product_name').val(ui.item.name);
+                    $('#product_id').val(ui.item.value);
+                } else {
+                    resetProduct();
+                }
+                return false;
+            },
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
 
-    var inner_html = '<div>' + item.label + ' (<i>' + item.code + ')</i></div>';
-    return $("<li>")
-        .data("item.autocomplete", item)
-        .append(inner_html)
-        .appendTo(ul);
+            var inner_html = '<div>' + item.label + ' (<i>' + item.code + ')</i></div>';
+            return $("<li>")
+                .data("item.autocomplete", item)
+                .append(inner_html)
+                .appendTo(ul);
         };
+
+        function getProductPrice(product_id) {
+            $.ajax({
+                url: "{{ route('productPrice') }}",
+                type: 'post',
+                dataType: "json",
+                data: {
+                    _token: CSRF_TOKEN,
+                    search: product_id,
+                },
+                success: function (data) {
+                    $("#sell_price").val(data.sell_price);
+                    $("#min_sell_price").val(data.min_sell_price);
+                    $("#whole_sell_price").val(data.whole_sell_price);
+                    $("#min_whole_sell_price").val(data.min_whole_sell_price);
+                },
+                error: function (xhr, status, error) {
+                    $("#sell_price").val(0);
+                    $("#min_sell_price").val(0);
+                    $("#whole_sell_price").val(0);
+                    $("#min_whole_sell_price").val(0);
+                }
+            }).done(function (data) {
+                $("#sell_price").val(data.sell_price);
+                $("#min_sell_price").val(data.min_sell_price);
+                $("#whole_sell_price").val(data.whole_sell_price);
+                $("#min_whole_sell_price").val(data.min_whole_sell_price);
+            }).fail(function (jqXHR, textStatus) {
+                $("#sell_price").val(0);
+                $("#min_sell_price").val(0);
+                $("#whole_sell_price").val(0);
+                $("#min_whole_sell_price").val(0);
+            });
+        }
 
         function resetProduct() {
             $('#product_code').val("");
