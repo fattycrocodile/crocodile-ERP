@@ -37,6 +37,7 @@
     <!-- BEGIN Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/custom-style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/jquery-ui.min.css')}}">
     <!-- END Custom CSS-->
 
 
@@ -70,6 +71,7 @@
 <script src="{{ asset('app-assets/js/core/app-menu.js') }}" type="text/javascript"></script>
 <script src="{{ asset('app-assets/js/core/app.js') }}" type="text/javascript"></script>
 <script src="{{ asset('app-assets/js/scripts/customizer.js') }}" type="text/javascript"></script>
+<script src="{{asset('js/jquery-ui.min.js')}}" type="text/javascript"></script>
 <!-- END STACK JS-->
 
 

@@ -12,7 +12,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Create New Categories</h4>
+                    <h4 class="card-title">Add New Price</h4>
                     <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                     <div class="heading-elements">
                         <ul class="list-inline mb-0">
@@ -25,18 +25,24 @@
                 </div>
                 <div class="card-content collpase show">
                     <div class="card-body">
-                        <form class="form" method="post" action="{{route('storeInventory.products.store')}}"
+                        <form class="form" method="post" action="{{route('storeInventory.sellprices.store')}}"
                               enctype="multipart/form-data">
                             @csrf
                             <div class="form-body">
                                 <div class="form-group">
-                                    <label for="productName">Product Name <span class="required text-danger">*</span></label>
-                                    <input type="text" id="productName"
-                                           class="form-control @error('name') is-invalid @enderror"
-                                           placeholder="Product Name" value="{{ old('name') }}"
-                                           name="name">
-                                    @error('name')
+                                    <label for="product_id">Product Name <span class="required text-danger">*</span></label>
+                                    <select id="product_id" name="product_id"
+                                            class="select2 form-control @error('product_id') is-invalid @enderror">
+                                        <option value="none" selected="" disabled="">Select Pro
+                                        </option>
+                                        @foreach($categories as $category)
+                                            <option
+                                                value="{{$category->id}}" {{ old('category_id')==$category->id?'selected':'' }}>{{$category->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('category_id')
                                     <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
@@ -188,7 +194,7 @@
 
 
                                 <div class="form-actions">
-                                    <a type="button" href="{{ route('storeInventory.products.index') }}"
+                                    <a type="button" href="{{ route('storeInventory.sellprices.index') }}"
                                        class="btn btn-warning mr-1">
                                         <i class="ft-x"></i> Cancel
                                     </a>

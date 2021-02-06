@@ -3,7 +3,6 @@
 
 @push('styles')
     <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="{{asset('css/jquery-ui.min.css')}}">
     <style>
         .ui-datepicker {
             z-index: 999 !important;
@@ -262,7 +261,6 @@
 @endsection
 
 @push('scripts')
-    <script src="{{asset('js/jquery-ui.min.js')}}" type="text/javascript"></script>
 
     <!-- Script -->
     <script type="text/javascript">
