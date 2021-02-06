@@ -215,29 +215,4 @@ class ProductController extends BaseController
         }
         return response()->json($response);
     }
-
-    public function getProductPrice(Request $request): ?JsonResponse
-    {
-        $response = array();
-        if ($request->has('search')) {
-            $search = trim($request->search);
-            $data = new SellPrice();
-            $data = $data->select('*');
-            if ($search != '') {
-                $data = $data->where('id', '=', $search);
-            }
-            $data = $data->where('id', '=', SellPrice::PRICE_ACTIVE);
-            $data = $data->limit(1);
-            $data = $data->orderby('id', 'desc');
-            $data = $data->first();
-            if (!$data->isEmpty()) {
-                $response[] = array("sell_price" => $data->sell_price, "whole_sell_price" => $data->whole_sell_price, "min_sell_price" => $data->min_sell_price, "min_whole_sell_price" => $data->min_whole_sell_price);
-            } else {
-                $response[] = array("sell_price" => 0, "whole_sell_price" => 0, "min_sell_price" => 0, "min_whole_sell_price" => 0);
-            }
-        } else {
-            $response[] = array("sell_price" => 0, "whole_sell_price" => 0, "min_sell_price" => 0, "min_whole_sell_price" => 0);
-        }
-        return response()->json($response);
-    }
 }

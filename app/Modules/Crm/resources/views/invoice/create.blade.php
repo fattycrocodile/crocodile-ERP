@@ -196,7 +196,6 @@
                                                 <input type="text"
                                                        class="form-control @error('stock_qty') is-invalid @enderror"
                                                        id="stock_qty" name="stock_qty" readonly>
-                                                <input type="hidden" id="min_sell_price">
                                                 @error('stock_qty')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
@@ -207,6 +206,8 @@
                                                 <input type="text"
                                                        class="form-control @error('sell_price') is-invalid @enderror"
                                                        id="sell_price" name="sell_price">
+
+                                                <input type="hidden" id="min_sell_price">
                                                 @error('sell_price')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
@@ -481,8 +482,7 @@
         };
 
 
-
-        function getProductPrice(product_id){
+        function getProductPrice(product_id) {
             $.ajax({
                 url: "{{ route('productPrice') }}",
                 type: 'post',
@@ -492,12 +492,23 @@
                     search: product_id,
                 },
                 success: function (data) {
-                    console.dir("product price"  + data);
+                    $("#sell_price").val(data.sell_price);
+                    $("#min_sell_price").val(data.min_whole_sell_price);
+                },
+                error: function (xhr, status, error) {
+                    $("#sell_price").val(0);
+                    $("#min_sell_price").val(0);
                 }
+            }).done(function( data ) {
+                $("#sell_price").val(data.sell_price);
+                $("#min_sell_price").val(data.min_whole_sell_price);
+            }).fail(function( jqXHR, textStatus ) {
+                $("#sell_price").val(0);
+                $("#min_sell_price").val(0);
             });
         }
 
-        function getProductStock(product_id){
+        function getProductStock(product_id) {
             var store_id = $("#store_id").val();
             $.ajax({
                 url: "{{ route('productStockQty') }}",
@@ -509,7 +520,7 @@
                     store_id: store_id,
                 },
                 success: function (data) {
-                    console.dir("product stock"  + data);
+                    console.dir("product stock" + data);
                 }
             });
         }
@@ -520,6 +531,7 @@
             $('#customer_id').val("");
             $('#contact_no').val("");
         }
+
         function resetProduct() {
             $('#product_code').val("");
             $('#product_id').val("");

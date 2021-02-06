@@ -27,7 +27,7 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::group(array('module' => 'StoreInventory', 'namespace' => '\App\Modules\StoreInventory\Http\Controllers'), function () {
             Route::post('/product-list', 'ProductController@getProductListByName')->name('productNameAutoComplete');
             Route::post('/product-code-list', 'ProductController@getProductListByCode')->name('productCodeAutoComplete');
-            Route::post('/product-price', 'ProductController@getProductPrice')->name('productPrice');
+            Route::post('/product-price', 'SellPriceController@getProductPrice')->name('productPrice');
             Route::post('/product-stock', 'InventoryController@getProductStockQty')->name('productStockQty');
         });
 
