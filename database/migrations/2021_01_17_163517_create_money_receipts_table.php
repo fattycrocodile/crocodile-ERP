@@ -20,8 +20,13 @@ class CreateMoneyReceiptsTable extends Migration
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('id')->on('stores');
             $table->string('collection_type');
+            $table->string('bank_name');
+            $table->string('cheque_no');
+            $table->string('cheque_date');
+            $table->double('discount');
             $table->double('amount');
             $table->date('date');
+            $table->text('remarks');
             $table->unsignedBigInteger('received_by')->nullable();
             $table->foreign('received_by')->references('id')->on('users');
             $table->unsignedBigInteger('created_by')->nullable();

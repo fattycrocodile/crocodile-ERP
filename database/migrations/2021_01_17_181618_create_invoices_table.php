@@ -17,6 +17,7 @@ class CreateInvoicesTable extends Migration
             $table->id();
             $table->date('date');
             $table->string('invoice_no');
+            $table->tinyInteger('cash_credit');
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('id')->on('stores');
             $table->unsignedBigInteger('customer_id');
