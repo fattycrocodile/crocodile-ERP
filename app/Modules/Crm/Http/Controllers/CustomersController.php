@@ -192,4 +192,36 @@ class CustomersController extends BaseController
         }
         return response()->json($response);
     }
+
+    public function getCustomerListByContactNo(Request $request): ?JsonResponse
+    {
+        $response = array();
+        if ($request->has('search')) {
+            $search = trim($request->search);
+            $data = new Customers();
+            $data = $data->select('id', 'name', 'contact_no', 'code', 'store_id', 'contact_no');
+            if ($search != '') {
+                $data = $data->where('contact_no', 'like', '%' . $search . '%');
+            }
+            if ($request->has('store_id')) {
+                $store_id = trim($request->store_id);
+                if ($store_id > 0) {
+                    $data = $data->where('store_id', '=', $store_id);
+                }
+            }
+            $data = $data->limit(20);
+            $data = $data->orderby('code', 'asc');
+            $data = $data->get();
+            if (!$data->isEmpty()) {
+                foreach ($data as $dt) {
+                    $response[] = array("value" => $dt->id, "label" => $dt->contact_no, 'name' => $dt->name, 'code' => $dt->code, 'store_id' => $dt->store_id, 'contact_no' => $dt->contact_no);
+                }
+            } else {
+                $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'code' => '', 'store_id' => '', 'contact_no' => '');
+            }
+        } else {
+            $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'code' => '', 'store_id' => '', 'contact_no' => '');
+        }
+        return response()->json($response);
+    }
 }

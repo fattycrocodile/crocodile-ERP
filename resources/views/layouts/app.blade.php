@@ -22,7 +22,10 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/weather-icons/climacons.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/fonts/meteocons/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/charts/morris.css') }}">
+
     <!-- END VENDOR CSS-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/extensions/toastr.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/plugins/extensions/toastr.css') }}">
     <!-- BEGIN STACK CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/app.css') }}">
     <!-- END STACK CSS-->
@@ -39,6 +42,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/custom-style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{asset('css/jquery-ui.min.css')}}">
     <!-- END Custom CSS-->
+
+
 
 
     @stack('styles')
@@ -75,6 +80,7 @@
 <!-- END STACK JS-->
 
 
+<script src="{{ asset('app-assets/vendors/js/extensions/toastr.min.js') }}" type="text/javascript"></script>
 @stack('scripts')
 </body>
 </html>
