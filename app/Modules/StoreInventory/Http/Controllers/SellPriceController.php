@@ -5,8 +5,11 @@ namespace App\Modules\StoreInventory\Http\Controllers;
 use App\DataTables\SellpricesDataTable;
 use App\Http\Controllers\BaseController;
 use App\Modules\StoreInventory\Models\SellPrice;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use mysql_xdevapi\Exception;
 
 class SellPriceController extends BaseController
 {
@@ -25,8 +28,52 @@ class SellPriceController extends BaseController
 
     public function create()
     {
-        return 'Its work';
+        $this->setPageTitle('Add Products Price', 'Add a Products price');
+        return view('StoreInventory::sellprices.create');
     }
+
+    public function store(Request $req)
+    {
+        $req->validate([
+           'product_id' => 'required',
+           'sell_price' => 'required',
+           'min_whole_sell_price' => 'required',
+        ]);
+
+        $sellPrice = new SellPrice();
+        $sellPrice->product_id = $req->product_id;
+        $sellPrice->sell_price = $req->sell_price;
+        $sellPrice->whole_sell_price = $req->whole_sell_price;
+        $sellPrice->min_sell_price = $req->min_sell_price;
+        $sellPrice->min_whole_sell_price = $req->min_whole_sell_price;
+        $sellPrice->date = date('Y-m-d');
+
+        try {
+            $deactivated = DB::table('sell_prices')->where('status','=',1)->where('product_id','=',$req->product_id)->update(['status'=>0]);
+            if($deactivated)
+            {
+                if ($sellPrice->save())
+                {
+                    return $this->responseRedirect('storeInventory.sellprices.index', 'Price added successfully', 'success', false, false);
+                }
+                else
+                {
+                    return $this->responseRedirectBack('Error occurred while creating Sell Price.', 'error', true, true);
+                }
+            }
+            else
+            {
+                return $this->responseRedirectBack('Error occurred while deactivating Sell Price.', 'error', true, true);
+            }
+        }
+        catch (QueryException $exception)
+        {
+            //dd($exception);
+            return $this->responseRedirectBack('Error occurred while creating Sell Price.', 'error', true, true);
+        }
+
+    }
+
     /**
      * @param $id
      * @return JsonResponse
@@ -63,7 +110,6 @@ class SellPriceController extends BaseController
             $data = $data->limit(1);
             $data = $data->orderby('id', 'desc');
             $data = $data->first();
-//            dd($data);
             if ($data) {
                 $response = array("sell_price" => $data->sell_price, "whole_sell_price" => $data->whole_sell_price, "min_sell_price" => $data->min_sell_price, "min_whole_sell_price" => $data->min_whole_sell_price);
             } else {

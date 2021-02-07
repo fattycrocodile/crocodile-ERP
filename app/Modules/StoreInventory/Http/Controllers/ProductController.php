@@ -9,8 +9,10 @@ use App\Modules\StoreInventory\Models\Category;
 use App\Modules\StoreInventory\Models\Product;
 use App\Modules\StoreInventory\Models\SellPrice;
 use App\Modules\StoreInventory\Models\Unit;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends BaseController
 {
@@ -72,15 +74,19 @@ class ProductController extends BaseController
         $sellPrice->updated_by = auth()->user()->id;
         $sellPrice->date = date('Y-m-d');
 
-        if (!$product->save()) {
-            return $this->responseRedirectBack('Error occurred while creating Product.', 'error', true, true);
-        } else {
-            $sellPrice->product_id = $product->id;
-            if ($sellPrice->save()) {
-                return $this->responseRedirect('storeInventory.products.index', 'Product added successfully', 'success', false, false);
-            } else {
+        try {
+            if (!$product->save()) {
                 return $this->responseRedirectBack('Error occurred while creating Product.', 'error', true, true);
+            } else {
+                $sellPrice->product_id = $product->id;
+                if ($sellPrice->save()) {
+                    return $this->responseRedirect('storeInventory.products.index', 'Product added successfully', 'success', false, false);
+                } else {
+                    return $this->responseRedirectBack('Error occurred while creating Product.', 'error', true, true);
+                }
             }
+        } catch (QueryException $exception) {
+            return $this->responseRedirectBack('Error occurred while creating Product.', 'error', true, true);
         }
     }
 
@@ -130,15 +136,28 @@ class ProductController extends BaseController
         $sellPrice->updated_by = auth()->user()->id;
         $sellPrice->date = date('Y-m-d');
 
-        if (!$product->update()) {
-            return $this->responseRedirectBack('Error occurred while editing Product.', 'error', true, true);
-        } else {
-            $sellPrice->product_id = $id;
-            if ($sellPrice->save()) {
-                return $this->responseRedirect('storeInventory.products.index', 'Product updated successfully', 'success', false, false);
-            } else {
+        try {
+            if (!$product->update()) {
                 return $this->responseRedirectBack('Error occurred while editing Product.', 'error', true, true);
+            } else {
+                $sellPrice->product_id = $id;
+                $deactivated = DB::table('sell_prices')->where('status','=',1)->where('product_id','=',$id)->update(['status'=>0]);
+                if ($deactivated) {
+                    if ($sellPrice->save()) {
+                        return $this->responseRedirect('storeInventory.products.index', 'Product updated successfully', 'success', false, false);
+                    } else {
+                        return $this->responseRedirectBack('Error occurred while editing Product.', 'error', true, true);
+                    }
+                }
+                else
+                {
+                    return $this->responseRedirectBack('Error occurred while Deactivating Price.', 'error', true, true);
+                }
             }
+        }
+        catch (QueryException $exception)
+        {
+            return $this->responseRedirectBack('Error occurred while editing Product.', 'error', true, true);
         }
     }
 
