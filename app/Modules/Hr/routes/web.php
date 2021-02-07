@@ -38,4 +38,13 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/{id}//update', 'EmployeesController@update')->name('hr.employees.update');
         Route::delete('/{id}/delete', 'EmployeesController@delete')->name('hr.employees.delete');
     });
+
+    Route::group(['prefix' => 'hr/leaves'], function () {
+        Route::get('/', 'LeaveApplicationController@index')->name('hr.leaves.index');
+        Route::get('/create', 'LeaveApplicationController@create')->name('hr.leaves.create');
+        Route::post('/store', 'LeaveApplicationController@store')->name('hr.leaves.store');
+        Route::get('/{id}/edit', 'LeaveApplicationController@edit')->name('hr.leaves.edit');
+        Route::post('/{id}//update', 'LeaveApplicationController@update')->name('hr.leaves.update');
+        Route::delete('/{id}/delete', 'LeaveApplicationController@delete')->name('hr.leaves.delete');
+    });
 });

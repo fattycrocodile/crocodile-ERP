@@ -212,4 +212,30 @@ class EmployeesController extends BaseController
             ]);
         }
     }
+
+    public function getEmployeesListByName(Request $request): ?JsonResponse
+    {
+        $response = array();
+        if ($request->has('search')) {
+            $search = trim($request->search);
+            $data = new Employees();
+            $data = $data->select('id', 'full_name','designation_id');
+            if ($search != '') {
+                $data = $data->where('full_name', 'like', '%' . $search . '%');
+            }
+            $data = $data->limit(20);
+            $data = $data->orderby('full_name', 'asc');
+            $data = $data->get();
+            if (!$data->isEmpty()) {
+                foreach ($data as $dt) {
+                    $response[] = array("value" => $dt->id, "label" => $dt->full_name, 'designation' => isset($dt->designation->name)?$dt->designation->name:'');
+                }
+            } else {
+                $response[] = array("value" => '', "label" => 'No data found!', 'designation' => '');
+            }
+        } else {
+            $response[] = array("value" => '', "label" => 'No data found!', "designation" => '');
+        }
+        return response()->json($response);
+    }
 }

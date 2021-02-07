@@ -31,6 +31,10 @@ Route::group(['middleware' => ['auth:web']], function () {
             Route::post('/product-stock', 'InventoryController@getProductStockQty')->name('productStockQty');
         });
 
+        Route::group(array('module' => 'Hr', 'namespace' => '\App\Modules\Hr\Http\Controllers'), function () {
+            Route::post('/employee-list', 'EmployeesController@getEmployeesListByName')->name('employee.list.autocomplete');
+        });
+
         Route::group(array('module' => 'Crm', 'namespace' => '\App\Modules\Crm\Http\Controllers'), function () {
             Route::post('/customer-list', 'CustomersController@getCustomerListByName')->name('customerNameAutoComplete');
             Route::post('/customer-code-list', 'CustomersController@getCustomerListByCode')->name('customerCodeAutoComplete');
