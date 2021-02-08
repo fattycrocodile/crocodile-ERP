@@ -23,6 +23,7 @@ class CreateLeaveApplicationsTable extends Migration
             $table->date('to_date');
             $table->date('leave_date');
             $table->string('subject');
+            $table->text('description')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users');
