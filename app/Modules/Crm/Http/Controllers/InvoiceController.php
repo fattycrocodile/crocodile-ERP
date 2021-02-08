@@ -11,8 +11,10 @@ use App\Modules\StoreInventory\Models\Inventory;
 use App\Modules\StoreInventory\Models\Stores;
 use App\Traits\UploadAble;
 use Carbon\Carbon;
+use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -121,6 +123,7 @@ class InvoiceController extends BaseController
                     }
                     $i++;
                 }
+                // todo:: if cash need to create money receipt
                 return $this->responseRedirect('crm.invoice.index', 'invoice added successfully', 'success', false, false);
             } else {
                 return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
@@ -136,8 +139,7 @@ class InvoiceController extends BaseController
      * @param $id
      * @return Factory|View
      */
-    public
-    function edit($id)
+    public function edit($id)
     {
         try {
             $brands = Invoice::findOrFail($id);
@@ -153,8 +155,7 @@ class InvoiceController extends BaseController
      * @return RedirectResponse
      * @throws ValidationException
      */
-    public
-    function update(Request $request)
+    public function update(Request $request)
     {
         $this->validate($request, [
             'name' => 'required|max:191',
@@ -187,8 +188,7 @@ class InvoiceController extends BaseController
      * @param $id
      * @return JsonResponse
      */
-    public
-    function delete($id)
+    public function delete($id)
     {
         $data = Invoice::find($id);
         $logo = $data->logo;
@@ -208,5 +208,17 @@ class InvoiceController extends BaseController
                 'message' => 'Please try again!',
             ]);
         }
+    }
+
+    public function voucher($id)
+    {
+        try {
+            $invoice = Invoice::findOrFail($id);
+            $invoice_no = $invoice->invoice_no;
+            $this->setPageTitle('Invoice No-' . $invoice_no, 'Invoice Preview : ' . $invoice_no);
+        } catch (ModelNotFoundException $e) {
+            throw new ModelNotFoundException($e);
+        }
+        return view('Crm::invoice.edit', compact('invoice'));
     }
 }

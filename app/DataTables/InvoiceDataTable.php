@@ -30,8 +30,9 @@ class InvoiceDataTable extends DataTable
                 return "
                     <div class='form-group'>
                         <div class='btn-group' role='group' aria-label='Basic example'>
-                            <a href='brand/$data->id/edit' class='btn btn-icon btn-secondary'><i class='fa fa-pencil-square-o'></i> Edit</a>
-                            <button data-remote='brand/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
+                            <a href='crm/sales/$data->id/edit' class='btn btn-icon btn-secondary' title='Invoice Edit'><i class='fa fa-pencil-square-o'></i></a>
+                            <a href='crm/sales/$data->id/voucher' class='btn btn-icon btn-warning' title='Invoice Preview'><i class='fa fa-eye'></i></a>
+                            <button data-remote='crm/sales/$data->id/delete' class='btn btn-icon btn-danger btn-delete' title='Delete'><i class='fa fa-trash-o'></i></button>
                         </div>
                    </div>";
             })
