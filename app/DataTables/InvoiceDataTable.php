@@ -35,14 +35,7 @@ class InvoiceDataTable extends DataTable
                         </div>
                    </div>";
             })
-            ->editColumn('logo', function ($data) {
-                if ($photo = $data->logo) {
-                    $url = asset('public/uploads/'.$data->logo);
-                    return "<img class='img' style='height: 100px; width: 100px; text-align: center;' src='$url'></img>";
-                }
-                return '';
-            })
-            ->rawColumns(['logo', 'action'])
+            ->rawColumns(['action'])
             ->removeColumn('id');
     }
 
@@ -66,7 +59,7 @@ class InvoiceDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('brands-table')
+            ->setTableId('invoice-table')
             ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
             ->columns($this->getColumns())
             ->minifiedAjax()
@@ -120,12 +113,11 @@ class InvoiceDataTable extends DataTable
                 ->footer('')
                 ->exportable(true)
                 ->printable(true),
-            Column::make('name'),
-            Column::make('description'),
-            Column::make('logo'),
-//            Column::computed('action'),
-//            Column::make('created_at'),
-//            Column::make('updated_at'),
+            Column::make('date'),
+            Column::make('invoice_no'),
+            Column::make('store_id'),
+            Column::make('customer_id'),
+            Column::make('grand_total'),
         ];
     }
 

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class InvoiceDetails extends Model
 {
     protected $guarded=[];
+    public $timestamps = false;
 
     public function invoice()
     {
