@@ -6,8 +6,12 @@ use App\DataTables\InvoiceDataTable;
 use App\Http\Controllers\BaseController;
 use App\Modules\Config\Models\Lookup;
 use App\Modules\Crm\Models\Invoice;
+use App\Modules\Crm\Models\InvoiceDetails;
+use App\Modules\StoreInventory\Models\Inventory;
 use App\Modules\StoreInventory\Models\Stores;
 use App\Traits\UploadAble;
+use Carbon\Carbon;
+use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -21,6 +25,7 @@ use Illuminate\View\View;
 class InvoiceController extends BaseController
 {
     use UploadAble;
+
     public $model;
     public $store;
     public $lookup;
@@ -62,30 +67,71 @@ class InvoiceController extends BaseController
      */
     public function store(Request $request)
     {
+
         $this->validate($request, [
-            'name' => 'required|max:191',
-            'image' => 'mimes:jpg,jpeg,png|max:1000'
+            'date' => 'required|date',
+            'store_id' => 'required|integer',
+            'customer_id' => 'required|integer',
+            'cash_credit' => 'required|integer',
+            'product' => 'required|array',
+//            'grand_total' => 'required|min:1',
         ]);
         $params = $request->except('_token');
 
         try {
-            $collection = collect($params);
-            $logo = null;
-            if ($collection->has('logo') && ($params['logo'] instanceof  UploadedFile)) {
-                $logo = $this->uploadOne($params['logo'], 'brands');
-            }
+            $invoice = new Invoice();
+            $maxSlNo = $invoice->maxSlNo($store_id = $params['store_id']);
+            $year = Carbon::now()->year;
+            $store = Stores::findOrFail($store_id);
+            $invNo = "$store->code-$year-" . str_pad($maxSlNo, 8, '0', STR_PAD_LEFT);
 
-            $merge = $collection->merge(compact('logo'));
-            $brand = new Invoice($merge->all());
-            if ($brand->save()){
+            $invoice->max_sl_no = $maxSlNo;
+            $invoice->invoice_no = $invNo;
+            $invoice->store_id = $params['store_id'];
+            $invoice->customer_id = $params['customer_id'];
+            $invoice->discount_amount = 0;
+            $invoice->grand_total = $params['grand_total'];
+            $invoice->date = $date = $params['date'];
+            $invoice->created_by = $created_by = auth()->user()->id;
+            if ($invoice->save()) {
+                $invoice_id = $invoice->id;
+                $i = 0;
+                foreach ($params['product']['temp_product_id'] as $product_id) {
+                    $stock_qty = $params['product']['temp_stock_qty'][$i];
+                    $sell_price = $params['product']['temp_sell_price'][$i];
+                    $sell_qty = $params['product']['temp_sell_qty'][$i];
+                    $row_sell_price = $params['product']['temp_row_sell_price'][$i];
+
+                    $inventory = new Inventory();
+                    $inventory->store_id = $store_id;
+                    $inventory->product_id = $product_id;
+                    $inventory->stock_in = 0;
+                    $inventory->stock_out = $sell_qty;
+                    $inventory->ref_type = Inventory::REF_INVOICE;
+                    $inventory->ref_id = $invoice_id;
+                    $inventory->date = $date;
+                    $inventory->created_by = $created_by;
+                    if ($inventory->save()) {
+                        $invoiceDetails = new InvoiceDetails();
+                        $invoiceDetails->invoice_id = $invoice_id;
+                        $invoiceDetails->product_id = $product_id;
+                        $invoiceDetails->qty = $sell_qty;
+                        $invoiceDetails->sell_price = $sell_price;
+                        $invoiceDetails->discount = 0;
+                        $invoiceDetails->row_total = $row_sell_price;
+                        $invoiceDetails->save();
+                    }
+                    $i++;
+                }
+                // todo:: if cash need to create money receipt
                 return $this->responseRedirect('crm.invoice.index', 'invoice added successfully', 'success', false, false);
             } else {
-                return $this->responseRedirectBack('Error occurred while creating category.', 'error', true, true);
+                return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
             }
 
         } catch (QueryException $exception) {
-            //throw new InvalidArgumentException($exception->getMessage());
-            return $this->responseRedirectBack('Error occurred while creating category.', 'error', true, true);
+            throw new InvalidArgumentException($exception->getMessage());
+            //return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
         }
     }
 
@@ -96,7 +142,7 @@ class InvoiceController extends BaseController
     public function edit($id)
     {
         try {
-            $brands =  Invoice::findOrFail($id);
+            $brands = Invoice::findOrFail($id);
             $this->setPageTitle('Brands', 'Edit Brands : ' . $brands->name);
         } catch (ModelNotFoundException $e) {
             throw new ModelNotFoundException($e);
@@ -120,7 +166,7 @@ class InvoiceController extends BaseController
             $brand = Invoice::findOrFail($params['id']);
             $collection = collect($params)->except('_token');
             $logo = $brand->logo;
-            if ($collection->has('logo') && ($params['logo'] instanceof  UploadedFile)) {
+            if ($collection->has('logo') && ($params['logo'] instanceof UploadedFile)) {
                 if ($brand->logo != null) {
                     $this->deleteOne($brand->logo);
                 }
@@ -132,7 +178,7 @@ class InvoiceController extends BaseController
             if (!$brand) {
                 return $this->responseRedirectBack('Error occurred while updating invoice.', 'error', true, true);
             }
-            return $this->responseRedirect('crm.invoice.index','invoice updated successfully', 'success', false, false);
+            return $this->responseRedirect('crm.invoice.index', 'invoice updated successfully', 'success', false, false);
         } catch (ModelNotFoundException $e) {
             throw new ModelNotFoundException($e);
         }
@@ -146,7 +192,7 @@ class InvoiceController extends BaseController
     {
         $data = Invoice::find($id);
         $logo = $data->logo;
-        if($data->delete()) {
+        if ($data->delete()) {
             if ($logo != null) {
                 $this->deleteOne($logo);
             }
@@ -155,12 +201,24 @@ class InvoiceController extends BaseController
                 'status_code' => 200,
                 'message' => 'Record has been deleted successfully!',
             ]);
-        } else{
+        } else {
             return response()->json([
                 'success' => false,
                 'status_code' => 200,
                 'message' => 'Please try again!',
             ]);
         }
+    }
+
+    public function voucher($id)
+    {
+        try {
+            $invoice = Invoice::findOrFail($id);
+            $invoice_no = $invoice->invoice_no;
+            $this->setPageTitle('Invoice No-' . $invoice_no, 'Invoice Preview : ' . $invoice_no);
+        } catch (ModelNotFoundException $e) {
+            throw new ModelNotFoundException($e);
+        }
+        return view('Crm::invoice.edit', compact('invoice'));
     }
 }

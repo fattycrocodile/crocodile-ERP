@@ -21,5 +21,6 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::get('/{id}/edit', 'InvoiceController@edit')->name('crm.invoice.edit');
         Route::post('/{id}/update', 'InvoiceController@update')->name('crm.invoice.update');
         Route::delete('/{id}/delete', 'InvoiceController@delete')->name('crm.invoice.delete');
+        Route::get('/{id}/voucher', 'InvoiceController@voucher')->name('crm.invoice.voucher');
     });
 });

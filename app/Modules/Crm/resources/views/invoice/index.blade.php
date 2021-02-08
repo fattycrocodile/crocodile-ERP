@@ -3,9 +3,6 @@
 @push('styles')
     @include('inc.datatable_styles')
 
-    <!-- END VENDOR CSS-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/extensions/toastr.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/plugins/extensions/toastr.css') }}">
 @endpush
 
 @section('content')
@@ -14,7 +11,7 @@
     <div class="row">
         <div class="col-12 text-right">
             <a type="button" class="btn btn-info btn-min-width mr-1 mb-1"
-               href="{{route('storeInventory.brands.create')}}"><i
+               href="{{route('crm.invoice.create')}}"><i
                     class="fa fa-plus"></i> Add New</a>
         </div>
     </div>
@@ -52,7 +49,6 @@
 
     @include('inc.datatable_scripts')
 
-    <script src="{{ asset('app-assets/vendors/js/extensions/toastr.min.js') }}" type="text/javascript"></script>
 
     {!! $dataTable->scripts() !!}
 

@@ -30,19 +30,13 @@ class InvoiceDataTable extends DataTable
                 return "
                     <div class='form-group'>
                         <div class='btn-group' role='group' aria-label='Basic example'>
-                            <a href='brand/$data->id/edit' class='btn btn-icon btn-secondary'><i class='fa fa-pencil-square-o'></i> Edit</a>
-                            <button data-remote='brand/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
+                            <a href='crm/sales/$data->id/edit' class='btn btn-icon btn-secondary' title='Invoice Edit'><i class='fa fa-pencil-square-o'></i></a>
+                            <a href='crm/sales/$data->id/voucher' class='btn btn-icon btn-warning' title='Invoice Preview'><i class='fa fa-eye'></i></a>
+                            <button data-remote='crm/sales/$data->id/delete' class='btn btn-icon btn-danger btn-delete' title='Delete'><i class='fa fa-trash-o'></i></button>
                         </div>
                    </div>";
             })
-            ->editColumn('logo', function ($data) {
-                if ($photo = $data->logo) {
-                    $url = asset('public/uploads/'.$data->logo);
-                    return "<img class='img' style='height: 100px; width: 100px; text-align: center;' src='$url'></img>";
-                }
-                return '';
-            })
-            ->rawColumns(['logo', 'action'])
+            ->rawColumns(['action'])
             ->removeColumn('id');
     }
 
@@ -66,7 +60,7 @@ class InvoiceDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('brands-table')
+            ->setTableId('invoice-table')
             ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
             ->columns($this->getColumns())
             ->minifiedAjax()
@@ -120,12 +114,11 @@ class InvoiceDataTable extends DataTable
                 ->footer('')
                 ->exportable(true)
                 ->printable(true),
-            Column::make('name'),
-            Column::make('description'),
-            Column::make('logo'),
-//            Column::computed('action'),
-//            Column::make('created_at'),
-//            Column::make('updated_at'),
+            Column::make('date'),
+            Column::make('invoice_no'),
+            Column::make('store_id'),
+            Column::make('customer_id'),
+            Column::make('grand_total'),
         ];
     }
 

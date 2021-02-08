@@ -2,10 +2,6 @@
 @section('title') {{ isset($pageTitle) ? $pageTitle : 'Brands' }} @endsection
 @push('styles')
     @include('inc.datatable_styles')
-
-    <!-- END VENDOR CSS-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/extensions/toastr.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/plugins/extensions/toastr.css') }}">
 @endpush
 
 @section('content')
@@ -51,8 +47,6 @@
 @push('scripts')
 
     @include('inc.datatable_scripts')
-
-    <script src="{{ asset('app-assets/vendors/js/extensions/toastr.min.js') }}" type="text/javascript"></script>
 
     {!! $dataTable->scripts() !!}
 

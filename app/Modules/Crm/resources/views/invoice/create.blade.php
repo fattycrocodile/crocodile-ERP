@@ -37,7 +37,8 @@
                         <div class="card-body">
                             <div class="card-text">
                             </div>
-                            <form class="form" id="invoice-form">
+                            <form class="form" id="invoice-form" action="{{route('crm.invoice.store')}}" method="post">
+                                @csrf
                                 <div class="form-body">
                                     <h4 class="form-section"><i class="ft-user"></i> Order & Customer Info</h4>
                                     <div class="row">
@@ -265,10 +266,10 @@
                                                     </tbody>
                                                     <tfoot>
                                                     <tr>
-                                                        <th colspan="5" class="right">Grand Total</th>
+                                                        <th colspan="5" class="text-right">Grand Total</th>
                                                         <th style="text-align: center;">
                                                             <div id="grand_total_text"></div>
-                                                            <input type="hidden" id="grand_total">
+                                                            <input type="hidden" id="grand_total" name="grand_total">
                                                         </th>
                                                         <th></th>
                                                     </tr>
@@ -302,8 +303,72 @@
     <!-- Script -->
     <script type="text/javascript">
 
+        var cashArray = [1];
+        var bankArray = [2, 3, 4, 5];
+        var paymentChequeArray = [3, 4];
+
         // CSRF Token
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+
+        $().ready(function () {
+            $('form#invoice-form').submit(function () {
+                // Get the Login Name value and trim it
+                var date = $.trim($('#date').val());
+                var store_id = $.trim($('#store_id').val());
+                var customer_id = $.trim($('#customer_id').val());
+                var cash_credit = $.trim($('#cash_credit').val());
+                var payment_method = $.trim($('#payment_method').val());
+                var bank_id = $.trim($('#bank_id').val());
+                var cheque_no = $.trim($('#cheque_no').val());
+                var cheque_date = $.trim($('#cheque_date').val());
+
+                if (date === '') {
+                    toastr.warning(" Please select  date!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+                if (store_id === '') {
+                    toastr.warning(" Please select  store!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+                if (customer_id === '') {
+                    toastr.warning(" Please select  customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+                if (cash_credit === '') {
+                    toastr.warning(" Please select  cash/credit!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+
+                if (cash_credit === 1) { //if cash
+                    if (payment_method === '') {
+                        toastr.warning(" Please select  payment method!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                        return false;
+                    }
+                    payment_method = nanCheck(payment_method);
+                    if (isValidCode(payment_method, bankArray)) {
+                        if (bank_id === '') {
+                            toastr.warning(" Please select  bank!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                            return false;
+                        }
+                        if (isValidCode(payment_method, paymentChequeArray)) {
+                            if (cheque_no === '' || cheque_date === '') {
+                                toastr.warning(" Please select  cheque no & cheque date!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                                return false;
+                            }
+                        }
+                    }
+                }
+
+                var rowCount = $('#table-data-list tbody tr.cartList').length;
+                if (nanCheck(rowCount) <= 0 || rowCount === 'undefined') {
+                    toastr.warning(" Please add atleast one item to grid!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+            });
+        });
+
+
         $(document).ready(function () {
 
             // datepicker
@@ -584,23 +649,16 @@
             clearCustomerData();
         });
 
-        var cashArray = [1];
-        var bankArray =[2,3,4,5];
-
         $("#payment_method").change(function () {
             var val = nanCheck(parseInt(this.value));
-            if(isValidCode(val, cashArray)){
+            if (isValidCode(val, cashArray)) {
                 $(".bank_other_payment").hide();
-            } else if(isValidCode(val, bankArray)){
+            } else if (isValidCode(val, bankArray)) {
                 $(".bank_other_payment").show();
             } else {
                 $(".bank_other_payment").hide();
             }
         });
-
-        function isValidCode(code, codes){
-            return ($.inArray(code, codes) > -1);
-        }
 
 
         function add() {
@@ -707,20 +765,6 @@
         }
 
 
-        $().ready(function () {
-            $('form#invoice-form').submit(function () {
-                // Get the Login Name value and trim it
-                var name = $.trim($('#log').val());
-
-                // Check if empty of not
-                if (name === '') {
-                    alert('Text-field is empty.');
-                    return false;
-                }
-            });
-        });
-
-
         function getProductPrice(product_id) {
             $.ajax({
                 url: "{{ route('product.price') }}",
@@ -812,18 +856,21 @@
             var qty = nanCheck(parseFloat($("#qty").val()));
             var sell_price = nanCheck(parseFloat($("#sell_price").val()));
             var min_sell_price = nanCheck(parseFloat($("#min_sell_price").val()));
-            //console.log("QTY=" + qty + ", SELL PRICE= " + sell_price + ", MIN SELL PRICE= "+ min_sell_price)
             if (sell_price < min_sell_price) {
                 toastr.error("Minimum sell price for this product is: " + min_sell_price, 'Message <i class="fa fa-bell faa-ring animated"></i>');
                 $("#sell_price").val(min_sell_price);
                 $("#total_sell_price").val(qty * min_sell_price);
             } else {
-                $("#total_sell_price").val(qty * min_sell_price);
+                $("#total_sell_price").val(qty * sell_price);
             }
         }
 
         function nanCheck(value) {
             return isNaN(value) ? 0 : value;
+        }
+
+        function isValidCode(code, codes) {
+            return ($.inArray(code, codes) > -1);
         }
 
         function calculateGrandTotal() {

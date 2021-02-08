@@ -26,7 +26,7 @@ class UnitController extends BaseController
     public function store(Request $req)
     {
         $req->validate([
-            'name' => 'required|min:2'
+            'name' => 'required|unique:units|min:2'
         ]);
         $units = new Unit();
         $units->name = $req->name;
