@@ -4,6 +4,8 @@ namespace App\Modules\Hr\Http\Controllers;
 
 use App\DataTables\LeaveApplicationsDataTable;
 use App\Http\Controllers\BaseController;
+use App\Modules\Hr\Models\LeaveApplication;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Carbon;
 use App\Modules\Hr\Models\Employees;
 use Illuminate\Http\JsonResponse;
@@ -26,6 +28,90 @@ class LeaveApplicationController extends BaseController
     public function store(Request $req)
     {
         $req->validate([
+            'employee_id' =>'required',
+            'from_date' =>'required',
+            'to_date' => 'required',
+            'subject' =>'required',
+        ]);
+
+        $leave = new LeaveApplication();
+        $sl_no = $leave->maxLeaveNo();
+
+        $leave->sl_no = "LV-" . str_pad($sl_no, 4, '0', STR_PAD_LEFT);
+        $leave->employee_id = $req->employee_id;
+        $leave->from_date = $req->from_date;
+        $leave->to_date = $req->to_date;
+        $leave->subject = $req->subject;
+        $leave->description = $req->description;
+        $leave->application_date = date('Y-m-d');
+        $leave->status = 0;
+        $leave->leave_date = $req->from_date;
+        $leave->created_by = auth()->user()->id;
+        $leave->updated_by = auth()->user()->id;
+
+
+        try {
+                if($leave->save())
+                {
+                    return $this->responseRedirect('hr.leaves.index', 'Leave Application Submitted successfully', 'success', false, false);
+                }
+                else{
+                    return $this->responseRedirectBack('Error occurred while submitting Leave Application.', 'error', true, true);
+                }
+        }
+        catch (QueryException $exception)
+        {
+            //return $exception;
+            return $this->responseRedirectBack('Error occurred while submitting Leave Application.', 'error', true, true);
+        }
+    }
+
+    public function edit($id)
+    {
+        $this->setPageTitle('Edit Leave','Edit selected leave');
+        $leave = LeaveApplication::find($id);
+        return view('Hr::leave.edit',compact('leave'));
+    }
+
+    public function update(Request $req,$id)
+    {
+        $req->validate([
+            'employee_id' =>'required',
+            'from_date' =>'required',
+            'to_date' => 'required',
+            'subject' =>'required',
+        ]);
+
+        $leave = LeaveApplication::find($id);
+        $leave->employee_id = $req->employee_id;
+        $leave->from_date = $req->from_date;
+        $leave->to_date = $req->to_date;
+        $leave->subject = $req->subject;
+        $leave->description = $req->description;
+        $leave->status = 0;
+        $leave->leave_date = $req->from_date;
+        $leave->updated_by = auth()->user()->id;
+
+
+        try {
+            if($leave->update())
+            {
+                return $this->responseRedirect('hr.leaves.index', 'Leave Application updated successfully', 'success', false, false);
+            }
+            else{
+                return $this->responseRedirectBack('Error occurred while updating Leave Application.', 'error', true, true);
+            }
+        }
+        catch (QueryException $exception)
+        {
+            return $exception;
+            //return $this->responseRedirectBack('Error occurred while updating Leave Application.', 'error', true, true);
+        }
+    }
+
+    /*public function store(Request $req)
+    {
+        $req->validate([
            'employee_id' =>'required',
             'from_date' =>'required',
             'to_date' => 'required',
@@ -33,14 +119,35 @@ class LeaveApplicationController extends BaseController
         ]);
 
         $fdate = new \DateTime($req->from_date);
-        $todate = Carbon::parse($req->to_date)->addDays(1);
-        $tdate = $todate;
+        $tdate = Carbon::parse($req->to_date)->addDays(1);
 
         $interval = \DateInterval::createFromDateString('1 day');
         $period = new \DatePeriod($fdate, $interval, $tdate);
+        $leaves = new LeaveApplication();
+        $sl_no = $leaves->maxLeaveNo();
 
-        foreach ($period as $dt) {
-            echo $date = $dt->format("Y-m-d");
+        try {
+            foreach ($period as $dt) {
+                $leave = new LeaveApplication();
+                $leave->sl_no = "LV-" . str_pad($sl_no, 4, '0', STR_PAD_LEFT);
+                $leave->employee_id = $req->employee_id;
+                $leave->from_date = $req->from_date;
+                $leave->to_date = $req->to_date;
+                $leave->subject = $req->subject;
+                $leave->description = $req->description;
+                $leave->application_date = date('Y-m-d');
+                $leave->status = 0;
+                $date = $dt->format("Y-m-d");
+                $leave->leave_date = $date;
+                $leave->created_by = auth()->user()->id;
+                $leave->updated_by = auth()->user()->id;
+                $leave->save();
+            }
+            return $this->responseRedirect('hr.leaves.index', 'Leave Application Submitted successfully', 'success', false, false);
         }
-    }
+        catch (QueryException $exception)
+        {
+            return $this->responseRedirectBack('Error occurred while submitting Leave Application.', 'error', true, true);
+        }
+    }*/
 }

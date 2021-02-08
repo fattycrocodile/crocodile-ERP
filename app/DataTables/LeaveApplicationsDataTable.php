@@ -54,7 +54,7 @@ class LeaveApplicationsDataTable extends DataTable
      */
     public function query(LeaveApplication $model)
     {
-        return $model->newQuery();
+        return $model->newQuery();//->groupBy('sl_no');
     }
 
     /**
