@@ -35,22 +35,28 @@
                                             <label for="unitName" class="sr-only">Unit Name</label>
                                             <input type="text" id="unitName" class="form-control"
                                                    placeholder="Unit Name"
-                                                   name="name" value="{{$unit->name}}">
+                                                   name="name" value="{!! old('name', $unit->name)  !!}"
+                                                   @error('name') is-invalid @enderror>
+                                            @error('name')
+                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="description" class="sr-only">Description</label>
                                             <textarea id="description" name="description" rows="5" class="form-control"
-                                                      placeholder="Enter Description">{{$unit->description}}</textarea>
+                                                      placeholder="Enter Description"
+                                                      @error('description') is-invalid @enderror>{!! old('description', $unit->description)  !!}</textarea>
+                                            @error('description')
+                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-actions">
-                                    <button type="button" class="btn btn-outline-warning mr-1">
+                                    <a type="button" class="btn btn-outline-warning mr-1" href="{{ route('storeInventory.units.index') }}">
                                         <i class="ft-x"></i> Cancel
-                                    </button>
+                                    </a>
                                     <button type="submit" class="btn btn-outline-primary">
                                         <i class="ft-check"></i> Update
                                     </button>
