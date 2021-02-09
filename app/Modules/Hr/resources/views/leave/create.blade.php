@@ -44,7 +44,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="from_date">Date From <span class="required text-danger">*</span></label>
-                                            <div class='input-group date' id='datetimepicker1' data-provide="datepicker">
+                                            <div class='input-group fromdate' id='datetimepicker1' data-provide="datepicker">
                                                 <input type='text' name="from_date" value="{{old('from_date')}}" class="form-control @error('from_date') is-invalid @enderror" data-date-format="Y-MM-DD" autocomplete="off"/>
                                                 <div class="input-group-append">
                                                 <span class="input-group-text">
@@ -59,7 +59,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="to_date">Date To <span class="required text-danger">*</span></label>
-                                            <div class='input-group date' id='datetimepicker1' data-provide="datepicker">
+                                            <div class='input-group todate' id='datetimepicker1' data-provide="datepicker">
                                                 <input type='text' name="to_date" value="{{old('to_date')}}" class="form-control @error('to_date') is-invalid @enderror" data-date-format="Y-MM-DD" autocomplete="off"/>
                                                 <div class="input-group-append">
                                                 <span class="input-group-text">
@@ -126,7 +126,19 @@
             // instance, using default configuration.
             CKEDITOR.replace('desc')
         })
-        $('.date').datetimepicker({});
+
+        var toStartDate = '';
+
+        $('.fromdate').datetimepicker({
+        }).on('dp.change', function (ev) {
+            var toStartDate = new Date(ev.date.valueOf());
+
+            $('.todate').datetimepicker({
+                minDate: toStartDate,
+            });
+        });
+
+
 
 
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');

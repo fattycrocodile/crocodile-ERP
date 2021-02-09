@@ -5,10 +5,17 @@ namespace App\Modules\Hr\Models;
 
 use App\Model\User\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class LeaveApplication extends Model
 {
     protected $guarded=[];
+
+    public function maxLeaveNo()
+    {
+        $model= DB::select(DB::raw('SELECT MAX(CONVERT(SUBSTRING_INDEX(sl_no,"-",-1),UNSIGNED INTEGER)) AS num FROM `leave_applications`'));
+        return $model? $model[0]->num + 1 : 1;
+    }
 
     public function employee()
     {

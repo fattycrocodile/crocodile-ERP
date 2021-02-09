@@ -3,191 +3,99 @@
 
 @push('styles')
     <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/forms/selects/select2.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/pickers/datetime/bootstrap-datetimepicker.css')}}">
 @endpush
 
 @section('content')
     @include('inc.flash')
     <section class="basic-elements">
         <div class="d-flex justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Create New Product</h4>
-                    <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
-                    <div class="heading-elements">
-                        <ul class="list-inline mb-0">
-                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-                            <li><a data-action="close"><i class="ft-x"></i></a></li>
-                        </ul>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Edit Leave</h4>
+                        <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                <li><a data-action="close"><i class="ft-x"></i></a></li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div class="card-content collpase show">
-                    <div class="card-body">
-                        <form class="form" method="post" action="{{route('storeInventory.products.update',$product->id)}}"
-                              enctype="multipart/form-data">
-                            @csrf
-                            <div class="form-body">
+                    <div class="card-content collpase show">
+                        <div class="card-body">
+                            <form class="form" method="post" action="{{route('hr.leaves.update',$leave->id)}}"
+                                  enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label for="employee_name">Employee Name <span class="required text-danger">*</span></label>
+                                        <input type="text"
+                                               class="form-control @error('employee_id') is-invalid @enderror"
+                                               id="employee_name" name="employee_name" value="{{$leave->employee->full_name}}">
+                                        <input type="hidden" name="employee_id" id="employee_id" value="{{$leave->id}}">
+                                        @error('employee_id')
+                                        <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="from_date">Date From <span class="required text-danger">*</span></label>
+                                            <div class='input-group fromdate' id='datetimepicker1' data-provide="datepicker">
+                                                <input type='text' name="from_date" value="{{old('from_date')?old('from_date'):$leave->from_date}}" class="form-control @error('from_date') is-invalid @enderror" data-date-format="Y-MM-DD" autocomplete="off"/>
+                                                <div class="input-group-append">
+                                                <span class="input-group-text">
+                                                  <span class="fa fa-calendar"></span>
+                                                </span>
+                                                </div>
+                                            </div>
+                                            @error('from_date')
+                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="to_date">Date To <span class="required text-danger">*</span></label>
+                                            <div class='input-group todate' id='datetimepicker1' data-provide="datepicker">
+                                                <input type='text' name="to_date" value="{{old('to_date')?old('to_date'):$leave->to_date}}" class="form-control @error('to_date') is-invalid @enderror" data-date-format="Y-MM-DD" autocomplete="off"/>
+                                                <div class="input-group-append">
+                                                <span class="input-group-text">
+                                                  <span class="fa fa-calendar"></span>
+                                                </span>
+                                                </div>
+                                            </div>
+                                            @error('to_date')
+                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+
                                 <div class="form-group">
-                                    <label for="productName">Product Name <span class="required text-danger">*</span></label>
-                                    <input type="text" id="productName"
-                                           class="form-control @error('name') is-invalid @enderror"
-                                           placeholder="Product Name" value="{{ old('name')?old('name'):$product->name }}"
-                                           name="name">
-                                    @error('name')
+                                    <label for="subject">Subject <span class="required text-danger">*</span></label>
+                                    <input type="text" id="subject"
+                                           class="form-control @error('subject') is-invalid @enderror"
+                                           placeholder="Application Subject" value="{{ old('subject')?old('subject'):$leave->subject }}"
+                                           name="subject">
+                                    @error('subject')
                                     <div class="help-block text-danger">{{ $message }} </div> @enderror
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="category">Category <span class="required text-danger">*</span></label>
-                                            <select id="category" name="category_id"
-                                                    class="select2 form-control @error('category_id') is-invalid @enderror">
-                                                <option value="none" selected="" disabled="">Select Category
-                                                </option>
-                                                @foreach($categories as $category)
-                                                    <option
-                                                        value="{{$category->id}}" {{ (old('category_id')?old('category_id'):$product->category_id)==$category->id?'selected':'' }}>{{$category->name}}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('category_id')
-                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="brand">Brand <span class="required text-danger">*</span></label>
-                                            <select id="brand" name="brand_id"
-                                                    class="select2 form-control @error('brand_id') is-invalid @enderror">
-                                                <option value="none" selected="" disabled="">Select Brand
-                                                </option>
-                                                @foreach($brands as $brand)
-                                                    <option
-                                                        value="{{$brand->id}}" {{ (old('brand_id')?old('brand_id'):$product->brand_id)==$brand->id?'selected':'' }}>{{$brand->name}}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('brand_id')
-                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="unit">Unit <span class="required text-danger">*</span></label>
-                                            <select id="unit" name="unit_id"
-                                                    class="select2 form-control @error('unit_id') is-invalid @enderror">
-                                                <option value="none" selected="" disabled="">Select Unit
-                                                </option>
-                                                @foreach($units as $unit)
-                                                    <option
-                                                        value="{{$unit->id}}" {{ (old('unit_id')?old('unit_id'):$product->unit_id)==$unit->id?'selected':'' }}>{{$unit->name}}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('unit_id')
-                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="productCode">Product Code <span class="required text-danger">*</span></label>
-                                            <input type="text" id="productCode"
-                                                   class="form-control @error('code') is-invalid @enderror"
-                                                   placeholder="Product code" value="{{ old('code')?old('code'):$product->code }}"
-                                                   name="code">
-                                            @error('code')
-                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="stockQty">Minimum Stock Qty <span class="required text-danger">*</span></label>
-                                            <input type="text" id="stockQty"
-                                                   class="form-control @error('min_stock_qty') is-invalid @enderror"
-                                                   placeholder="Minimum Order Qty" value="{{ old('min_stock_qty')?old('min_stock_qty'):$product->min_stock_qty }}"
-                                                   name="min_stock_qty">
-                                            @error('min_stock_qty')
-                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="orderQty">Minimum Order Qty <span class="required text-danger">*</span></label>
-                                            <input type="text" id="orderQty"
-                                                   class="form-control @error('min_order_qty') is-invalid @enderror"
-                                                   placeholder="Minimum Order Qty" value="{{ old('min_order_qty')?old('min_order_qty'):$product->min_order_qty }}"
-                                                   name="min_order_qty">
-                                            @error('min_order_qty')
-                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="sellPrice">Sell Price <span class="required text-danger">*</span></label>
-                                            <input type="text" id="sellPrice"
-                                                   class="form-control @error('sell_price') is-invalid @enderror"
-                                                   placeholder="Sell Price" value="{{ old('sell_price')?old('sell_price'):$sellPrice->sell_price }}"
-                                                   name="sell_price">
-                                            @error('sell_price')
-                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="wholesalePrice">Wholesale Price <span class="required text-danger">*</span></label>
-                                            <input type="text" id="wholesalePrice"
-                                                   class="form-control @error('whole_sell_price') is-invalid @enderror"
-                                                   placeholder="Wholesale Price" value="{{ old('whole_sell_price')?old('whole_sell_price'):$sellPrice->whole_sell_price }}"
-                                                   name="whole_sell_price">
-                                            @error('whole_sell_price')
-                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="minsellPrice">Min Sell Price</label>
-                                            <input type="text" id="minsellPrice"
-                                                   class="form-control @error('min_sell_price') is-invalid @enderror"
-                                                   placeholder="Min Sell Price" value="{{ old('min_sell_price')?old('min_sell_price'):$sellPrice->min_sell_price }}"
-                                                   name="min_sell_price">
-                                            @error('min_sell_price')
-                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="minwholesalePrice">Min Wholesale Price</label>
-                                            <input type="text" id="minwholesalePrice"
-                                                   class="form-control @error('min_whole_sell_price') is-invalid @enderror"
-                                                   placeholder="Min Wholesale Price" value="{{ old('min_whole_sell_price')?old('min_whole_sell_price'):$sellPrice->min_whole_sell_price }}"
-                                                   name="min_whole_sell_price">
-                                            @error('min_whole_sell_price')
-                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                        </div>
-                                    </div>
-                                </div>
 
 
                                 <div class="form-group">
-                                    <label for="desc">Description <span class="required text-danger">*</span></label>
+                                    <label for="desc">Description </label>
                                     <textarea name="description" id="desc" cols="50" rows="20"
-                                              class="form-control @error('description') is-invalid @enderror">{{old('description')?old('description'):$product->description}}</textarea>
+                                              class="form-control @error('description') is-invalid @enderror">{{old('description')?old('description'):$leave->description}}</textarea>
                                     @error('description')
                                     <div class="help-block text-danger">{{ $message }} </div> @enderror
                                 </div>
 
 
                                 <div class="form-actions">
-                                    <a type="button" href="{{ route('storeInventory.categories.index') }}"
+                                    <a type="button" href="{{ route('hr.leaves.index') }}"
                                        class="btn btn-warning mr-1">
                                         <i class="ft-x"></i> Cancel
                                     </a>
@@ -195,24 +103,87 @@
                                         <i class="fa fa-check-square-o"></i> Update
                                     </button>
                                 </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </section>
 @endsection
 
 @push('scripts')
-    <script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}" type="text/javascript"></script>
-    <script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/ckeditor/ckeditor.js')}}" type="text/javascript"></script>
+    <script src="{{asset('app-assets/vendors/js/pickers/dateTime/moment-with-locales.min.js')}}"
+            type="text/javascript"></script>
+    <script src="{{asset('app-assets/vendors/js/pickers/dateTime/bootstrap-datetimepicker.min.js')}}"
+            type="text/javascript"></script>
+    <script src="{{asset('app-assets/js/scripts/pickers/dateTime/bootstrap-datetime.js')}}"
+            type="text/javascript"></script>
 
     <script>
         $(function () {
             // instance, using default configuration.
             CKEDITOR.replace('desc')
         })
+
+
+
+        $('.fromdate').datetimepicker({
+        }).on('dp.change', function (ev) {
+            var toStartDate = new Date(ev.date.valueOf());
+
+            $('.todate').datetimepicker({
+                minDate: toStartDate,
+            });
+        });
+
+
+
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+        $("#employee_name").autocomplete({
+            minLength: 1,
+            autoFocus: true,
+            source: function (request, response) {
+                $.ajax({
+                    url: "{{ route('employee.list.autocomplete') }}",
+                    type: 'post',
+                    dataType: "json",
+                    data: {
+                        _token: CSRF_TOKEN,
+                        search: request.term,
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            focus: function (event, ui) {
+                return false;
+            },
+            select: function (event, ui) {
+                if (ui.item.value != '' || ui.item.value > 0) {
+                    $('#employee_name').val(ui.item.label);
+                    $('#employee_id').val(ui.item.value);
+                } else {
+                    resetEmployee();
+                }
+                return false;
+            },
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+
+            var inner_html = '<div>' + item.label + ' (<i>' + item.designation + ')</i></div>';
+            return $("<li>")
+                .data("item.autocomplete", item)
+                .append(inner_html)
+                .appendTo(ul);
+        };
+
+        function resetEmployee() {
+            $('#employee_id').val("");
+            $('#employee_name').val("");
+        }
     </script>
+
 @endpush
