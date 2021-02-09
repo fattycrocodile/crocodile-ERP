@@ -153,7 +153,7 @@
                                                 <label for="cheque_no">Cheque/Transaction No</label>
                                                 <input type="text"
                                                        class="form-control @error('cheque_no') is-invalid @enderror"
-                                                       id="cheque_no">
+                                                       id="cheque_no" name="cheque_no">
                                                 @error('cheque_no')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
@@ -163,8 +163,18 @@
                                                 <label for="cheque_date">Cheque Date</label>
                                                 <input type="text"
                                                        class="form-control @error('cheque_date') is-invalid @enderror"
-                                                       id="cheque_date">
+                                                       id="cheque_date" name="cheque_date">
                                                 @error('cheque_date')
+                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 cash_payment">
+                                            <div class="form-group">
+                                                <label for="manual_mr_no">Manual MR No</label>
+                                                <input type="text"
+                                                       class="form-control @error('mr_no') is-invalid @enderror"
+                                                       id="manual_mr_no" name="manual_mr_no">
+                                                @error('manual_mr_no')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>

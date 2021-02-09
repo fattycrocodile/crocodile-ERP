@@ -9,12 +9,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
+
+    const PAID = 1;
+    const NOT_PAID = 0;
+
+    protected $table = 'invoices';
     protected $guarded=[];
 
     public function maxSlNo($store_no){
 
         $maxSn = $this->where('store_id', '=', $store_no)->max('max_sl_no');
-        return $maxSn ? $maxSn->max_sl_no + 1 : 1;
+        return $maxSn ? $maxSn + 1 : 1;
     }
     public function store()
     {

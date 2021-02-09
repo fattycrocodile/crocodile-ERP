@@ -4,6 +4,7 @@ namespace App\Modules\Crm\Http\Controllers;
 
 use App\DataTables\InvoiceDataTable;
 use App\Http\Controllers\BaseController;
+use App\Modules\Accounting\Models\MoneyReceipt;
 use App\Modules\Config\Models\Lookup;
 use App\Modules\Crm\Models\Invoice;
 use App\Modules\Crm\Models\InvoiceDetails;
@@ -83,14 +84,14 @@ class InvoiceController extends BaseController
             $maxSlNo = $invoice->maxSlNo($store_id = $params['store_id']);
             $year = Carbon::now()->year;
             $store = Stores::findOrFail($store_id);
-            $invNo = "$store->code-$year-" . str_pad($maxSlNo, 8, '0', STR_PAD_LEFT);
+            $invNo = "INV-$store->code-$year-" . str_pad($maxSlNo, 8, '0', STR_PAD_LEFT);
 
             $invoice->max_sl_no = $maxSlNo;
             $invoice->invoice_no = $invNo;
             $invoice->store_id = $params['store_id'];
             $invoice->customer_id = $params['customer_id'];
             $invoice->discount_amount = 0;
-            $invoice->grand_total = $params['grand_total'];
+            $invoice->grand_total = $grand_total = $params['grand_total'];
             $invoice->date = $date = $params['date'];
             $invoice->created_by = $created_by = auth()->user()->id;
             if ($invoice->save()) {
@@ -123,7 +124,37 @@ class InvoiceController extends BaseController
                     }
                     $i++;
                 }
-                // todo:: if cash need to create money receipt
+                $cash_credit = $params['cash_credit'];
+                if ($cash_credit == Lookup::CASH) {
+                    $payment_type = $params['payment_method'];
+                    $bank_id = $params['bank_id'];
+                    $cheque_no = $params['cheque_no'];
+                    $cheque_date = $params['cheque_date'];
+                    $manual_mr_no = $params['manual_mr_no'];
+                    $mr = new MoneyReceipt();
+                    $max_mr_no = $mr->maxSlNo($store_id);
+                    $mr_no = "MR-$store->code-$year-" . str_pad($maxSlNo, 3, '0', STR_PAD_LEFT);
+
+                    $mr->max_sl_no = $max_mr_no;
+                    $mr->mr_no = $mr_no;
+                    $mr->manual_mr_no = $manual_mr_no;
+                    $mr->store_id = $store_id;
+                    $mr->collection_type = $payment_type;
+                    $mr->amount = $grand_total;
+                    $mr->date = $date;
+                    $mr->received_by = $created_by;
+                    $mr->created_by = $created_by;
+                    if ($payment_type !== Lookup::PAYMENT_CASH) {
+                        $mr->bank_id = $bank_id;
+                        $mr->cheque_no = $cheque_no;
+                        $mr->cheque_date = $cheque_date;
+                    }
+                    if($mr->save()){
+                        $invoice->full_paid = Invoice::PAID;
+                        $invoice->save();
+                    }
+                }
+
                 return $this->responseRedirect('crm.invoice.index', 'invoice added successfully', 'success', false, false);
             } else {
                 return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);

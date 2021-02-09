@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lookup extends Model
 {
+    const CASH = 1;
+    const CREDIT = 2;
+
+    const PAYMENT_CASH = 1;
+
+
     protected $table = 'lookups';
     protected $guarded=[];
 

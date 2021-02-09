@@ -16,6 +16,7 @@ class CreateMoneyReceiptsTable extends Migration
         Schema::create('money_receipts', function (Blueprint $table) {
             $table->id();
             $table->string('mr_no')->comment('Money Receipt No');
+            $table->unsignedBigInteger('max_sl_no');
             $table->string('manual_mr_no')->nullable()->comment('Manul Money Receipt No');
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('id')->on('stores');
