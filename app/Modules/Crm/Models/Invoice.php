@@ -2,6 +2,7 @@
 
 namespace App\Modules\Crm\Models;
 
+use App\Modules\Accounting\Models\MoneyReceipt;
 use App\Modules\StoreInventory\Models\Stores;
 use App\Model\User\User;
 use Carbon\Carbon;
@@ -44,5 +45,10 @@ class Invoice extends Model
     public function invoiceDetails()
     {
         return $this->hasMany(InvoiceDetails::class);
+    }
+
+    public function moneyReceipt()
+    {
+        return $this->hasMany(MoneyReceipt::class, 'invoice_id');
     }
 }

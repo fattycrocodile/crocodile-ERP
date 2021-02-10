@@ -37,7 +37,7 @@
                         <div class="card-body">
                             <div class="card-text">
                             </div>
-                            <form class="form" id="invoice-form" action="{{route('crm.invoice.store')}}" method="post">
+                            <form class="form" id="invoice-form" action="{{route('crm.invoice.store')}}" method="post" autocomplete="off">
                                 @csrf
                                 <div class="form-body">
                                     <h4 class="form-section"><i class="ft-user"></i> Order & Customer Info</h4>
@@ -938,7 +938,11 @@
                 evt.preventDefault();
             }
         });
-
+        $(document).ready(function(){
+            $( document ).on( 'focus', ':input', function(){
+                $( this ).attr( 'autocomplete', 'off' );
+            });
+        });
     </script>
 
 @endpush

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title') {{ isset($pageTitle) ? $pageTitle : 'Brands' }} @endsection
+@section('title') {{ isset($pageTitle) ? $pageTitle : 'Invoice' }} @endsection
 @push('styles')
     @include('inc.datatable_styles')
 

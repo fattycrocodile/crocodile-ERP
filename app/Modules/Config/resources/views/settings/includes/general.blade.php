@@ -5,15 +5,38 @@
             <h3 class="card-title">General Settings</h3>
             <hr>
             <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
+                    <label class="control-label" for="site_name">Company Name</label>
+                    <input class="form-control" type="text" placeholder="Enter company name" id="company_name"
+                           name="company_name" value="{{ config('settings.company_name') }}"/>
+                </div>
+                <div class="form-group col-md-4">
                     <label class="control-label" for="site_name">Application Name</label>
                     <input class="form-control" type="text" placeholder="Enter application name" id="site_name"
                            name="site_name" value="{{ config('settings.site_name') }}"/>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label class="control-label" for="site_title">Application Title</label>
                     <input class="form-control" type="text" placeholder="Enter application title" id="site_title"
                            name="site_title" value="{{ config('settings.site_title') }}"/>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label class="control-label" for="road_no">Road No</label>
+                    <input class="form-control" type="text" placeholder="Enter road no" id="road_no"
+                           name="road_no" value="{{ config('settings.road_no') }}"/>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="control-label" for="house_no">Flat/House no</label>
+                    <input class="form-control" type="text" placeholder="Enter flat/house no" id="house_no"
+                           name="house_no" value="{{ config('settings.house_no') }}"/>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="control-label" for="post_code">Post Code</label>
+                    <input class="form-control" type="text" placeholder="Enter post code" id="post_code"
+                           name="post_code" value="{{ config('settings.post_code') }}"/>
                 </div>
             </div>
 

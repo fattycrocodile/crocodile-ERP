@@ -11,28 +11,48 @@ class MoneyReceipt extends Model
     protected $table = 'money_receipts';
     protected $guarded = [];
 
+    /**
+     * @param $store_id
+     * @return int
+     */
     public function maxSlNo($store_id)
     {
         $maxSn = $this->where('store_id', '=', $store_id)->max('max_sl_no');
         return $maxSn ? $maxSn + 1 : 1;
     }
 
-    public function store()
+    public static function totalMrAmountOfInvoice($invoice_id)
+    {
+        $mr = new MoneyReceipt();
+        $data = $mr->where('invoice_id', '=', $invoice_id)->sum('amount');
+        return $data;
+    }
+
+    public static function mrInfo($invoice_id)
+    {
+        $product = MoneyReceipt::query();
+        $product->where('invoice_id', '=', $invoice_id);
+        $product->orderBy('id', 'asc');
+        $data = $product->first();
+        return $data;
+    }
+
+    public function store(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Stores::class);
     }
 
-    public function receivedBy()
+    public function receivedBy(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function createdBy()
+    public function createdBy(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function updatedBy()
+    public function updatedBy(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }

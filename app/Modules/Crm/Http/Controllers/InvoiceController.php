@@ -54,9 +54,9 @@ class InvoiceController extends BaseController
     public function create()
     {
         $stores = $this->store->treeList();
-        $payment_type = Lookup::items('payment_method', 1);
-        $cash_credit = Lookup::items('cash_credit', 1);
-        $bank = Lookup::items('bank', 1);
+        $payment_type = Lookup::items('payment_method');
+        $cash_credit = Lookup::items('cash_credit');
+        $bank = Lookup::items('bank');
         $this->setPageTitle('Create Invoice', 'Create Invoice');
         return view('Crm::invoice.create', compact('stores', 'payment_type', 'cash_credit', 'bank'));
     }
@@ -86,6 +86,7 @@ class InvoiceController extends BaseController
             $store = Stores::findOrFail($store_id);
             $invNo = "INV-$store->code-$year-" . str_pad($maxSlNo, 8, '0', STR_PAD_LEFT);
 
+            $invoice->cash_credit = $cash_credit = $params['cash_credit'];
             $invoice->max_sl_no = $maxSlNo;
             $invoice->invoice_no = $invNo;
             $invoice->store_id = $params['store_id'];
@@ -124,7 +125,6 @@ class InvoiceController extends BaseController
                     }
                     $i++;
                 }
-                $cash_credit = $params['cash_credit'];
                 if ($cash_credit == Lookup::CASH) {
                     $payment_type = $params['payment_method'];
                     $bank_id = $params['bank_id'];
@@ -144,18 +144,18 @@ class InvoiceController extends BaseController
                     $mr->date = $date;
                     $mr->received_by = $created_by;
                     $mr->created_by = $created_by;
+                    $mr->invoice_id = $invoice_id;
                     if ($payment_type !== Lookup::PAYMENT_CASH) {
                         $mr->bank_id = $bank_id;
                         $mr->cheque_no = $cheque_no;
                         $mr->cheque_date = $cheque_date;
                     }
-                    if($mr->save()){
+                    if ($mr->save()) {
                         $invoice->full_paid = Invoice::PAID;
                         $invoice->save();
                     }
                 }
-
-                return $this->responseRedirect('crm.invoice.index', 'invoice added successfully', 'success', false, false);
+                return $this->responseRedirectToWithParameters('crm.invoice.voucher', ['id'=>$invoice->id], 'Invoice created successfully', 'success', false, false);
             } else {
                 return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
             }
@@ -243,13 +243,10 @@ class InvoiceController extends BaseController
 
     public function voucher($id)
     {
-        try {
-            $invoice = Invoice::findOrFail($id);
-            $invoice_no = $invoice->invoice_no;
-            $this->setPageTitle('Invoice No-' . $invoice_no, 'Invoice Preview : ' . $invoice_no);
-        } catch (ModelNotFoundException $e) {
-            throw new ModelNotFoundException($e);
-        }
-        return view('Crm::invoice.edit', compact('invoice'));
+        $invoice = Invoice::findOrFail($id);
+        $invoice_no = $invoice->invoice_no;
+        $this->setPageTitle('Invoice No-' . $invoice_no, 'Invoice Preview : ' . $invoice_no);
+
+        return view('Crm::invoice.voucher', compact('invoice','id'));
     }
 }

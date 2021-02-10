@@ -10,7 +10,7 @@
                 <li class="nav-item">
                     <a class="navbar-brand" href="{{ url('/') }}">
                         <img class="brand-logo" alt="{{ config('settings.site_name') }}" title="{{ config('settings.site_name') }}"
-                             src="{{ asset('app-assets/images/logo/stack-logo-light.png') }}">
+                             src="{{ asset('uploads/'. config('settings.site_logo')) }}" style="height: 25px;">
                         <h2 class="brand-text">{{ config('settings.site_name') }}</h2>
                     </a>
                 </li>

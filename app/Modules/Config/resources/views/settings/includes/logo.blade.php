@@ -7,10 +7,10 @@
             <div class="form-row">
                 <div class="col-3">
                     @if (config('settings.site_logo') != null)
-                        <img src="{{ asset('public/'. config('settings.site_logo')) }}" id="logoImg"
+                        <img src="{{ asset('uploads/'. config('settings.site_logo')) }}" id="logoImg"
                              style="width: 80px; height: auto;">
                     @else
-                        <img src="{{ asset('public/img/resources/logo.png')}}" id="logoImg"
+                        <img src="{{ asset('uploads/img/logo-template.jpg')}}" id="logoImg"
                              style="width: 80px; height: auto;">
                     @endif
                 </div>
@@ -26,10 +26,10 @@
             <div class="form-row">
                 <div class="col-3">
                     @if (config('settings.site_favicon') != null)
-                        <img src="{{ storage_path('public/'.config('settings.site_favicon')) }}" id="faviconImg"
+                        <img src="{{ asset('uploads/'.config('settings.site_favicon')) }}" id="faviconImg"
                              style="width: 80px; height: auto;">
                     @else
-                        <img src="{{ asset('public/img/footer/footer-logo.png')}}" id="faviconImg"
+                        <img src="{{ asset('/uploads/img/logo-template.jpg')}}" id="faviconImg"
                              style="width: 80px; height: auto;">
                     @endif
                 </div>

@@ -19,6 +19,22 @@ class SettingsTableSeeder extends Seeder
             'value' => 'LARAVEL ERP'
         ],
         [
+            'key' => 'company_name',
+            'value' => 'Enterprise Resource Planning (ERP)'
+        ],
+        [
+            'key' => 'road_no',
+            'value' => 'Panthapath'
+        ],
+        [
+            'key' => 'house_no',
+            'value' => '245/1'
+        ],
+        [
+            'key' => 'post_code',
+            'value' => 'Dhaka-1208'
+        ],
+        [
             'key' => 'default_email_address',
             'value' => 'info@erp.com'
         ],
