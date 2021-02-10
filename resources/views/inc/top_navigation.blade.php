@@ -34,7 +34,7 @@
                         <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                 <span class="avatar avatar-online">
                   <img src="{{ asset('app-assets/images/portrait/small/avatar-s-1.png') }}" alt="avatar"><i></i></span>
-                            <span class="user-name">{{ Auth::user()->name }}</span>
+                            <span class="user-name">{{ isset(Auth::user()->name) ? Auth::user()->name : "404" }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" href="user-profile.html">
