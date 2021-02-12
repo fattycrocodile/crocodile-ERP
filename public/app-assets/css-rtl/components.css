@@ -28,7 +28,7 @@ html body .content.app-content {
   overflow : hidden;
 }
 html body .content .content-wrapper {
-  padding : 1.8rem;
+  padding : 0.5rem;
 }
 html body .content .content-wrapper .content-header-title {
   text-transform : uppercase;
@@ -81,7 +81,7 @@ html body .pace .pace-progress {
 
 @media (max-width: 767.98px) {
   html body .content .content-wrapper {
-    padding : 1rem;
+    padding : 0.5rem;
   }
   html body footer {
     text-align : center;

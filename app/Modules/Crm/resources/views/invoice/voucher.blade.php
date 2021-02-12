@@ -6,6 +6,11 @@
 
 @section('content')
     @include('inc.flash')
+<div class="btn-group" role="group" aria-label="Basic example">
+    <a href="{{ route('crm.invoice.create') }}" class="btn btn-icon btn-secondary"><i class="fa fa-backward"></i> Go Back</a>
+    <a href="{{ route('crm.invoice.index') }}" class="btn btn-icon btn-secondary"><i class="fa fa-list-ul"></i> Invoice Manage</a>
+    <a href="#" class="btn btn-icon btn-secondary"><i class="fa fa-print"></i> Print</a>
+</div>
     <section class="card">
         <div id="invoice-template" class="card-body">
             <!-- Invoice Company Details -->

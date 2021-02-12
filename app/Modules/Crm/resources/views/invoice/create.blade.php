@@ -609,7 +609,7 @@
                 var customer_id = $("#customer_id").val();
                 if (store_id > 0 && customer_id > 0) {
                     $.ajax({
-                        url: "{{ route('product.name.autocomplete') }}",
+                        url: "{{ route('product.code.autocomplete') }}",
                         type: 'post',
                         dataType: "json",
                         data: {
@@ -643,7 +643,7 @@
             },
         }).data("ui-autocomplete")._renderItem = function (ul, item) {
 
-            var inner_html = '<div>' + item.label + ' (<i>' + item.code + ')</i></div>';
+            var inner_html = '<div>' + item.label + ' (<i>' + item.name + ')</i></div>';
             return $("<li>")
                 .data("item.autocomplete", item)
                 .append(inner_html)
