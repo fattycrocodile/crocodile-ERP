@@ -2,7 +2,6 @@
 @section('title') {{ isset($pageTitle) ? $pageTitle : 'Invoice' }} @endsection
 @push('styles')
     @include('inc.datatable_styles')
-
 @endpush
 
 @section('content')

@@ -1,12 +1,7 @@
 @extends('layouts.app')
-@section('title') {{ isset($pageTitle) ? $pageTitle : 'Categories' }} @endsection
+@section('title') {{ isset($pageTitle) ? $pageTitle : 'Designations' }} @endsection
 @push('styles')
-
     @include('inc.datatable_styles')
-
-    <!-- END VENDOR CSS-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/extensions/toastr.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/plugins/extensions/toastr.css') }}">
 @endpush
 
 @section('content')

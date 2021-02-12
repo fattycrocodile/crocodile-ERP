@@ -1,12 +1,7 @@
 @extends('layouts.app')
-@section('title') {{ isset($pageTitle) ? $pageTitle : 'Categories' }} @endsection
+@section('title') {{ isset($pageTitle) ? $pageTitle : 'Stores' }} @endsection
 @push('styles')
-
     @include('inc.datatable_styles')
-
-    <!-- END VENDOR CSS-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/extensions/toastr.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/plugins/extensions/toastr.css') }}">
 @endpush
 
 @section('content')
@@ -47,12 +42,7 @@
     <!--/ Responsive integration (Bootstrap) table -->
 @endsection
 @push('scripts')
-
     @include('inc.datatable_scripts')
-
-
-    <script src="{{ asset('app-assets/vendors/js/extensions/toastr.min.js') }}" type="text/javascript"></script>
-
     {!! $dataTable->scripts() !!}
 
     <script>

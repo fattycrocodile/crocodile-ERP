@@ -2,7 +2,6 @@
 @section('title') {{ isset($pageTitle) ? $pageTitle : 'Brands' }} @endsection
 @push('styles')
     @include('inc.datatable_styles')
-
 @endpush
 
 @section('content')
@@ -46,10 +45,7 @@
 
 @endsection
 @push('scripts')
-
     @include('inc.datatable_scripts')
-
-
     {!! $dataTable->scripts() !!}
 
     <script>

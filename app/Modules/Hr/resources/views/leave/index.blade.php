@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('title') {{ isset($pageTitle) ? $pageTitle : 'Categories' }} @endsection
 @push('styles')
-
     @include('inc.datatable_styles')
 @endpush
 
@@ -43,9 +42,7 @@
     <!--/ Responsive integration (Bootstrap) table -->
 @endsection
 @push('scripts')
-
     @include('inc.datatable_scripts')
-
     {!! $dataTable->scripts() !!}
 
     <script>

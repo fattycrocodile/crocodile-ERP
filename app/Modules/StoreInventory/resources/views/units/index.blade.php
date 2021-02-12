@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title') {{ isset($pageTitle) ? $pageTitle : 'Brands' }} @endsection
+@section('title') {{ isset($pageTitle) ? $pageTitle : 'Units' }} @endsection
 @push('styles')
     @include('inc.datatable_styles')
 @endpush
@@ -45,9 +45,7 @@
 
 @endsection
 @push('scripts')
-
     @include('inc.datatable_scripts')
-
     {!! $dataTable->scripts() !!}
 
     <script>
