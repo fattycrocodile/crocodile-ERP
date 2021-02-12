@@ -4,7 +4,6 @@ namespace App\DataTables;
 
 
 use App\Modules\Crm\Models\Invoice;
-use App\Modules\StoreInventory\Models\Brand;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
