@@ -26,6 +26,12 @@ class InvoiceDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addIndexColumn()
+            ->editColumn('store_id', function ($data) {
+                return isset($data->store->name) ? $data->store->name : 'N/A';
+            })
+            ->editColumn('customer_id', function ($data) {
+                return isset($data->customer->name) ? $data->customer->name : 'N/A';
+            })
             ->addColumn('action', function ($data) {
                 return "
                     <div class='form-group'>
@@ -116,8 +122,11 @@ class InvoiceDataTable extends DataTable
                 ->printable(true),
             Column::make('date'),
             Column::make('invoice_no'),
-            Column::make('store_id'),
-            Column::make('customer_id'),
+
+            Column::make('store_id')
+                ->title('Store'),
+            Column::make('customer_id')
+                ->title('Customer'),
             Column::make('grand_total'),
         ];
     }
