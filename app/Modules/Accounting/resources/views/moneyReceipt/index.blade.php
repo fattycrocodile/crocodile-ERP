@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title') {{ isset($pageTitle) ? $pageTitle : 'Invoice' }} @endsection
+@section('title') {{ isset($pageTitle) ? $pageTitle : 'MoneyReceipt Manage' }} @endsection
 @push('styles')
     @include('inc.datatable_styles')
 @endpush
@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-12 text-right">
             <a type="button" class="btn btn-info btn-min-width mr-1 mb-1"
-               href="{{route('crm.invoice.create')}}"><i
+               href="{{ route('accounting.mr.create') }}"><i
                     class="fa fa-plus"></i> Add New</a>
         </div>
     </div>
@@ -21,7 +21,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">INVOICES</h4>
+                        <h4 class="card-title">MONEYRECEIPT MANAGE</h4>
                         <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                         <div class="heading-elements">
                             <ul class="list-inline mb-0">
@@ -52,7 +52,7 @@
     {!! $dataTable->scripts() !!}
 
     <script>
-        $('#invoice-table').on('click', '.btn-delete[data-remote]', function (e) {
+        $('#money-receipt-table').on('click', '.btn-delete[data-remote]', function (e) {
 
             e.preventDefault();
             $.ajaxSetup({
@@ -69,7 +69,7 @@
                     dataType: 'json',
                     data: {method: '_DELETE', submit: true}
                 }).always(function (data) {
-                    $('#invoice-table').DataTable().draw(false);
+                    $('#money-receipt-table').DataTable().draw(false);
                     var message = data.message;
                     if (data.success === true) {
                         toastr.success(message, 'Message <i class="fa fa-bell faa-ring animated"></i>');

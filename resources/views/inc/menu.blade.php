@@ -138,6 +138,24 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">MoneyReceipt
+                            <submenu class="name"></submenu>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('accounting.mr.index') }}" data-toggle="dropdown">MoneyReceipt Manage
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('accounting.mr.create') }}" data-toggle="dropdown">MoneyReceipt Create
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
 

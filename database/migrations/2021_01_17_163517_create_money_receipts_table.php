@@ -17,9 +17,10 @@ class CreateMoneyReceiptsTable extends Migration
             $table->id();
             $table->string('mr_no')->comment('Money Receipt No');
             $table->unsignedBigInteger('max_sl_no');
-            $table->string('manual_mr_no')->nullable()->comment('Manul Money Receipt No');
+            $table->string('manual_mr_no')->nullable()->comment('Manual Money Receipt No');
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('id')->on('stores');
+            $table->foreign('customer_id')->references('id')->on('customers')->nullable();
             $table->string('collection_type');
             $table->string('bank_name');
             $table->string('cheque_no');

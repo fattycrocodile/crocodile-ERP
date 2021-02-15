@@ -3,7 +3,10 @@
 namespace App\Modules\Accounting\Models;
 
 use App\Model\User\User;
+use App\Modules\Crm\Models\Customers;
+use App\Modules\Crm\Models\Invoice;
 use App\Modules\StoreInventory\Models\Stores;
+use Cassandra\Custom;
 use Illuminate\Database\Eloquent\Model;
 
 class MoneyReceipt extends Model
@@ -50,6 +53,16 @@ class MoneyReceipt extends Model
     public function createdBy(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function invoice(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Invoice::class);
+    }
+
+    public function customer(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Customers::class);
     }
 
     public function updatedBy(): \Illuminate\Database\Eloquent\Relations\BelongsTo
