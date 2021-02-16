@@ -40,6 +40,11 @@ Route::group(['middleware' => ['auth:web']], function () {
             Route::post('/customer-code-list', 'CustomersController@getCustomerListByCode')->name('customer.code.autocomplete');
             Route::post('/customer-contact-list', 'CustomersController@getCustomerListByContactNo')->name('customer.contact.autocomplete');
         });
+
+        Route::group(array('module' => 'Commercial', 'namespace' => '\App\Modules\Commercial\Http\Controllers'), function () {
+            Route::post('/supplier-list', 'SuppliersController@getSupplierListByName')->name('supplier.name.autocomplete');
+            Route::post('/supplier-contact-list', 'SuppliersController@getSupplierListByContactNo')->name('supplier.contact.autocomplete');
+        });
     });
 });
 

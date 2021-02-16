@@ -7,6 +7,7 @@ use App\DataTables\SellpricesDataTable;
 use App\DataTables\SuppliersDataTable;
 use App\Http\Controllers\BaseController;
 use App\Modules\Commercial\Models\Suppliers;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class SuppliersController extends BaseController
@@ -99,6 +100,59 @@ class SuppliersController extends BaseController
                 'message' => 'Please try again!',
             ]);
         }
+    }
+
+
+    public function getSupplierListByName(Request $request): ?JsonResponse
+    {
+        $response = array();
+        if ($request->has('search')) {
+            $search = trim($request->search);
+            $data = new Suppliers();
+            $data = $data->select('id', 'name', 'contact_no');
+            if ($search != '') {
+                $data = $data->where('name', 'like', '%' . $search . '%');
+            }
+            $data = $data->limit(20);
+            $data = $data->orderby('name', 'asc');
+            $data = $data->get();
+            if (!$data->isEmpty()) {
+                foreach ($data as $dt) {
+                    $response[] = array("value" => $dt->id, "label" => $dt->name, 'name' => $dt->name, 'contact_no' => $dt->contact_no);
+                }
+            } else {
+                $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'contact_no' => '');
+            }
+        } else {
+            $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'contact_no' => '');
+        }
+        return response()->json($response);
+    }
+
+    public function getSupplierListByContactNo(Request $request): ?JsonResponse
+    {
+        $response = array();
+        if ($request->has('search')) {
+            $search = trim($request->search);
+            $data = new Suppliers();
+            $data = $data->select('id', 'name', 'contact_no');
+            if ($search != '') {
+                $data = $data->where('contact_no', 'like', '%' . $search . '%');
+            }
+            $data = $data->limit(20);
+            $data = $data->orderby('name', 'asc');
+            $data = $data->get();
+            if (!$data->isEmpty()) {
+                foreach ($data as $dt) {
+                    $response[] = array("value" => $dt->id, "label" => $dt->contact_no, 'name' => $dt->name, 'contact_no' => $dt->contact_no);
+                }
+            } else {
+                $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'contact_no' => '');
+            }
+        } else {
+            $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'contact_no' => '');
+        }
+        return response()->json($response);
     }
 
 }

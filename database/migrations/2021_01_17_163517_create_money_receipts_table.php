@@ -22,9 +22,9 @@ class CreateMoneyReceiptsTable extends Migration
             $table->foreign('store_id')->references('id')->on('stores');
             $table->foreign('customer_id')->references('id')->on('customers')->nullable();
             $table->string('collection_type');
-            $table->string('bank_name');
-            $table->string('cheque_no');
-            $table->string('cheque_date');
+            $table->string('bank_name')->nullable();
+            $table->string('cheque_no')->nullable();
+            $table->string('cheque_date')->nullable();
             $table->double('discount');
             $table->double('amount');
             $table->date('date');

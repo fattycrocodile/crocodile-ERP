@@ -14,4 +14,14 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/{id}/update', 'SuppliersController@update')->name('commercial.suppliers.update');
         Route::delete('/{id}/delete', 'SuppliersController@delete')->name('commercial.suppliers.delete');
     });
+
+    Route::group(['prefix' => 'commercial/purchase'], function () {
+        Route::get('/', 'PurchaseController@index')->name('commercial.purchase.index');
+        Route::get('/create', 'PurchaseController@create')->name('commercial.purchase.create');
+        Route::post('/store', 'PurchaseController@store')->name('commercial.purchase.store');
+        Route::get('/{id}/edit', 'PurchaseController@edit')->name('commercial.purchase.edit');
+        Route::post('/{id}/update', 'PurchaseController@update')->name('commercial.purchase.update');
+        Route::delete('/{id}/delete', 'PurchaseController@delete')->name('commercial.purchase.delete');
+        Route::get('/{id}/voucher', 'PurchaseController@voucher')->name('commercial.purchase.voucher');
+    });
 });
