@@ -6,6 +6,7 @@ namespace App\Modules\Accounting\Http\Controllers;
 use App\DataTables\MoneyReceiptDataTable;
 use App\Http\Controllers\BaseController;
 use App\Modules\Accounting\Models\MoneyReceipt;
+use App\Modules\StoreInventory\Models\Stores;
 use App\Traits\UploadAble;
 use Carbon\Carbon;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
@@ -23,10 +24,12 @@ class MoneyReceiptController extends BaseController
 {
     use UploadAble;
     public $model;
+    public $store;
 
     public function __construct(MoneyReceipt $model)
     {
         $this->model = $model;
+        $this->store = new Stores();
     }
 
     /**
@@ -44,8 +47,9 @@ class MoneyReceiptController extends BaseController
      */
     public function create()
     {
+        $stores = $this->store->treeList();
         $this->setPageTitle('Create MR', 'Create Money Receipt');
-        return view('Accounting::moneyReceipt.index');
+        return view('Accounting::moneyReceipt.create', compact('stores'));
     }
 
     /**
