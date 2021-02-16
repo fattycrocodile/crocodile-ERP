@@ -155,7 +155,7 @@ class InvoiceController extends BaseController
                         $invoice->save();
                     }
                 }
-                return $this->responseRedirectToWithParameters('crm.invoice.voucher', ['id'=>$invoice->id], 'Invoice created successfully', 'success', false, false);
+                return $this->responseRedirectToWithParameters('crm.invoice.voucher', ['id' => $invoice->id], 'Invoice created successfully', 'success', false, false);
             } else {
                 return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
             }
@@ -247,6 +247,23 @@ class InvoiceController extends BaseController
         $invoice_no = $invoice->invoice_no;
         $this->setPageTitle('Invoice No-' . $invoice_no, 'Invoice Preview : ' . $invoice_no);
 
-        return view('Crm::invoice.voucher', compact('invoice','id'));
+        return view('Crm::invoice.voucher', compact('invoice', 'id'));
+    }
+
+
+    public function getDueInvoiceList(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('customer_id')) {
+//            dd($request->all());
+            $customer_id = trim($request->customer_id);
+            $data = new Invoice();
+            $data = $data->where('customer_id', '=', $customer_id);
+            $data = $data->orderby('id', 'asc');
+            $data = $data->get();
+        }
+        $returnHTML = view('Crm::invoice.due-invoice-list', compact('data'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 }

@@ -89,11 +89,15 @@
                                         <div class="col-md-1">
                                             <div class="form-group" style="margin-top: 26px;">
                                                 <button id="action" class="btn btn-primary btn-md" type="button"
-                                                        onclick="add()">
+                                                        onclick="getDueInvoice()">
                                                     <i class="icon-magnifier"></i>
                                                 </button>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <h4 class="form-section"><i class="ft-airplay"></i> Invoice Info</h4>
+                                    <div class="row" id="invoice-infos">
                                     </div>
                                 </div>
                             </form>
@@ -430,6 +434,40 @@
                 $( this ).attr( 'autocomplete', 'off' );
             });
         });
+
+        function getDueInvoice() {
+            var customer_id = $("#customer_id").val();
+            $.ajax({
+                url: "{{ route('crm.invoice.due_invoice') }}",
+                type: 'post',
+                dataType: "json",
+                cache: false,
+                data: {
+                    _token: CSRF_TOKEN,
+                    customer_id: customer_id,
+                },
+                beforeSend: function() {
+                    if (customer_id == "" || customer_id == 0 || customer_id == null){
+                        toastr.warning(" Please select customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                        return false;
+                    }
+                },
+                success: function (data) {
+                    console.log('success');
+                    console.log(data);
+                    // response(data);
+                    if(data.success == true) {
+                        //user_jobs div defined on page
+                        $('#invoice-infos').html(data.html);
+                    } else {
+                        {{--$('#user_jobs').html(data.html + '{{ $user->username }}');--}}
+                    }
+                },
+                error: function(xhr,textStatus,thrownError) {
+                    alert(xhr + "\n" + textStatus + "\n" + thrownError);
+                }
+            });
+        }
     </script>
 
 @endpush

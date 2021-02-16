@@ -6,7 +6,6 @@ use App\Model\User\User;
 use App\Modules\Crm\Models\Customers;
 use App\Modules\Crm\Models\Invoice;
 use App\Modules\StoreInventory\Models\Stores;
-use Cassandra\Custom;
 use Illuminate\Database\Eloquent\Model;
 
 class MoneyReceipt extends Model
