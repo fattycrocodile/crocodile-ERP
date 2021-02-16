@@ -39,6 +39,7 @@ Route::group(['middleware' => ['auth:web']], function () {
             Route::post('/customer-list', 'CustomersController@getCustomerListByName')->name('customer.name.autocomplete');
             Route::post('/customer-code-list', 'CustomersController@getCustomerListByCode')->name('customer.code.autocomplete');
             Route::post('/customer-contact-list', 'CustomersController@getCustomerListByContactNo')->name('customer.contact.autocomplete');
+            Route::post('/due-invoice-list', 'InvoiceController@getDueInvoiceList')->name('crm.invoice.due_invoice');
         });
 
         Route::group(array('module' => 'Commercial', 'namespace' => '\App\Modules\Commercial\Http\Controllers'), function () {
