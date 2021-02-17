@@ -29,7 +29,7 @@ class CreateInvoicesTable extends Migration
             $table->string('cheque_no')->nullable();
             $table->date('cheque_date')->nullable();
             $table->double('grand_total');
-            $table->tinyInteger('full_paid')->default(0)->comment("0=>Unpaid, 2=>paid");
+            $table->tinyInteger('full_paid')->default(0)->comment("0=>Unpaid, 1=>paid");
             $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users');
             $table->unsignedBigInteger('updated_by')->nullable();

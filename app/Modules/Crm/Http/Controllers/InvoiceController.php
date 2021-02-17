@@ -256,14 +256,18 @@ class InvoiceController extends BaseController
         $response = array();
         $data = NULL;
         if ($request->has('customer_id')) {
-//            dd($request->all());
             $customer_id = trim($request->customer_id);
             $data = new Invoice();
             $data = $data->where('customer_id', '=', $customer_id);
+            $data = $data->where('full_paid', '=', Invoice::NOT_PAID);
             $data = $data->orderby('id', 'asc');
             $data = $data->get();
         }
-        $returnHTML = view('Crm::invoice.due-invoice-list', compact('data'))->render();
+
+        $payment_type = Lookup::items('payment_method');
+        $cash_credit = Lookup::items('cash_credit');
+        $bank = Lookup::items('bank');
+        $returnHTML = view('Crm::invoice.due-invoice-list', compact('data', 'cash_credit', 'bank', 'payment_type'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 }

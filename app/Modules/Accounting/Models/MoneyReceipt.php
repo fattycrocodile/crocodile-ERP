@@ -7,6 +7,8 @@ use App\Modules\Crm\Models\Customers;
 use App\Modules\Crm\Models\Invoice;
 use App\Modules\StoreInventory\Models\Stores;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Cast\Double;
 
 class MoneyReceipt extends Model
 {
@@ -28,6 +30,14 @@ class MoneyReceipt extends Model
         $mr = new MoneyReceipt();
         $data = $mr->where('invoice_id', '=', $invoice_id)->sum('amount');
         return $data;
+    }
+
+    public static function totalMrWithDiscountOfInvoice($invoice_id)
+    {
+        $data = DB::table('money_receipts')
+            ->select(DB::raw('sum(amount) as amount'), DB::raw('sum(discount) as discount'))
+            ->where('invoice_id', '=', $invoice_id)->first();
+        return $data ? $data->amount + $data->discount : 0;
     }
 
     public static function mrInfo($invoice_id)

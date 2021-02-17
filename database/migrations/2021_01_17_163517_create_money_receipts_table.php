@@ -25,8 +25,8 @@ class CreateMoneyReceiptsTable extends Migration
             $table->string('bank_name')->nullable();
             $table->string('cheque_no')->nullable();
             $table->string('cheque_date')->nullable();
-            $table->double('discount');
-            $table->double('amount');
+            $table->double('discount')->default(0);
+            $table->double('amount')->default(0);
             $table->date('date');
             $table->text('remarks');
             $table->unsignedBigInteger('received_by')->nullable();

@@ -8,7 +8,7 @@
             z-index: 999 !important;
         }
 
-        .cash_payment, .bank_other_payment, .cash_payment_bank {
+        .bank_other_payment, .cash_payment_bank {
             display: none;
         }
     </style>
@@ -37,7 +37,8 @@
                         <div class="card-body">
                             <div class="card-text">
                             </div>
-                            <form class="form" id="invoice-form" action="{{route('crm.invoice.store')}}" method="post" autocomplete="off">
+                            <form class="form" id="mr-form" action="{{route('accounting.mr.store')}}" method="post"
+                                  autocomplete="off">
                                 @csrf
 
                                 <div class="form-body">
@@ -95,8 +96,11 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <h4 class="form-section"><i class="ft-airplay"></i> Invoice Info</h4>
+                                    <div class="spinner-div text-center" style="display: none;">
+                                        <button type="button" class="btn btn-lg btn-success mb-1">
+                                            <i class="fa fa-spinner fa-pulse fa-fw"></i> Please wait..
+                                        </button>
+                                    </div>
                                     <div class="row" id="invoice-infos">
                                     </div>
                                 </div>
@@ -115,14 +119,224 @@
     <!-- Script -->
     <script type="text/javascript">
 
+        var cashArray = [1];
+        var bankArray = [2, 3, 4, 5];
+        var paymentChequeArray = [3, 4];
+
+        function nanCheck(value) {
+            return isNaN(value) ? 0 : value;
+        }
+
+        function isValidCode(code, codes) {
+            return ($.inArray(code, codes) > -1);
+        }
+
+        function hidePaymentOption() {
+            $('.cash_payment').hide();
+            $('#payment_method').val("");
+            $('#bank_id').val("");
+            $('#cheque_no').val("");
+            $('#cheque_date').val("");
+        }
+
 
 
         // CSRF Token
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        // customer name wise search start
+        $("#customer_name").autocomplete({
+            minLength: 1,
+            autoFocus: true,
+            source: function (request, response) {
+                var store_id = $("#store_id").val();
+                $.ajax({
+                    url: "{{ route('customer.name.autocomplete') }}",
+                    type: 'post',
+                    dataType: "json",
+                    data: {
+                        _token: CSRF_TOKEN,
+                        search: request.term,
+                        store_id: store_id,
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            focus: function (event, ui) {
+                // console.log(event);
+                // console.log(ui);
+                return false;
+            },
+            select: function (event, ui) {
+                if (ui.item.value != '' || ui.item.value > 0) {
+                    $('#customer_name').val(ui.item.name);
+                    $('#customer_code').val(ui.item.code);
+                    $('#store_id').val(ui.item.store_id);
+                    $('#customer_id').val(ui.item.value);
+                    $('#contact_no').val(ui.item.contact_no);
+                } else {
+                    resetCustomer();
+                }
+                return false;
+            },
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+
+            var inner_html = '<div>' + item.label + ' (<i>' + item.code + ')</i></div>';
+            return $("<li>")
+                .data("item.autocomplete", item)
+                .append(inner_html)
+                .appendTo(ul);
+        };
+        // customer name wise search end
+
+        // customer name wise search start
+        $("#customer_code").autocomplete({
+            minLength: 1,
+            autoFocus: true,
+            source: function (request, response) {
+                // console.log('customer_code');
+                var store_id = $("#store_id").val();
+                $.ajax({
+                    url: "{{ route('customer.code.autocomplete') }}",
+                    type: 'post',
+                    dataType: "json",
+                    data: {
+                        _token: CSRF_TOKEN,
+                        search: request.term,
+                        store_id: store_id,
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            focus: function (event, ui) {
+                // console.log(event);
+                // console.log(ui);
+                return false;
+            },
+            select: function (event, ui) {
+                if (ui.item.value != '' || ui.item.value > 0) {
+                    $('#customer_name').val(ui.item.name);
+                    $('#customer_code').val(ui.item.code);
+                    $('#store_id').val(ui.item.store_id);
+                    $('#customer_id').val(ui.item.value);
+                    $('#contact_no').val(ui.item.contact_no);
+                } else {
+                    resetCustomer();
+                }
+                return false;
+            },
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+            var inner_html = '<div>' + item.label + ' (<i>' + item.name + ')</i></div>';
+            return $("<li>")
+                .data("item.autocomplete", item)
+                .append(inner_html)
+                .appendTo(ul);
+        };
+        // customer code wise search end
+
+        // customer name wise search start
+        $("#contact_no").autocomplete({
+            minLength: 1,
+            autoFocus: true,
+            source: function (request, response) {
+                var store_id = $("#store_id").val();
+                $.ajax({
+                    url: "{{ route('customer.contact.autocomplete') }}",
+                    type: 'post',
+                    dataType: "json",
+                    data: {
+                        _token: CSRF_TOKEN,
+                        search: request.term,
+                        store_id: store_id,
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            focus: function (event, ui) {
+                // console.log(event);
+                // console.log(ui);
+                return false;
+            },
+            select: function (event, ui) {
+                if (ui.item.value != '' || ui.item.value > 0) {
+                    $('#customer_name').val(ui.item.name);
+                    $('#customer_code').val(ui.item.code);
+                    $('#store_id').val(ui.item.store_id);
+                    $('#customer_id').val(ui.item.value);
+                    $('#contact_no').val(ui.item.contact_no);
+                } else {
+                    resetCustomer();
+                }
+                return false;
+            },
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+
+            var inner_html = '<div>' + item.label + ' (<i>' + item.code + ')</i></div>';
+            return $("<li>")
+                .data("item.autocomplete", item)
+                .append(inner_html)
+                .appendTo(ul);
+        };
+
+
+        $(document).ready(function () {
+            $(document).on('focus', ':input', function () {
+                $(this).attr('autocomplete', 'off');
+            });
+        });
+
+        function getDueInvoice() {
+            var customer_id = $("#customer_id").val();
+            $.ajax({
+                url: "{{ route('crm.invoice.due_invoice') }}",
+                type: 'post',
+                dataType: "json",
+                cache: false,
+                data: {
+                    _token: CSRF_TOKEN,
+                    customer_id: customer_id,
+                },
+                beforeSend: function () {
+                    if (customer_id == "" || customer_id == 0 || customer_id == null) {
+                        toastr.warning(" Please select customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                        return false;
+                    }
+                    $(".spinner-div").show();
+                },
+                success: function (data) {
+                    console.log('success');
+                    console.log(data);
+                    // response(data);
+                    if (data.success == true) {
+                        //user_jobs div defined on page
+                        $('#invoice-infos').html(data.html);
+                    } else {
+                        $(".invoice-infos").html("");
+                        {{--$('#user_jobs').html(data.html + '{{ $user->username }}');--}}
+                    }
+                    $(".spinner-div").hide();
+                },
+                error: function (xhr, textStatus, thrownError) {
+                    alert(xhr + "\n" + textStatus + "\n" + thrownError);
+                    $(".spinner-div").hide();
+                    $(".invoice-infos").html("");
+                }
+            }).done(function (data) {
+                // $("#stock_qty").val(data.closing_balance);
+            }).fail(function (jqXHR, textStatus) {
+                $(".spinner-div").hide();
+                $(".invoice-infos").html("");
+            });
+        }
 
 
         $().ready(function () {
-            $('form#invoice-form').submit(function () {
+            $('form#mr-form').submit(function () {
                 // Get the Login Name value and trim it
                 var date = $.trim($('#date').val());
                 var store_id = $.trim($('#store_id').val());
@@ -177,297 +391,5 @@
                 }
             });
         });
-
-
-        $(document).ready(function () {
-
-            // datepicker
-            $(function () {
-                $("#date").datepicker({
-                    // appendText:"(yy-mm-dd)",
-                    dateFormat: "yy-mm-dd",
-                    altField: "#datepicker",
-                    altFormat: "DD, d MM, yy",
-                    prevText: "click for previous months",
-                    nextText: "click for next months",
-                    showOtherMonths: true,
-                    selectOtherMonths: true,
-                    maxDate: new Date()
-                });
-            });
-            $(function () {
-                $("#cheque_date").datepicker({
-                    // appendText:"(yy-mm-dd)",
-                    dateFormat: "yy-mm-dd",
-                    altField: "#datepicker",
-                    altFormat: "DD, d MM, yy",
-                    prevText: "click for previous months",
-                    nextText: "click for next months",
-                    showOtherMonths: true,
-                    selectOtherMonths: true,
-                    // maxDate: new Date()
-                });
-            });
-
-            // customer name wise search start
-            $("#customer_name").autocomplete({
-                minLength: 1,
-                autoFocus: true,
-                source: function (request, response) {
-                    var store_id = $("#store_id").val();
-                    $.ajax({
-                        url: "{{ route('customer.name.autocomplete') }}",
-                        type: 'post',
-                        dataType: "json",
-                        data: {
-                            _token: CSRF_TOKEN,
-                            search: request.term,
-                            store_id: store_id,
-                        },
-                        success: function (data) {
-                            response(data);
-                        }
-                    });
-                },
-                focus: function (event, ui) {
-                    // console.log(event);
-                    // console.log(ui);
-                    return false;
-                },
-                select: function (event, ui) {
-                    if (ui.item.value != '' || ui.item.value > 0) {
-                        $('#customer_name').val(ui.item.name);
-                        $('#customer_code').val(ui.item.code);
-                        $('#store_id').val(ui.item.store_id);
-                        $('#customer_id').val(ui.item.value);
-                        $('#contact_no').val(ui.item.contact_no);
-                    } else {
-                        resetCustomer();
-                    }
-                    return false;
-                },
-            }).data("ui-autocomplete")._renderItem = function (ul, item) {
-
-                var inner_html = '<div>' + item.label + ' (<i>' + item.code + ')</i></div>';
-                return $("<li>")
-                    .data("item.autocomplete", item)
-                    .append(inner_html)
-                    .appendTo(ul);
-            };
-            // customer name wise search end
-
-            // customer name wise search start
-            $("#customer_code").autocomplete({
-                minLength: 1,
-                autoFocus: true,
-                source: function (request, response) {
-                    // console.log('customer_code');
-                    var store_id = $("#store_id").val();
-                    $.ajax({
-                        url: "{{ route('customer.code.autocomplete') }}",
-                        type: 'post',
-                        dataType: "json",
-                        data: {
-                            _token: CSRF_TOKEN,
-                            search: request.term,
-                            store_id: store_id,
-                        },
-                        success: function (data) {
-                            response(data);
-                        }
-                    });
-                },
-                focus: function (event, ui) {
-                    // console.log(event);
-                    // console.log(ui);
-                    return false;
-                },
-                select: function (event, ui) {
-                    if (ui.item.value != '' || ui.item.value > 0) {
-                        $('#customer_name').val(ui.item.name);
-                        $('#customer_code').val(ui.item.code);
-                        $('#store_id').val(ui.item.store_id);
-                        $('#customer_id').val(ui.item.value);
-                        $('#contact_no').val(ui.item.contact_no);
-                    } else {
-                        resetCustomer();
-                    }
-                    return false;
-                },
-            }).data("ui-autocomplete")._renderItem = function (ul, item) {
-                var inner_html = '<div>' + item.label + ' (<i>' + item.name + ')</i></div>';
-                return $("<li>")
-                    .data("item.autocomplete", item)
-                    .append(inner_html)
-                    .appendTo(ul);
-            };
-            // customer code wise search end
-
-            // customer name wise search start
-            $("#contact_no").autocomplete({
-                minLength: 1,
-                autoFocus: true,
-                source: function (request, response) {
-                    var store_id = $("#store_id").val();
-                    $.ajax({
-                        url: "{{ route('customer.contact.autocomplete') }}",
-                        type: 'post',
-                        dataType: "json",
-                        data: {
-                            _token: CSRF_TOKEN,
-                            search: request.term,
-                            store_id: store_id,
-                        },
-                        success: function (data) {
-                            response(data);
-                        }
-                    });
-                },
-                focus: function (event, ui) {
-                    // console.log(event);
-                    // console.log(ui);
-                    return false;
-                },
-                select: function (event, ui) {
-                    if (ui.item.value != '' || ui.item.value > 0) {
-                        $('#customer_name').val(ui.item.name);
-                        $('#customer_code').val(ui.item.code);
-                        $('#store_id').val(ui.item.store_id);
-                        $('#customer_id').val(ui.item.value);
-                        $('#contact_no').val(ui.item.contact_no);
-                    } else {
-                        resetCustomer();
-                    }
-                    return false;
-                },
-            }).data("ui-autocomplete")._renderItem = function (ul, item) {
-
-                var inner_html = '<div>' + item.label + ' (<i>' + item.code + ')</i></div>';
-                return $("<li>")
-                    .data("item.autocomplete", item)
-                    .append(inner_html)
-                    .appendTo(ul);
-            };
-        });
-
-
-
-
-        function calculateTotal() {
-            var qty = nanCheck(parseFloat($("#qty").val()));
-            var sell_price = nanCheck(parseFloat($("#sell_price").val()));
-            var min_sell_price = nanCheck(parseFloat($("#min_sell_price").val()));
-            if (sell_price < min_sell_price) {
-                toastr.error("Minimum sell price for this product is: " + min_sell_price, 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                $("#sell_price").val(min_sell_price);
-                $("#total_sell_price").val(qty * min_sell_price);
-            } else {
-                $("#total_sell_price").val(qty * sell_price);
-            }
-        }
-
-        function nanCheck(value) {
-            return isNaN(value) ? 0 : value;
-        }
-
-        function isValidCode(code, codes) {
-            return ($.inArray(code, codes) > -1);
-        }
-
-        function calculateGrandTotal() {
-            var grand_total = 0;
-            $('#table-data-list .temp_row_sell_price').each(function () {
-                grand_total += nanCheck(parseFloat(this.value));
-            });
-            $("#grand_total_text").html(grand_total);
-            $("#grand_total").val(grand_total);
-        }
-
-        function calculateRowTotalOnChange() {
-            var serial = 0;
-            var grandTotal = 0;
-            $("#table-data-list tbody tr.cartList td.count").each(function (index, element) {
-
-                    console.log("CALCULATION STARTED::" + index);
-                    serial++;
-                    var temp_stock_qty = nanCheck(parseFloat($(this).closest('tr').find(".temp_stock_qty").val()));
-                    var temp_sell_price = nanCheck(parseFloat($(this).closest('tr').find(".temp_sell_price").val()));
-                    var temp_min_sell_price = nanCheck(parseFloat($(this).closest('tr').find(".temp_min_sell_price").val()));
-                    var temp_sell_qty = nanCheck(parseFloat($(this).closest('tr').find(".temp_sell_qty").val()));
-                    var temp_row_sell_price = nanCheck(parseFloat($(this).closest('tr').find(".temp_row_sell_price").val()));
-
-                    if (temp_sell_price < temp_min_sell_price) {
-                        temp_sell_price = temp_min_sell_price;
-                        $(this).closest('tr').find(".temp_sell_price ").val(temp_min_sell_price);
-                        toastr.warning("Minimum sell price is: " + temp_min_sell_price, 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    }
-                    // console.log("MIN: " + temp_min_sell_price + ", SP: " + temp_sell_price);
-                    if (temp_sell_qty <= 0) {
-                        temp_sell_qty = 1;
-                        $(this).closest('tr').find(".temp_sell_qty ").val(temp_sell_qty);
-                        toastr.warning("Minimum sell qty is: " + temp_sell_qty, 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    }
-
-                    if (temp_sell_qty > temp_stock_qty) {
-                        temp_sell_qty = temp_stock_qty;
-                        $(this).closest('tr').find(".temp_sell_qty ").val(temp_sell_qty);
-                        toastr.warning("Sell qty exceeded!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    }
-                    var row_total = temp_sell_qty * temp_sell_price;
-
-                    $(this).closest('tr').find(".temp_row_sell_price").val(row_total.toFixed(2));
-                }
-            );
-            calculateGrandTotal();
-        }
-
-        // Restricts input for the set of matched elements to the given inputFilter function.
-        $(document).on('input keyup  drop paste', "#qty, #sell_price, .temp_sell_price, .temp_sell_qty", function (evt) {
-            var self = $(this);
-            self.val(self.val().replace(/[^0-9\.]/g, ''));
-            if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) {
-                evt.preventDefault();
-            }
-        });
-        $(document).ready(function(){
-            $( document ).on( 'focus', ':input', function(){
-                $( this ).attr( 'autocomplete', 'off' );
-            });
-        });
-
-        function getDueInvoice() {
-            var customer_id = $("#customer_id").val();
-            $.ajax({
-                url: "{{ route('crm.invoice.due_invoice') }}",
-                type: 'post',
-                dataType: "json",
-                cache: false,
-                data: {
-                    _token: CSRF_TOKEN,
-                    customer_id: customer_id,
-                },
-                beforeSend: function() {
-                    if (customer_id == "" || customer_id == 0 || customer_id == null){
-                        toastr.warning(" Please select customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                        return false;
-                    }
-                },
-                success: function (data) {
-                    console.log('success');
-                    console.log(data);
-                    // response(data);
-                    if(data.success == true) {
-                        //user_jobs div defined on page
-                        $('#invoice-infos').html(data.html);
-                    } else {
-                        {{--$('#user_jobs').html(data.html + '{{ $user->username }}');--}}
-                    }
-                },
-                error: function(xhr,textStatus,thrownError) {
-                    alert(xhr + "\n" + textStatus + "\n" + thrownError);
-                }
-            });
-        }
     </script>
-
 @endpush
