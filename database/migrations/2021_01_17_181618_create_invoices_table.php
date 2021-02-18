@@ -20,7 +20,6 @@ class CreateInvoicesTable extends Migration
             $table->string('invoice_no');
             $table->tinyInteger('cash_credit');
             $table->unsignedBigInteger('store_id');
-            $table->unsignedBigInteger('cash_credit');
             $table->foreign('store_id')->references('id')->on('stores');
             $table->unsignedBigInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers');
