@@ -2,13 +2,23 @@
 
 namespace App\Modules\Crm\Models;
 
-use App\Modules\StoreInventory\Models\Stores;
 use App\Model\User\User;
+use App\Modules\StoreInventory\Models\Stores;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceReturn extends Model
 {
-    protected $guarded=[];
+    protected $table = 'invoice_returns';
+    protected $guarded = [];
+
+    public static function totalReturnAmountOfInvoice($invoice_id)
+    {
+        $data = DB::table('invoice_returns')
+            ->select(DB::raw('sum(return_amount) as return_amount'))
+            ->where('invoice_id', '=', $invoice_id)->first();
+        return $data ? $data->return_amount : 0;
+    }
 
     public function store()
     {

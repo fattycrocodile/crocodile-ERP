@@ -18,7 +18,7 @@
                         <label for="payment_method">Payment Method</label>
                         <select id="payment_method" name="payment_method"
                                 class="select2 form-control @error('payment_method') is-invalid @enderror">
-                            <option value="none" selected="">Select Payment method</option>
+                            <option value="" selected="">Select Payment method</option>
                             @foreach($payment_type as $key => $value)
                                 <option value="{{ $key }}"> {{ $value }} </option>
                             @endforeach
@@ -91,16 +91,22 @@
                     <tbody>
                     <?php
                     $totalBill = $totalDue = 0;
+                    $count = 0;
                     ?>
                     @if(!$data->isEmpty())
                         @foreach($data as $key => $dt)
                             <?php
-                            $mrAmount = \App\Modules\Accounting\Models\MoneyReceipt::totalMrWithDiscountOfInvoice($dt->invoice_id);
-                            $due_amount = $dt->grand_total - $mrAmount;
+                            $mrAmount = \App\Modules\Accounting\Models\MoneyReceipt::totalMrAmountOfInvoice($dt->id);
+                            $returnAmount = \App\Modules\Crm\Models\InvoiceReturn::totalReturnAmountOfInvoice($dt->id);
+                            $totalMrWithReturn = $mrAmount + $returnAmount;
+                            $due_amount = $dt->grand_total - $totalMrWithReturn;
                             $totalBill += $dt->grand_total;
                             $totalDue += $due_amount;
                             ?>
                             @if ($due_amount > 0)
+                                <?php
+                                $count++;
+                                ?>
                                 <tr class="cartList">
                                     <th scope="row" class="count">{{ ++$key }}</th>
                                     <td>{{ $dt->date }}</td>
@@ -172,7 +178,7 @@
                         </th>
                         <th colspan="2" style="text-align: center;">
                             <span class="grand_total_payment_disc_txt" style="text-align: center; color: green;"></span>
-                            <input type="hidden" name="grand_total" class="form-control grand_total">
+                            <input type="hidden" name="grand_total" class="form-control grand_total" id="grand_total">
                         </th>
                         <th>
                         </th>
@@ -188,7 +194,7 @@
         <button type="button" class="btn btn-warning mr-1">
             <i class="ft-refresh-ccw"></i> Reload
         </button>
-        <button type="submit" class="btn btn-primary" name="saveInvoice">
+        <button type="submit" class="btn btn-primary" name="saveInvoice" id="saveInvoice">
             <i class="fa fa-check-square-o"></i> Save
         </button>
     </div>
@@ -294,9 +300,6 @@
         $(".grand_total_payment_txt").html(payment_total.toFixed(2));
         $(".grand_total_discount_txt").html(discount_total.toFixed(2));
         $(".grand_total_payment_disc_txt").html(grand_total.toFixed(2));
-        $(".grand_total").html(grand_total.toFixed(2));
+        $("#grand_total").val(grand_total.toFixed(2));
     }
-
-    // $('.modal-body').html("TEST");
-    // $('#xlarge').modal('show');
 </script>

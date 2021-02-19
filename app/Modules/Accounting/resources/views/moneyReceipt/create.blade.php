@@ -15,8 +15,12 @@
 @endpush
 @section('content')
 
-    @include('inc.flash')
+    <div class="alert alert-danger print-error-msg" style="display:none">
+        <ul></ul>
+    </div>
 
+    <div class="alert alert-success print-success-msg" style="display:none">
+    </div>
     <section id="basic-form-layouts">
         <div class="row match-height">
             <div class="col-md-12">
@@ -138,7 +142,6 @@
             $('#cheque_no').val("");
             $('#cheque_date').val("");
         }
-
 
 
         // CSRF Token
@@ -306,11 +309,12 @@
                         toastr.warning(" Please select customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                         return false;
                     }
+                    $('#invoice-infos').html("");
                     $(".spinner-div").show();
                 },
                 success: function (data) {
-                    console.log('success');
-                    console.log(data);
+                    // console.log('success');
+                    // console.log(data);
                     // response(data);
                     if (data.success == true) {
                         //user_jobs div defined on page
@@ -336,16 +340,17 @@
 
 
         $().ready(function () {
-            $('form#mr-form').submit(function () {
+            $('form#mr-form').submit(function (e) {
+                e.preventDefault();
                 // Get the Login Name value and trim it
                 var date = $.trim($('#date').val());
                 var store_id = $.trim($('#store_id').val());
                 var customer_id = $.trim($('#customer_id').val());
-                var cash_credit = $.trim($('#cash_credit').val());
                 var payment_method = $.trim($('#payment_method').val());
                 var bank_id = $.trim($('#bank_id').val());
                 var cheque_no = $.trim($('#cheque_no').val());
                 var cheque_date = $.trim($('#cheque_date').val());
+                var grand_total = nanCheck(parseFloat($.trim($('#grand_total').val())));
 
                 if (date === '') {
                     toastr.warning(" Please select  date!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
@@ -359,37 +364,93 @@
                     toastr.warning(" Please select  customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 }
-                if (cash_credit === '') {
-                    toastr.warning(" Please select  cash/credit!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+
+                if (payment_method === '' || payment_method <= 0) {
+                    toastr.warning(" Please select  payment method!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 }
 
-                if (cash_credit === 1) { //if cash
-                    if (payment_method === '') {
-                        toastr.warning(" Please select  payment method!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                payment_method = nanCheck(payment_method);
+                if (isValidCode(payment_method, bankArray)) {
+                    if (bank_id === '') {
+                        toastr.warning(" Please select  bank!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                         return false;
                     }
-                    payment_method = nanCheck(payment_method);
-                    if (isValidCode(payment_method, bankArray)) {
-                        if (bank_id === '') {
-                            toastr.warning(" Please select  bank!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    if (isValidCode(payment_method, paymentChequeArray)) {
+                        if (cheque_no === '' || cheque_date === '') {
+                            toastr.warning(" Please select  cheque no & cheque date!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                             return false;
-                        }
-                        if (isValidCode(payment_method, paymentChequeArray)) {
-                            if (cheque_no === '' || cheque_date === '') {
-                                toastr.warning(" Please select  cheque no & cheque date!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                                return false;
-                            }
                         }
                     }
                 }
 
                 var rowCount = $('#table-data-list tbody tr.cartList').length;
                 if (nanCheck(rowCount) <= 0 || rowCount === 'undefined') {
-                    toastr.warning(" Please add atleast one item to grid!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    toastr.warning(" Please add at least one item to grid!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
+                }
+                // console.log(grand_total);
+                if (grand_total <= 0 || grand_total === "") {
+                    toastr.warning(" Please insert mr amount!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                } else {
+                    ajaxSave();
                 }
             });
         });
+
+        function ajaxSave() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "{{ route('accounting.mr.store') }}",
+                type: 'post',
+                dataType: "json",
+                cache: false,
+                data: $('form').serialize(),
+                beforeSend: function () {
+                    if (customer_id == "" || customer_id == 0 || customer_id == null) {
+                        toastr.warning(" Please select customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                        return false;
+                    }
+                    $('#invoice-infos').html("");
+                    $(".spinner-div").show();
+                },
+                success: function (result) {
+                    if(result.error === false){
+                        $(".print-success-msg").css('display','block');
+                        $(".print-success-msg").html(result.message);
+                        $('.modal-body').html(result.data);
+                        $('#xlarge').modal('show');
+                    }else{
+                        printErrorMsg(result.data);
+                    }
+                    $(".spinner-div").hide();
+                    $(".invoice-infos").html("");
+                },
+                error: function (xhr, textStatus, thrownError) {
+                    alert(xhr + "\n" + textStatus + "\n" + thrownError);
+                    $(".spinner-div").hide();
+                    $(".invoice-infos").html("");
+                }
+            }).done(function (data) {
+                console.log("REQUEST DONE;");
+            }).fail(function (jqXHR, textStatus) {
+                console.log("REQUEST FAILED;");
+                $(".spinner-div").hide();
+                $(".invoice-infos").html("");
+            });
+        }
+
+        function printErrorMsg (msg) {
+            $(".print-error-msg").find("ul").html('');
+            $(".print-error-msg").css('display','block');
+            $.each( msg, function( key, value ) {
+                $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+            });
+        }
     </script>
 @endpush

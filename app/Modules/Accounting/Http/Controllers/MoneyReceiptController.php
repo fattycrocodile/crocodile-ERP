@@ -6,9 +6,9 @@ namespace App\Modules\Accounting\Http\Controllers;
 use App\DataTables\MoneyReceiptDataTable;
 use App\Http\Controllers\BaseController;
 use App\Modules\Accounting\Models\MoneyReceipt;
+use App\Modules\Crm\Models\Invoice;
 use App\Modules\StoreInventory\Models\Stores;
 use App\Traits\UploadAble;
-use Carbon\Carbon;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -19,10 +19,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Validator;
+
 
 class MoneyReceiptController extends BaseController
 {
     use UploadAble;
+
     public $model;
     public $store;
 
@@ -59,102 +62,74 @@ class MoneyReceiptController extends BaseController
      */
     public function store(Request $request)
     {
-
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'date' => 'required|date',
             'store_id' => 'required|integer',
             'customer_id' => 'required|integer',
-            'cash_credit' => 'required|integer',
-            'product' => 'required|array',
-//            'grand_total' => 'required|min:1',
+            'payment_method' => 'required|integer',
+            'grand_total' => 'required|min:1',
         ]);
         $params = $request->except('_token');
-
-        try {
-            $MoneyReceipt = new MoneyReceipt();
-            $maxSlNo = $MoneyReceipt->maxSlNo($store_id = $params['store_id']);
-            $year = Carbon::now()->year;
-            $store = Stores::findOrFail($store_id);
-            $invNo = "INV-$store->code-$year-" . str_pad($maxSlNo, 8, '0', STR_PAD_LEFT);
-
-            $MoneyReceipt->cash_credit = $cash_credit = $params['cash_credit'];
-            $MoneyReceipt->max_sl_no = $maxSlNo;
-            $MoneyReceipt->MoneyReceipt_no = $invNo;
-            $MoneyReceipt->store_id = $params['store_id'];
-            $MoneyReceipt->customer_id = $params['customer_id'];
-            $MoneyReceipt->discount_amount = 0;
-            $MoneyReceipt->grand_total = $grand_total = $params['grand_total'];
-            $MoneyReceipt->date = $date = $params['date'];
-            $MoneyReceipt->created_by = $created_by = auth()->user()->id;
-            if ($MoneyReceipt->save()) {
-                $MoneyReceipt_id = $MoneyReceipt->id;
+        if ($validator->passes()) {
+            try {
+                $year = date('y');
+                $date = $params['date'];
+                $store_id = $params['store_id'];
+                $customer_id = $params['customer_id'];
+                $payment_method = $params['payment_method'];
+                $bank_id = $params['bank_id'];
+                $cheque_no = $params['cheque_no'];
+                $cheque_date = $params['cheque_date'];
+                $manual_mr_no = $params['manual_mr_no'];
                 $i = 0;
-                foreach ($params['product']['temp_product_id'] as $product_id) {
-                    $stock_qty = $params['product']['temp_stock_qty'][$i];
-                    $sell_price = $params['product']['temp_sell_price'][$i];
-                    $sell_qty = $params['product']['temp_sell_qty'][$i];
-                    $row_sell_price = $params['product']['temp_row_sell_price'][$i];
+                $mr = new MoneyReceipt();
+                $store = Stores::findOrFail($store_id);
+                $maxSlNo = $mr->maxSlNo($store_id);
+                $invNo = "MR-$store->code-$year-" . str_pad($maxSlNo, 8, '0', STR_PAD_LEFT);
+                foreach ($params['mr']['invoice_id'] as $invoice) {
+                    $invoice_total = $params['mr']['invoice_total'][$i];
+                    $invoice_due = $params['mr']['invoice_due'][$i];
+                    $row_due = $params['mr']['row_due'][$i];
+                    $payment_amount = $params['mr']['payment_amount'][$i];
+                    $discount_amount = $params['mr']['discount_amount'][$i];
 
-                    $inventory = new Inventory();
-                    $inventory->store_id = $store_id;
-                    $inventory->product_id = $product_id;
-                    $inventory->stock_in = 0;
-                    $inventory->stock_out = $sell_qty;
-                    $inventory->ref_type = Inventory::REF_MoneyReceipt;
-                    $inventory->ref_id = $MoneyReceipt_id;
-                    $inventory->date = $date;
-                    $inventory->created_by = $created_by;
-                    if ($inventory->save()) {
-                        $MoneyReceiptDetails = new MoneyReceiptDetails();
-                        $MoneyReceiptDetails->MoneyReceipt_id = $MoneyReceipt_id;
-                        $MoneyReceiptDetails->product_id = $product_id;
-                        $MoneyReceiptDetails->qty = $sell_qty;
-                        $MoneyReceiptDetails->sell_price = $sell_price;
-                        $MoneyReceiptDetails->discount = 0;
-                        $MoneyReceiptDetails->row_total = $row_sell_price;
-                        $MoneyReceiptDetails->save();
+                    $model = new MoneyReceipt();
+                    $model->max_sl_no = $maxSlNo;
+                    $model->mr_no = $invNo;
+                    $model->manual_mr_no = $manual_mr_no;
+                    $model->store_id = $store_id;
+                    $model->invoice_id = $invoice;
+                    $model->collection_type = $payment_method;
+                    $model->amount = $payment_amount > 0 ? $payment_amount : 0;
+                    $model->discount = $discount_amount > 0 ? $discount_amount : 0;
+                    $model->date = $date;
+                    $model->bank_id = $bank_id;
+                    $model->cheque_no = $cheque_no;
+                    $model->cheque_date = $cheque_date;
+                    $model->received_by = $created_by = auth()->user()->id;
+                    $model->created_by = $created_by;
+                    $model->customer_id = $customer_id;
+                    $model->save();
+                    if ($row_due <= 0){
+                        $invoice = Invoice::findOrFail($invoice);
+                        if ($invoice){
+                            $invoice->full_paid = Invoice::PAID;
+                            $invoice->save();
+                        }
                     }
                     $i++;
                 }
-                if ($cash_credit == Lookup::CASH) {
-                    $payment_type = $params['payment_method'];
-                    $bank_id = $params['bank_id'];
-                    $cheque_no = $params['cheque_no'];
-                    $cheque_date = $params['cheque_date'];
-                    $manual_mr_no = $params['manual_mr_no'];
-                    $mr = new MoneyReceipt();
-                    $max_mr_no = $mr->maxSlNo($store_id);
-                    $mr_no = "MR-$store->code-$year-" . str_pad($maxSlNo, 3, '0', STR_PAD_LEFT);
+                /*$data = MoneyReceipt::query()
+                    ->where(['store_id', '=', $store_id], ['max_sl_no', '=', $maxSlNo], ['customer_id', '=', $customer_id])
+                    ->get();*/
+                $data = 'TEST';
+                return $this->responseJson(false, 200, "MR Created Successfully.", $data);
+            } catch (QueryException $exception) {
+                throw new InvalidArgumentException($exception->getMessage());
 
-                    $mr->max_sl_no = $max_mr_no;
-                    $mr->mr_no = $mr_no;
-                    $mr->manual_mr_no = $manual_mr_no;
-                    $mr->store_id = $store_id;
-                    $mr->collection_type = $payment_type;
-                    $mr->amount = $grand_total;
-                    $mr->date = $date;
-                    $mr->received_by = $created_by;
-                    $mr->created_by = $created_by;
-                    $mr->MoneyReceipt_id = $MoneyReceipt_id;
-                    if ($payment_type !== Lookup::PAYMENT_CASH) {
-                        $mr->bank_id = $bank_id;
-                        $mr->cheque_no = $cheque_no;
-                        $mr->cheque_date = $cheque_date;
-                    }
-                    if ($mr->save()) {
-                        $MoneyReceipt->full_paid = MoneyReceipt::PAID;
-                        $MoneyReceipt->save();
-                    }
-                }
-                return $this->responseRedirectToWithParameters('crm.MoneyReceipt.voucher', ['id'=>$MoneyReceipt->id], 'MoneyReceipt created successfully', 'success', false, false);
-            } else {
-                return $this->responseRedirectBack('Error occurred while creating MoneyReceipt.', 'error', true, true);
             }
-
-        } catch (QueryException $exception) {
-            throw new InvalidArgumentException($exception->getMessage());
-            //return $this->responseRedirectBack('Error occurred while creating MoneyReceipt.', 'error', true, true);
         }
+        return $this->responseJson(true, 200, "Something is wrong", $validator->errors()->all());
     }
 
     /**
@@ -238,6 +213,6 @@ class MoneyReceiptController extends BaseController
         $MoneyReceipt_no = $MoneyReceipt->MoneyReceipt_no;
         $this->setPageTitle('MoneyReceipt No-' . $MoneyReceipt_no, 'MoneyReceipt Preview : ' . $MoneyReceipt_no);
 
-        return view('Crm::MoneyReceipt.voucher', compact('MoneyReceipt','id'));
+        return view('Crm::MoneyReceipt.voucher', compact('MoneyReceipt', 'id'));
     }
 }

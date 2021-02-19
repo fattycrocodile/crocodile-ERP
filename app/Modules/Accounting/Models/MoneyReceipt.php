@@ -25,14 +25,8 @@ class MoneyReceipt extends Model
         return $maxSn ? $maxSn + 1 : 1;
     }
 
-    public static function totalMrAmountOfInvoice($invoice_id)
-    {
-        $mr = new MoneyReceipt();
-        $data = $mr->where('invoice_id', '=', $invoice_id)->sum('amount');
-        return $data;
-    }
 
-    public static function totalMrWithDiscountOfInvoice($invoice_id)
+    public static function totalMrAmountOfInvoice($invoice_id)
     {
         $data = DB::table('money_receipts')
             ->select(DB::raw('sum(amount) as amount'), DB::raw('sum(discount) as discount'))

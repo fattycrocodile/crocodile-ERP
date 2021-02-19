@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class InvoiceReturnDetails extends Model
 {
+    protected $table = 'invoice_return_details';
     protected $guarded=[];
 
     public function invoiceReturn()
