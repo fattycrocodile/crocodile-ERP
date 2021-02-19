@@ -20,5 +20,8 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::get('/{id}/edit', 'MoneyReceiptController@edit')->name('accounting.mr.edit');
         Route::post('/{id}/update', 'MoneyReceiptController@update')->name('accounting.mr.update');
         Route::delete('/{id}/delete', 'MoneyReceiptController@delete')->name('accounting.mr.delete');
+
+
+        Route::post('/voucher-preview', 'MoneyReceiptController@voucher')->name('accounting.mr.voucher');
     });
 });

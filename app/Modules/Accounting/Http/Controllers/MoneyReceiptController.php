@@ -57,8 +57,8 @@ class MoneyReceiptController extends BaseController
 
     /**
      * @param Request $request
-     * @return RedirectResponse
-     * @throws ValidationException
+     * @return JsonResponse|RedirectResponse
+     * @throws \Throwable
      */
     public function store(Request $request)
     {
@@ -110,20 +110,24 @@ class MoneyReceiptController extends BaseController
                     $model->created_by = $created_by;
                     $model->customer_id = $customer_id;
                     $model->save();
-                    if ($row_due <= 0){
+                    if ($row_due <= 0) {
                         $invoice = Invoice::findOrFail($invoice);
-                        if ($invoice){
+                        if ($invoice) {
                             $invoice->full_paid = Invoice::PAID;
                             $invoice->save();
                         }
                     }
                     $i++;
                 }
-                /*$data = MoneyReceipt::query()
-                    ->where(['store_id', '=', $store_id], ['max_sl_no', '=', $maxSlNo], ['customer_id', '=', $customer_id])
-                    ->get();*/
-                $data = 'TEST';
-                return $this->responseJson(false, 200, "MR Created Successfully.", $data);
+                $data = new MoneyReceipt();
+                $data = $data->where('mr_no', '=', $invNo);
+                $data = $data->get();
+                if ($data) {
+                    $returnHTML = view('Accounting::MoneyReceipt.voucher', compact('data'))->render();
+                    return $this->responseJson(false, 200, "MR Created Successfully.", $returnHTML);
+                } else {
+                    return $this->responseJson(true, 200, "Voucher not found!");
+                }
             } catch (QueryException $exception) {
                 throw new InvalidArgumentException($exception->getMessage());
 
@@ -207,12 +211,20 @@ class MoneyReceiptController extends BaseController
         }
     }
 
-    public function voucher($id)
+    public function voucher(Request $request)
     {
-        $MoneyReceipt = MoneyReceipt::findOrFail($id);
-        $MoneyReceipt_no = $MoneyReceipt->MoneyReceipt_no;
-        $this->setPageTitle('MoneyReceipt No-' . $MoneyReceipt_no, 'MoneyReceipt Preview : ' . $MoneyReceipt_no);
-
-        return view('Crm::MoneyReceipt.voucher', compact('MoneyReceipt', 'id'));
+        if ($request->has('mr_no')) {
+            $data = new MoneyReceipt();
+            $data = $data->where('mr_no', '=', $request->mr_no);
+            $data = $data->get();
+            if ($data) {
+                $returnHTML = view('Accounting::MoneyReceipt.voucher', compact('data'))->render();
+                return $this->responseJson(false, 200, "", $returnHTML);
+            } else {
+                return $this->responseJson(true, 200, "Voucher not found!");
+            }
+        } else {
+            return $this->responseJson(true, 200, "Please insert mr no!");
+        }
     }
 }

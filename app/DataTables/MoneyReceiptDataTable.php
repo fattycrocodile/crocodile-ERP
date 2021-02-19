@@ -38,7 +38,7 @@ class MoneyReceiptDataTable extends DataTable
                 return "
                     <div class='form-group'>
                         <div class='btn-group' role='group' aria-label='Basic example'>
-                            <a href='sales/$data->id/voucher' class='btn btn-icon btn-warning' title='Invoice Preview'><i class='fa fa-eye'></i></a>
+                            <button class='btn btn-icon btn-warning btn-preview' value='$data->mr_no' title='Preview'><i class='fa fa-eye'></i></button>
                             <button data-remote='sales/$data->id/delete' class='btn btn-icon btn-danger btn-delete' title='Delete'><i class='fa fa-trash-o'></i></button>
                         </div>
                    </div>";
@@ -67,7 +67,7 @@ class MoneyReceiptDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('money-receipt')
+            ->setTableId('money-receipt-table')
             ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
             ->columns($this->getColumns())
             ->minifiedAjax()
