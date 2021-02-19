@@ -3,7 +3,7 @@
 - [ ] Sales Order Create
 - [ ] Invoice create from order
 - [ ] Invoice Return
-- [ ] Money Receipt Create
+- [x] Money Receipt Create
 - [ ] Purchase Order Create
 - [ ] Purchase Receive
 - [ ] Purchase Return

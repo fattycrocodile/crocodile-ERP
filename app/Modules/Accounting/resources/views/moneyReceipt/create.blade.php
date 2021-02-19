@@ -15,7 +15,7 @@
 @endpush
 @section('content')
 
-    <div class="alert alert-danger print-error-msg" style="display:none">
+    <div class="alert alert-danger print-error-msg " style="display:none">
         <ul></ul>
     </div>
 
@@ -446,8 +446,10 @@
                         $(".print-success-msg").html(result.message);
                         $('.modal-body').html(result.data);
                         $('#xlarge').modal('show');
+                        flashMessage('success');
                     }else{
                         printErrorMsg(result.data);
+                        flashMessage('error');
                     }
                     $(".spinner-div").hide();
                     $(".invoice-infos").html("");
@@ -472,6 +474,18 @@
             $.each( msg, function( key, value ) {
                 $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
             });
+        }
+
+        function flashMessage(value = 'success'){
+            if (value === 'success') {
+                $(".print-success-msg-msg").fadeTo(2000, 500).slideUp(500, function () {
+                    $(".print-success-msg").slideUp(500);
+                });
+            } else {
+                $(".print-error-msg").fadeTo(2000, 500).slideUp(500, function () {
+                    $(".print-error-msg").slideUp(500);
+                });
+            }
         }
     </script>
 @endpush

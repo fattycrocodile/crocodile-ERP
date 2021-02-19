@@ -39,7 +39,6 @@ class MoneyReceiptDataTable extends DataTable
                     <div class='form-group'>
                         <div class='btn-group' role='group' aria-label='Basic example'>
                             <button class='btn btn-icon btn-warning btn-preview' value='$data->mr_no' title='Preview'><i class='fa fa-eye'></i></button>
-                            <button data-remote='sales/$data->id/delete' class='btn btn-icon btn-danger btn-delete' title='Delete'><i class='fa fa-trash-o'></i></button>
                         </div>
                    </div>";
             })
