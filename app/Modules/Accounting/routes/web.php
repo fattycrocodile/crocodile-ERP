@@ -20,8 +20,16 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::get('/{id}/edit', 'MoneyReceiptController@edit')->name('accounting.mr.edit');
         Route::post('/{id}/update', 'MoneyReceiptController@update')->name('accounting.mr.update');
         Route::delete('/{id}/delete', 'MoneyReceiptController@delete')->name('accounting.mr.delete');
-
-
         Route::post('/voucher-preview', 'MoneyReceiptController@voucher')->name('accounting.mr.voucher');
+    });
+
+    Route::group(['prefix' => 'accounting/payment-receipt'], function () {
+        Route::get('/', 'SuppliersPaymentController@index')->name('accounting.payment.index');
+        Route::get('/create', 'SuppliersPaymentController@create')->name('accounting.payment.create');
+        Route::post('/store', 'SuppliersPaymentController@store')->name('accounting.payment.store');
+        Route::get('/{id}/edit', 'SuppliersPaymentController@edit')->name('accounting.payment.edit');
+        Route::post('/{id}/update', 'SuppliersPaymentController@update')->name('accounting.payment.update');
+        Route::delete('/{id}/delete', 'SuppliersPaymentController@delete')->name('accounting.payment.delete');
+        Route::post('/voucher-preview', 'SuppliersPaymentController@voucher')->name('accounting.payment.voucher');
     });
 });

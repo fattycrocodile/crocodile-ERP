@@ -97,6 +97,45 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Purchase Receive
+                            <submenu class="name"></submenu>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ url('/commercial/purchase/create') }}" data-toggle="dropdown">Receive
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ url('/commercial/purchase/create') }}" data-toggle="dropdown">Return
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Reports
+                            <submenu class="name"></submenu>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ url('/commercial/purchase/create') }}" data-toggle="dropdown">Stock Report
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ url('/commercial/purchase/create') }}" data-toggle="dropdown">Stock Value Report
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ url('/commercial/purchase/create') }}" data-toggle="dropdown">Stock Ledger Report
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
 
@@ -112,6 +151,35 @@
                         <ul class="dropdown-menu">
                             <li data-menu="">
                                 <a class="dropdown-item" href="{{ url('/commercial/suppliers') }}" data-toggle="dropdown">Supplier
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Purchase
+                            <submenu class="name"></submenu>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ url('/commercial/purchase/create') }}" data-toggle="dropdown">Purchase Create
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ url('/commercial/purchase') }}" data-toggle="dropdown">Purchase Manage
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Reports
+                            <submenu class="name"></submenu>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ url('/commercial/purchase/create') }}" data-toggle="dropdown">Purchase Report
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
@@ -156,6 +224,51 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Supplier Payment
+                            <submenu class="name"></submenu>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('accounting.mr.index') }}" data-toggle="dropdown">Create Payment
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('accounting.mr.create') }}" data-toggle="dropdown">Manage Payment
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Reports
+                            <submenu class="name"></submenu>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('accounting.mr.index') }}" data-toggle="dropdown">Collection Reports
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('accounting.mr.create') }}" data-toggle="dropdown">Payment Reports
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('accounting.mr.create') }}" data-toggle="dropdown">Due Reports
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('accounting.mr.create') }}" data-toggle="dropdown">Expense Reports
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
 
@@ -169,6 +282,11 @@
                             <submenu class="name"></submenu>
                         </a>
                         <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('hr.employees.index') }}" data-toggle="dropdown">Salary Setup
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
                             <li data-menu="">
                                 <a class="dropdown-item" href="{{ route('hr.holidaysetup.index') }}" data-toggle="dropdown">Holidays Setup
                                     <submenu class="name"></submenu>
@@ -186,6 +304,33 @@
                             </li>
                             <li data-menu="">
                                 <a class="dropdown-item" href="{{ route('hr.employees.index') }}" data-toggle="dropdown">Employees
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Reports
+                            <submenu class="name"></submenu>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('hr.employees.index') }}" data-toggle="dropdown">Daily Attendance Repot
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('hr.holidaysetup.index') }}" data-toggle="dropdown">Employees Report
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('hr.departments.index') }}" data-toggle="dropdown">Joining Report
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('hr.designations.index') }}" data-toggle="dropdown">Salary Sheet
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
@@ -213,6 +358,37 @@
                         </ul>
                     </li>
                     <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Sales Order
+                            <submenu class="name"></submenu>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('crm.invoice.create') }}"
+                                   data-toggle="dropdown">Order Create
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('crm.invoice.index') }}"
+                                   data-toggle="dropdown">Order Manage
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('crm.invoice.index') }}"
+                                   data-toggle="dropdown">Invoice Manage
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('crm.invoice.index') }}"
+                                   data-toggle="dropdown">Invoice Return
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Invoice
                             <submenu class="name"></submenu>
                         </a>
@@ -226,6 +402,31 @@
                             <li data-menu="">
                                 <a class="dropdown-item" href="{{ route('crm.invoice.index') }}"
                                    data-toggle="dropdown">Invoice Manage
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Reports
+                            <submenu class="name"></submenu>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('crm.invoice.create') }}"
+                                   data-toggle="dropdown">Sales Order Reports
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('crm.invoice.index') }}"
+                                   data-toggle="dropdown">Invoice Report
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('crm.invoice.index') }}"
+                                   data-toggle="dropdown">Invoice Return Report
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
