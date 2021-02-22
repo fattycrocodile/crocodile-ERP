@@ -22,8 +22,6 @@ class CreatePurchaseDetailsTable extends Migration
             $table->double('qty');
             $table->double('purchase_price');
             $table->double('others_charges')->nullable();
-            $table->double('total_purchase_price');
-            $table->double('total_charges')->nullable()->default(0);
             $table->double('row_total');
         });
     }
