@@ -11,7 +11,9 @@ class SellOrderDetails extends Model
     protected $table = 'sell_order_details';
     protected $guarded=[];
 
-    public function sellOrder()
+    public $timestamps = false;
+
+    public function order()
     {
         return $this->belongsTo(SellOrder::class);
     }

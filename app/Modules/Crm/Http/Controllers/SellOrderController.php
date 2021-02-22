@@ -56,7 +56,7 @@ class SellOrderController extends BaseController
         $cash_credit = Lookup::items('cash_credit');
         $bank = Lookup::items('bank');
         $this->setPageTitle('Create Order', 'Create order');
-        return view('Crm::invoice.create', compact('stores', 'payment_type', 'cash_credit', 'bank'));
+        return view('Crm::sell-order.create', compact('stores', 'payment_type', 'cash_credit', 'bank'));
     }
 
     /**
@@ -71,50 +71,46 @@ class SellOrderController extends BaseController
             'date' => 'required|date',
             'store_id' => 'required|integer',
             'customer_id' => 'required|integer',
-            'cash_credit' => 'required|integer',
             'product' => 'required|array',
-//            'grand_total' => 'required|min:1',
         ]);
         $params = $request->except('_token');
 
         try {
-            $invoice = new SellOrder();
-            $maxSlNo = $invoice->maxSlNo($store_id = $params['store_id']);
+            $order = new SellOrder();
+            $maxSlNo = $order->maxSlNo($store_id = $params['store_id']);
             $year = Carbon::now()->year;
             $store = Stores::findOrFail($store_id);
-            $invNo = "INV-$store->code-$year-" . str_pad($maxSlNo, 8, '0', STR_PAD_LEFT);
+            $invNo = "ORD-$store->code-$year-" . str_pad($maxSlNo, 8, '0', STR_PAD_LEFT);
 
-            $invoice->cash_credit = $cash_credit = $params['cash_credit'];
-            $invoice->max_sl_no = $maxSlNo;
-            $invoice->invoice_no = $invNo;
-            $invoice->store_id = $params['store_id'];
-            $invoice->customer_id = $params['customer_id'];
-            $invoice->discount_amount = 0;
-            $invoice->grand_total = $grand_total = $params['grand_total'];
-            $invoice->date = $date = $params['date'];
-            $invoice->created_by = $created_by = auth()->user()->id;
-            if ($invoice->save()) {
-                $invoice_id = $invoice->id;
+            $order->max_sl_no = $maxSlNo;
+            $order->order_no = $invNo;
+            $order->store_id = $params['store_id'];
+            $order->customer_id = $params['customer_id'];
+            $order->discount_amount = 0;
+            $order->grand_total = $grand_total = $params['grand_total'];
+            $order->date = $date = $params['date'];
+            $order->created_by = $created_by = auth()->user()->id;
+            if ($order->save()) {
+                $order_id = $order->id;
                 $i = 0;
                 foreach ($params['product']['temp_product_id'] as $product_id) {
-                    $stock_qty = $params['product']['temp_stock_qty'][$i];
                     $sell_price = $params['product']['temp_sell_price'][$i];
                     $sell_qty = $params['product']['temp_sell_qty'][$i];
                     $row_sell_price = $params['product']['temp_row_sell_price'][$i];
 
-                    $invoiceDetails = new SellOrderDetails();
-                    $invoiceDetails->invoice_id = $invoice_id;
-                    $invoiceDetails->product_id = $product_id;
-                    $invoiceDetails->qty = $sell_qty;
-                    $invoiceDetails->sell_price = $sell_price;
-                    $invoiceDetails->discount = 0;
-                    $invoiceDetails->row_total = $row_sell_price;
-                    $invoiceDetails->save();
+                    $orderDetails = new SellOrderDetails();
+                    $orderDetails->order_id = $order_id;
+                    $orderDetails->product_id = $product_id;
+                    $orderDetails->qty = $sell_qty;
+                    $orderDetails->sell_price = $sell_price;
+                    $orderDetails->discount = 0;
+                    $orderDetails->row_total = $row_sell_price;
+                    $orderDetails->save();
 
                     $i++;
                 }
 
-                return $this->responseRedirectToWithParameters('crm.sell.order.voucher', ['id' => $invoice->id], 'Invoice created successfully', 'success', false, false);
+                return $this->responseRedirectToWithParameters('crm.sales.order.voucher', ['id' => $order->id], 'Orders created successfully', 'success', false, false);
             } else {
                 return $this->responseRedirectBack('Error occurred while creating order.', 'error', true, true);
             }
