@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PurchaseDetails extends Model
 {
     protected $guarded=[];
+    public $timestamps = false;
 
     public function purchase()
     {

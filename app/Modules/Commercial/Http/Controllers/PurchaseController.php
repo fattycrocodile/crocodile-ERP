@@ -64,11 +64,9 @@ class PurchaseController extends BaseController
 
         $this->validate($request, [
             'date' => 'required|date',
-            'store_id' => 'required|integer',
             'supplier_id' => 'required|integer',
             'cash_credit' => 'required|integer',
             'product' => 'required|array',
-//            'grand_total' => 'required|min:1',
         ]);
         $params = $request->except('_token');
 
@@ -129,13 +127,14 @@ class PurchaseController extends BaseController
                     $max_mr_no = $mr->maxSlNo($supplier_id);
                     $mr_no = "PR-$supplier_id-$year-" . str_pad($maxSlNo, 3, '0', STR_PAD_LEFT);
 
+                    $mr->supplier_id = $supplier_id;
                     $mr->max_sl_no = $max_mr_no;
                     $mr->pr_no = $mr_no;
                     $mr->manual_pr_no = $manual_mr_no;
                     $mr->payment_type = $payment_type;
                     $mr->amount = $grand_total;
                     $mr->date = $date;
-                    $mr->received_by = $created_by;
+                    $mr->payment_by = $created_by;
                     $mr->created_by = $created_by;
                     $mr->po_no = $invoice_id;
                     if ($payment_type !== Lookup::PAYMENT_CASH) {
@@ -144,7 +143,7 @@ class PurchaseController extends BaseController
                         $mr->cheque_date = $cheque_date;
                     }
                     if ($mr->save()) {
-                        $invoice->full_paid = Invoice::PAID;
+                        $invoice->full_paid = Purchase::PAID;
                         $invoice->save();
                     }
                 }
@@ -157,6 +156,15 @@ class PurchaseController extends BaseController
             throw new InvalidArgumentException($exception->getMessage());
             //return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
         }
+    }
+
+    public function voucher($id)
+    {
+        $invoice = Purchase::findOrFail($id);
+        $invoice_no = $invoice->invoice_no;
+        $this->setPageTitle('PO No-' . $invoice_no, 'Purchase Preview : ' . $invoice_no);
+
+        return view('Commercial::purchases.voucher', compact('invoice', 'id'));
     }
 
 }

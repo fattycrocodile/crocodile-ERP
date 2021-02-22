@@ -40,7 +40,7 @@
                             <form class="form" id="invoice-form" action="{{route('commercial.purchase.store')}}" method="post" autocomplete="off">
                                 @csrf
                                 <div class="form-body">
-                                    <h4 class="form-section"><i class="ft-user"></i> Order & Customer Info</h4>
+                                    <h4 class="form-section"><i class="ft-user"></i> Purchase & Supplier Info</h4>
                                     <div class="row">
                                         <div class="col-md-2">
                                             <div class="form-group">

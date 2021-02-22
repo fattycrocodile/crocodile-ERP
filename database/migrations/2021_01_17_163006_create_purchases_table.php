@@ -25,6 +25,7 @@ class CreatePurchasesTable extends Migration
             $table->double('others_charge')->nullable()->default(0);
             $table->boolean('is_receive')->default(0);
             $table->date('date');
+            $table->tinyInteger('full_paid')->default(0)->comment("0=>Unpaid, 1=>paid");
             $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users');
             $table->unsignedBigInteger('updated_by')->nullable();

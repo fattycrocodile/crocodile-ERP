@@ -24,14 +24,14 @@ class SuppliersPayment extends Model
     public static function totalMrAmountOfInvoice($invoice_id)
     {
         $mr = new SuppliersPayment();
-        $data = $mr->where('pr_no', '=', $invoice_id)->sum('amount');
+        $data = $mr->where('po_no', '=', $invoice_id)->sum('amount');
         return $data;
     }
 
     public static function mrInfo($invoice_id)
     {
         $product = SuppliersPayment::query();
-        $product->where('pr_no', '=', $invoice_id);
+        $product->where('po_no', '=', $invoice_id);
         $product->orderBy('id', 'asc');
         $data = $product->first();
         return $data;

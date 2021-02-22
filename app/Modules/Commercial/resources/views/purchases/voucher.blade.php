@@ -6,12 +6,15 @@
 
 @section('content')
     @include('inc.flash')
-<div class="btn-group" role="group" aria-label="Basic example">
-    <a href="{{ route('crm.invoice.create') }}" class="btn btn-icon btn-secondary"><i class="fa fa-backward"></i> Go Back</a>
-    <a href="{{ route('crm.invoice.index') }}" class="btn btn-icon btn-secondary"><i class="fa fa-list-ul"></i> Invoice Manage</a>
-    <a href="#" class="btn btn-icon btn-secondary"><i class="fa fa-print"></i> Print</a>
-</div>
-    <section class="card">
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <a href="{{ route('commercial.purchase.create') }}" class="btn btn-icon btn-secondary"><i class="fa fa-backward"></i> Go
+            Back</a>
+        <a href="{{ route('commercial.purchase.index') }}" class="btn btn-icon btn-secondary"><i class="fa fa-list-ul"></i>
+            Invoice Manage</a>
+        <a href="#" class="btn btn-icon btn-secondary" onclick="printDiv('printableArea')"><i class="fa fa-print"></i>
+            Print</a>
+    </div>
+    <section class="card" id="printableArea">
         <div id="invoice-template" class="card-body">
             <!-- Invoice Company Details -->
             <div id="invoice-company-details" class="row">
@@ -46,12 +49,12 @@
             <!-- Invoice Customer Details -->
             <div id="invoice-customer-details" class="row pt-2">
                 <div class="col-sm-12 text-center text-md-left">
-                    <p class="text-muted">Bill To</p>
+                    <p class="text-muted">Purchase From</p>
                 </div>
                 <div class="col-md-6 col-sm-12 text-center text-md-left">
                     <ul class="px-0 list-unstyled">
-                        <li class="text-bold-800">{{ $invoice->customer->name }}</li>
-                        <li>{{ $invoice->customer->address }}</li>
+                        <li class="text-bold-800">{{ $invoice->supplier->name }}</li>
+                        <li>{{ $invoice->supplier->address }}</li>
                     </ul>
                 </div>
                 <div class="col-md-6 col-sm-12 text-center text-md-right">
@@ -61,7 +64,7 @@
                     </p>
                     <p>
                         <span
-                            class="text-muted">Terms :</span> {{  $invoice->cash_credit == \App\Modules\Config\Models\Lookup::CASH ? "CASH" : "DUE" }}
+                            class="text-muted">Terms :</span> {{  $invoice->payment_type == \App\Modules\Config\Models\Lookup::CASH ? "CASH" : "DUE" }}
                     </p>
                 </div>
             </div>
@@ -76,7 +79,7 @@
                                 <th>#</th>
                                 <th>Item & Description</th>
                                 <th class="text-right">Qty</th>
-                                <th class="text-right">Sell Price</th>
+                                <th class="text-right">Purchase Price</th>
                                 <th class="text-right">Amount</th>
                             </tr>
                             </thead>
@@ -84,7 +87,7 @@
                             <?php
                             $salesTotal = 0;
                             ?>
-                            @foreach($invoice->invoiceDetails as $key => $invD)
+                            @foreach($invoice->purchaseDetails as $key => $invD)
                                 <?php
                                 $salesTotal += $invD->row_total;
                                 ?>
@@ -95,7 +98,7 @@
                                         <p class="text-muted">{{ $invD->product->code }}</p>
                                     </td>
                                     <td class="text-center">{{ $invD->qty }}</td>
-                                    <td class="text-right">{{ $invD->sell_price }}</td>
+                                    <td class="text-right">{{ $invD->purchase_price }}</td>
                                     <td class="text-right">{{ $invD->row_total }}</td>
                                 </tr>
                             @endforeach
@@ -108,17 +111,17 @@
                         <?php
                         $total_mr = 0;
                         ?>
-                        @if($invoice->cash_credit == \App\Modules\Config\Models\Lookup::CASH)
+                        @if($invoice->payment_type == \App\Modules\Config\Models\Lookup::CASH)
                             <p class="lead">Payment Methods:</p>
                             <div class="row">
                                 <div class="col-md-8">
                                     <table class="table table-borderless table-sm">
                                         <tbody>
                                         <?php
-                                        $mr_info = \App\Modules\Accounting\Models\MoneyReceipt::mrInfo($id);
-                                        $total_mr = \App\Modules\Accounting\Models\MoneyReceipt::totalMrAmountOfInvoice($id);
+                                        $mr_info = \App\Modules\Accounting\Models\SuppliersPayment::mrInfo($id);
+                                        $total_mr = \App\Modules\Accounting\Models\SuppliersPayment::totalMrAmountOfInvoice($id);
                                         ?>
-                                        @if($invoice->collection_type == \App\Modules\Config\Models\Lookup::PAYMENT_CASH)
+                                        @if($mr_info->payment_type == \App\Modules\Config\Models\Lookup::PAYMENT_CASH)
                                             <tr>
                                                 <td>Payment Method:</td>
                                                 <td class="text-right">Cash</td>
@@ -136,7 +139,7 @@
                                             </tr>
                                             <tr>
                                                 <td>MR no:</td>
-                                                <td class="text-right">{{ $mr_info->mr_no }}</td>
+                                                <td class="text-right">{{ $mr_info->pr_no }}</td>
                                             </tr>
                                         @endif
                                         </tbody>
@@ -174,5 +177,14 @@
 
 @endsection
 @push('scripts')
+    <script>
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
 
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
 @endpush

@@ -23,7 +23,7 @@ class CreateSuppliersPaymentsTable extends Migration
             $table->unsignedBigInteger('supplier_id');
             $table->foreign('supplier_id')->references('id')->on('suppliers');
             $table->string('payment_type');
-            $table->string('bank_name')->nullable();
+            $table->string('bank_id')->nullable();
             $table->string('cheque_no')->nullable();
             $table->string('cheque_date')->nullable();
             $table->double('amount');

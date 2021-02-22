@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 
 class StoresTableSeeder extends Seeder
 {
+
     /**
      * Run the database seeds.
      *
@@ -14,8 +15,17 @@ class StoresTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Modules\StoreInventory\Models\Stores::class, 5)->create()->each(function($stores){
+        \App\Modules\StoreInventory\Models\Stores::create(
+            [
+                'name' => 'Main Warehouse',
+                'address' => 'root',
+                'code' => '1',
+                'contact' => '01740929512'
+            ]
+        );
+
+        /*factory(\App\Modules\StoreInventory\Models\Stores::class, 5)->create()->each(function($stores){
             $stores->save();
-        });
+        });*/
     }
 }
