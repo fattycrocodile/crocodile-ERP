@@ -211,17 +211,17 @@
                                                 <label for="purchase_price">Purchase Price</label>
                                                 <input type="text"
                                                        class="form-control @error('purchase_price') is-invalid @enderror"
-                                                       id="sell_price" name="sell_price" onkeyup="calculateTotal();">
-                                                @error('sell_price')
+                                                       id="purchase_price" name="purchase_price" onkeyup="calculateTotal();">
+                                                @error('purchase_price')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="total_sell_price">Total Purchase Price</label>
+                                                <label for="total_purchase_price">Total Purchase Price</label>
                                                 <input type="text"
                                                        class="form-control @error('total_purchase_price') is-invalid @enderror"
-                                                       id="total_sell_price" name="total_purchase_price" readonly>
+                                                       id="total_purchase_price" name="total_purchase_price" readonly>
                                                 @error('total_purchase_price')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
@@ -244,8 +244,8 @@
                                                         <th>SL</th>
                                                         <th>Product Info</th>
                                                         <th>Stock Qty</th>
-                                                        <th>Sell Price</th>
-                                                        <th>Sell Qty</th>
+                                                        <th>Purchase Price</th>
+                                                        <th>Purchase Qty</th>
                                                         <th>Row Total</th>
                                                         <th>Action</th>
                                                     </tr>
@@ -303,8 +303,8 @@
             $('form#invoice-form').submit(function () {
                 // Get the Login Name value and trim it
                 var date = $.trim($('#date').val());
-                var store_id = $.trim($('#store_id').val());
-                var customer_id = $.trim($('#customer_id').val());
+                var store_id = 1;
+                var supplier_id = $.trim($('#supplier_id').val());
                 var cash_credit = $.trim($('#cash_credit').val());
                 var payment_method = $.trim($('#payment_method').val());
                 var bank_id = $.trim($('#bank_id').val());
@@ -319,8 +319,8 @@
                     toastr.warning(" Please select  store!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 }
-                if (customer_id === '') {
-                    toastr.warning(" Please select  customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                if (supplier_id === '') {
+                    toastr.warning(" Please select  supplier!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 }
                 if (cash_credit === '') {
@@ -478,9 +478,9 @@
             minLength: 1,
             autoFocus: true,
             source: function (request, response) {
-                var store_id = $("#store_id").val();
-                var customer_id = $("#customer_id").val();
-                if (store_id > 0 && customer_id > 0) {
+                var store_id = 1;
+                var supplier_id = $("#supplier_id").val();
+                if (store_id > 0 && supplier_id > 0) {
                     $.ajax({
                         url: "{{ route('product.name.autocomplete') }}",
                         type: 'post',
@@ -528,9 +528,9 @@
             minLength: 1,
             autoFocus: true,
             source: function (request, response) {
-                var store_id = $("#store_id").val();
-                var customer_id = $("#customer_id").val();
-                if (store_id > 0 && customer_id > 0) {
+                var store_id = 1;
+                var supplier_id = $("#supplier_id").val();
+                if (store_id > 0 && supplier_id > 0) {
                     $.ajax({
                         url: "{{ route('product.code.autocomplete') }}",
                         type: 'post',
@@ -597,25 +597,17 @@
         function add() {
             var product_id = nanCheck($("#product_id").val());
             var stock_qty = nanCheck(parseFloat($("#stock_qty").val()));
-            var sell_qty = nanCheck(parseFloat($("#qty").val()));
-            var sell_price = nanCheck(parseFloat($("#sell_price").val()));
-            var min_sell_price = nanCheck(parseFloat($("#min_sell_price").val()));
+            var purchase_qty = nanCheck(parseFloat($("#qty").val()));
+            var purchase_price = nanCheck(parseFloat($("#purchase_price").val()));
             // console.log("SELL PRICE:" + sell_price);
             var message;
             var error = true;
             if (product_id === '' || product_id === 0) {
                 message = "Please select a product!";
-            } else if (sell_qty <= 0 || sell_qty === '') {
+            } else if (purchase_qty <= 0 || purchase_qty === '') {
                 message = "Please insert sell qty!";
-            } else if (stock_qty < sell_qty) {
-                message = "Stock qty exceeded!";
-            } else if (sell_price <= 0 || sell_price === '') {
+            } else if (purchase_price <= 0 || purchase_price === '') {
                 message = "Please insert sell price!";
-            } else if (min_sell_price <= 0 || min_sell_price === '') {
-                message = "Sell price not found!";
-            } else if (sell_price < min_sell_price) {
-                $("#sell_price").val(min_sell_price);
-                message = "Minimum sell price is: " + sell_price;
             } else {
                 var isproductpresent = 'no';
                 var temp_codearray = document.getElementsByName("product[temp_product_id][]");
@@ -648,20 +640,19 @@
             var product_name = $("#product_name").val();
             var product_code = $("#product_code").val();
             var stock_qty = nanCheck(parseFloat($("#stock_qty").val()));
-            var sell_qty = nanCheck(parseFloat($("#qty").val()));
-            var sell_price = nanCheck(parseFloat($("#sell_price").val()));
-            var min_sell_price = nanCheck(parseFloat($("#min_sell_price").val()));
-            var total_sell_price = nanCheck(parseFloat($("#total_sell_price").val()));
+            var purchase_qty = nanCheck(parseFloat($("#qty").val()));
+            var purchase_price = nanCheck(parseFloat($("#purchase_price").val()));
+            var total_purchase_price = nanCheck(parseFloat($("#total_purchase_price").val()));
 
-            // console.log("SELL---QTY:" + sell_qty);
+            // console.log("SELL---QTY:" + purchase_qty);
             var slNumber = $('#table-data-list tbody tr.cartList').length + 1;
             var appendTxt = "<tr class='cartList'>"
             appendTxt += "<td class='count' style='text-align: center;'>" + slNumber + "</td>";
             appendTxt += "<td style='text-align: left;'>Name: " + product_name + "<br><small class='cart-product-code'>Code: " + product_code + "</small><input type='hidden' class='temp_product_id' name='product[temp_product_id][]' value='" + product_id + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_stock_qty' readonly name='product[temp_stock_qty][]' onkeyup='calculateRowTotalOnChange();' value='" + stock_qty + "'></td>";
-            appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_sell_price ' name='product[temp_sell_price][]' onkeyup='calculateRowTotalOnChange();' value='" + sell_price + "'><input type='hidden' name='product[temp_min_sell_price][]' class='temp_min_sell_price' value='" + min_sell_price + "'></td>";
-            appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_sell_qty' name='product[temp_sell_qty][]' onkeyup='calculateRowTotalOnChange();' value='" + sell_qty + "'></td>";
-            appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_row_sell_price' name='product[temp_row_sell_price][]' readonly value='" + total_sell_price + "'></td>";
+            appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_purchase_price ' name='product[temp_purchase_price][]' onkeyup='calculateRowTotalOnChange();' value='" + purchase_price + "'></td>";
+            appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_purchase_qty' name='product[temp_purchase_qty][]' onkeyup='calculateRowTotalOnChange();' value='" + purchase_qty + "'></td>";
+            appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_row_purchase_price' name='product[temp_row_purchase_price][]' readonly value='" + total_purchase_price + "'></td>";
             appendTxt += "<td style='text-align: center;'><button title=\"remove\"  type=\"button\" class=\"rdelete dltBtn btn btn-danger btn-md\" onclick=\"deleteRows($(this))\"><i class=\"icon-trash\"></i></button></td>";
             appendTxt += "</tr>";
 
@@ -673,7 +664,7 @@
 
         }
 
-        $(document).on('input keyup drop paste', ".temp_sell_price, .temp_sell_qty", function (e) {
+        $(document).on('input keyup drop paste', ".temp_purchase_price, .temp_purchase_qty", function (e) {
             calculateRowTotalOnChange();
         });
 
@@ -708,24 +699,20 @@
                     search: product_id,
                 },
                 success: function (data) {
-                    $("#sell_price").val(data.sell_price);
-                    $("#min_sell_price").val(data.min_whole_sell_price);
+                    $("#purchase_price").val(data.min_whole_sell_price);
                 },
                 error: function (xhr, status, error) {
-                    $("#sell_price").val(0);
-                    $("#min_sell_price").val(0);
+                    $("#purchase_price").val(0);
                 }
             }).done(function (data) {
-                $("#sell_price").val(data.sell_price);
-                $("#min_sell_price").val(data.min_whole_sell_price);
+                $("#purchase_price").val(data.min_whole_sell_price);
             }).fail(function (jqXHR, textStatus) {
-                $("#sell_price").val(0);
-                $("#min_sell_price").val(0);
+                $("#purchase_price").val(0);
             });
         }
 
         function getProductStock(product_id) {
-            var store_id = $("#store_id").val();
+            var store_id = 1;
             $.ajax({
                 url: "{{ route('product.stockQty') }}",
                 type: 'post',
@@ -764,15 +751,13 @@
             $('#product_name').val("");
             $('#qty').val("");
             $('#stock_qty').val("");
-            $('#sell_price').val("");
-            $('#min_sell_price').val("");
-            $('#total_sell_price').val("");
+            $('#purchase_price').val("");
+            $('#total_purchase_price').val("");
         }
 
-        function clearCustomerData() {
-            $('#customer_name').val("");
-            $('#customer_id').val("");
-            $('#customer_code').val("");
+        function clearSupplierData() {
+            $('#supplier_name').val("");
+            $('#supplier_id').val("");
             $('#contact_no').val("");
         }
 
@@ -786,15 +771,8 @@
 
         function calculateTotal() {
             var qty = nanCheck(parseFloat($("#qty").val()));
-            var sell_price = nanCheck(parseFloat($("#sell_price").val()));
-            var min_sell_price = nanCheck(parseFloat($("#min_sell_price").val()));
-            if (sell_price < min_sell_price) {
-                toastr.error("Minimum sell price for this product is: " + min_sell_price, 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                $("#sell_price").val(min_sell_price);
-                $("#total_sell_price").val(qty * min_sell_price);
-            } else {
-                $("#total_sell_price").val(qty * sell_price);
-            }
+            var purchase_price = nanCheck(parseFloat($("#purchase_price").val()));
+            $("#total_purchase_price").val(qty * purchase_price);
         }
 
         function nanCheck(value) {
@@ -807,7 +785,7 @@
 
         function calculateGrandTotal() {
             var grand_total = 0;
-            $('#table-data-list .temp_row_sell_price').each(function () {
+            $('#table-data-list .temp_row_purchase_price').each(function () {
                 grand_total += nanCheck(parseFloat(this.value));
             });
             $("#grand_total_text").html(grand_total);
@@ -822,38 +800,31 @@
                     console.log("CALCULATION STARTED::" + index);
                     serial++;
                     var temp_stock_qty = nanCheck(parseFloat($(this).closest('tr').find(".temp_stock_qty").val()));
-                    var temp_sell_price = nanCheck(parseFloat($(this).closest('tr').find(".temp_sell_price").val()));
-                    var temp_min_sell_price = nanCheck(parseFloat($(this).closest('tr').find(".temp_min_sell_price").val()));
-                    var temp_sell_qty = nanCheck(parseFloat($(this).closest('tr').find(".temp_sell_qty").val()));
-                    var temp_row_sell_price = nanCheck(parseFloat($(this).closest('tr').find(".temp_row_sell_price").val()));
+                    var temp_purchase_price = nanCheck(parseFloat($(this).closest('tr').find(".temp_purchase_price").val()));
+                    var temp_purchase_qty = nanCheck(parseFloat($(this).closest('tr').find(".temp_purchase_qty").val()));
+                    var temp_row_purchase_price = nanCheck(parseFloat($(this).closest('tr').find(".temp_row_purchase_price").val()));
 
-                    if (temp_sell_price < temp_min_sell_price) {
-                        temp_sell_price = temp_min_sell_price;
-                        $(this).closest('tr').find(".temp_sell_price ").val(temp_min_sell_price);
-                        toastr.warning("Minimum sell price is: " + temp_min_sell_price, 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    }
                     // console.log("MIN: " + temp_min_sell_price + ", SP: " + temp_sell_price);
-                    if (temp_sell_qty <= 0) {
-                        temp_sell_qty = 1;
-                        $(this).closest('tr').find(".temp_sell_qty ").val(temp_sell_qty);
-                        toastr.warning("Minimum sell qty is: " + temp_sell_qty, 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    if (temp_purchase_qty <= 0) {
+                        temp_purchase_qty = 1;
+                        $(this).closest('tr').find(".temp_purchase_qty ").val(temp_purchase_qty);
                     }
 
-                    if (temp_sell_qty > temp_stock_qty) {
-                        temp_sell_qty = temp_stock_qty;
-                        $(this).closest('tr').find(".temp_sell_qty ").val(temp_sell_qty);
-                        toastr.warning("Sell qty exceeded!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    if (temp_purchase_qty <=0) {
+                        temp_purchase_qty = 1;
+                        $(this).closest('tr').find(".temp_purchase_qty ").val(temp_purchase_qty);
+                        toastr.warning("purchase qty exceeded 0!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     }
-                    var row_total = temp_sell_qty * temp_sell_price;
+                    var row_total = temp_purchase_qty * temp_purchase_price;
 
-                    $(this).closest('tr').find(".temp_row_sell_price").val(row_total.toFixed(2));
+                    $(this).closest('tr').find(".temp_row_purchase_price").val(row_total.toFixed(2));
                 }
             );
             calculateGrandTotal();
         }
 
         // Restricts input for the set of matched elements to the given inputFilter function.
-        $(document).on('input keyup  drop paste', "#qty, #sell_price, .temp_sell_price, .temp_sell_qty", function (evt) {
+        $(document).on('input keyup  drop paste', "#qty, #purchase_price, .temp_purchase_price, .temp_purchase_qty", function (evt) {
             var self = $(this);
             self.val(self.val().replace(/[^0-9\.]/g, ''));
             if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) {

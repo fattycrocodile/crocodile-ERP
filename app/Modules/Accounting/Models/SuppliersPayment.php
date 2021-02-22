@@ -8,7 +8,34 @@ use Illuminate\Database\Eloquent\Model;
 
 class SuppliersPayment extends Model
 {
-    protected $guarded=[];
+    protected $table = 'suppliers_payments';
+    protected $guarded = [];
+
+    /**
+     * @param $store_id
+     * @return int
+     */
+    public function maxSlNo($supplier_id)
+    {
+        $maxSn = $this->where('supplier_id', '=', $supplier_id)->max('max_sl_no');
+        return $maxSn ? $maxSn + 1 : 1;
+    }
+
+    public static function totalMrAmountOfInvoice($invoice_id)
+    {
+        $mr = new SuppliersPayment();
+        $data = $mr->where('pr_no', '=', $invoice_id)->sum('amount');
+        return $data;
+    }
+
+    public static function mrInfo($invoice_id)
+    {
+        $product = SuppliersPayment::query();
+        $product->where('pr_no', '=', $invoice_id);
+        $product->orderBy('id', 'asc');
+        $data = $product->first();
+        return $data;
+    }
 
     public function supplier()
     {

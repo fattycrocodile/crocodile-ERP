@@ -16,6 +16,10 @@ class CreateSuppliersPaymentsTable extends Migration
         Schema::create('suppliers_payments', function (Blueprint $table) {
             $table->id();
             $table->string('pr_no')->comment('Payment Receipt No');
+            $table->string('manual_pr_no');
+            $table->integer('max_sl_no');
+            $table->unsignedBigInteger('po_no')->nullable();
+            $table->foreign('po_no')->references('id')->on('purchases');
             $table->unsignedBigInteger('supplier_id');
             $table->foreign('supplier_id')->references('id')->on('suppliers');
             $table->string('payment_type');

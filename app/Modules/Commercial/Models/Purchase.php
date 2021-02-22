@@ -11,6 +11,17 @@ class Purchase extends Model
 {
     protected $guarded=[];
 
+    const PAID = 1;
+    const NOT_PAID = 0;
+
+    protected $table = 'purchases';
+
+    public function maxSlNo(){
+
+        $maxSn = $this->max('max_sl_no');
+        return $maxSn ? $maxSn + 1 : 1;
+    }
+
     public function purchaseDetails()
     {
         return $this->hasMany(PurchaseDetails::class);
