@@ -6,12 +6,15 @@
 
 @section('content')
     @include('inc.flash')
-<div class="btn-group" role="group" aria-label="Basic example">
-    <a href="{{ route('crm.sales.order.index') }}" class="btn btn-icon btn-secondary"><i class="fa fa-backward"></i> Go Back</a>
-    <a href="{{ route('crm.sales.order.index') }}" class="btn btn-icon btn-secondary"><i class="fa fa-list-ul"></i> Order Manage</a>
-    <a href="#" class="btn btn-icon btn-secondary"><i class="fa fa-print"></i> Print</a>
-</div>
-    <section class="card">
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <a href="{{ route('crm.sales.order.index') }}" class="btn btn-icon btn-secondary"><i class="fa fa-backward"></i>
+            Go Back</a>
+        <a href="{{ route('crm.sales.order.index') }}" class="btn btn-icon btn-secondary"><i class="fa fa-list-ul"></i>
+            Order Manage</a>
+        <a href="#" class="btn btn-icon btn-secondary" onclick="printDiv('printableArea')"><i class="fa fa-print"></i>
+            Print</a>
+    </div>
+    <section class="card" id="printableArea">
         <div id="invoice-template" class="card-body">
             <!-- Invoice Company Details -->
             <div id="invoice-company-details" class="row">
@@ -33,8 +36,8 @@
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12 text-center text-md-right">
-                    <h2>INVOICE</h2>
-                    <p class="pb-3"># {{ $order->invoice_no }}</p>
+                    <h2>ORDER</h2>
+                    <p class="pb-3"># {{ $order->order_no }}</p>
                 </div>
             </div>
             <!--/ Invoice Company Details -->
@@ -101,7 +104,7 @@
                             <table class="table">
                                 <tbody>
                                 <tr>
-                                    <th class="text-bold-800 text-right" >Total</th>
+                                    <th class="text-bold-800 text-right">Total</th>
                                     <th class="text-bold-800 text-right"> <?= number_format($salesTotal, 2) ?></th>
                                 </tr>
                                 </tbody>
@@ -116,5 +119,14 @@
 
 @endsection
 @push('scripts')
+    <script>
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
 
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
 @endpush
