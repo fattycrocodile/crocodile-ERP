@@ -92,29 +92,31 @@ class MoneyReceiptController extends BaseController
                     $row_due = $params['mr']['row_due'][$i];
                     $payment_amount = $params['mr']['payment_amount'][$i];
                     $discount_amount = $params['mr']['discount_amount'][$i];
+                    if ($payment_amount > 0 || $discount_amount > 0) {
 
-                    $model = new MoneyReceipt();
-                    $model->max_sl_no = $maxSlNo;
-                    $model->mr_no = $invNo;
-                    $model->manual_mr_no = $manual_mr_no;
-                    $model->store_id = $store_id;
-                    $model->invoice_id = $invoice;
-                    $model->collection_type = $payment_method;
-                    $model->amount = $payment_amount > 0 ? $payment_amount : 0;
-                    $model->discount = $discount_amount > 0 ? $discount_amount : 0;
-                    $model->date = $date;
-                    $model->bank_id = $bank_id;
-                    $model->cheque_no = $cheque_no;
-                    $model->cheque_date = $cheque_date;
-                    $model->received_by = $created_by = auth()->user()->id;
-                    $model->created_by = $created_by;
-                    $model->customer_id = $customer_id;
-                    $model->save();
-                    if ($row_due <= 0) {
-                        $invoice = Invoice::findOrFail($invoice);
-                        if ($invoice) {
-                            $invoice->full_paid = Invoice::PAID;
-                            $invoice->save();
+                        $model = new MoneyReceipt();
+                        $model->max_sl_no = $maxSlNo;
+                        $model->mr_no = $invNo;
+                        $model->manual_mr_no = $manual_mr_no;
+                        $model->store_id = $store_id;
+                        $model->invoice_id = $invoice;
+                        $model->collection_type = $payment_method;
+                        $model->amount = $payment_amount > 0 ? $payment_amount : 0;
+                        $model->discount = $discount_amount > 0 ? $discount_amount : 0;
+                        $model->date = $date;
+                        $model->bank_id = $bank_id;
+                        $model->cheque_no = $cheque_no;
+                        $model->cheque_date = $cheque_date;
+                        $model->received_by = $created_by = auth()->user()->id;
+                        $model->created_by = $created_by;
+                        $model->customer_id = $customer_id;
+                        $model->save();
+                        if ($row_due <= 0) {
+                            $invoice = Invoice::findOrFail($invoice);
+                            if ($invoice) {
+                                $invoice->full_paid = Invoice::PAID;
+                                $invoice->save();
+                            }
                         }
                     }
                     $i++;
