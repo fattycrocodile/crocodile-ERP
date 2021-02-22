@@ -110,7 +110,7 @@ class SellOrderController extends BaseController
                     $i++;
                 }
 
-                return $this->responseRedirectToWithParameters('crm.sales.order.voucher', ['id' => $order->id], 'Orders created successfully', 'success', false, false);
+                return $this->responseRedirectToWithParameters('Crm.sales.order.voucher', ['id' => $order->id], 'Orders created successfully', 'success', false, false);
             } else {
                 return $this->responseRedirectBack('Error occurred while creating order.', 'error', true, true);
             }
@@ -133,7 +133,7 @@ class SellOrderController extends BaseController
         } catch (ModelNotFoundException $e) {
             throw new ModelNotFoundException($e);
         }
-        return view('StoreInventory::brands.edit', compact('brands'));
+        return view('Crm::sell-order.edit', compact('brands'));
     }
 
     /**
@@ -164,10 +164,29 @@ class SellOrderController extends BaseController
             if (!$brand) {
                 return $this->responseRedirectBack('Error occurred while updating invoice.', 'error', true, true);
             }
-            return $this->responseRedirect('crm.invoice.index', 'invoice updated successfully', 'success', false, false);
+            return $this->responseRedirect('Crm::sell-order.index', 'invoice updated successfully', 'success', false, false);
         } catch (ModelNotFoundException $e) {
             throw new ModelNotFoundException($e);
         }
+    }
+
+    /**
+     * @param $id
+     * @return Factory|View
+     */
+    public function invoiceCreate($id)
+    {
+        try {
+            $order = SellOrder::findOrFail($id);
+            $stores = $this->store->treeList();
+            $payment_type = Lookup::items('payment_method');
+            $cash_credit = Lookup::items('cash_credit');
+            $bank = Lookup::items('bank');
+            $this->setPageTitle('Orders', 'Create invoice- Order No: : ' . $order->order_no);
+        } catch (ModelNotFoundException $e) {
+            throw new ModelNotFoundException($e);
+        }
+        return view('Crm::sell-order.invoice-create', compact('order', 'stores', 'payment_type', 'cash_credit', 'bank'));
     }
 
     /**

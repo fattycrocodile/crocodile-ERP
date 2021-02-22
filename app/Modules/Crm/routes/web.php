@@ -19,6 +19,7 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::get('/create', 'SellOrderController@create')->name('crm.sales.order.create');
         Route::post('/store', 'SellOrderController@store')->name('crm.sales.order.store');
         Route::get('/{id}/edit', 'SellOrderController@edit')->name('crm.sales.order.edit');
+        Route::get('/{id}/invoice-create', 'SellOrderController@invoiceCreate')->name('crm.sales.order.invoice.create');
         Route::post('/{id}/update', 'SellOrderController@update')->name('crm.sales.order.update');
         Route::delete('/{id}/delete', 'SellOrderController@delete')->name('crm.sales.order.delete');
         Route::get('/{id}/voucher', 'SellOrderController@voucher')->name('crm.sales.order.voucher');
