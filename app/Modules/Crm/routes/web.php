@@ -14,6 +14,16 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::delete('/{id}/delete', 'CustomersController@delete')->name('crm.customers.delete');
     });
 
+    Route::group(['prefix' => 'crm/sales/order'], function () {
+        Route::get('/', 'SellOrderController@index')->name('crm.sales.order.index');
+        Route::get('/create', 'SellOrderController@create')->name('crm.sales.order.create');
+        Route::post('/store', 'SellOrderController@store')->name('crm.sales.order.store');
+        Route::get('/{id}/edit', 'SellOrderController@edit')->name('crm.sales.order.edit');
+        Route::post('/{id}/update', 'SellOrderController@update')->name('crm.sales.order.update');
+        Route::delete('/{id}/delete', 'SellOrderController@delete')->name('crm.sales.order.delete');
+        Route::get('/{id}/voucher', 'SellOrderController@voucher')->name('crm.sales.order.voucher');
+    });
+
     Route::group(['prefix' => 'crm/sales'], function () {
         Route::get('/', 'InvoiceController@index')->name('crm.invoice.index');
         Route::get('/create', 'InvoiceController@create')->name('crm.invoice.create');

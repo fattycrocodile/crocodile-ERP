@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SellOrder extends Model
 {
+    protected $table = 'sell_orders';
     protected $guarded=[];
 
     public function store()

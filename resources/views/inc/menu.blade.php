@@ -363,13 +363,13 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('crm.invoice.create') }}"
+                                <a class="dropdown-item" href="{{ route('crm.sales.order.create') }}"
                                    data-toggle="dropdown">Order Create
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('crm.invoice.index') }}"
+                                <a class="dropdown-item" href="{{ route('crm.sales.order.index') }}"
                                    data-toggle="dropdown">Order Manage
                                     <submenu class="name"></submenu>
                                 </a>
