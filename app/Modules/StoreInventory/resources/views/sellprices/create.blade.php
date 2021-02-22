@@ -123,7 +123,7 @@
             autoFocus: true,
             source: function (request, response) {
                 $.ajax({
-                    url: "{{ route('productNameAutoComplete') }}",
+                    url: "{{ route('product.name.autocomplete') }}",
                     type: 'post',
                     dataType: "json",
                     data: {
@@ -159,7 +159,7 @@
 
         function getProductPrice(product_id) {
             $.ajax({
-                url: "{{ route('productPrice') }}",
+                url: "{{ route('product.price') }}",
                 type: 'post',
                 dataType: "json",
                 data: {

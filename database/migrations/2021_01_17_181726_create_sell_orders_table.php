@@ -15,6 +15,7 @@ class CreateSellOrdersTable extends Migration
     {
         Schema::create('sell_orders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('max_sl_no');
             $table->string('order_no');
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('id')->on('stores');

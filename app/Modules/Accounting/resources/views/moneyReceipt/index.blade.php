@@ -43,17 +43,43 @@
     </section>
     <!--/ Responsive integration (Bootstrap) table -->
 
+    <div class="row my-2">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="form-group">
+                <!-- Modal -->
+                <div class="modal fade text-left" id="xlarge" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel16"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-xl" role="document">
+                        <div class="modal-content" style="min-width: 900px !important;">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel16">Voucher</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close
+                                </button>
+                                <button type="button" class="btn btn-outline-primary">Print</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @push('scripts')
-
     @include('inc.datatable_scripts')
-
-
     {!! $dataTable->scripts() !!}
 
     <script>
         $('#money-receipt-table').on('click', '.btn-delete[data-remote]', function (e) {
-
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -80,6 +106,37 @@
                     }
                 });
             }
+
+        });
+
+        $('#money-receipt-table').on('click', '.btn-preview', function (e) {
+            e.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            var url = "{{ route('accounting.mr.voucher') }}";
+
+            var mr_no = $(this).val();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: {method: 'POST', submit: true, mr_no: mr_no}
+            }).always(function (result) {
+                $('#money-receipt-table').DataTable().draw(false);
+                var message = result.message;
+                if (result.error === false) {
+                    $('.modal-body').html(result.data);
+                    $('#xlarge').modal('show');
+                } else {
+                    if (!message)
+                        message = "Please try again!";
+                    toastr.error(message, 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                }
+            });
+
 
         });
     </script>

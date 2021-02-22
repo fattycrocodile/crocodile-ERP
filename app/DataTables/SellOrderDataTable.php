@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 
 use App\Modules\Crm\Models\Invoice;
+use App\Modules\Crm\Models\SellOrder;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
@@ -12,7 +13,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class InvoiceDataTable extends DataTable
+class SellOrderDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -35,9 +36,9 @@ class InvoiceDataTable extends DataTable
                 return "
                     <div class='form-group'>
                         <div class='btn-group' role='group' aria-label='Basic example'>
-                            <a href='sales/$data->id/edit' class='btn btn-icon btn-secondary' title='Invoice Edit'><i class='fa fa-pencil-square-o'></i></a>
-                            <a href='sales/$data->id/voucher' class='btn btn-icon btn-warning' title='Invoice Preview'><i class='fa fa-eye'></i></a>
-                            <button data-remote='sales/$data->id/delete' class='btn btn-icon btn-danger btn-delete' title='Delete'><i class='fa fa-trash-o'></i></button>
+                            <a href='order/$data->id/edit' class='btn btn-icon btn-secondary' title='Order Edit'><i class='fa fa-pencil-square-o'></i></a>
+                            <a href='order/$data->id/voucher' class='btn btn-icon btn-warning' title='Order Preview'><i class='fa fa-eye'></i></a>
+                            <button data-remote='order/$data->id/delete' class='btn btn-icon btn-danger btn-delete' title='Delete'><i class='fa fa-trash-o'></i></button>
                         </div>
                    </div>";
             })
@@ -51,9 +52,9 @@ class InvoiceDataTable extends DataTable
      * @param Invoice $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Invoice $model)
+    public function query(SellOrder $model)
     {
-        return $model->newQuery()->orderByDesc('invoice_no');
+        return $model->newQuery()->orderByDesc('order_no');
 //        return $model->newQuery()->select('*');
     }
 
@@ -65,7 +66,7 @@ class InvoiceDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('invoice-table')
+            ->setTableId('order-table')
             ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
             ->columns($this->getColumns())
             ->minifiedAjax()
@@ -120,7 +121,7 @@ class InvoiceDataTable extends DataTable
                 ->exportable(true)
                 ->printable(true),
             Column::make('date'),
-            Column::make('invoice_no'),
+            Column::make('order_no'),
 
             Column::make('store_id')
                 ->title('Store'),

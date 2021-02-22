@@ -9,7 +9,6 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use mysql_xdevapi\Exception;
 
 class SellPriceController extends BaseController
 {
@@ -20,6 +19,7 @@ class SellPriceController extends BaseController
     {
         $this->model = $model;
     }
+
     public function index(SellpricesDataTable $dataTable)
     {
         $this->setPageTitle('Products Price', 'List of Products price');
@@ -35,39 +35,26 @@ class SellPriceController extends BaseController
     public function store(Request $req)
     {
         $req->validate([
-           'product_id' => 'required',
-           'sell_price' => 'required',
-           'min_whole_sell_price' => 'required',
+            'product_id' => 'required',
+            'sell_price' => 'required',
+            'min_whole_sell_price' => 'required',
         ]);
 
-        $sellPrice = new SellPrice();
-        $sellPrice->product_id = $req->product_id;
-        $sellPrice->sell_price = $req->sell_price;
-        $sellPrice->whole_sell_price = $req->whole_sell_price;
-        $sellPrice->min_sell_price = $req->min_sell_price;
-        $sellPrice->min_whole_sell_price = $req->min_whole_sell_price;
-        $sellPrice->date = date('Y-m-d');
-
         try {
-            $deactivated = DB::table('sell_prices')->where('status','=',1)->where('product_id','=',$req->product_id)->update(['status'=>0]);
-            if($deactivated)
-            {
-                if ($sellPrice->save())
-                {
-                    return $this->responseRedirect('storeInventory.sellprices.index', 'Price added successfully', 'success', false, false);
-                }
-                else
-                {
-                    return $this->responseRedirectBack('Error occurred while creating Sell Price.', 'error', true, true);
-                }
+            DB::table('sell_prices')->where('status', '=', SellPrice::PRICE_ACTIVE)->where('product_id', '=', $req->product_id)->update(['status' => SellPrice::PRICE_INACTIVE]);
+            $sellPrice = new SellPrice();
+            $sellPrice->product_id = $req->product_id;
+            $sellPrice->sell_price = $req->sell_price;
+            $sellPrice->whole_sell_price = $req->whole_sell_price;
+            $sellPrice->min_sell_price = $req->min_sell_price;
+            $sellPrice->min_whole_sell_price = $req->min_whole_sell_price;
+            $sellPrice->date = date('Y-m-d');
+            if ($sellPrice->save()) {
+                return $this->responseRedirect('storeInventory.sellprices.index', 'Price added successfully', 'success', false, false);
+            } else {
+                return $this->responseRedirectBack('Error occurred while creating Sell Price.', 'error', true, true);
             }
-            else
-            {
-                return $this->responseRedirectBack('Error occurred while deactivating Sell Price.', 'error', true, true);
-            }
-        }
-        catch (QueryException $exception)
-        {
+        } catch (QueryException $exception) {
             //dd($exception);
             return $this->responseRedirectBack('Error occurred while creating Sell Price.', 'error', true, true);
         }

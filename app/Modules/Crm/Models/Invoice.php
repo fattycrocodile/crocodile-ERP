@@ -18,7 +18,6 @@ class Invoice extends Model
     protected $guarded=[];
 
     public function maxSlNo($store_no){
-
         $maxSn = $this->where('store_id', '=', $store_no)->max('max_sl_no');
         return $maxSn ? $maxSn + 1 : 1;
     }

@@ -20,7 +20,6 @@ class CreateInvoicesTable extends Migration
             $table->string('invoice_no');
             $table->tinyInteger('cash_credit');
             $table->unsignedBigInteger('store_id');
-            $table->unsignedBigInteger('cash_credit');
             $table->foreign('store_id')->references('id')->on('stores');
             $table->unsignedBigInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers');
@@ -29,7 +28,7 @@ class CreateInvoicesTable extends Migration
             $table->string('cheque_no')->nullable();
             $table->date('cheque_date')->nullable();
             $table->double('grand_total');
-            $table->tinyInteger('full_paid')->default(0)->comment("0=>Unpaid, 2=>paid");
+            $table->tinyInteger('full_paid')->default(0)->comment("0=>Unpaid, 1=>paid");
             $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users');
             $table->unsignedBigInteger('updated_by')->nullable();

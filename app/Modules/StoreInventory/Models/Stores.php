@@ -2,13 +2,12 @@
 
 namespace App\Modules\StoreInventory\Models;
 
-use App\Model\Accounting\MoneyReceipt;
-use App\Model\Commercial\PurchaseReturn;
-use App\Model\Crm\Customers;
-use App\Model\Crm\Invoice;
-use App\Model\Crm\InvoiceReturn;
-use App\Model\Crm\SellOrder;
 use App\Model\User\User;
+use App\Modules\Accounting\Models\MoneyReceipt;
+use App\Modules\Crm\Models\Customers;
+use App\Modules\Crm\Models\Invoice;
+use App\Modules\Crm\Models\InvoiceReturn;
+use App\Modules\Crm\Models\SellOrder;
 use Illuminate\Database\Eloquent\Model;
 use TypiCMS\NestableTrait;
 

@@ -8,15 +8,19 @@
             z-index: 999 !important;
         }
 
-        .cash_payment, .bank_other_payment, .cash_payment_bank {
+        .bank_other_payment, .cash_payment_bank {
             display: none;
         }
     </style>
 @endpush
 @section('content')
 
-    @include('inc.flash')
+    <div class="alert alert-danger print-error-msg " style="display:none">
+        <ul></ul>
+    </div>
 
+    <div class="alert alert-success print-success-msg" style="display:none">
+    </div>
     <section id="basic-form-layouts">
         <div class="row match-height">
             <div class="col-md-12">
@@ -37,7 +41,8 @@
                         <div class="card-body">
                             <div class="card-text">
                             </div>
-                            <form class="form" id="invoice-form" action="{{route('crm.invoice.store')}}" method="post" autocomplete="off">
+                            <form class="form" id="mr-form" action="{{route('accounting.mr.store')}}" method="post"
+                                  autocomplete="off">
                                 @csrf
 
                                 <div class="form-body">
@@ -95,12 +100,36 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <h4 class="form-section"><i class="ft-airplay"></i> Invoice Info</h4>
+                                    <div class="spinner-div text-center" style="display: none;">
+                                        <button type="button" class="btn btn-lg btn-success mb-1">
+                                            <i class="fa fa-spinner fa-pulse fa-fw"></i> Please wait..
+                                        </button>
+                                    </div>
                                     <div class="row" id="invoice-infos">
                                     </div>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade text-left" id="xlarge" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-xl" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel16">Voucher</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-outline-primary">Print</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -115,256 +144,9 @@
     <!-- Script -->
     <script type="text/javascript">
 
-
-
-        // CSRF Token
-        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-
-
-        $().ready(function () {
-            $('form#invoice-form').submit(function () {
-                // Get the Login Name value and trim it
-                var date = $.trim($('#date').val());
-                var store_id = $.trim($('#store_id').val());
-                var customer_id = $.trim($('#customer_id').val());
-                var cash_credit = $.trim($('#cash_credit').val());
-                var payment_method = $.trim($('#payment_method').val());
-                var bank_id = $.trim($('#bank_id').val());
-                var cheque_no = $.trim($('#cheque_no').val());
-                var cheque_date = $.trim($('#cheque_date').val());
-
-                if (date === '') {
-                    toastr.warning(" Please select  date!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    return false;
-                }
-                if (store_id === '') {
-                    toastr.warning(" Please select  store!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    return false;
-                }
-                if (customer_id === '') {
-                    toastr.warning(" Please select  customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    return false;
-                }
-                if (cash_credit === '') {
-                    toastr.warning(" Please select  cash/credit!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    return false;
-                }
-
-                if (cash_credit === 1) { //if cash
-                    if (payment_method === '') {
-                        toastr.warning(" Please select  payment method!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                        return false;
-                    }
-                    payment_method = nanCheck(payment_method);
-                    if (isValidCode(payment_method, bankArray)) {
-                        if (bank_id === '') {
-                            toastr.warning(" Please select  bank!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                            return false;
-                        }
-                        if (isValidCode(payment_method, paymentChequeArray)) {
-                            if (cheque_no === '' || cheque_date === '') {
-                                toastr.warning(" Please select  cheque no & cheque date!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                                return false;
-                            }
-                        }
-                    }
-                }
-
-                var rowCount = $('#table-data-list tbody tr.cartList').length;
-                if (nanCheck(rowCount) <= 0 || rowCount === 'undefined') {
-                    toastr.warning(" Please add atleast one item to grid!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    return false;
-                }
-            });
-        });
-
-
-        $(document).ready(function () {
-
-            // datepicker
-            $(function () {
-                $("#date").datepicker({
-                    // appendText:"(yy-mm-dd)",
-                    dateFormat: "yy-mm-dd",
-                    altField: "#datepicker",
-                    altFormat: "DD, d MM, yy",
-                    prevText: "click for previous months",
-                    nextText: "click for next months",
-                    showOtherMonths: true,
-                    selectOtherMonths: true,
-                    maxDate: new Date()
-                });
-            });
-            $(function () {
-                $("#cheque_date").datepicker({
-                    // appendText:"(yy-mm-dd)",
-                    dateFormat: "yy-mm-dd",
-                    altField: "#datepicker",
-                    altFormat: "DD, d MM, yy",
-                    prevText: "click for previous months",
-                    nextText: "click for next months",
-                    showOtherMonths: true,
-                    selectOtherMonths: true,
-                    // maxDate: new Date()
-                });
-            });
-
-            // customer name wise search start
-            $("#customer_name").autocomplete({
-                minLength: 1,
-                autoFocus: true,
-                source: function (request, response) {
-                    var store_id = $("#store_id").val();
-                    $.ajax({
-                        url: "{{ route('customer.name.autocomplete') }}",
-                        type: 'post',
-                        dataType: "json",
-                        data: {
-                            _token: CSRF_TOKEN,
-                            search: request.term,
-                            store_id: store_id,
-                        },
-                        success: function (data) {
-                            response(data);
-                        }
-                    });
-                },
-                focus: function (event, ui) {
-                    // console.log(event);
-                    // console.log(ui);
-                    return false;
-                },
-                select: function (event, ui) {
-                    if (ui.item.value != '' || ui.item.value > 0) {
-                        $('#customer_name').val(ui.item.name);
-                        $('#customer_code').val(ui.item.code);
-                        $('#store_id').val(ui.item.store_id);
-                        $('#customer_id').val(ui.item.value);
-                        $('#contact_no').val(ui.item.contact_no);
-                    } else {
-                        resetCustomer();
-                    }
-                    return false;
-                },
-            }).data("ui-autocomplete")._renderItem = function (ul, item) {
-
-                var inner_html = '<div>' + item.label + ' (<i>' + item.code + ')</i></div>';
-                return $("<li>")
-                    .data("item.autocomplete", item)
-                    .append(inner_html)
-                    .appendTo(ul);
-            };
-            // customer name wise search end
-
-            // customer name wise search start
-            $("#customer_code").autocomplete({
-                minLength: 1,
-                autoFocus: true,
-                source: function (request, response) {
-                    // console.log('customer_code');
-                    var store_id = $("#store_id").val();
-                    $.ajax({
-                        url: "{{ route('customer.code.autocomplete') }}",
-                        type: 'post',
-                        dataType: "json",
-                        data: {
-                            _token: CSRF_TOKEN,
-                            search: request.term,
-                            store_id: store_id,
-                        },
-                        success: function (data) {
-                            response(data);
-                        }
-                    });
-                },
-                focus: function (event, ui) {
-                    // console.log(event);
-                    // console.log(ui);
-                    return false;
-                },
-                select: function (event, ui) {
-                    if (ui.item.value != '' || ui.item.value > 0) {
-                        $('#customer_name').val(ui.item.name);
-                        $('#customer_code').val(ui.item.code);
-                        $('#store_id').val(ui.item.store_id);
-                        $('#customer_id').val(ui.item.value);
-                        $('#contact_no').val(ui.item.contact_no);
-                    } else {
-                        resetCustomer();
-                    }
-                    return false;
-                },
-            }).data("ui-autocomplete")._renderItem = function (ul, item) {
-                var inner_html = '<div>' + item.label + ' (<i>' + item.name + ')</i></div>';
-                return $("<li>")
-                    .data("item.autocomplete", item)
-                    .append(inner_html)
-                    .appendTo(ul);
-            };
-            // customer code wise search end
-
-            // customer name wise search start
-            $("#contact_no").autocomplete({
-                minLength: 1,
-                autoFocus: true,
-                source: function (request, response) {
-                    var store_id = $("#store_id").val();
-                    $.ajax({
-                        url: "{{ route('customer.contact.autocomplete') }}",
-                        type: 'post',
-                        dataType: "json",
-                        data: {
-                            _token: CSRF_TOKEN,
-                            search: request.term,
-                            store_id: store_id,
-                        },
-                        success: function (data) {
-                            response(data);
-                        }
-                    });
-                },
-                focus: function (event, ui) {
-                    // console.log(event);
-                    // console.log(ui);
-                    return false;
-                },
-                select: function (event, ui) {
-                    if (ui.item.value != '' || ui.item.value > 0) {
-                        $('#customer_name').val(ui.item.name);
-                        $('#customer_code').val(ui.item.code);
-                        $('#store_id').val(ui.item.store_id);
-                        $('#customer_id').val(ui.item.value);
-                        $('#contact_no').val(ui.item.contact_no);
-                    } else {
-                        resetCustomer();
-                    }
-                    return false;
-                },
-            }).data("ui-autocomplete")._renderItem = function (ul, item) {
-
-                var inner_html = '<div>' + item.label + ' (<i>' + item.code + ')</i></div>';
-                return $("<li>")
-                    .data("item.autocomplete", item)
-                    .append(inner_html)
-                    .appendTo(ul);
-            };
-        });
-
-
-
-
-        function calculateTotal() {
-            var qty = nanCheck(parseFloat($("#qty").val()));
-            var sell_price = nanCheck(parseFloat($("#sell_price").val()));
-            var min_sell_price = nanCheck(parseFloat($("#min_sell_price").val()));
-            if (sell_price < min_sell_price) {
-                toastr.error("Minimum sell price for this product is: " + min_sell_price, 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                $("#sell_price").val(min_sell_price);
-                $("#total_sell_price").val(qty * min_sell_price);
-            } else {
-                $("#total_sell_price").val(qty * sell_price);
-            }
-        }
+        var cashArray = [1];
+        var bankArray = [2, 3, 4, 5];
+        var paymentChequeArray = [3, 4];
 
         function nanCheck(value) {
             return isNaN(value) ? 0 : value;
@@ -374,64 +156,161 @@
             return ($.inArray(code, codes) > -1);
         }
 
-        function calculateGrandTotal() {
-            var grand_total = 0;
-            $('#table-data-list .temp_row_sell_price').each(function () {
-                grand_total += nanCheck(parseFloat(this.value));
-            });
-            $("#grand_total_text").html(grand_total);
-            $("#grand_total").val(grand_total);
+        function hidePaymentOption() {
+            $('.cash_payment').hide();
+            $('#payment_method').val("");
+            $('#bank_id').val("");
+            $('#cheque_no').val("");
+            $('#cheque_date').val("");
         }
 
-        function calculateRowTotalOnChange() {
-            var serial = 0;
-            var grandTotal = 0;
-            $("#table-data-list tbody tr.cartList td.count").each(function (index, element) {
 
-                    console.log("CALCULATION STARTED::" + index);
-                    serial++;
-                    var temp_stock_qty = nanCheck(parseFloat($(this).closest('tr').find(".temp_stock_qty").val()));
-                    var temp_sell_price = nanCheck(parseFloat($(this).closest('tr').find(".temp_sell_price").val()));
-                    var temp_min_sell_price = nanCheck(parseFloat($(this).closest('tr').find(".temp_min_sell_price").val()));
-                    var temp_sell_qty = nanCheck(parseFloat($(this).closest('tr').find(".temp_sell_qty").val()));
-                    var temp_row_sell_price = nanCheck(parseFloat($(this).closest('tr').find(".temp_row_sell_price").val()));
-
-                    if (temp_sell_price < temp_min_sell_price) {
-                        temp_sell_price = temp_min_sell_price;
-                        $(this).closest('tr').find(".temp_sell_price ").val(temp_min_sell_price);
-                        toastr.warning("Minimum sell price is: " + temp_min_sell_price, 'Message <i class="fa fa-bell faa-ring animated"></i>');
+        // CSRF Token
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        // customer name wise search start
+        $("#customer_name").autocomplete({
+            minLength: 1,
+            autoFocus: true,
+            source: function (request, response) {
+                var store_id = $("#store_id").val();
+                $.ajax({
+                    url: "{{ route('customer.name.autocomplete') }}",
+                    type: 'post',
+                    dataType: "json",
+                    data: {
+                        _token: CSRF_TOKEN,
+                        search: request.term,
+                        store_id: store_id,
+                    },
+                    success: function (data) {
+                        response(data);
                     }
-                    // console.log("MIN: " + temp_min_sell_price + ", SP: " + temp_sell_price);
-                    if (temp_sell_qty <= 0) {
-                        temp_sell_qty = 1;
-                        $(this).closest('tr').find(".temp_sell_qty ").val(temp_sell_qty);
-                        toastr.warning("Minimum sell qty is: " + temp_sell_qty, 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    }
-
-                    if (temp_sell_qty > temp_stock_qty) {
-                        temp_sell_qty = temp_stock_qty;
-                        $(this).closest('tr').find(".temp_sell_qty ").val(temp_sell_qty);
-                        toastr.warning("Sell qty exceeded!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    }
-                    var row_total = temp_sell_qty * temp_sell_price;
-
-                    $(this).closest('tr').find(".temp_row_sell_price").val(row_total.toFixed(2));
+                });
+            },
+            focus: function (event, ui) {
+                // console.log(event);
+                // console.log(ui);
+                return false;
+            },
+            select: function (event, ui) {
+                if (ui.item.value != '' || ui.item.value > 0) {
+                    $('#customer_name').val(ui.item.name);
+                    $('#customer_code').val(ui.item.code);
+                    $('#store_id').val(ui.item.store_id);
+                    $('#customer_id').val(ui.item.value);
+                    $('#contact_no').val(ui.item.contact_no);
+                } else {
+                    resetCustomer();
                 }
-            );
-            calculateGrandTotal();
-        }
+                return false;
+            },
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
 
-        // Restricts input for the set of matched elements to the given inputFilter function.
-        $(document).on('input keyup  drop paste', "#qty, #sell_price, .temp_sell_price, .temp_sell_qty", function (evt) {
-            var self = $(this);
-            self.val(self.val().replace(/[^0-9\.]/g, ''));
-            if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) {
-                evt.preventDefault();
-            }
-        });
-        $(document).ready(function(){
-            $( document ).on( 'focus', ':input', function(){
-                $( this ).attr( 'autocomplete', 'off' );
+            var inner_html = '<div>' + item.label + ' (<i>' + item.code + ')</i></div>';
+            return $("<li>")
+                .data("item.autocomplete", item)
+                .append(inner_html)
+                .appendTo(ul);
+        };
+        // customer name wise search end
+
+        // customer name wise search start
+        $("#customer_code").autocomplete({
+            minLength: 1,
+            autoFocus: true,
+            source: function (request, response) {
+                // console.log('customer_code');
+                var store_id = $("#store_id").val();
+                $.ajax({
+                    url: "{{ route('customer.code.autocomplete') }}",
+                    type: 'post',
+                    dataType: "json",
+                    data: {
+                        _token: CSRF_TOKEN,
+                        search: request.term,
+                        store_id: store_id,
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            focus: function (event, ui) {
+                // console.log(event);
+                // console.log(ui);
+                return false;
+            },
+            select: function (event, ui) {
+                if (ui.item.value != '' || ui.item.value > 0) {
+                    $('#customer_name').val(ui.item.name);
+                    $('#customer_code').val(ui.item.code);
+                    $('#store_id').val(ui.item.store_id);
+                    $('#customer_id').val(ui.item.value);
+                    $('#contact_no').val(ui.item.contact_no);
+                } else {
+                    resetCustomer();
+                }
+                return false;
+            },
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+            var inner_html = '<div>' + item.label + ' (<i>' + item.name + ')</i></div>';
+            return $("<li>")
+                .data("item.autocomplete", item)
+                .append(inner_html)
+                .appendTo(ul);
+        };
+        // customer code wise search end
+
+        // customer name wise search start
+        $("#contact_no").autocomplete({
+            minLength: 1,
+            autoFocus: true,
+            source: function (request, response) {
+                var store_id = $("#store_id").val();
+                $.ajax({
+                    url: "{{ route('customer.contact.autocomplete') }}",
+                    type: 'post',
+                    dataType: "json",
+                    data: {
+                        _token: CSRF_TOKEN,
+                        search: request.term,
+                        store_id: store_id,
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            focus: function (event, ui) {
+                // console.log(event);
+                // console.log(ui);
+                return false;
+            },
+            select: function (event, ui) {
+                if (ui.item.value != '' || ui.item.value > 0) {
+                    $('#customer_name').val(ui.item.name);
+                    $('#customer_code').val(ui.item.code);
+                    $('#store_id').val(ui.item.store_id);
+                    $('#customer_id').val(ui.item.value);
+                    $('#contact_no').val(ui.item.contact_no);
+                } else {
+                    resetCustomer();
+                }
+                return false;
+            },
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+
+            var inner_html = '<div>' + item.label + ' (<i>' + item.code + ')</i></div>';
+            return $("<li>")
+                .data("item.autocomplete", item)
+                .append(inner_html)
+                .appendTo(ul);
+        };
+
+
+        $(document).ready(function () {
+            $(document).on('focus', ':input', function () {
+                $(this).attr('autocomplete', 'off');
             });
         });
 
@@ -446,28 +325,167 @@
                     _token: CSRF_TOKEN,
                     customer_id: customer_id,
                 },
-                beforeSend: function() {
-                    if (customer_id == "" || customer_id == 0 || customer_id == null){
+                beforeSend: function () {
+                    if (customer_id == "" || customer_id == 0 || customer_id == null) {
                         toastr.warning(" Please select customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                         return false;
                     }
+                    $('#invoice-infos').html("");
+                    $(".spinner-div").show();
                 },
                 success: function (data) {
-                    console.log('success');
-                    console.log(data);
+                    // console.log('success');
+                    // console.log(data);
                     // response(data);
-                    if(data.success == true) {
+                    if (data.success == true) {
                         //user_jobs div defined on page
                         $('#invoice-infos').html(data.html);
                     } else {
+                        $(".invoice-infos").html("");
                         {{--$('#user_jobs').html(data.html + '{{ $user->username }}');--}}
                     }
+                    $(".spinner-div").hide();
                 },
-                error: function(xhr,textStatus,thrownError) {
+                error: function (xhr, textStatus, thrownError) {
                     alert(xhr + "\n" + textStatus + "\n" + thrownError);
+                    $(".spinner-div").hide();
+                    $(".invoice-infos").html("");
                 }
+            }).done(function (data) {
+                // $("#stock_qty").val(data.closing_balance);
+            }).fail(function (jqXHR, textStatus) {
+                $(".spinner-div").hide();
+                $(".invoice-infos").html("");
             });
         }
-    </script>
 
+
+        $().ready(function () {
+            $('form#mr-form').submit(function (e) {
+                e.preventDefault();
+                // Get the Login Name value and trim it
+                var date = $.trim($('#date').val());
+                var store_id = $.trim($('#store_id').val());
+                var customer_id = $.trim($('#customer_id').val());
+                var payment_method = $.trim($('#payment_method').val());
+                var bank_id = $.trim($('#bank_id').val());
+                var cheque_no = $.trim($('#cheque_no').val());
+                var cheque_date = $.trim($('#cheque_date').val());
+                var grand_total = nanCheck(parseFloat($.trim($('#grand_total').val())));
+
+                if (date === '') {
+                    toastr.warning(" Please select  date!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+                if (store_id === '') {
+                    toastr.warning(" Please select  store!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+                if (customer_id === '') {
+                    toastr.warning(" Please select  customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+
+                if (payment_method === '' || payment_method <= 0) {
+                    toastr.warning(" Please select  payment method!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+
+                payment_method = nanCheck(payment_method);
+                if (isValidCode(payment_method, bankArray)) {
+                    if (bank_id === '') {
+                        toastr.warning(" Please select  bank!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                        return false;
+                    }
+                    if (isValidCode(payment_method, paymentChequeArray)) {
+                        if (cheque_no === '' || cheque_date === '') {
+                            toastr.warning(" Please select  cheque no & cheque date!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                            return false;
+                        }
+                    }
+                }
+
+                var rowCount = $('#table-data-list tbody tr.cartList').length;
+                if (nanCheck(rowCount) <= 0 || rowCount === 'undefined') {
+                    toastr.warning(" Please add at least one item to grid!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+                // console.log(grand_total);
+                if (grand_total <= 0 || grand_total === "") {
+                    toastr.warning(" Please insert mr amount!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                } else {
+                    ajaxSave();
+                }
+            });
+        });
+
+        function ajaxSave() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "{{ route('accounting.mr.store') }}",
+                type: 'post',
+                dataType: "json",
+                cache: false,
+                data: $('form').serialize(),
+                beforeSend: function () {
+                    if (customer_id == "" || customer_id == 0 || customer_id == null) {
+                        toastr.warning(" Please select customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                        return false;
+                    }
+                    $('#invoice-infos').html("");
+                    $(".spinner-div").show();
+                },
+                success: function (result) {
+                    if(result.error === false){
+                        $(".print-success-msg").css('display','block');
+                        $(".print-success-msg").html(result.message);
+                        $('.modal-body').html(result.data);
+                        $('#xlarge').modal('show');
+                        flashMessage('success');
+                    }else{
+                        printErrorMsg(result.data);
+                        flashMessage('error');
+                    }
+                    $(".spinner-div").hide();
+                    $(".invoice-infos").html("");
+                },
+                error: function (xhr, textStatus, thrownError) {
+                    alert(xhr + "\n" + textStatus + "\n" + thrownError);
+                    $(".spinner-div").hide();
+                    $(".invoice-infos").html("");
+                }
+            }).done(function (data) {
+                console.log("REQUEST DONE;");
+            }).fail(function (jqXHR, textStatus) {
+                console.log("REQUEST FAILED;");
+                $(".spinner-div").hide();
+                $(".invoice-infos").html("");
+            });
+        }
+
+        function printErrorMsg (msg) {
+            $(".print-error-msg").find("ul").html('');
+            $(".print-error-msg").css('display','block');
+            $.each( msg, function( key, value ) {
+                $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+            });
+        }
+
+        function flashMessage(value = 'success'){
+            if (value === 'success') {
+                $(".print-success-msg-msg").fadeTo(2000, 500).slideUp(500, function () {
+                    $(".print-success-msg").slideUp(500);
+                });
+            } else {
+                $(".print-error-msg").fadeTo(2000, 500).slideUp(500, function () {
+                    $(".print-error-msg").slideUp(500);
+                });
+            }
+        }
+    </script>
 @endpush

@@ -179,6 +179,9 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         Yajra\Datatables\ButtonsServiceProvider::class,
         Yajra\DataTables\EditorServiceProvider::class,
+
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        Yajra\DataTables\ButtonsServiceProvider::class,
     ],
 
     /*
