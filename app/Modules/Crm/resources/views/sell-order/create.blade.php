@@ -170,10 +170,10 @@
                                                     <tr>
                                                         <th>SL</th>
                                                         <th>Product Info</th>
-                                                        <th>Sell Price</th>
-                                                        <th>Sell Qty</th>
-                                                        <th>Row Total</th>
-                                                        <th>Action</th>
+                                                        <th class="text-center;">Sell Price</th>
+                                                        <th class="text-center;">Sell Qty</th>
+                                                        <th class="text-center;">Row Total</th>
+                                                        <th class="text-center;">Action</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
