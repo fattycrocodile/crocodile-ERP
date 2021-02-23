@@ -27,6 +27,7 @@ class CreateSuppliersPaymentsTable extends Migration
             $table->string('cheque_no')->nullable();
             $table->string('cheque_date')->nullable();
             $table->double('amount');
+            $table->double('discount')->nullable();
             $table->date('date');
             $table->unsignedBigInteger('payment_by')->nullable();
             $table->foreign('payment_by')->references('id')->on('users');

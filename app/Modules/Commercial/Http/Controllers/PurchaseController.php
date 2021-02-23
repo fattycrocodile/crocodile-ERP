@@ -20,6 +20,7 @@ use Carbon\Carbon;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -165,6 +166,26 @@ class PurchaseController extends BaseController
         $this->setPageTitle('PO No-' . $invoice_no, 'Purchase Preview : ' . $invoice_no);
 
         return view('Commercial::purchases.voucher', compact('invoice', 'id'));
+    }
+
+    public function getDuePurchaseList(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('supplier_id')) {
+            $supplier_id = trim($request->supplier_id);
+            $data = new Purchase();
+            $data = $data->where('supplier_id', '=', $supplier_id);
+            $data = $data->where('full_paid', '=', Purchase::NOT_PAID);
+            $data = $data->orderby('id', 'asc');
+            $data = $data->get();
+        }
+
+        $payment_type = Lookup::items('payment_method');
+        $cash_credit = Lookup::items('cash_credit');
+        $bank = Lookup::items('bank');
+        $returnHTML = view('Accounting::supplierPayment.due-purchase-list', compact('data', 'cash_credit', 'bank', 'payment_type'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 
 }

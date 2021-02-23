@@ -230,13 +230,13 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('accounting.mr.index') }}" data-toggle="dropdown">Create Payment
+                                <a class="dropdown-item" href="{{ route('accounting.payment.create') }}" data-toggle="dropdown">Create Payment
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
 
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('accounting.mr.create') }}" data-toggle="dropdown">Manage Payment
+                                <a class="dropdown-item" href="{{ route('accounting.payment.index') }}" data-toggle="dropdown">Manage Payment
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>

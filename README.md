@@ -4,10 +4,10 @@
 - [ ] Invoice create from order
 - [ ] Invoice Return
 - [x] Money Receipt Create
-- [ ] Purchase Order Create
-- [ ] Purchase Receive
+- [x] Purchase Order Create
+- [x] Purchase Receive
 - [ ] Purchase Return
-- [ ] Supplier Payment Create
+- [x] Supplier Payment Create
 
 # ERP PLANNING 
 

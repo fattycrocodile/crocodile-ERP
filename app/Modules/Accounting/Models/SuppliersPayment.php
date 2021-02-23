@@ -2,6 +2,7 @@
 
 namespace App\Modules\Accounting\Models;
 
+use App\Modules\Commercial\Models\Purchase;
 use App\Modules\Commercial\Models\Suppliers;
 use App\Model\User\User;
 use Illuminate\Database\Eloquent\Model;
@@ -35,6 +36,11 @@ class SuppliersPayment extends Model
         $product->orderBy('id', 'asc');
         $data = $product->first();
         return $data;
+    }
+
+    public function purchase()
+    {
+        return $this->belongsTo(Purchase::class,'po_no','id');
     }
 
     public function supplier()

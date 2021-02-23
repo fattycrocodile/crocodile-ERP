@@ -6,10 +6,19 @@ use App\Model\Commercial\Purchase;
 use App\Model\Commercial\Suppliers;
 use App\Model\User\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseReturn extends Model
 {
     protected $guarded=[];
+
+    public static function totalReturnAmountOfPurchase($invoice_id)
+    {
+        $data = DB::table('purchase_returns')
+            ->select(DB::raw('sum(amount) as return_amount'))
+            ->where('purchase_id', '=', $invoice_id)->first();
+        return $data ? $data->return_amount : 0;
+    }
 
     public function purchase()
     {

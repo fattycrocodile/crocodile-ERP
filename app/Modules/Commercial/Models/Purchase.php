@@ -2,6 +2,7 @@
 
 namespace App\Modules\Commercial\Models;
 
+use App\Modules\Accounting\Models\SuppliersPayment;
 use App\Modules\StoreInventory\Models\PurchaseReturn;
 use App\Modules\StoreInventory\Models\ReceivePurchase;
 use App\Model\User\User;
@@ -25,6 +26,11 @@ class Purchase extends Model
     public function purchaseDetails()
     {
         return $this->hasMany(PurchaseDetails::class);
+    }
+
+    public function supplierPayment()
+    {
+        return $this->hasMany(SuppliersPayment::class,'id','po_no');
     }
 
     public function purchaseReturn()
