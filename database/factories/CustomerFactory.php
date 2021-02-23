@@ -14,7 +14,7 @@ $factory->define(Customers::class, function (Faker $faker) {
         'max_sn' => $maxSlNo =  $faker->unique()->numberBetween(1, 150),
         'address' => $faker->address,
         'contact_no' => $faker->phoneNumber,
-        'store_id' => 1,
+        'store_id' => 2,
         'created_by' => 1,
         'status' => 1,
         'code' => "S01-". str_pad($maxSlNo, 3, '0', STR_PAD_LEFT),

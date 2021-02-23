@@ -89,6 +89,7 @@ class InvoiceController extends BaseController
             $invoice->cash_credit = $cash_credit = $params['cash_credit'];
             $invoice->max_sl_no = $maxSlNo;
             $invoice->invoice_no = $invNo;
+            $invoice->invoice_id = isset($params['invoice_id']) ? $params['invoice_id'] : NULL;
             $invoice->store_id = $params['store_id'];
             $invoice->customer_id = $params['customer_id'];
             $invoice->discount_amount = 0;

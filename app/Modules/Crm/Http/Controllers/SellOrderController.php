@@ -110,7 +110,7 @@ class SellOrderController extends BaseController
                     $i++;
                 }
 
-                return $this->responseRedirectToWithParameters('Crm.sales.order.voucher', ['id' => $order->id], 'Orders created successfully', 'success', false, false);
+                return $this->responseRedirectToWithParameters('crm.sales.order.voucher', ['id' => $order->id], 'Orders created successfully', 'success', false, false);
             } else {
                 return $this->responseRedirectBack('Error occurred while creating order.', 'error', true, true);
             }

@@ -281,7 +281,15 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
+                                                    <?php
+                                                        $grand_total = 0;
+                                                    ?>
                                                     @foreach($order->sellOrderDetails as $key => $details)
+                                                        <?php
+                                                        $stock_qty = \App\Modules\StoreInventory\Models\Inventory::closingStockWithStore($details->product_id, $order->store_id);
+                                                        $whole_sell_price = \App\Modules\StoreInventory\Models\SellPrice::minimumWholeSellPrice($details->product_id);
+                                                        $grand_total += $details->row_total;
+                                                        ?>
                                                         <tr class='cartList'>
                                                             <td class='count'
                                                                 style='text-align: center;'>{{ ++$key }}
@@ -289,8 +297,9 @@
                                                             <td style='text-align: left;'>
                                                                 Name: {{ $details->product->name }}
                                                                 <br>
-                                                                <small
-                                                                    class='cart-product-code'>Code:{{ $details->product->code }}</small>
+                                                                <small class='cart-product-code'>
+                                                                    Code:{{ $details->product->code }}
+                                                                </small>
                                                                 <input type='hidden' class='temp_product_id'
                                                                        name='product[temp_product_id][]'
                                                                        value='{{ $details->product_id }}'>
@@ -298,7 +307,7 @@
                                                             <td style='text-align: center;'>
                                                                 <input type='text' class='form-control temp_stock_qty'
                                                                        readonly name='product[temp_stock_qty][]'
-                                                                       onkeyup='calculateRowTotalOnChange();' value=''>
+                                                                       onkeyup='calculateRowTotalOnChange();' value='{{ $stock_qty }}'>
                                                             </td>
                                                             <td style='text-align: center;'>
                                                                 <input type='text' class='form-control temp_sell_price '
@@ -308,13 +317,13 @@
                                                                 <input type='hidden'
                                                                        name='product[temp_min_sell_price][]'
                                                                        class='temp_min_sell_price'
-                                                                       value='{{ $details->sell_price }}'>
+                                                                       value='{{ $whole_sell_price }}'>
                                                             </td>
                                                             <td style='text-align: center;'>
                                                                 <input type='text' class='form-control temp_sell_qty'
                                                                        name='product[temp_sell_qty][]'
                                                                        onkeyup='calculateRowTotalOnChange();'
-                                                                       value='{{ $details->sell_qty }}'>
+                                                                       value='{{ $details->qty }}'>
                                                             </td>
                                                             <td style='text-align: center;'>
                                                                 <input type='text'
@@ -336,8 +345,8 @@
                                                     <tr>
                                                         <th colspan="5" class="text-right">Grand Total</th>
                                                         <th style="text-align: center;">
-                                                            <div id="grand_total_text"></div>
-                                                            <input type="hidden" id="grand_total" name="grand_total">
+                                                            <div id="grand_total_text">{{ number_format($grand_total, 2) }}</div>
+                                                            <input type="hidden" id="grand_total" name="grand_total" value="{{$grand_total}}">
                                                         </th>
                                                         <th></th>
                                                     </tr>
