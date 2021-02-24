@@ -2,16 +2,20 @@
 
 namespace App\Modules\Crm\Models;
 
-use App\Modules\StoreInventory\Models\Stores;
 use App\Model\User\User;
+use App\Modules\StoreInventory\Models\Stores;
 use Illuminate\Database\Eloquent\Model;
 
 class SellOrder extends Model
 {
     protected $table = 'sell_orders';
-    protected $guarded=[];
+    protected $guarded = [];
 
-    public function maxSlNo($store_no){
+    const INV_NOT_CREATED = 1;
+    const INV_CREATED = 2;
+
+    public function maxSlNo($store_no)
+    {
         $maxSn = $this->where('store_id', '=', $store_no)->max('max_sl_no');
         return $maxSn ? $maxSn + 1 : 1;
     }

@@ -18,6 +18,7 @@ class CreateSellOrdersTable extends Migration
             $table->unsignedBigInteger('max_sl_no');
             $table->string('order_no');
             $table->unsignedBigInteger('store_id');
+            $table->tinyInteger('is_invoice')->default(1)->comment('1=>Invoice Not Created, 2=>Invoice Created');
             $table->foreign('store_id')->references('id')->on('stores');
             $table->unsignedBigInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers');

@@ -439,7 +439,12 @@
 
                 var rowCount = $('#table-data-list tbody tr.cartList').length;
                 if (nanCheck(rowCount) <= 0 || rowCount === 'undefined') {
-                    toastr.warning(" Please add atleast one item to grid!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    toastr.warning(" Please add at least one item to grid!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+                console.log(calculateIsStockExceeded());
+                if (calculateIsStockExceeded() === false){
+                    toastr.warning(" Stock Qty Exceeded!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 }
             });
@@ -997,6 +1002,50 @@
             calculateGrandTotal();
         }
 
+        function calculateIsStockExceeded() {
+            var serial = 0;
+            var grandTotal = 0;
+            var result = true;
+            $("#table-data-list tbody tr.cartList td.count").each(function (index, element) {
+                    serial++;
+                    var temp_stock_qty = nanCheck(parseFloat($(this).closest('tr').find(".temp_stock_qty").val()));
+                    var temp_sell_price = nanCheck(parseFloat($(this).closest('tr').find(".temp_sell_price").val()));
+                    var temp_min_sell_price = nanCheck(parseFloat($(this).closest('tr').find(".temp_min_sell_price").val()));
+                    var temp_sell_qty = nanCheck(parseFloat($(this).closest('tr').find(".temp_sell_qty").val()));
+                    var temp_row_sell_price = nanCheck(parseFloat($(this).closest('tr').find(".temp_row_sell_price").val()));
+
+                    if (temp_sell_price < temp_min_sell_price) {
+                        temp_sell_price = temp_min_sell_price;
+                        $(this).closest('tr').find(".temp_sell_price ").val(temp_min_sell_price);
+                        toastr.warning("Minimum sell price is: " + temp_min_sell_price, 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                        result = false;
+                        return result;
+                    }
+                    if (temp_sell_qty <= 0) {
+                        temp_sell_qty = 1;
+                        $(this).closest('tr').find(".temp_sell_qty ").val(temp_sell_qty);
+                        toastr.warning("Minimum sell qty is: " + temp_sell_qty, 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                        result = false;
+
+                        return result;
+                    }
+
+                    if (temp_sell_qty > temp_stock_qty) {
+                        temp_sell_qty = temp_stock_qty;
+                        //$(this).closest('tr').find(".temp_sell_qty ").val(temp_sell_qty);
+                        toastr.warning("Sell qty exceeded!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                        result = false;
+
+                        return result;
+                    }
+                    //var row_total = temp_sell_qty * temp_sell_price;
+
+                    //$(this).closest('tr').find(".temp_row_sell_price").val(row_total.toFixed(2));
+                }
+            );
+            //calculateGrandTotal();
+            return result;
+        }
         // Restricts input for the set of matched elements to the given inputFilter function.
         $(document).on('input keyup  drop paste', "#qty, #sell_price, .temp_sell_price, .temp_sell_qty", function (evt) {
             var self = $(this);

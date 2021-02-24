@@ -19,14 +19,12 @@ class CreateInvoicesTable extends Migration
             $table->unsignedBigInteger('max_sl_no');
             $table->string('invoice_no');
             $table->tinyInteger('cash_credit');
-            $table->unsignedBigInteger('store_id');
+            $table->unsignedBigInteger('order_id');
             $table->foreign('store_id')->references('id')->on('stores');
             $table->unsignedBigInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers');
+            $table->unsignedBigInteger('order_id')->nullable();
             $table->double('discount_amount')->default(0)->nullable();
-            $table->unsignedBigInteger('bank_id')->nullable();
-            $table->string('cheque_no')->nullable();
-            $table->date('cheque_date')->nullable();
             $table->double('grand_total');
             $table->tinyInteger('full_paid')->default(0)->comment("0=>Unpaid, 1=>paid");
             $table->unsignedBigInteger('created_by')->nullable();

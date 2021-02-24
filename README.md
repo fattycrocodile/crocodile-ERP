@@ -1,7 +1,7 @@
 ### Task List
 
 - [x] Sales Order Create
-- [ ] Invoice create from order
+- [x] Invoice create from order
 - [ ] Invoice Return
 - [x] Money Receipt Create
 - [x] Purchase Order Create

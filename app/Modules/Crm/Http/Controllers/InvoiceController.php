@@ -8,6 +8,7 @@ use App\Modules\Accounting\Models\MoneyReceipt;
 use App\Modules\Config\Models\Lookup;
 use App\Modules\Crm\Models\Invoice;
 use App\Modules\Crm\Models\InvoiceDetails;
+use App\Modules\Crm\Models\SellOrder;
 use App\Modules\StoreInventory\Models\Inventory;
 use App\Modules\StoreInventory\Models\Stores;
 use App\Traits\UploadAble;
@@ -20,6 +21,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -80,6 +82,7 @@ class InvoiceController extends BaseController
         $params = $request->except('_token');
 
         try {
+            DB::beginTransaction();
             $invoice = new Invoice();
             $maxSlNo = $invoice->maxSlNo($store_id = $params['store_id']);
             $year = Carbon::now()->year;
@@ -89,7 +92,7 @@ class InvoiceController extends BaseController
             $invoice->cash_credit = $cash_credit = $params['cash_credit'];
             $invoice->max_sl_no = $maxSlNo;
             $invoice->invoice_no = $invNo;
-            $invoice->invoice_id = isset($params['invoice_id']) ? $params['invoice_id'] : NULL;
+            $invoice->order_id = isset($params['order_id']) ? $params['order_id'] : NULL;
             $invoice->store_id = $params['store_id'];
             $invoice->customer_id = $params['customer_id'];
             $invoice->discount_amount = 0;
@@ -99,30 +102,35 @@ class InvoiceController extends BaseController
             if ($invoice->save()) {
                 $invoice_id = $invoice->id;
                 $i = 0;
+                $isAnyItemIsMissing = false;
                 foreach ($params['product']['temp_product_id'] as $product_id) {
                     $stock_qty = $params['product']['temp_stock_qty'][$i];
                     $sell_price = $params['product']['temp_sell_price'][$i];
                     $sell_qty = $params['product']['temp_sell_qty'][$i];
                     $row_sell_price = $params['product']['temp_row_sell_price'][$i];
-
-                    $inventory = new Inventory();
-                    $inventory->store_id = $store_id;
-                    $inventory->product_id = $product_id;
-                    $inventory->stock_in = 0;
-                    $inventory->stock_out = $sell_qty;
-                    $inventory->ref_type = Inventory::REF_INVOICE;
-                    $inventory->ref_id = $invoice_id;
-                    $inventory->date = $date;
-                    $inventory->created_by = $created_by;
-                    if ($inventory->save()) {
-                        $invoiceDetails = new InvoiceDetails();
-                        $invoiceDetails->invoice_id = $invoice_id;
-                        $invoiceDetails->product_id = $product_id;
-                        $invoiceDetails->qty = $sell_qty;
-                        $invoiceDetails->sell_price = $sell_price;
-                        $invoiceDetails->discount = 0;
-                        $invoiceDetails->row_total = $row_sell_price;
-                        $invoiceDetails->save();
+                    $stock_qty = \App\Modules\StoreInventory\Models\Inventory::closingStockWithStore($product_id, $invoice->store_id);
+                    if ($stock_qty > 0) {
+                        $inventory = new Inventory();
+                        $inventory->store_id = $store_id;
+                        $inventory->product_id = $product_id;
+                        $inventory->stock_in = 0;
+                        $inventory->stock_out = $sell_qty;
+                        $inventory->ref_type = Inventory::REF_INVOICE;
+                        $inventory->ref_id = $invoice_id;
+                        $inventory->date = $date;
+                        $inventory->created_by = $created_by;
+                        if ($inventory->save()) {
+                            $invoiceDetails = new InvoiceDetails();
+                            $invoiceDetails->invoice_id = $invoice_id;
+                            $invoiceDetails->product_id = $product_id;
+                            $invoiceDetails->qty = $sell_qty;
+                            $invoiceDetails->sell_price = $sell_price;
+                            $invoiceDetails->discount = 0;
+                            $invoiceDetails->row_total = $row_sell_price;
+                            $invoiceDetails->save();
+                        }
+                    } else {
+                        $isAnyItemIsMissing = true;
                     }
                     $i++;
                 }
@@ -156,12 +164,22 @@ class InvoiceController extends BaseController
                         $invoice->save();
                     }
                 }
-                return $this->responseRedirectToWithParameters('crm.invoice.voucher', ['id' => $invoice->id], 'Invoice created successfully', 'success', false, false);
+                if ($invoice->order_id > 0) {
+                    SellOrder::query()->where('id', '=', $invoice->order_id)->first()->update(['is_invoice' => SellOrder::INV_CREATED]);
+                }
+                DB::commit();
+                if ($isAnyItemIsMissing == false) {
+                    DB::rollback();
+                    return $this->responseRedirectToWithParameters('crm.invoice.voucher', ['id' => $invoice->id], 'Invoice created successfully', 'success', false, false);
+                } else {
+                    return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
+                }
             } else {
                 return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
             }
 
         } catch (QueryException $exception) {
+            DB::rollback();
             throw new InvalidArgumentException($exception->getMessage());
             //return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
         }

@@ -7,10 +7,7 @@ use App\Modules\Crm\Models\Invoice;
 use App\Modules\Crm\Models\SellOrder;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
-use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class SellOrderDataTable extends DataTable
@@ -33,13 +30,19 @@ class SellOrderDataTable extends DataTable
                 return isset($data->customer->name) ? $data->customer->name : 'N/A';
             })
             ->addColumn('action', function ($data) {
+                $invoice = $delete = $edit = "";
+                if ($data->is_invoice != SellOrder::INV_CREATED) {
+                    $edit = "<a href='order/$data->id/edit' class='btn btn-icon btn-secondary' title='Order Edit'><i class='fa fa-pencil-square-o'></i></a> ";
+                    $invoice = " <a href='order/$data->id/invoice-create' class='btn btn-icon btn-success' title='Invoice Create'><i class='fa fa-calculator'></i></a>";
+                    $delete = " <button data-remote='order/$data->id/delete' class='btn btn-icon btn-danger btn-delete' title='Delete'><i class='fa fa-trash-o'></i></button>";
+                }
                 return "
-                    <div class='form-group'>
+                    <div class='form-group text-center'>
                         <div class='btn-group' role='group' aria-label='Basic example'>
-                            <a href='order/$data->id/edit' class='btn btn-icon btn-secondary' title='Order Edit'><i class='fa fa-pencil-square-o'></i></a>
+                            $edit
                             <a href='order/$data->id/voucher' class='btn btn-icon btn-warning' title='Order Preview'><i class='fa fa-eye'></i></a>
-                            <a href='order/$data->id/invoice-create' class='btn btn-icon btn-success' title='Invoice Create'><i class='fa fa-calculator'></i></a>
-                            <button data-remote='order/$data->id/delete' class='btn btn-icon btn-danger btn-delete' title='Delete'><i class='fa fa-trash-o'></i></button>
+                            $invoice
+                            $delete
                         </div>
                    </div>";
             })
