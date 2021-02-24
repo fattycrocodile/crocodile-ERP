@@ -15,6 +15,8 @@ class CreatePurchaseReturnsTable extends Migration
     {
         Schema::create('purchase_returns', function (Blueprint $table) {
             $table->id();
+            $table->string('return_no');
+            $table->integer('max_sl_no');
             $table->unsignedBigInteger('purchase_id');
             $table->foreign('purchase_id')->references('id')->on('purchases');
             $table->unsignedBigInteger('supplier_id');

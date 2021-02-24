@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Commercial\Http\Controllers;
+namespace App\Modules\StoreInventory\Http\Controllers;
 
 
 use App\Http\Controllers\BaseController;

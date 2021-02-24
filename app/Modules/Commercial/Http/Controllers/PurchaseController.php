@@ -188,4 +188,36 @@ class PurchaseController extends BaseController
         return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 
+    public function getDuePurchaseListWithDue(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('supplier_id')) {
+            $supplier_id = trim($request->supplier_id);
+            $data = new Purchase();
+            $data = $data->where('supplier_id', '=', $supplier_id);
+            $data = $data->where('full_paid', '=', Purchase::NOT_PAID);
+            $data = $data->orderby('id', 'asc');
+            $data = $data->get();
+        }
+
+        $payment_type = Lookup::items('payment_method');
+        $cash_credit = Lookup::items('cash_credit');
+        $bank = Lookup::items('bank');
+        if (!$data->isEmpty()) {
+            foreach ($data as $dt) {
+                $mrAmount = \App\Modules\Accounting\Models\SuppliersPayment::totalMrAmountOfInvoice($dt->id);
+                $returnAmount = \App\Modules\StoreInventory\Models\PurchaseReturn::totalReturnAmountOfPurchase($dt->id);
+                $totalMrWithReturn = $mrAmount + $returnAmount;
+                $due_amount = $dt->grand_total - $totalMrWithReturn;
+
+                $response[] = array("value" => $dt->id, "label" => $dt->invoice_no, "name" => $dt->invoice_no, 'due' => $due_amount);
+            }
+        } else {
+            $response[] = array("value" => '', "label" => 'No data found!', "name" => '', 'due' => '');
+        }
+
+        return response()->json($response);
+    }
+
 }
