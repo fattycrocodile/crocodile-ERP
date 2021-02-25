@@ -12,11 +12,11 @@ class SettingsTableSeeder extends Seeder
     protected $settings = [
         [
             'key' => 'site_name',
-            'value' => 'LARAVEL ERP'
+            'value' => 'Clouster ERP'
         ],
         [
             'key' => 'site_title',
-            'value' => 'LARAVEL ERP'
+            'value' => 'Clouster ERP'
         ],
         [
             'key' => 'company_name',
@@ -56,7 +56,7 @@ class SettingsTableSeeder extends Seeder
         ],
         [
             'key' => 'address',
-            'value' => 'Dhaka International University'
+            'value' => "Dhaka International University<br>It's rhyming like cloud as well has cluster in it, which means it's a clustered package of ERP businesses."
         ],
         [
             'key' => 'fax',
