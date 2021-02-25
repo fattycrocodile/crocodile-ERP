@@ -6,6 +6,7 @@ use App\Modules\Commercial\Models\Purchase;
 use App\Modules\Commercial\Models\Suppliers;
 use App\Model\User\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class SuppliersPayment extends Model
 {
@@ -24,9 +25,10 @@ class SuppliersPayment extends Model
 
     public static function totalMrAmountOfInvoice($invoice_id)
     {
-        $mr = new SuppliersPayment();
-        $data = $mr->where('po_no', '=', $invoice_id)->sum('amount');
-        return $data;
+        $data = DB::table('suppliers_payments')
+            ->select(DB::raw('sum(amount) as amount'), DB::raw('sum(discount) as discount'))
+            ->where('po_no', '=', $invoice_id)->first();
+        return $data ? $data->amount + $data->discount : 0;
     }
 
     public static function mrInfo($invoice_id)

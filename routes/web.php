@@ -46,6 +46,7 @@ Route::group(['middleware' => ['auth:web']], function () {
             Route::post('/supplier-list', 'SuppliersController@getSupplierListByName')->name('supplier.name.autocomplete');
             Route::post('/supplier-contact-list', 'SuppliersController@getSupplierListByContactNo')->name('supplier.contact.autocomplete');
             Route::post('/due-purchase-list', 'PurchaseController@getDuePurchaseList')->name('payment.purchase.due_purchase');
+            Route::post('/due-purchase-list-due', 'PurchaseController@getDuePurchaseListWithDue')->name('payment.purchase.due_purchase_due');
         });
     });
 });
