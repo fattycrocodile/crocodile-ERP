@@ -12,6 +12,12 @@ class PurchaseReturn extends Model
 {
     protected $guarded=[];
 
+    public function maxSlNo($supplier_id){
+
+        $maxSn = $this->max('max_sl_no')->where('supplier_id','=',$supplier_id);
+        return $maxSn ? $maxSn + 1 : 1;
+    }
+
     public static function totalReturnAmountOfPurchase($invoice_id)
     {
         $data = DB::table('purchase_returns')

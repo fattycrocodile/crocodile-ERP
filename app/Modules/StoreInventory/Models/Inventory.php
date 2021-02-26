@@ -9,6 +9,7 @@ class Inventory extends Model
 {
     const REF_INVOICE = 1;
     const REF_PURCHASE = 2;
+    const REF_PURCHASE_RETURN = 3;
 
     protected $table = 'inventories';
     protected $guarded = [];

@@ -211,10 +211,10 @@ class PurchaseController extends BaseController
                 $totalMrWithReturn = $mrAmount + $returnAmount;
                 $due_amount = $dt->grand_total - $totalMrWithReturn;
 
-                $response[] = array("value" => $dt->id, "label" => $dt->invoice_no, "name" => $dt->invoice_no, 'due' => $due_amount);
+                $response[] = array("id" => $dt->id, "label" => $dt->invoice_no, "name" => $dt->invoice_no, 'due' => $due_amount);
             }
         } else {
-            $response[] = array("value" => '', "label" => 'No data found!', "name" => '', 'due' => '');
+            $response[] = array("id" => '', "label" => 'No data found!', "name" => '', 'due' => '');
         }
 
         return response()->json($response);

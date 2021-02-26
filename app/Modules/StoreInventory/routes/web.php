@@ -68,4 +68,14 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/voucher', 'PurchaseReturnController@voucher')->name('storeInventory.pr.voucher');
         Route::delete('/{id}/delete', 'PurchaseReturnController@delete')->name('storeInventory.pr.delete');
     });
+
+    Route::group(['prefix' => 'store-inventory/purchase-receive'], function () {
+        Route::get('/', 'PurchaseReturnController@index')->name('storeInventory.prec.index');
+        Route::get('/create', 'PurchaseReturnController@create')->name('storeInventory.prec.create');
+        Route::post('/store', 'PurchaseReturnController@store')->name('storeInventory.prec.store');
+        Route::get('/{id}/edit', 'PurchaseReturnController@edit')->name('storeInventory.prec.edit');
+        Route::post('/{id}/update', 'PurchaseReturnController@update')->name('storeInventory.prec.update');
+        Route::post('/voucher', 'PurchaseReturnController@voucher')->name('storeInventory.prec.voucher');
+        Route::delete('/{id}/delete', 'PurchaseReturnController@delete')->name('storeInventory.prec.delete');
+    });
 });

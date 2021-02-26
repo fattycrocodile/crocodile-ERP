@@ -164,7 +164,6 @@
                                     <h4 class="form-section"><i class="fa fa-paperclip"></i> Product Information</h4>
 
                                     <div class="row">
-
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="product_name">Product Name</label>

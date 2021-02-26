@@ -103,12 +103,29 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ url('/commercial/purchase/create') }}" data-toggle="dropdown">Receive
+                                <a class="dropdown-item" href="{{ url('/store-inventory/purchase-receive/') }}" data-toggle="dropdown">Receive Manage
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ url('/commercial/purchase/create') }}" data-toggle="dropdown">Return
+                                <a class="dropdown-item" href="{{ url('/store-inventory/purchase-receive/create') }}" data-toggle="dropdown">Receive Create
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Purchase Return
+                            <submenu class="name"></submenu>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ url('/store-inventory/purchase-return/') }}" data-toggle="dropdown">Return Manage
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ url('/store-inventory/purchase-return/create') }}" data-toggle="dropdown">Return Create
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>

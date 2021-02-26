@@ -169,9 +169,9 @@ class InvoiceController extends BaseController
                 }
                 DB::commit();
                 if ($isAnyItemIsMissing == false) {
-                    DB::rollback();
                     return $this->responseRedirectToWithParameters('crm.invoice.voucher', ['id' => $invoice->id], 'Invoice created successfully', 'success', false, false);
                 } else {
+                    DB::rollback();
                     return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
                 }
             } else {
