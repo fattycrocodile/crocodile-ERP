@@ -20,11 +20,8 @@
                 </div>
             </div>
             <div class="col-md-6 col-sm-12 text-center text-md-right">
-                <h2>PAYMENT RECEIPT</h2>
-                <p class="pb-3">PR NO: #{{ $data->first()->pr_no }}
-                    <br>
-                    PR Date: {{  date("F jS, Y", strtotime($data->first()->date)) }}
-                </p>
+                <h2>Purchase Return</h2>
+                <p class="pb-3"># {{ $data->return_no }}</p>
             </div>
         </div>
         <!--/ Invoice Company Details -->
@@ -32,13 +29,19 @@
         <!-- Invoice Customer Details -->
         <div id="invoice-customer-details" class="row pt-2">
             <div class="col-sm-12 text-center text-md-left">
-                <p class="text-muted">Supplier:</p>
+                <p class="text-muted">Return To</p>
             </div>
-            <div class="col-md-12 col-sm-12 text-center text-md-left">
+            <div class="col-md-6 col-sm-12 text-center text-md-left">
                 <ul class="px-0 list-unstyled">
-                    <li class="text-bold-800">{{ $data->first()->supplier->name }}</li>
-                    <li>{{ $data->first()->supplier->address }}</li>
+                    <li class="text-bold-800">{{ $data->supplier->name }}</li>
+                    <li>{{ $data->supplier->address }}</li>
                 </ul>
+            </div>
+            <div class="col-md-6 col-sm-12 text-center text-md-right">
+                <p>
+                        <span
+                            class="text-muted">Return Date :</span> {{  date("F jS, Y", strtotime($data->date)) }}</li>
+                </p>
             </div>
         </div>
         <!--/ Invoice Customer Details -->
@@ -50,56 +53,48 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Purchase Order No</th>
+                            <th>Item & Description</th>
+                            <th class="text-right">Qty</th>
+                            <th class="text-right">Return Price</th>
                             <th class="text-right">Amount</th>
-                            <th class="text-right">Discount</th>
-                            <th class="text-right">Row Total</th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php
-                        $total = $rcvAmount = $disAmount = 0;
+                        $returnTotal = 0;
                         ?>
-                        @foreach($data as $key => $dt)
+                        @foreach($data->purchaseReturnDetails as $key => $invD)
                             <?php
-                            $amount = $dt->amount;
-                            $discount = $dt->discount;
-                            $rowTotal = $amount + $discount;
-                            $rcvAmount += $amount;
-                            $disAmount += $discount;
-                            $total += $rowTotal;
+                            $returnTotal += $invD->row_total;
                             ?>
                             <tr>
                                 <th scope="row" style="width: 2%;">{{ ++$key }}</th>
                                 <td>
-                                    <p>{{ isset($dt->purchase->invoice_no) ? $dt->purchase->invoice_no : "N/A" }}</p>
+                                    <p>{{ $invD->product->name }}</p>
+                                    <p class="text-muted">{{ $invD->product->code }}</p>
                                 </td>
-                                <td class="text-right" style="text-align: right;">{{ number_format($amount, 2) }}</td>
-                                <td class="text-right" style="text-align: right;">{{ number_format($discount, 2) }}</td>
-                                <td class="text-right" style="text-align: right;">{{ number_format($total, 2) }}</td>
+                                <td class="text-center">{{ $invD->qty }}</td>
+                                <td class="text-right">{{ $invD->price }}</td>
+                                <td class="text-right">{{ $invD->row_total }}</td>
                             </tr>
                         @endforeach
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <th colspan="2">TOTAL</th>
-                            <th style="text-align: right;">{{ number_format($rcvAmount, 2) }}</th>
-                            <th style="text-align: right;">{{ number_format($disAmount, 2) }}</th>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <th colspan="2">NET PAID AMOUNT</th>
-                            <th style="text-align: center;" colspan="2">{{ number_format($rcvAmount, 2) }}</th>
-                        </tr>
-                        <tr>
-                            <td colspan="5">Inword: <span style="text-transform: capitalize; font-weight: bold">
-                            <?php
-                                $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-                                echo $f->format($rcvAmount);
-                            ?> Taka only</span></td>
-                        </tr>
-                        </tfoot>
                     </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <p class="lead">Total Return</p>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td class="text-bold-800">Total</td>
+                                <td class="text-bold-800 text-right"> <?= number_format($returnTotal, 2) ?></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -107,13 +102,13 @@
     </div>
 </section>
 
-    <script>
-        function printDiv(divName) {
-            var printContents = document.getElementById(divName).innerHTML;
-            var originalContents = document.body.innerHTML;
+<script>
+    function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
 
-            document.body.innerHTML = printContents;
-            window.print();
-            document.body.innerHTML = originalContents;
-        }
-    </script>
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+</script>

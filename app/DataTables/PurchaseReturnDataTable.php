@@ -40,7 +40,7 @@ class PurchaseReturnDataTable extends DataTable
                 return "
                     <div class='form-group'>
                         <div class='btn-group' role='group' aria-label='Basic example'>
-                            <button class='btn btn-icon btn-warning btn-preview' value='$data->return_no' title='Preview'><i class='fa fa-eye'></i></button>
+                            <button class='btn btn-icon btn-warning btn-preview' value='$data->id' title='Preview'><i class='fa fa-eye'></i></button>
                         </div>
                    </div>";
             })

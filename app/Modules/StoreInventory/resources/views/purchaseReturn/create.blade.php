@@ -98,7 +98,7 @@
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="invoice_due">Invoice Due : </label>
-                                                <input type="text" class="form-control" id="invoice_due" value="" disabled>
+                                                <input type="text"  class="form-control" id="invoice_due" name="invoice_due" readonly>
                                             </div>
                                         </div>
 
@@ -814,13 +814,21 @@
                         $(".print-success-msg").html(result.message);
                         $('.modal-body').html(result.data);
                         $('#xlarge').modal('show');
+                        due = [];
+                        $('#supplier_name').val('');
+                        $('#supplier_id').val('');
+                        $('#contact_no').val('');
+                        $('#invoice_due').val('');
+                        $('#invoice_no').html("");
+
+
                         flashMessage('success');
                     }else{
                         printErrorMsg(result.data);
                         flashMessage('error');
                     }
                     $(".spinner-div").hide();
-                    $(".invoice-infos").html("");
+                    $("#table-data-list tbody").empty();
                 },
                 error: function (xhr, textStatus, thrownError) {
                     alert(xhr + "\n" + textStatus + "\n" + thrownError);
@@ -844,6 +852,15 @@
             });
         }
 
+        function resetProduct() {
+            $('#product_code').val("");
+            $('#product_id').val("");
+            $('#product_name').val("");
+            $('#qty').val("");
+            $('#stock_qty').val("");
+            $('#return_price').val("");
+            $('#total_return_price').val("");
+        }
 
         function resetSupplier() {
             $('#supplier_name').val("");

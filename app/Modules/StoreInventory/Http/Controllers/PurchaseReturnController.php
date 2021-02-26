@@ -4,6 +4,7 @@ namespace App\Modules\StoreInventory\Http\Controllers;
 
 use App\DataTables\PurchaseReturnDataTable;
 use App\Http\Controllers\BaseController;
+use App\Modules\Commercial\Models\Purchase;
 use App\Modules\Config\Models\Lookup;
 use App\Modules\StoreInventory\Models\Inventory;
 use App\Modules\StoreInventory\Models\PurchaseReturn;
@@ -60,7 +61,7 @@ class PurchaseReturnController extends BaseController
             $invoice->max_sl_no = $maxSlNo;
             $invoice->return_no = $invNo;
             $invoice->purchase_id =  $params['invoice_no'];
-            $invoice->store_id = 1;
+            $invoice->store_id = Stores::DEFAULT_WAREHOUSE;
             $invoice->supplier_id = $params['supplier_id'];
             $invoice->amount = $grand_total = $params['grand_total'];
             $invoice->date = $date = $params['date'];
@@ -77,7 +78,7 @@ class PurchaseReturnController extends BaseController
                     $stock_qty = \App\Modules\StoreInventory\Models\Inventory::closingStockWithStore($product_id, $invoice->store_id);
                     if ($stock_qty > 0) {
                         $inventory = new Inventory();
-                        $inventory->store_id = 1;
+                        $inventory->store_id = Stores::DEFAULT_WAREHOUSE;
                         $inventory->product_id = $product_id;
                         $inventory->stock_in = 0;
                         $inventory->stock_out = $return_qty;
@@ -100,21 +101,51 @@ class PurchaseReturnController extends BaseController
                     $i++;
                 }
 
+
+                if($grand_total >= $params['invoice_due']){
+                    $purchase = Purchase::findOrFail($invoice->purchase_id);
+                    if ($purchase) {
+                        $purchase->full_paid = Purchase::PAID;
+                        $purchase->save();
+                    }
+                }
                 DB::commit();
                 if ($isAnyItemIsMissing == false) {
-                    return $this->responseRedirectToWithParameters('crm.invoice.voucher', ['id' => $invoice->id], 'Invoice created successfully', 'success', false, false);
+                    $data = new PurchaseReturn();
+                    $data = $data->where('id', '=', $invoice_id);
+                    $data = $data->first();
+
+                    $returnHTML = view('StoreInventory::purchaseReturn.voucher', compact('data'))->render();
+                    return $this->responseJson(false, 200, "Purchase Return Created Successfully.", $returnHTML);
                 } else {
                     DB::rollback();
-                    return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
+                    return $this->responseJson(true, 200, "Voucher not found!");
                 }
             } else {
-                return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
+                return $this->responseJson(true, 200, "Voucher not found!");
             }
 
         } catch (QueryException $exception) {
             DB::rollback();
             throw new InvalidArgumentException($exception->getMessage());
             //return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
+        }
+    }
+
+    public function voucher(Request $request)
+    {
+        if ($request->has('id')) {
+            $data = new PurchaseReturn();
+            $data = $data->where('id', '=', $request->id);
+            $data = $data->first();
+            if ($data) {
+                $returnHTML = view('StoreInventory::purchaseReturn.voucher', compact('data'))->render();
+                return $this->responseJson(false, 200, "", $returnHTML);
+            } else {
+                return $this->responseJson(true, 200, "Voucher not found!");
+            }
+        } else {
+            return $this->responseJson(true, 200, "Please insert 55 no!");
         }
     }
 

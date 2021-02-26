@@ -57,7 +57,7 @@ class PurchaseController extends BaseController
         $cash_credit = Lookup::items('cash_credit');
         $bank = Lookup::items('bank');
         $this->setPageTitle('Create Purchase', 'Create Purchase');
-        return view('Commercial::purchases.create', compact( 'payment_type', 'cash_credit', 'bank'));
+        return view('Commercial::purchases.create', compact('payment_type', 'cash_credit', 'bank'));
     }
 
     public function store(Request $request)
@@ -210,8 +210,10 @@ class PurchaseController extends BaseController
                 $returnAmount = \App\Modules\StoreInventory\Models\PurchaseReturn::totalReturnAmountOfPurchase($dt->id);
                 $totalMrWithReturn = $mrAmount + $returnAmount;
                 $due_amount = $dt->grand_total - $totalMrWithReturn;
+                if ($due_amount > 0) {
+                    $response[] = array("id" => $dt->id, "label" => $dt->invoice_no, "name" => $dt->invoice_no, 'due' => $due_amount);
+                }
 
-                $response[] = array("id" => $dt->id, "label" => $dt->invoice_no, "name" => $dt->invoice_no, 'due' => $due_amount);
             }
         } else {
             $response[] = array("id" => '', "label" => 'No data found!', "name" => '', 'due' => '');

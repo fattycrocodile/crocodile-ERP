@@ -18,6 +18,8 @@ class Stores extends Model
     protected $table = 'stores';
     protected $guarded=[];
 
+    const DEFAULT_WAREHOUSE = 1;
+
     /**
      * @return mixed
      */

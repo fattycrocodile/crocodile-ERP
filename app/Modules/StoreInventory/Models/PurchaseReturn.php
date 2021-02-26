@@ -2,9 +2,10 @@
 
 namespace App\Modules\StoreInventory\Models;
 
-use App\Model\Commercial\Purchase;
-use App\Model\Commercial\Suppliers;
+
 use App\Model\User\User;
+use App\Modules\Commercial\Models\Purchase;
+use App\Modules\Commercial\Models\Suppliers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +15,7 @@ class PurchaseReturn extends Model
 
     public function maxSlNo($supplier_id){
 
-        $maxSn = $this->max('max_sl_no')->where('supplier_id','=',$supplier_id);
+        $maxSn = $this->where('supplier_id','=',$supplier_id)->max('max_sl_no');
         return $maxSn ? $maxSn + 1 : 1;
     }
 
@@ -43,7 +44,7 @@ class PurchaseReturn extends Model
 
     public function purchaseReturnDetails()
     {
-        return $this->hasMany(PurchaseReturnDetails::class);
+        return $this->hasMany(PurchaseReturnDetails::class,'return_id');
     }
 
     public function updatedBy()

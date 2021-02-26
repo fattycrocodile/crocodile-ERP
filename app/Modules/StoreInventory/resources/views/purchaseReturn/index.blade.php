@@ -118,12 +118,12 @@
             });
             var url = "{{ route('storeInventory.pr.voucher') }}";
 
-            var return_no = $(this).val();
+            var id = $(this).val();
             $.ajax({
                 url: url,
                 type: 'POST',
                 dataType: 'json',
-                data: {method: 'POST', submit: true, return_no: return_no}
+                data: {method: 'POST', submit: true, id: id}
             }).always(function (result) {
                 $('#purchase-return-table').DataTable().draw(false);
                 var message = result.message;

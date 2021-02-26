@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PurchaseReturnDetails extends Model
 {
     protected $guarded=[];
+    public $timestamps = false;
 
     public function purchaseReturn()
     {
