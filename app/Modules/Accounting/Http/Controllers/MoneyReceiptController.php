@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Throwable;
 use Validator;
 
 
@@ -58,7 +59,7 @@ class MoneyReceiptController extends BaseController
     /**
      * @param Request $request
      * @return JsonResponse|RedirectResponse
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function store(Request $request)
     {

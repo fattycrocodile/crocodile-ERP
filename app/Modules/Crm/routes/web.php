@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('crm', 'CrmController@welcome');
@@ -12,6 +13,7 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::get('/{id}/edit', 'CustomersController@edit')->name('crm.customers.edit');
         Route::post('/{id}/update', 'CustomersController@update')->name('crm.customers.update');
         Route::delete('/{id}/delete', 'CustomersController@delete')->name('crm.customers.delete');
+        Route::post('/due-invoice-list', 'InvoiceController@getDueInvoiceJsonList')->name('crm.customers.dueInvoiceJson');
     });
 
     Route::group(['prefix' => 'crm/sales/order'], function () {
@@ -33,5 +35,15 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/{id}/update', 'InvoiceController@update')->name('crm.invoice.update');
         Route::delete('/{id}/delete', 'InvoiceController@delete')->name('crm.invoice.delete');
         Route::get('/{id}/voucher', 'InvoiceController@voucher')->name('crm.invoice.voucher');
+    });
+
+    Route::group(['prefix' => 'crm/sales-return'], function () {
+        Route::get('/', 'InvoiceReturnController@index')->name('crm.invoiceReturn.index');
+        Route::get('/create', 'InvoiceReturnController@create')->name('crm.invoiceReturn.create');
+        Route::post('/store', 'InvoiceReturnController@store')->name('crm.invoiceReturn.store');
+        Route::get('/{id}/edit', 'InvoiceReturnController@edit')->name('crm.invoiceReturn.edit');
+        Route::post('/{id}/update', 'InvoiceReturnController@update')->name('crm.invoiceReturn.update');
+        Route::post('/voucher', 'InvoiceReturnController@voucher')->name('crm.invoiceReturn.voucher');
+        Route::delete('/{id}/delete', 'InvoiceReturnController@delete')->name('crm.invoiceReturn.delete');
     });
 });

@@ -97,23 +97,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Purchase Receive
-                            <submenu class="name"></submenu>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li data-menu="">
-                                <a class="dropdown-item" href="{{ url('/store-inventory/purchase-receive/') }}" data-toggle="dropdown">Receive Manage
-                                    <submenu class="name"></submenu>
-                                </a>
-                            </li>
-                            <li data-menu="">
-                                <a class="dropdown-item" href="{{ url('/store-inventory/purchase-receive/create') }}" data-toggle="dropdown">Receive Create
-                                    <submenu class="name"></submenu>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+
                     <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Purchase Return
                             <submenu class="name"></submenu>
@@ -391,18 +375,6 @@
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
-                            <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('crm.invoice.index') }}"
-                                   data-toggle="dropdown">Invoice Manage
-                                    <submenu class="name"></submenu>
-                                </a>
-                            </li>
-                            <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('crm.invoice.index') }}"
-                                   data-toggle="dropdown">Invoice Return
-                                    <submenu class="name"></submenu>
-                                </a>
-                            </li>
                         </ul>
                     </li>
                     <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
@@ -419,6 +391,18 @@
                             <li data-menu="">
                                 <a class="dropdown-item" href="{{ route('crm.invoice.index') }}"
                                    data-toggle="dropdown">Invoice Manage
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('crm.invoiceReturn.create') }}"
+                                   data-toggle="dropdown">Create  Return
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('crm.invoiceReturn.index') }}"
+                                   data-toggle="dropdown">Return Manage
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>

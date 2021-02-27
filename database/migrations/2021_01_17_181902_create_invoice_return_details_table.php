@@ -21,6 +21,7 @@ class CreateInvoiceReturnDetailsTable extends Migration
             $table->foreign('product_id')->references('id')->on('products');
             $table->double('qty');
             $table->double('price');
+            $table->double('row_total');
         });
     }
 

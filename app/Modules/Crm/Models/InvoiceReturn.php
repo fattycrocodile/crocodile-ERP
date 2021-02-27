@@ -12,6 +12,11 @@ class InvoiceReturn extends Model
     protected $table = 'invoice_returns';
     protected $guarded = [];
 
+    public function maxSlNo($store_id){
+        $maxSn = $this->where('store_id','=',$store_id)->max('store_id');
+        return $maxSn ? $maxSn + 1 : 1;
+    }
+
     public static function totalReturnAmountOfInvoice($invoice_id)
     {
         $data = DB::table('invoice_returns')
@@ -42,6 +47,6 @@ class InvoiceReturn extends Model
 
     public function invoiceReturnDetails()
     {
-        return $this->hasMany(InvoiceReturnDetails::class);
+        return $this->hasMany(InvoiceReturnDetails::class, 'return_id');
     }
 }

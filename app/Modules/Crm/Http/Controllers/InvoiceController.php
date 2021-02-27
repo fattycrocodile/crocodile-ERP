@@ -8,6 +8,7 @@ use App\Modules\Accounting\Models\MoneyReceipt;
 use App\Modules\Config\Models\Lookup;
 use App\Modules\Crm\Models\Invoice;
 use App\Modules\Crm\Models\InvoiceDetails;
+use App\Modules\Crm\Models\InvoiceReturn;
 use App\Modules\Crm\Models\SellOrder;
 use App\Modules\StoreInventory\Models\Inventory;
 use App\Modules\StoreInventory\Models\Stores;
@@ -288,5 +289,36 @@ class InvoiceController extends BaseController
         $bank = Lookup::items('bank');
         $returnHTML = view('Crm::invoice.due-invoice-list', compact('data', 'cash_credit', 'bank', 'payment_type'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
+
+    public function getDueInvoiceJsonList(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('customer_id')) {
+            $customer_id = trim($request->customer_id);
+            $data = new Invoice();
+            $data = $data->where('customer_id', '=', $customer_id);
+            $data = $data->where('full_paid', '=', Invoice::NOT_PAID);
+            $data = $data->orderby('id', 'asc');
+            $data = $data->get();
+        }
+
+        if (!$data->isEmpty()) {
+            foreach ($data as $dt) {
+                $mrAmount = \App\Modules\Accounting\Models\MoneyReceipt::totalMrAmountOfInvoice($dt->id);
+                $returnAmount = InvoiceReturn::totalReturnAmountOfInvoice($dt->id);
+                $totalMrWithReturn = $mrAmount + $returnAmount;
+                $due_amount = $dt->grand_total - $totalMrWithReturn;
+                if ($due_amount > 0) {
+                    $response[] = array("id" => $dt->id, "label" => $dt->invoice_no, "name" => $dt->invoice_no, 'due' => $due_amount);
+                }
+
+            }
+        } else {
+            $response[] = array("id" => '', "label" => 'No data found!', "name" => '', 'due' => '');
+        }
+
+        return response()->json($response);
     }
 }

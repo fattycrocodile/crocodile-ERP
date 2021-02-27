@@ -16,6 +16,7 @@ class CreateInvoiceReturnsTable extends Migration
         Schema::create('invoice_returns', function (Blueprint $table) {
             $table->id();
             $table->string('return_no');
+            $table->unsignedBigInteger('max_sl_no');
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('id')->on('stores');
             $table->unsignedBigInteger('customer_id');

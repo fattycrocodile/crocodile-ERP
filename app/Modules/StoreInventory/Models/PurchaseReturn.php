@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 class PurchaseReturn extends Model
 {
     protected $guarded=[];
+    protected $table = 'purchase_returns';
 
     public function maxSlNo($supplier_id){
 

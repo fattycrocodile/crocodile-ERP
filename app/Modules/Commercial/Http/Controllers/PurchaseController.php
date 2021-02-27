@@ -201,9 +201,6 @@ class PurchaseController extends BaseController
             $data = $data->get();
         }
 
-        $payment_type = Lookup::items('payment_method');
-        $cash_credit = Lookup::items('cash_credit');
-        $bank = Lookup::items('bank');
         if (!$data->isEmpty()) {
             foreach ($data as $dt) {
                 $mrAmount = \App\Modules\Accounting\Models\SuppliersPayment::totalMrAmountOfInvoice($dt->id);

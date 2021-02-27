@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class InvoiceReturnDetails extends Model
 {
     protected $table = 'invoice_return_details';
-    protected $guarded=[];
+
+    protected $guarded = [];
+
+    public $timestamps = false;
 
     public function invoiceReturn()
     {

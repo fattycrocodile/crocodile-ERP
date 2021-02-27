@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title') {{ isset($pageTitle) ? $pageTitle : 'Create Invoice' }} @endsection
+@section('title') {{ isset($pageTitle) ? $pageTitle : 'Create Return' }} @endsection
 
 @push('styles')
     <!-- CSS -->
@@ -26,7 +26,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" id="basic-layout-form">Purchase Info</h4>
+                        <h4 class="card-title" id="basic-layout-form">Invoice Info</h4>
                         <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                         <div class="heading-elements">
                             <ul class="list-inline mb-0">
@@ -41,12 +41,12 @@
                         <div class="card-body">
                             <div class="card-text">
                             </div>
-                            <form class="form" id="mr-form" action="{{route('storeInventory.pr.store')}}" method="post"
+                            <form class="form" id="mr-form" action="{{route('crm.invoiceReturn.store')}}" method="post"
                                   autocomplete="off">
                                 @csrf
 
                                 <div class="form-body">
-                                    <h4 class="form-section"><i class="ft-user"></i> Supplier Info</h4>
+                                    <h4 class="form-section"><i class="ft-user"></i> Customer Info</h4>
                                     <div class="row">
                                         <div class="col-md-2">
                                             <div class="form-group">
@@ -60,14 +60,38 @@
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="supplier_name">Supplier Name</label>
+                                                <label for="store_id">Store</label>
+                                                <select id="store_id" name="store_id" required
+                                                        class="select2 form-control @error('store_id') is-invalid @enderror">
+                                                    <option value="none" selected="">Select Store</option>
+                                                    @foreach($stores as $key => $store)
+                                                        <option value="{{ $key }}"> {{ $store }} </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('store_id')
+                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="customer_name">Customer Name</label>
                                                 <input type="text"
-                                                       class="form-control @error('supplier_name') is-invalid @enderror"
-                                                       id="supplier_name" required>
+                                                       class="form-control @error('customer_name') is-invalid @enderror"
+                                                       id="customer_name" required>
                                                 <input type="hidden"
-                                                       class="form-control @error('supplier_id') is-invalid @enderror"
-                                                       id="supplier_id" name="supplier_id" required>
-                                                @error('supplier_id')
+                                                       class="form-control @error('customer_id') is-invalid @enderror"
+                                                       id="customer_id" name="customer_id" required>
+                                                @error('customer_id')
+                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="customer_code">Customer Code</label>
+                                                <input type="text"
+                                                       class="form-control @error('customer_code') is-invalid @enderror"
+                                                       id="customer_code">
+                                                @error('customer_code')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
@@ -79,18 +103,24 @@
                                         </div>
                                         <div class="col-md-1">
                                             <div class="form-group" style="margin-top: 26px;">
-                                                <button id="action" class="btn btn-primary btn-md" type="button"
+                                                <button id="action" class="btn btn-primary btn-md search-button"
+                                                        type="button"
                                                         onclick="getDueInvoice()">
                                                     <i class="icon-magnifier"></i>
+                                                </button>
+                                                <button type="button"
+                                                        class="btn btn-md btn-success mb-1 po-spinner-div text-center"
+                                                        style="display: none;">
+                                                    <i class="fa fa-spinner fa-pulse fa-fw"></i>
                                                 </button>
                                             </div>
                                         </div>
 
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="invoice_no">Select Purchase Order</label>
+                                                <label for="invoice_no">Select Invoice</label>
                                                 <select class="form-control" id="invoice_no" name="invoice_no">
-                                                    <option value="0">Select a PO to Return</option>
+                                                    <option value="">Select a Invoice to Return</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -139,16 +169,6 @@
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-1">
-                                            <div class="form-group">
-                                                <label for="stock_qty">Stock Qty</label>
-                                                <input type="text"
-                                                       class="form-control @error('stock_qty') is-invalid @enderror"
-                                                       id="stock_qty" name="stock_qty" readonly>
-                                                @error('stock_qty')
-                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                            </div>
-                                        </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="return_price">Return Price</label>
@@ -187,9 +207,8 @@
                                                     <tr>
                                                         <th>SL</th>
                                                         <th>Product Info</th>
-                                                        <th>Stock Qty</th>
-                                                        <th>Return Price</th>
                                                         <th>Return Qty</th>
+                                                        <th>Return Price</th>
                                                         <th>Row Total</th>
                                                         <th>Action</th>
                                                     </tr>
@@ -198,7 +217,7 @@
                                                     </tbody>
                                                     <tfoot>
                                                     <tr>
-                                                        <th colspan="5" class="text-right">Grand Total</th>
+                                                        <th colspan="4" class="text-right">Grand Total</th>
                                                         <th style="text-align: center;">
                                                             <div id="grand_total_text"></div>
                                                             <input type="hidden" id="grand_total" name="grand_total">
@@ -252,7 +271,7 @@
                                     <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">
                                         Close
                                     </button>
-                                    <button type="button" class="btn btn-outline-primary">Print</button>
+                                    <button type="button" onclick="printDiv('printableArea')" class="btn btn-outline-primary">Print</button>
                                 </div>
                             </div>
                         </div>
@@ -275,21 +294,6 @@
 
         var due = new Array();
 
-        // datepicker
-        $(function () {
-            $("#date").datepicker({
-                // appendText:"(yy-mm-dd)",
-                dateFormat: "yy-mm-dd",
-                altField: "#datepicker",
-                altFormat: "DD, d MM, yy",
-                prevText: "click for previous months",
-                nextText: "click for next months",
-                showOtherMonths: true,
-                selectOtherMonths: true,
-                maxDate: new Date()
-            });
-        });
-
         function nanCheck(value) {
             return isNaN(value) ? 0 : value;
         }
@@ -306,21 +310,38 @@
             $('#cheque_date').val("");
         }
 
+        // datepicker
+        $(function () {
+            $("#date").datepicker({
+                // appendText:"(yy-mm-dd)",
+                dateFormat: "yy-mm-dd",
+                altField: "#datepicker",
+                altFormat: "DD, d MM, yy",
+                prevText: "click for previous months",
+                nextText: "click for next months",
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                maxDate: new Date()
+            });
+        });
+
 
         // CSRF Token
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         // customer name wise search start
-        $("#supplier_name").autocomplete({
+        $("#customer_name").autocomplete({
             minLength: 1,
             autoFocus: true,
             source: function (request, response) {
+                var store_id = $("#store_id").val();
                 $.ajax({
-                    url: "{{ route('supplier.name.autocomplete') }}",
+                    url: "{{ route('customer.name.autocomplete') }}",
                     type: 'post',
                     dataType: "json",
                     data: {
                         _token: CSRF_TOKEN,
                         search: request.term,
+                        store_id: store_id,
                     },
                     success: function (data) {
                         response(data);
@@ -334,11 +355,15 @@
             },
             select: function (event, ui) {
                 if (ui.item.value != '' || ui.item.value > 0) {
-                    $('#supplier_name').val(ui.item.name);
-                    $('#supplier_id').val(ui.item.value);
+                    $('#customer_name').val(ui.item.name);
+                    $('#customer_code').val(ui.item.code);
+                    $('#store_id').val(ui.item.store_id);
+                    $('#customer_id').val(ui.item.value);
                     $('#contact_no').val(ui.item.contact_no);
+                    resetInvoiceDetails();
                 } else {
-                    resetSupplier();
+                    resetCustomer();
+                    resetInvoiceDetails();
                 }
                 return false;
             },
@@ -352,13 +377,110 @@
         };
         // customer name wise search end
 
+        // customer name wise search start
+        $("#customer_code").autocomplete({
+            minLength: 1,
+            autoFocus: true,
+            source: function (request, response) {
+                // console.log('customer_code');
+                var store_id = $("#store_id").val();
+                $.ajax({
+                    url: "{{ route('customer.code.autocomplete') }}",
+                    type: 'post',
+                    dataType: "json",
+                    data: {
+                        _token: CSRF_TOKEN,
+                        search: request.term,
+                        store_id: store_id,
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            focus: function (event, ui) {
+                // console.log(event);
+                // console.log(ui);
+                return false;
+            },
+            select: function (event, ui) {
+                if (ui.item.value != '' || ui.item.value > 0) {
+                    $('#customer_name').val(ui.item.name);
+                    $('#customer_code').val(ui.item.code);
+                    $('#store_id').val(ui.item.store_id);
+                    $('#customer_id').val(ui.item.value);
+                    $('#contact_no').val(ui.item.contact_no);
+                    resetInvoiceDetails();
+                } else {
+                    resetCustomer();
+                    resetInvoiceDetails();
+                }
+                return false;
+            },
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+            var inner_html = '<div>' + item.label + ' (<i>' + item.name + ')</i></div>';
+            return $("<li>")
+                .data("item.autocomplete", item)
+                .append(inner_html)
+                .appendTo(ul);
+        };
+        // customer code wise search end
+
+
+        // customer contact wise search start
+        $("#contact_no").autocomplete({
+            minLength: 1,
+            autoFocus: true,
+            source: function (request, response) {
+                var store_id = $("#store_id").val();
+                $.ajax({
+                    url: "{{ route('customer.contact.autocomplete') }}",
+                    type: 'post',
+                    dataType: "json",
+                    data: {
+                        _token: CSRF_TOKEN,
+                        search: request.term,
+                        store_id: store_id,
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            focus: function (event, ui) {
+                // console.log(event);
+                // console.log(ui);
+                return false;
+            },
+            select: function (event, ui) {
+                if (ui.item.value != '' || ui.item.value > 0) {
+                    $('#customer_name').val(ui.item.name);
+                    $('#customer_code').val(ui.item.code);
+                    $('#store_id').val(ui.item.store_id);
+                    $('#customer_id').val(ui.item.value);
+                    $('#contact_no').val(ui.item.contact_no);
+                    resetInvoiceDetails();
+                } else {
+                    resetCustomer();
+                    resetInvoiceDetails();
+                }
+                return false;
+            },
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+            var inner_html = '<div>' + item.label + ' (<i>' + item.name + ')</i></div>';
+            return $("<li>")
+                .data("item.autocomplete", item)
+                .append(inner_html)
+                .appendTo(ul);
+        };
+
         $("#product_name").autocomplete({
             minLength: 1,
             autoFocus: true,
             source: function (request, response) {
                 var store_id = 1;
-                var supplier_id = $("#supplier_id").val();
-                if (store_id > 0 && supplier_id > 0) {
+                var customer_id = $("#customer_id").val();
+                if (store_id > 0 && customer_id > 0) {
                     $.ajax({
                         url: "{{ route('product.name.autocomplete') }}",
                         type: 'post',
@@ -383,7 +505,6 @@
             select: function (event, ui) {
                 if (ui.item.value != '' || ui.item.value > 0) {
                     getProductPrice(ui.item.value);
-                    getProductStock(ui.item.value);
                     $('#product_name').val(ui.item.name);
                     $('#product_code').val(ui.item.code);
                     $('#product_id').val(ui.item.value);
@@ -407,8 +528,8 @@
             autoFocus: true,
             source: function (request, response) {
                 var store_id = 1;
-                var supplier_id = $("#supplier_id").val();
-                if (store_id > 0 && supplier_id > 0) {
+                var customer_id = $("#customer_id").val();
+                if (store_id > 0 && customer_id > 0) {
                     $.ajax({
                         url: "{{ route('product.code.autocomplete') }}",
                         type: 'post',
@@ -433,55 +554,11 @@
             select: function (event, ui) {
                 if (ui.item.value != '' || ui.item.value > 0) {
                     getProductPrice(ui.item.value);
-                    getProductStock(ui.item.value);
                     $('#product_name').val(ui.item.name);
                     $('#product_code').val(ui.item.code);
                     $('#product_id').val(ui.item.value);
                 } else {
                     resetProduct();
-                }
-                return false;
-            },
-        }).data("ui-autocomplete")._renderItem = function (ul, item) {
-
-            var inner_html = '<div>' + item.label + ' (<i>' + item.name + ')</i></div>';
-            return $("<li>")
-                .data("item.autocomplete", item)
-                .append(inner_html)
-                .appendTo(ul);
-        };
-
-
-        // customer name wise search start
-        $("#contact_no").autocomplete({
-            minLength: 1,
-            autoFocus: true,
-            source: function (request, response) {
-                $.ajax({
-                    url: "{{ route('supplier.contact.autocomplete') }}",
-                    type: 'post',
-                    dataType: "json",
-                    data: {
-                        _token: CSRF_TOKEN,
-                        search: request.term,
-                    },
-                    success: function (data) {
-                        response(data);
-                    }
-                });
-            },
-            focus: function (event, ui) {
-                // console.log(event);
-                // console.log(ui);
-                return false;
-            },
-            select: function (event, ui) {
-                if (ui.item.value != '' || ui.item.value > 0) {
-                    $('#supplier_name').val(ui.item.name);
-                    $('#supplier_id').val(ui.item.value);
-                    $('#contact_no').val(ui.item.contact_no);
-                } else {
-                    resetSupplier();
                 }
                 return false;
             },
@@ -508,47 +585,59 @@
         }
 
         function getDueInvoice() {
-            var supplier_id = $("#supplier_id").val();
+            var customer_id = $("#customer_id").val();
             $.ajax({
-                url: "{{ route('payment.purchase.due_purchase_due') }}",
+                url: "{{ route('crm.customers.dueInvoiceJson') }}",
                 type: 'post',
                 dataType: "json",
                 cache: false,
                 data: {
                     _token: CSRF_TOKEN,
-                    supplier_id: supplier_id,
+                    customer_id: customer_id,
                 },
                 beforeSend: function () {
-                    if (supplier_id == "" || supplier_id == 0 || supplier_id == null) {
-                        toastr.warning(" Please select Supplier!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    var customer_id = $("#customer_id").val();
+                    if (customer_id == "" || customer_id == 0 || customer_id == null) {
+                        toastr.warning(" Please select Customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                         return false;
                     }
+                    $(".search-button").hide();
+                    $(".po-spinner-div").show();
                 },
                 success: function (data) {
-
                     due = [];
                     var len = data.length;
                     $("#invoice_no").empty();
+                    $("#invoice_due").val("");
                     if (len <= 1) {
-                        $("#invoice_no").append("<option value='0'>PO Not Found!</option>");
+                        $("#invoice_no").append("<option value=''>Invoice Not Found!</option>");
                     } else {
-                        $("#invoice_no").append("<option value='0'>Select PO</option>");
+                        $("#invoice_no").append("<option value=''>Select Invoice</option>");
                         for (var i = 0; i < len; i++) {
                             var id = data[i]['id'];
                             var name = data[i]['name'];
                             due.push({id: data[i]['id'], due: data[i]['due']});
-                            console.log(due);
                             $("#invoice_no").append("<option value='" + id + "'>" + name + "</option>");
                         }
                     }
 
+                    $(".search-button").show();
+                    $(".po-spinner-div").hide();
+
                 },
                 error: function (xhr, textStatus, thrownError) {
                     alert(xhr + "\n" + textStatus + "\n" + thrownError);
+                    $(".search-button").show();
+                    $(".po-spinner-div").hide();
                 }
             }).done(function (data) {
                 //console.log(data);
+                $(".search-button").show();
+                $(".po-spinner-div").hide();
             }).fail(function (jqXHR, textStatus) {
+
+                $(".search-button").show();
+                $(".po-spinner-div").hide();
             });
         }
 
@@ -564,16 +653,12 @@
 
         function add() {
             var product_id = nanCheck($("#product_id").val());
-            var stock_qty = nanCheck(parseFloat($("#stock_qty").val()));
             var return_qty = nanCheck(parseFloat($("#qty").val()));
             var return_price = nanCheck(parseFloat($("#return_price").val()));
-            // console.log("SELL PRICE:" + sell_price);
             var message;
             var error = true;
             if (product_id === '' || product_id === 0) {
                 message = "Please select a product!";
-            } else if (return_qty > stock_qty) {
-                message = "Return Quantity Exceeded stock Quantity !";
             } else if (return_qty <= 0 || return_qty === '') {
                 message = "Please insert return qty!";
             } else if (return_price <= 0 || return_price === '') {
@@ -609,7 +694,6 @@
             var product_id = nanCheck(parseFloat($("#product_id").val()));
             var product_name = $("#product_name").val();
             var product_code = $("#product_code").val();
-            var stock_qty = nanCheck(parseFloat($("#stock_qty").val()));
             var return_qty = nanCheck(parseFloat($("#qty").val()));
             var return_price = nanCheck(parseFloat($("#return_price").val()));
             var total_return_price = nanCheck(parseFloat($("#total_return_price").val()));
@@ -619,7 +703,6 @@
             var appendTxt = "<tr class='cartList'>"
             appendTxt += "<td class='count' style='text-align: center;'>" + slNumber + "</td>";
             appendTxt += "<td style='text-align: left;'>Name: " + product_name + "<br><small class='cart-product-code'>Code: " + product_code + "</small><input type='hidden' class='temp_product_id' name='product[temp_product_id][]' value='" + product_id + "'></td>";
-            appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_stock_qty' readonly name='product[temp_stock_qty][]' onkeyup='calculateRowTotalOnChange();' value='" + stock_qty + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_return_price ' name='product[temp_return_price][]' onkeyup='calculateRowTotalOnChange();' value='" + return_price + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_return_qty' name='product[temp_return_qty][]' onkeyup='calculateRowTotalOnChange();' value='" + return_qty + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_row_return_price' name='product[temp_row_return_price][]' readonly value='" + total_return_price + "'></td>";
@@ -654,7 +737,6 @@
 
                     console.log("CALCULATION STARTED::" + index);
                     serial++;
-                    var temp_stock_qty = nanCheck(parseFloat($(this).closest('tr').find(".temp_stock_qty").val()));
                     var temp_return_price = nanCheck(parseFloat($(this).closest('tr').find(".temp_return_price").val()));
                     var temp_return_qty = nanCheck(parseFloat($(this).closest('tr').find(".temp_return_qty").val()));
                     var temp_row_return_price = nanCheck(parseFloat($(this).closest('tr').find(".temp_row_return_price").val()));
@@ -722,38 +804,14 @@
             });
         }
 
-        function getProductStock(product_id) {
-            var store_id = 1;
-            $.ajax({
-                url: "{{ route('product.stockQty') }}",
-                type: 'post',
-                dataType: "json",
-                data: {
-                    _token: CSRF_TOKEN,
-                    search: product_id,
-                    store_id: store_id,
-                },
-                success: function (data) {
-                    $("#stock_qty").val(data.closing_balance);
-                },
-                error: function (xhr, status, error) {
-                    $("#stock_qty").val(0);
-                }
-            }).done(function (data) {
-                $("#stock_qty").val(data.closing_balance);
-            }).fail(function (jqXHR, textStatus) {
-                $("#stock_qty").val(0);
-            });
-        }
-
 
         $().ready(function () {
             $('form#mr-form').submit(function (e) {
                 e.preventDefault();
                 // Get the Login Name value and trim it
                 var date = $.trim($('#date').val());
-                var store_id = 1;
-                var supplier_id = $.trim($('#supplier_id').val());
+                var store_id = $.trim($('#store_id').val());
+                var customer_id = $.trim($('#customer_id').val());
                 var invoice_no = $.trim($('#invoice_no').val());
                 var invoice_due = $.trim($('#invoice_due').val());
                 var grand_total = nanCheck(parseFloat($.trim($('#grand_total').val())));
@@ -766,23 +824,23 @@
                     toastr.warning(" Please select  store!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 }
-                if (supplier_id === '') {
+                if (customer_id === '') {
                     toastr.warning(" Please select  customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 }
 
                 if (invoice_no === '' || invoice_no <= 0) {
-                    toastr.warning(" Please select a PO!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    toastr.warning(" Please select a Invoice!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 }
 
                 if (invoice_due === '' || invoice_due <= 0) {
-                    toastr.warning(" Selected PO have no due!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    toastr.warning(" Selected invoice have no due!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 }
 
                 if (invoice_due < grand_total) {
-                    toastr.warning(" Grand total exceeded PO due amount!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    toastr.warning(" Grand total exceeded invoice due amount!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 }
 
@@ -808,14 +866,15 @@
                 }
             });
             $.ajax({
-                url: "{{ route('storeInventory.pr.store') }}",
+                url: "{{ route('crm.invoiceReturn.store') }}",
                 type: 'post',
                 dataType: "json",
                 cache: false,
                 data: $('form').serialize(),
                 beforeSend: function () {
-                    if (supplier_id == "" || supplier_id == 0 || supplier_id == null) {
-                        toastr.warning(" Please select Supplier!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    var customer_id = $.trim($('#customer_id').val());
+                    if (customer_id == "" || customer_id == 0 || customer_id == null) {
+                        toastr.warning(" Please select Customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                         return false;
                     }
                     $('#invoice-infos').html("");
@@ -828,8 +887,8 @@
                         $('.modal-body').html(result.data);
                         $('#xlarge').modal('show');
                         due = [];
-                        $('#supplier_name').val('');
-                        $('#supplier_id').val('');
+                        $('#customer_name').val('');
+                        $('#customer_id').val('');
                         $('#contact_no').val('');
                         $('#invoice_due').val('');
                         $('#invoice_no').html("");
@@ -870,15 +929,21 @@
             $('#product_id').val("");
             $('#product_name').val("");
             $('#qty').val("");
-            $('#stock_qty').val("");
             $('#return_price').val("");
             $('#total_return_price').val("");
         }
 
-        function resetSupplier() {
-            $('#supplier_name').val("");
-            $('#supplier_id').val("");
+        function resetCustomer() {
+            $('#customer_name').val("");
+            $('#customer_id').val("");
             $('#contact_no').val("");
+        }
+
+
+        function resetInvoiceDetails() {
+            $('#invoice_no').empty();
+            $('#invoice_due').val("");
+            $("#invoice_no").append("<option value=''>Select a Invoice to Return</option>");
         }
 
         function flashMessage(value = 'success') {
