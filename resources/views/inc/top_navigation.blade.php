@@ -37,7 +37,7 @@
                             <span class="user-name">{{ isset(Auth::user()->name) ? Auth::user()->name : "404" }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="user-profile.html">
+                            <a class="dropdown-item" href="{{ route('users.admins.edit', ['id' =>Auth::user()->id]) }}">
                                 <i class="ft-user"></i> Edit Profile
                             </a>
                             <div class="dropdown-divider"></div>
