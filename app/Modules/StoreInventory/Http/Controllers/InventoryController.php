@@ -2,13 +2,15 @@
 
 namespace App\Modules\StoreInventory\Http\Controllers;
 
+use App\DataTables\InventoryDataTable;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Modules\StoreInventory\Models\Inventory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class InventoryController extends Controller
+class InventoryController extends BaseController
 {
 
     public $model;
@@ -17,14 +19,11 @@ class InventoryController extends Controller
     {
         $this->model = $model;
     }
-    /**
-     * Display the module welcome screen
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function welcome()
+
+    public function index(InventoryDataTable $dataTable)
     {
-        return view("Inventory::welcome");
+        $this->setPageTitle('Inventory', 'List of all stock ledger');
+        return $dataTable->render('StoreInventory::inventory.index');
     }
 
 

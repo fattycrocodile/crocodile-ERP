@@ -29,4 +29,13 @@ class Inventory extends Model
             ->first();
         return $data ? ($data->stock_in - $data->stock_out) : 0;
     }
+
+    public function store()
+    {
+        return $this->belongsTo(Stores::class);
+    }
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

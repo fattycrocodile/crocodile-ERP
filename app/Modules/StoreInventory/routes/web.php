@@ -1,5 +1,7 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
+
 Route::get('store-inventory', 'StoreInventoryController@welcome');
 
 
@@ -77,5 +79,14 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/{id}/update', 'PurchaseReturnController@update')->name('storeInventory.prec.update');
         Route::post('/voucher', 'PurchaseReturnController@voucher')->name('storeInventory.prec.voucher');
         Route::delete('/{id}/delete', 'PurchaseReturnController@delete')->name('storeInventory.prec.delete');
+    });
+
+    Route::group(['prefix' => 'store-inventory/inventory'], function () {
+        Route::get('/', 'InventoryController@index')->name('storeInventory.inventory.index');
+//        Route::get('/create', 'InventoryController@create')->name('storeInventory.inventory.create');
+//        Route::post('/store', 'InventoryController@store')->name('storeInventory.inventory.store');
+//        Route::get('/{id}/edit', 'InventoryController@edit')->name('storeInventory.inventory.edit');
+//        Route::post('/{id}/update', 'InventoryController@update')->name('storeInventory.inventory.update');
+//        Route::delete('/{id}/delete', 'InventoryController@delete')->name('storeInventory.inventory.delete');
     });
 });
