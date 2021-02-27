@@ -5,6 +5,7 @@ namespace App\Modules\Crm\Http\Controllers;
 use App\DataTables\SellOrderDataTable;
 use App\Http\Controllers\BaseController;
 use App\Modules\Config\Models\Lookup;
+use App\Modules\Crm\Models\Invoice;
 use App\Modules\Crm\Models\SellOrder;
 use App\Modules\Crm\Models\SellOrderDetails;
 use App\Modules\StoreInventory\Models\Stores;
@@ -227,9 +228,8 @@ class SellOrderController extends BaseController
     public function orderReport()
     {
         $stores = $this->store->treeList();
-        $cash_credit = Lookup::items('cash_credit');
         $this->setPageTitle('Order Report', 'Order Report');
-        return view('Crm::sell-order.order-report', compact('stores', 'cash_credit'));
+        return view('Crm::sell-order.order-report', compact('stores'));
     }
 
     public function orderReportView(Request $request): ?JsonResponse
@@ -242,7 +242,6 @@ class SellOrderController extends BaseController
             $store_id = trim($request->store_id);
             $customer_id = trim($request->customer_id);
             $data = new SellOrder();
-//            $data = $data->whereBetween('date', ["'$start_date'", "'$end_date'"]);
             $data = $data->where('date', '>=', $start_date);
             $data = $data->where('date', '<=', $end_date);
             if ($customer_id > 0) {

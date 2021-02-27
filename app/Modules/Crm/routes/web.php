@@ -51,10 +51,10 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::get('/order_report', 'SellOrderController@orderReport')->name('crm.reports.order-report');
         Route::post('/order_report_view', 'SellOrderController@orderReportView')->name('crm.reports.order-report-view');
 
-        Route::post('/invoice_report', 'InvoiceController@store')->name('crm.reports.invoice-report');
-        Route::post('/invoice_report_view', 'InvoiceController@store')->name('crm.reports.invoice-report-view');
+        Route::get('/invoice_report', 'InvoiceController@invoiceReport')->name('crm.reports.invoice-report');
+        Route::post('/invoice_report_view', 'InvoiceController@invoiceReportView')->name('crm.reports.invoice-report-view');
 
         Route::get('/invoice_return_report', 'InvoiceReturnController@edit')->name('crm.reports.invoice-return-report');
-        Route::get('/invoice_return_report_view', 'InvoiceReturnController@edit')->name('crm.reports.invoice-return-report-view');
+        Route::post('/invoice_return_report_view', 'InvoiceReturnController@edit')->name('crm.reports.invoice-return-report-view');
     });
 });
