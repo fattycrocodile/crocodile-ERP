@@ -11,6 +11,7 @@
                     <th>Store</th>
                     <th>Customer</th>
                     <th class="text-center">Customer Code</th>
+                    <th class="text-center">Invoice No</th>
                     <th>Amount</th>
                 </tr>
                 </thead>
@@ -28,6 +29,7 @@
                         <td>{{ $dt->store->name }}</td>
                         <td>{{ $dt->customer->name }}</td>
                         <td class="text-center">{{ $dt->customer->code }}</td>
+                        <td class="text-center">{{ $dt->invoice_no }}</td>
                         <td class="text-right">{{ number_format($dt->grand_total, 2) }}</td>
                     </tr>
                 @endforeach
