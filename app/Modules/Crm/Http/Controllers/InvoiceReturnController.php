@@ -4,6 +4,7 @@ namespace App\Modules\Crm\Http\Controllers;
 
 use App\DataTables\InvoiceReturnDataTable;
 use App\Http\Controllers\BaseController;
+use App\Modules\Config\Models\Lookup;
 use App\Modules\Crm\Models\Invoice;
 use App\Modules\Crm\Models\InvoiceReturn;
 use App\Modules\Crm\Models\InvoiceReturnDetails;
@@ -12,6 +13,7 @@ use App\Modules\StoreInventory\Models\Stores;
 use Carbon\Carbon;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -137,5 +139,40 @@ class InvoiceReturnController extends BaseController
         } else {
             return $this->responseJson(true, 200, "Please insert Return no!");
         }
+    }
+
+    public function invoiceReturnReport()
+    {
+        $stores = $this->store->treeList();
+        $cash_credit = Lookup::items('cash_credit');
+        $this->setPageTitle('Return Report', 'Return Report');
+        return view('Crm::invoice-return.invoice-return-report', compact('stores', 'cash_credit'));
+    }
+
+    public function invoiceReturnReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $store_id = trim($request->store_id);
+            $customer_id = trim($request->customer_id);
+            $data = new Invoicereturn();
+//            $data = $data->whereBetween('date', ["'$start_date'", "'$end_date'"]);
+            $data = $data->where('date', '>=', $start_date);
+            $data = $data->where('date', '<=', $end_date);
+            if ($customer_id > 0) {
+                $data = $data->where('customer_id', '=', $customer_id);
+            }
+            if ($store_id > 0) {
+                $data = $data->where('store_id', '=', $store_id);
+            }
+            $data = $data->orderby('date', 'asc');
+            $data = $data->get();
+        }
+
+        $returnHTML = view('Crm::invoice-return.invoice-return-report-view', compact('data', 'start_date', 'end_date', 'store_id', 'customer_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 }
