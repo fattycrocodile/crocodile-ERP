@@ -35,7 +35,7 @@
                     $return_total += $invoice_return_amount;
                     $mr_total += $invoice_mr_amount;
                     $due_total += $due;
-                    
+
                     ?>
                     <tr>
                         <th scope="row" class="text-center">{{ $sl++ }}</th>
