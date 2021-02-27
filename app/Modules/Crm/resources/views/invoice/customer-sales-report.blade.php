@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title') {{ isset($pageTitle) ? $pageTitle : 'Sales Return Report' }} @endsection
+@section('title') {{ isset($pageTitle) ? $pageTitle : 'Customer Sales Report' }} @endsection
 
 @push('styles')
     <!-- CSS -->
@@ -22,7 +22,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" id="basic-layout-form">INVOICE RETURN REPORT CRITERIA</h4>
+                        <h4 class="card-title" id="basic-layout-form">CUSTOMER SALES REPORT CRITERIA</h4>
                         <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                         <div class="heading-elements">
                             <ul class="list-inline mb-0">
@@ -37,7 +37,8 @@
                         <div class="card-body">
                             <div class="card-text">
                             </div>
-                            <form class="form" id="mr-form" action="{{route('crm.reports.invoice-return-report-view')}}"
+                            <form class="form" id="mr-form"
+                                  action="{{route('crm.reports.customer-sales-report-view')}}"
                                   method="post"
                                   autocomplete="off">
                                 @csrf
@@ -114,14 +115,16 @@
                                     <div class="col-12">
                                         <div class="form-actions center">
                                             <a type="button" class="btn btn-warning mb-1"
-                                               href="{{route('crm.reports.invoice-return-report')}}">
+                                               href="{{route('crm.reports.customer-sales-report')}}">
                                                 <i class="ft-refresh-ccw"></i> Reload
                                             </a>
-                                            <button type="submit" class="btn btn-primary mb-1 search-btn" name="report-view"
+                                            <button type="submit" class="btn btn-primary mb-1 search-btn"
+                                                    name="report-view"
                                                     id="report-view">
                                                 <i class="fa fa-search"></i> Search
                                             </button>
-                                            <button type="button" class="btn btn-success mb-1 loading-text" style="display: none;">
+                                            <button type="button" class="btn btn-success mb-1 loading-text"
+                                                    style="display: none;">
                                                 <i class="fa fa-spinner fa-pulse fa-fw"></i> Please wait..
                                             </button>
                                         </div>
@@ -138,7 +141,7 @@
         <div class="col-sm-12">
             <div id="kick-start" class="card">
                 <div class="card-header">
-                    <h4 class="card-title">INVOICE RETURN REPORT</h4>
+                    <h4 class="card-title">CUSTOMER SALES REPORT</h4>
                 </div>
                 <div class="card-content collapse show">
                     <div class="card-body">
@@ -368,7 +371,7 @@
                 }
             });
             $.ajax({
-                url: "{{ route('crm.reports.invoice-return-report-view') }}",
+                url: "{{ route('crm.reports.customer-sales-report-view') }}",
                 type: 'post',
                 dataType: "json",
                 cache: false,

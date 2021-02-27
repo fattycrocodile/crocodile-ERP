@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12">
-        <h2 class="text-center">Return Report From {{  date("F jS, Y", strtotime($start_date)) }}
+        <h2 class="text-center">Invoice Return Report From {{  date("F jS, Y", strtotime($start_date)) }}
             TO {{  date("F jS, Y", strtotime($end_date)) }}</h2>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">

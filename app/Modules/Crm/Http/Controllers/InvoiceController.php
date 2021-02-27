@@ -326,7 +326,7 @@ class InvoiceController extends BaseController
     {
         $stores = $this->store->treeList();
         $cash_credit = Lookup::items('cash_credit');
-        $this->setPageTitle('Order Report', 'Order Report');
+        $this->setPageTitle('Sales Report', 'Sales Report');
         return view('Crm::invoice.invoice-report', compact('stores', 'cash_credit'));
     }
 
@@ -354,6 +354,43 @@ class InvoiceController extends BaseController
         }
 
         $returnHTML = view('Crm::invoice.invoice-report-view', compact('data', 'start_date', 'end_date', 'store_id', 'customer_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
+
+    public function customerSalesReport()
+    {
+        $stores = $this->store->treeList();
+        $cash_credit = Lookup::items('cash_credit');
+        $this->setPageTitle('Customer Sales Report', 'Customer Sales Report');
+        return view('Crm::invoice.customer-sales-report', compact('stores', 'cash_credit'));
+    }
+
+    public function customerSalesReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $store_id = trim($request->store_id);
+            $customer_id = trim($request->customer_id);
+            $data = new Invoice();
+//            $data = $data->whereBetween('date', ["'$start_date'", "'$end_date'"]);
+            $data = $data->where('date', '>=', $start_date);
+            $data = $data->where('date', '<=', $end_date);
+            if ($customer_id > 0) {
+                $data = $data->where('customer_id', '=', $customer_id);
+            }
+            if ($store_id > 0) {
+                $data = $data->where('store_id', '=', $store_id);
+            }
+            $data = $data->select('invoices.*', DB::raw('count(*) as invoice_count, sum(grand_total) as customer_total'));
+            $data = $data->groupBy('customer_id');
+            $data = $data->orderby('date', 'asc');
+            $data = $data->get();
+        }
+
+        $returnHTML = view('Crm::invoice.customer-sales-report-view', compact('data', 'start_date', 'end_date', 'store_id', 'customer_id'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 }
