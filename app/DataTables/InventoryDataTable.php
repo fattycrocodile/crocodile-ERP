@@ -43,6 +43,7 @@ class InventoryDataTable extends DataTable
      */
     public function query(Inventory $model)
     {
+//        return $model->newQuery()->with(['store_name'])->orderByDesc('id');
         return $model->newQuery()->orderByDesc('id');
 //        return $model->newQuery()->select('*');
     }
