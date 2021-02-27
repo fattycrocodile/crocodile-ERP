@@ -328,7 +328,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('hr.employees.index') }}" data-toggle="dropdown">Daily Attendance Repot
+                                <a class="dropdown-item" href="{{ route('hr.employees.index') }}" data-toggle="dropdown">Daily Attendance Report
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
@@ -426,19 +426,19 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('crm.invoice.create') }}"
+                                <a class="dropdown-item" href="{{ route('crm.reports.order-report') }}"
                                    data-toggle="dropdown">Sales Order Reports
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('crm.invoice.index') }}"
+                                <a class="dropdown-item" href="{{ route('crm.reports.invoice-report') }}"
                                    data-toggle="dropdown">Invoice Report
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('crm.invoice.index') }}"
+                                <a class="dropdown-item" href="{{ route('crm.reports.invoice-return-report') }}"
                                    data-toggle="dropdown">Invoice Return Report
                                     <submenu class="name"></submenu>
                                 </a>
