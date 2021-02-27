@@ -455,6 +455,12 @@
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('crm.reports.due-report') }}"
+                                   data-toggle="dropdown">Due Report
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>

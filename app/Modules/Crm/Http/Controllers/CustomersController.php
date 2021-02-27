@@ -5,6 +5,7 @@ namespace App\Modules\Crm\Http\Controllers;
 
 use App\DataTables\CustomersDataTable;
 use App\Http\Controllers\BaseController;
+use App\Modules\Config\Models\Lookup;
 use App\Modules\Crm\Models\Customers;
 use App\Modules\StoreInventory\Models\Stores;
 use Illuminate\Http\JsonResponse;
@@ -12,6 +13,17 @@ use Illuminate\Http\Request;
 
 class CustomersController extends BaseController
 {
+    public $model;
+    public $store;
+    public $lookup;
+
+    public function __construct(Customers $model)
+    {
+        $this->model = $model;
+        $this->store = new Stores();
+        $this->lookup = new Lookup();
+    }
+
     public function index(CustomersDataTable $dataTable)
     {
         $this->setPageTitle('Customers', 'List of all customers');
@@ -223,5 +235,37 @@ class CustomersController extends BaseController
             $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'code' => '', 'store_id' => '', 'contact_no' => '');
         }
         return response()->json($response);
+    }
+
+
+    public function customerDueReport()
+    {
+        $stores = $this->store->treeList();
+        $cash_credit = Lookup::items('cash_credit');
+        $this->setPageTitle('Customer Sales Report', 'Customer Return Report');
+        return view('Crm::customers.due-report', compact('stores', 'cash_credit'));
+    }
+
+    public function customerDueReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('date')) {
+            $date = trim($request->date);
+            $store_id = trim($request->store_id);
+            $customer_id = trim($request->customer_id);
+            $data = new Customers();
+            if ($customer_id > 0) {
+                $data = $data->where('id', '=', $customer_id);
+            }
+            if ($store_id > 0) {
+                $data = $data->where('store_id', '=', $store_id);
+            }
+            $data = $data->orderby('name', 'asc');
+            $data = $data->get();
+        }
+
+        $returnHTML = view('Crm::customers.due-report-view', compact('data', 'date', 'store_id', 'customer_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 }

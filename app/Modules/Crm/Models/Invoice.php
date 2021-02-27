@@ -2,11 +2,11 @@
 
 namespace App\Modules\Crm\Models;
 
+use App\Model\User\User;
 use App\Modules\Accounting\Models\MoneyReceipt;
 use App\Modules\StoreInventory\Models\Stores;
-use App\Model\User\User;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Invoice extends Model
 {
@@ -21,6 +21,16 @@ class Invoice extends Model
         $maxSn = $this->where('store_id', '=', $store_no)->max('max_sl_no');
         return $maxSn ? $maxSn + 1 : 1;
     }
+
+    public static function totalInvoiceAmountOfCustomerUpTo($date, $customer_id)
+    {
+        $data = DB::table('invoices')
+            ->select(DB::raw('sum(grand_total) as grand_total'))
+            ->where('date', '<=', $date)
+            ->where('customer_id', '=', $customer_id)->first();
+        return $data ? $data->grand_total : 0;
+    }
+
     public function store()
     {
         return $this->belongsTo(Stores::class);

@@ -12,8 +12,9 @@ class InvoiceReturn extends Model
     protected $table = 'invoice_returns';
     protected $guarded = [];
 
-    public function maxSlNo($store_id){
-        $maxSn = $this->where('store_id','=',$store_id)->max('store_id');
+    public function maxSlNo($store_id)
+    {
+        $maxSn = $this->where('store_id', '=', $store_id)->max('store_id');
         return $maxSn ? $maxSn + 1 : 1;
     }
 
@@ -22,6 +23,15 @@ class InvoiceReturn extends Model
         $data = DB::table('invoice_returns')
             ->select(DB::raw('sum(return_amount) as return_amount'))
             ->where('invoice_id', '=', $invoice_id)->first();
+        return $data ? $data->return_amount : 0;
+    }
+
+    public static function totalInvoiceReturnAmountOfCustomerUpTo($date, $customer_id)
+    {
+        $data = DB::table('invoice_returns')
+            ->select(DB::raw('sum(return_amount) as return_amount'))
+            ->where('date', '<=', $date)
+            ->where('customer_id', '=', $customer_id)->first();
         return $data ? $data->return_amount : 0;
     }
 

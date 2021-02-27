@@ -34,6 +34,15 @@ class MoneyReceipt extends Model
         return $data ? $data->amount + $data->discount : 0;
     }
 
+    public static function totalInvoiceReturnAmountOfCustomerUpTo($date, $customer_id)
+    {
+        $data = DB::table('money_receipts')
+            ->select(DB::raw('sum(amount) as amount'))
+            ->where('date', '<=', $date)
+            ->where('customer_id', '=', $customer_id)->first();
+        return $data ? $data->amount : 0;
+    }
+
     public static function mrInfo($invoice_id)
     {
         $product = MoneyReceipt::query();
