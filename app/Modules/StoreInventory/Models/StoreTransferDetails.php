@@ -8,6 +8,8 @@ class StoreTransferDetails extends Model
 {
     protected $guarded=[];
 
+    public $timestamps = false;
+
     public function storeTransfer()
     {
         return $this->belongsTo(Stores::class);

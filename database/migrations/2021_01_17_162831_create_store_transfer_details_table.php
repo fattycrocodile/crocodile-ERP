@@ -21,7 +21,7 @@ class CreateStoreTransferDetailsTable extends Migration
             $table->foreign('product_id')->references('id')->on('products');
             $table->double('qty');
             $table->double('rcv_qty')->nullable();
-            $table->date('rcv_date');
+            $table->date('rcv_date')->nullable();
         });
     }
 

@@ -71,6 +71,17 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::delete('/{id}/delete', 'PurchaseReturnController@delete')->name('storeInventory.pr.delete');
     });
 
+    Route::group(['prefix' => 'store-inventory/store-transfer'], function () {
+        Route::get('/', 'StoreTransferController@index')->name('storeInventory.st.index');
+        Route::get('/create', 'StoreTransferController@create')->name('storeInventory.st.create');
+        Route::post('/store', 'StoreTransferController@store')->name('storeInventory.st.store');
+        Route::get('/{id}/edit', 'StoreTransferController@edit')->name('storeInventory.st.edit');
+        Route::post('/{id}/update', 'StoreTransferController@update')->name('storeInventory.st.update');
+        Route::get('/{id}/receive', 'StoreTransferController@receive')->name('storeInventory.st.receive');
+        Route::post('/voucher', 'StoreTransferController@voucher')->name('storeInventory.st.voucher');
+        Route::delete('/{id}/delete', 'StoreTransferController@delete')->name('storeInventory.st.delete');
+    });
+
     Route::group(['prefix' => 'store-inventory/purchase-receive'], function () {
         Route::get('/', 'PurchaseReturnController@index')->name('storeInventory.prec.index');
         Route::get('/create', 'PurchaseReturnController@create')->name('storeInventory.prec.create');

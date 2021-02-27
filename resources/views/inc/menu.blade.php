@@ -116,6 +116,23 @@
                         </ul>
                     </li>
                     <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Store Transfer
+                            <submenu class="name"></submenu>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ url('/store-inventory/store-transfer/') }}" data-toggle="dropdown">Store Transfer Manage
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ url('/store-inventory/store-transfer/create') }}" data-toggle="dropdown">Store Transfer Create
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Inventory
                             <submenu class="name"></submenu>
                         </a>

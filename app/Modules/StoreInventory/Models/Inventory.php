@@ -11,6 +11,8 @@ class Inventory extends Model
     const REF_PURCHASE = 2;
     const REF_PURCHASE_RETURN = 3;
     const REF_INVOICE_RETURN = 4;
+    const REF_STORE_TRANSFER = 5;
+    const REF_STORE_TRANSFER_RECEIVE = 6;
 
     protected $table = 'inventories';
     protected $guarded = [];

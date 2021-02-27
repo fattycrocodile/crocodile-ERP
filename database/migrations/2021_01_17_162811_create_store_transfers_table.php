@@ -16,6 +16,7 @@ class CreateStoreTransfersTable extends Migration
         Schema::create('store_transfers', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_no');
+            $table->integer('max_sl_no');
             $table->unsignedBigInteger('send_store_id');
             $table->foreign('send_store_id')->references('id')->on('stores');
             $table->unsignedBigInteger('rcv_store_id');
