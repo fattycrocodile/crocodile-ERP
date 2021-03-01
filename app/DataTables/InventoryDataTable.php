@@ -57,7 +57,7 @@ class InventoryDataTable extends DataTable
     {
         return $this->builder()
             ->setTableId('inventory-table')
-            ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
+            ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap'])
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->parameters([
