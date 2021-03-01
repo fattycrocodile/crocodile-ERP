@@ -2,16 +2,27 @@
 
 namespace App\Modules\StoreInventory\Models;
 
-use App\Model\Commercial\PurchaseDetails;
-use App\Model\Crm\InvoiceDetails;
-use App\Model\Crm\InvoiceReturnDetails;
-use App\Model\Crm\SellOrderDetails;
+
 use App\Model\User\User;
+use App\Modules\Commercial\Models\PurchaseDetails;
+use App\Modules\Crm\Models\InvoiceDetails;
+use App\Modules\Crm\Models\InvoiceReturnDetails;
+use App\Modules\Crm\Models\SellOrderDetails;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
-    protected $guarded=[];
+    protected $table = 'products';
+    protected $guarded = [];
+
+
+    public static function totalProductCount()
+    {
+        $data = DB::table('products')
+            ->select(DB::raw('count(*) as total'))->first();
+        return $data ? $data->total : 0;
+    }
 
     public function category()
     {
@@ -35,7 +46,7 @@ class Product extends Model
 
     public function sellPrice()
     {
-        return $this->hasMany(SellPrice::class)->orderBy('id','desc');
+        return $this->hasMany(SellPrice::class)->orderBy('id', 'desc');
     }
 
     public function inventory()

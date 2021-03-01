@@ -5,12 +5,20 @@ namespace App\Modules\Crm\Models;
 use App\Model\User\User;
 use App\Modules\StoreInventory\Models\Stores;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Customers extends Model
 {
 
     protected $table = 'customers';
     protected $guarded=[];
+
+    public static function totalCustomerCount()
+    {
+        $data = DB::table('customers')
+            ->select(DB::raw('count(*) as total'))->first();
+        return $data ? $data->total : 0;
+    }
 
     public function sellOrders()
     {

@@ -31,6 +31,13 @@ class Invoice extends Model
         return $data ? $data->grand_total : 0;
     }
 
+    public static function totalInvoiceCount()
+    {
+        $data = DB::table('invoices')
+            ->select(DB::raw('count(*) as total'))->first();
+        return $data ? $data->total : 0;
+    }
+
     public function store()
     {
         return $this->belongsTo(Stores::class);

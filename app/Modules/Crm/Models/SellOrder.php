@@ -5,6 +5,7 @@ namespace App\Modules\Crm\Models;
 use App\Model\User\User;
 use App\Modules\StoreInventory\Models\Stores;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class SellOrder extends Model
 {
@@ -18,6 +19,13 @@ class SellOrder extends Model
     {
         $maxSn = $this->where('store_id', '=', $store_no)->max('max_sl_no');
         return $maxSn ? $maxSn + 1 : 1;
+    }
+
+    public static function totalOrderCount()
+    {
+        $data = DB::table('sell_orders')
+            ->select(DB::raw('count(*) as total'))->first();
+        return $data ? $data->total : 0;
     }
 
     public function store()
