@@ -64,7 +64,7 @@ class SupplierPaymentDataTable extends DataTable
     {
         return $this->builder()
             ->setTableId('supplier-payment-table')
-            ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
+            ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap'])
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->addAction(['width' => '80px'])

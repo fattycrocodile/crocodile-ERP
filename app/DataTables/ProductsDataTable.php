@@ -75,7 +75,7 @@ class ProductsDataTable extends DataTable
     {
         return $this->builder()
             ->setTableId('products-table')
-            ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
+            ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap'])
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->addAction(['width' => '80px'])

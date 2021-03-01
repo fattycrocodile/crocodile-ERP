@@ -3,15 +3,11 @@
 namespace App\DataTables;
 
 
-use App\Modules\Crm\Models\Customers;
 use App\Modules\Hr\Models\LeaveApplication;
 use App\Modules\StoreInventory\Models\Category;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
-use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class LeaveApplicationsDataTable extends DataTable
@@ -30,8 +26,8 @@ class LeaveApplicationsDataTable extends DataTable
             ->editColumn('employee_id', function ($data) {
                 return isset($data->employee->full_name) ? $data->employee->full_name : 'N/A';
             })
-            ->editColumn('status',function ($data){
-                return $data->status==1?'Approved':$data->status==2?'Rejected':'Pending';
+            ->editColumn('status', function ($data) {
+                return $data->status == 1 ? 'Approved' : ($data->status == 2 ? 'Rejected' : 'Pending');
             })
             ->addColumn('action', function ($data) {
                 return "
@@ -42,7 +38,7 @@ class LeaveApplicationsDataTable extends DataTable
                         </div>
                    </div>";
             })
-            ->rawColumns(['description','action'])
+            ->rawColumns(['description', 'action'])
             ->removeColumn('id');
     }
 
@@ -66,7 +62,7 @@ class LeaveApplicationsDataTable extends DataTable
     {
         return $this->builder()
             ->setTableId('leave-table')
-            ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
+            ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap'])
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->addAction(['width' => '80px'])
