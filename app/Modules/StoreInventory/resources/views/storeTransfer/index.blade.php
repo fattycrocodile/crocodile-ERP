@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title') {{ isset($pageTitle) ? $pageTitle : 'Purchase Return Manage' }} @endsection
+@section('title') {{ isset($pageTitle) ? $pageTitle : 'Store Transfer Manage' }} @endsection
 @push('styles')
     @include('inc.datatable_styles')
 @endpush
@@ -14,7 +14,6 @@
                     class="fa fa-plus"></i> Add New</a>
         </div>
     </div>
-
     <!-- Responsive integration (Bootstrap) table -->
     <section id="bs-responsive">
         <div class="row">
@@ -64,7 +63,9 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close
                                 </button>
-                                <button type="button" class="btn btn-outline-primary" onclick="printDiv('printableArea')">Print</button>
+                                <button type="button" class="btn btn-outline-primary"
+                                        onclick="printDiv('printableArea')">Print
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -117,6 +118,36 @@
                 }
             });
             var url = "{{ route('storeInventory.st.voucher') }}";
+
+            var id = $(this).val();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: {method: 'POST', submit: true, id: id}
+            }).always(function (result) {
+                $('#store-transfer-table').DataTable().draw(false);
+                var message = result.message;
+                if (result.error === false) {
+                    $('.modal-body').html(result.data);
+                    $('#xlarge').modal('show');
+                } else {
+                    if (!message)
+                        message = "Please try again!";
+                    toastr.error(message, 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                }
+            });
+
+
+        });
+        $('#store-transfer-table').on('click', '.receive-stock', function (e) {
+            e.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            var url = "{{ route('storeInventory.st.receive') }}";
 
             var id = $(this).val();
             $.ajax({

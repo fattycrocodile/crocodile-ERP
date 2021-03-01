@@ -58,7 +58,7 @@ class StoreTransferController extends BaseController
 
             $invoice->max_sl_no = $maxSlNo;
             $invoice->invoice_no = $invNo;
-            $invoice->send_store_id =  $params['send_store_id'];
+            $invoice->send_store_id = $params['send_store_id'];
             $invoice->rcv_store_id = $params['rcv_store_id'];
             $invoice->remarks = $params['remarks'];
             $invoice->is_received = StoreTransfer::IS_PENDING;
@@ -136,69 +136,75 @@ class StoreTransferController extends BaseController
         }
     }
 
-    public function receive($id)
+    public function receive(Request $request)
     {
+        if ($request->has('id')) {
+            $id = $request->id;
+            try {
+                $invoice = StoreTransfer::findOrFail($id);
+                if ($invoice->is_received != StoreTransfer::IS_RECEIVED) {
+                    DB::beginTransaction();
+                    $invDt = $invoice->storeTransferDetails;
+                    $send_store_id = $invoice->send_store_id;
+                    $rcv_store_id = $invoice->rcv_store_id;
+                    $invoice_id = $id;
+                    $invoice->is_received = StoreTransfer::IS_RECEIVED;
+                    $invoice->updated_by = $created_by = auth()->user()->id;
+                    if ($invoice->save()) {
+                        $i = 0;
+                        $isAnyItemIsMissing = false;
+                        foreach ($invDt as $product) {
+                            $product_id = $product->product_id;
+                            $transfer_qty = $product->qty;
+                            $DT_id = $product->id;
+                            $stock_qty = 1;
+                            if ($stock_qty > 0) {
+                                $inventory = new Inventory();
+                                $inventory->store_id = $rcv_store_id;
+                                $inventory->product_id = $product_id;
+                                $inventory->stock_in = $transfer_qty;
+                                $inventory->stock_out = 0;
+                                $inventory->ref_type = Inventory::REF_STORE_TRANSFER_RECEIVE;
+                                $inventory->ref_id = $invoice_id;
+                                $inventory->date = date("Y-m-d");
+                                $inventory->created_by = $created_by;
+                                if ($inventory->save()) {
+                                    $invoiceDetails = StoreTransferDetails::findOrFail($DT_id);
+                                    $invoiceDetails->rcv_qty = $transfer_qty;
+                                    $invoiceDetails->rcv_date = date("Y-m-d");;
+                                    $invoiceDetails->save();
+                                }
+                            } else {
+                                $isAnyItemIsMissing = true;
+                            }
+                            $i++;
+                        }
 
-        try {
-            DB::beginTransaction();
-            $invoice = StoreTransfer::findOrFail($id);
-            $invDt = $invoice->storeTransferDetails;
-            $send_store_id = $invoice->send_store_id;
-            $rcv_store_id = $invoice->rcv_store_id;
-            $invoice_id = $id;
-            $invoice->is_received = StoreTransfer::IS_RECEIVED;
-            $invoice->updated_by = $created_by = auth()->user()->id;
-            if ($invoice->save()) {
-                $i = 0;
-                $isAnyItemIsMissing = false;
-                foreach ($invDt as $product) {
-                    $product_id = $product->product_id;
-                    $transfer_qty = $product->qty;
-                    $DT_id = $product->id;
-                    $stock_qty = 1;
-                    if ($stock_qty > 0) {
-                        $inventory = new Inventory();
-                        $inventory->store_id = $rcv_store_id;
-                        $inventory->product_id = $product_id;
-                        $inventory->stock_in = $transfer_qty;
-                        $inventory->stock_out = 0;
-                        $inventory->ref_type = Inventory::REF_STORE_TRANSFER_RECEIVE;
-                        $inventory->ref_id = $invoice_id;
-                        $inventory->date = date("Y-m-d");
-                        $inventory->created_by = $created_by;
-                        if ($inventory->save()) {
-                            $invoiceDetails = StoreTransferDetails::findOrFail($DT_id);
-                            $invoiceDetails->rcv_qty = $transfer_qty;
-                            $invoiceDetails->rcv_date = date("Y-m-d");;
-                            $invoiceDetails->save();
+                        DB::commit();
+                        if ($isAnyItemIsMissing == false) {
+                            $data = new StoreTransfer();
+                            $data = $data->where('id', '=', $id);
+                            $data = $data->first();
+
+                            $returnHTML = view('StoreInventory::storeTransfer.voucher', compact('data'))->render();
+                            return $this->responseJson(false, 200, "Store Transfer Created Successfully.", $returnHTML);
+                        } else {
+                            DB::rollback();
+                            return $this->responseJson(true, 200, "Voucher not found!");
                         }
                     } else {
-                        $isAnyItemIsMissing = true;
+                        DB::rollback();
+                        return $this->responseJson(true, 200, "Voucher not found!");
                     }
-                    $i++;
-                }
-
-                DB::commit();
-                if ($isAnyItemIsMissing == false) {
-                    $data = new StoreTransfer();
-                    $data = $data->where('id', '=', $id);
-                    $data = $data->first();
-
-                    $returnHTML = view('StoreInventory::storeTransfer.voucher', compact('data'))->render();
-                    return $this->responseJson(false, 200, "Store Transfer Created Successfully.", $returnHTML);
                 } else {
-                    DB::rollback();
-                    return $this->responseJson(true, 200, "Voucher not found!");
+                    return $this->responseJson(true, 200, "Already Received! Please try with another one!");
                 }
-            } else {
-                DB::rollback();
-                return $this->responseJson(true, 200, "Voucher not found!");
-            }
 
-        } catch (QueryException $exception) {
-            DB::rollback();
-            throw new InvalidArgumentException($exception->getMessage());
-            //return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
+            } catch (QueryException $exception) {
+                DB::rollback();
+                throw new InvalidArgumentException($exception->getMessage());
+                //return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
+            }
         }
     }
 

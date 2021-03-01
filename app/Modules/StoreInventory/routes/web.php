@@ -77,7 +77,7 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/store', 'StoreTransferController@store')->name('storeInventory.st.store');
         Route::get('/{id}/edit', 'StoreTransferController@edit')->name('storeInventory.st.edit');
         Route::post('/{id}/update', 'StoreTransferController@update')->name('storeInventory.st.update');
-        Route::get('/{id}/receive', 'StoreTransferController@receive')->name('storeInventory.st.receive');
+        Route::post('/receive', 'StoreTransferController@receive')->name('storeInventory.st.receive');
         Route::post('/voucher', 'StoreTransferController@voucher')->name('storeInventory.st.voucher');
         Route::delete('/{id}/delete', 'StoreTransferController@delete')->name('storeInventory.st.delete');
     });

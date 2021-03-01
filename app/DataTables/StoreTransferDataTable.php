@@ -40,7 +40,7 @@ class StoreTransferDataTable extends DataTable
             ->addColumn('action', function ($data) {
                 $Receive = "";
                 if ($data->is_received == StoreTransfer::IS_PENDING) {
-                    $Receive = " <a href='$data->id/receive' class='btn btn-icon btn-success' title='Receive Product'><i class='fa fa-calculator'></i></a>";
+                    $Receive = " <button href='store-transfer/$data->id/receive' value='$data->id' class='btn btn-icon btn-success receive-stock' title='Receive Product'><i class='fa fa-calculator'></i></button>";
                 }
 
                 return "
