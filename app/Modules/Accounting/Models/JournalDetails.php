@@ -8,6 +8,8 @@ class JournalDetails extends Model
 {
     protected $guarded=[];
 
+    public $timestamps = false;
+
     public function journal()
     {
         return $this->belongsTo(Journal::class);
