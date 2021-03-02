@@ -24,12 +24,12 @@ class EmployeesController extends BaseController
     {
         $departments = Departments::all();
         $designations = Designations::all();
-        $genders = Lookup::where('type','=','gender')->get();
-        $religions = Lookup::where('type','=','religion')->get();
-        $marital_status = Lookup::where('type','=','marital_status')->get();
+        $genders = Lookup::where('type', '=', 'gender')->get();
+        $religions = Lookup::where('type', '=', 'religion')->get();
+        $marital_status = Lookup::where('type', '=', 'marital_status')->get();
         $stores = Stores::all();
         $this->setPageTitle('Create Employees', 'Create new Employees');
-        return view('Hr::employees.create', compact('departments', 'designations', 'genders','religions','marital_status','stores'));
+        return view('Hr::employees.create', compact('departments', 'designations', 'genders', 'religions', 'marital_status', 'stores'));
     }
 
     public function store(Request $req)
@@ -95,9 +95,7 @@ class EmployeesController extends BaseController
 
         if (!$employee->save()) {
             return $this->responseRedirectBack('Error occurred while creating Employee.', 'error', true, true);
-        }
-        else
-        {
+        } else {
             return $this->responseRedirect('hr.employees.index', 'Employee added successfully', 'success', false, false);
         }
     }
@@ -107,12 +105,12 @@ class EmployeesController extends BaseController
         $employee = Employees::findOrFail($id);
         $departments = Departments::all();
         $designations = Designations::all();
-        $genders = Lookup::where('type','=','gender')->get();
-        $religions = Lookup::where('type','=','religion')->get();
-        $marital_status = Lookup::where('type','=','marital_status')->get();
+        $genders = Lookup::where('type', '=', 'gender')->get();
+        $religions = Lookup::where('type', '=', 'religion')->get();
+        $marital_status = Lookup::where('type', '=', 'marital_status')->get();
         $stores = Stores::all();
         $this->setPageTitle('Edit Employee', 'Edit a Employee');
-        return view('Hr::employees.edit', compact('employee','departments', 'designations', 'genders','religions','marital_status','stores'));
+        return view('Hr::employees.edit', compact('employee', 'departments', 'designations', 'genders', 'religions', 'marital_status', 'stores'));
     }
 
     public function update(Request $req, $id)
@@ -184,9 +182,7 @@ class EmployeesController extends BaseController
 
         if (!$employee->update()) {
             return $this->responseRedirectBack('Error occurred while editing Employee.', 'error', true, true);
-        }
-        else
-        {
+        } else {
             return $this->responseRedirect('hr.employees.index', 'Employee updated successfully', 'success', false, false);
         }
     }
@@ -213,28 +209,48 @@ class EmployeesController extends BaseController
         }
     }
 
+
     public function getEmployeesListByName(Request $request): ?JsonResponse
     {
         $response = array();
         if ($request->has('search')) {
             $search = trim($request->search);
             $data = new Employees();
-            $data = $data->select('id', 'full_name','designation_id');
+            $data = $data->select('id', 'full_name', 'designation_id', 'department_id');
             if ($search != '') {
                 $data = $data->where('full_name', 'like', '%' . $search . '%');
+            }
+            if ($request->has('department_id')) {
+                $designation_id = trim($request->designation_id);
+                if ($designation_id > 0) {
+                    $data = $data->where('designation_id', '=', $designation_id);
+                }
+            }
+            if ($request->has('department_id')) {
+                $department_id = trim($request->department_id);
+                if ($department_id > 0) {
+                    $data = $data->where('department_id', '=', $department_id);
+                }
             }
             $data = $data->limit(20);
             $data = $data->orderby('full_name', 'asc');
             $data = $data->get();
             if (!$data->isEmpty()) {
                 foreach ($data as $dt) {
-                    $response[] = array("value" => $dt->id, "label" => $dt->full_name, 'designation' => isset($dt->designation->name)?$dt->designation->name:'');
+                    $response[] = array(
+                        "value" => $dt->id,
+                        "label" => $dt->full_name,
+                        "designation_id" => $dt->designation_id,
+                        "department_id" => $dt->department_id,
+                        'designation' => isset($dt->designation->name) ? $dt->designation->name : '',
+                        'department' => isset($dt->department->name) ? $dt->department->name : '',
+                    );
                 }
             } else {
-                $response[] = array("value" => '', "label" => 'No data found!', 'designation' => '');
+                $response[] = array("value" => '', "label" => 'No data found!', 'designation' => '', 'department_id' => '', 'department' => '');
             }
         } else {
-            $response[] = array("value" => '', "label" => 'No data found!', "designation" => '');
+            $response[] = array("value" => '', "label" => 'No data found!', "designation" => '', 'department_id' => '', 'department' => '');
         }
         return response()->json($response);
     }
