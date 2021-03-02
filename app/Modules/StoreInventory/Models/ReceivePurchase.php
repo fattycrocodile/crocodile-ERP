@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ReceivePurchase extends Model
 {
+    protected $table = 'receive_purchases';
     protected $guarded=[];
 
     public function purchase()

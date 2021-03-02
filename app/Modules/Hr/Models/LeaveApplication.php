@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class LeaveApplication extends Model
 {
+    protected $table = 'leave_applications';
     protected $guarded=[];
 
     public function maxLeaveNo()

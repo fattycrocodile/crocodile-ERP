@@ -47,4 +47,13 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/{id}//update', 'LeaveApplicationController@update')->name('hr.leaves.update');
         Route::delete('/{id}/delete', 'LeaveApplicationController@delete')->name('hr.leaves.delete');
     });
+
+    Route::group(['prefix' => 'hr/attendance'], function () {
+        Route::get('/', 'AttendanceController@index')->name('hr.attendance.index');
+        Route::get('/create', 'AttendanceController@create')->name('hr.attendance.create');
+        Route::post('/store', 'AttendanceController@store')->name('hr.attendance.store');
+        Route::get('/{id}/edit', 'AttendanceController@edit')->name('hr.attendance.edit');
+        Route::post('/{id}//update', 'AttendanceController@update')->name('hr.attendance.update');
+        Route::delete('/{id}/delete', 'AttendanceController@delete')->name('hr.attendance.delete');
+    });
 });

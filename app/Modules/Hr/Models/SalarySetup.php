@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class SalarySetup extends Model
 {
+
+    protected $table = 'salary_setups';
     protected $guarded=[];
 
     public function updatedBy()
