@@ -64,7 +64,7 @@
                                                 <label for="payto">Journal For</label>
                                                 <input type="text"
                                                        class="form-control @error('payto') is-invalid @enderror"
-                                                       id="payto" required>
+                                                       id="payto" name="payto" required>
                                                 @error('payto')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
@@ -74,8 +74,8 @@
                                                 <label for="type">Type Of Accounts <span class="required text-danger">*</span></label>
                                                 <select id="type" name="type" class="select2 form-control  @error('type') is-invalid @enderror">
                                                     <option value="none" selected="" disabled="">Select Type</option>
-                                                    <option value="1">Debit</option>
-                                                    <option value="2">Credit</option>
+                                                    <option value="Debit" selected>Debit</option>
+                                                    <option value="Credit" disabled>Credit</option>
                                                 </select>
                                                 @error('type')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
@@ -260,7 +260,7 @@
 
         function add() {
             var payto = nanCheck($("#payto").val());
-            var type = nanCheck(parseFloat($("#type").val()));
+            var type = $("#type").val();
             var ca_id = nanCheck(parseFloat($("#ca_id").val()));
             var ca_name = $("#ca_id option:selected").text();
             var amount = nanCheck(parseFloat($("#amount").val()));
@@ -280,7 +280,7 @@
                 if (temp_codearray.length > 0) {
                     for (var l = 0; l < temp_codearray.length; l++) {
                         var code = temp_codearray[l].value;
-                        if (code == product_id) {
+                        if (code == ca_id) {
                             isproductpresent = 'yes';
                         }
                     }
@@ -396,37 +396,20 @@
                 e.preventDefault();
                 // Get the Login Name value and trim it
                 var date = $.trim($('#date').val());
-                var store_id = 1;
-                var supplier_id = $.trim($('#supplier_id').val());
-                var invoice_no = $.trim($('#invoice_no').val());
-                var invoice_due = $.trim($('#invoice_due').val());
+                var payto = $("#payto").val();
+                var type = $("#type").val();
                 var grand_total = nanCheck(parseFloat($.trim($('#grand_total').val())));
 
                 if (date === '') {
                     toastr.warning(" Please select  date!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 }
-                if (store_id === '') {
-                    toastr.warning(" Please select  store!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                if (payto === '' || payto =="") {
+                    toastr.warning(" Please select  Journal For!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 }
-                if (supplier_id === '') {
-                    toastr.warning(" Please select  customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    return false;
-                }
-
-                if (invoice_no === '' || invoice_no <= 0) {
-                    toastr.warning(" Please select a PO!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    return false;
-                }
-
-                if (invoice_due === '' || invoice_due <= 0) {
-                    toastr.warning(" Selected PO have no due!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    return false;
-                }
-
-                if (invoice_due < grand_total) {
-                    toastr.warning(" Grand total exceeded PO due amount!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                if (type === '' || type =="") {
+                    toastr.warning(" Please select  Type!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 }
 
@@ -437,7 +420,7 @@
                 }
                 // console.log(grand_total);
                 if (grand_total <= 0 || grand_total === "") {
-                    toastr.warning(" Please insert return amount!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    toastr.warning(" Please insert amount!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 } else {
                     ajaxSave();
@@ -452,18 +435,13 @@
                 }
             });
             $.ajax({
-                url: "{{ route('storeInventory.pr.store') }}",
+                url: "{{ route('accounting.journal.store') }}",
                 type: 'post',
                 dataType: "json",
                 cache: false,
                 data: $('form').serialize(),
                 beforeSend: function () {
-                    if (supplier_id == "" || supplier_id == 0 || supplier_id == null) {
-                        toastr.warning(" Please select Supplier!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                        return false;
-                    }
-                    $('#invoice-infos').html("");
-                    $(".spinner-div").show();
+
                 },
                 success: function (result) {
                     if (result.error === false) {
@@ -471,14 +449,10 @@
                         $(".print-success-msg").html(result.message);
                         $('.modal-body').html(result.data);
                         $('#xlarge').modal('show');
-                        due = [];
-                        $('#supplier_name').val('');
-                        $('#supplier_id').val('');
-                        $('#contact_no').val('');
-                        $('#invoice_due').val('');
-                        $('#invoice_no').html("");
-
-
+                        $('#invoice-infos').html("");
+                        $('#type').val(null).trigger('change');
+                        $('#payto').val("");
+                        resetProduct();
                         flashMessage('success');
                     } else {
                         printErrorMsg(result.data);

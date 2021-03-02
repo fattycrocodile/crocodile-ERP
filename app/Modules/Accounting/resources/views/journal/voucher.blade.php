@@ -21,9 +21,11 @@
             </div>
             <div class="col-md-6 col-sm-12 text-center text-md-right">
                 <h2>MONEY RECEIPT</h2>
-                <p class="pb-3">MR NO: #{{ $data->first()->mr_no }}
+                <p class="pb-3">Journal NO: #{{ $data->voucher_no }}
                     <br>
-                    MR Date: {{  date("F jS, Y", strtotime($data->first()->date)) }}
+                    Journal Date: {{  date("F jS, Y", strtotime($data->date)) }}
+                    <br>
+                    Journal Type: {{ $data->type }}
                 </p>
             </div>
         </div>
@@ -32,12 +34,11 @@
         <!-- Invoice Customer Details -->
         <div id="invoice-customer-details" class="row pt-2">
             <div class="col-sm-12 text-center text-md-left">
-                <p class="text-muted">Customer:</p>
+                <p class="text-muted">Journal For:</p>
             </div>
             <div class="col-md-12 col-sm-12 text-center text-md-left">
                 <ul class="px-0 list-unstyled">
-                    <li class="text-bold-800">{{ $data->first()->customer->name }}</li>
-                    <li>{{ $data->first()->customer->address }}</li>
+                    <li class="text-bold-800">{{ $data->reference }}</li>
                 </ul>
             </div>
         </div>
@@ -50,52 +51,44 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Invoice No</th>
+                            <th>Chart of Accounts</th>
+                            <th class="text-right">Remarks</th>
                             <th class="text-right">Amount</th>
-                            <th class="text-right">Discount</th>
-                            <th class="text-right">Row Total</th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php
-                        $total = $rcvAmount = $disAmount = 0;
+                        $total = $amount = 0;
                         ?>
-                        @foreach($data as $key => $dt)
+                        @foreach($data->journalDetails as $key => $dt)
                             <?php
                             $amount = $dt->amount;
-                            $discount = $dt->discount;
-                            $rowTotal = $amount + $discount;
-                            $rcvAmount += $amount;
-                            $disAmount += $discount;
-                            $total += $rowTotal;
+                            $total += $amount;
                             ?>
                             <tr>
                                 <th scope="row" style="width: 2%;">{{ ++$key }}</th>
                                 <td>
-                                    <p>{{ isset($dt->invoice->invoice_no) ? $dt->invoice->invoice_no : "N/A" }}</p>
+                                    <p>{{ isset($dt->chartOfAccount->name) ? $dt->chartOfAccount->name : "N/A" }}</p>
                                 </td>
+                                <td class="text-right" style="text-align: right;">{{ $dt->remarks }}</td>
                                 <td class="text-right" style="text-align: right;">{{ number_format($amount, 2) }}</td>
-                                <td class="text-right" style="text-align: right;">{{ number_format($discount, 2) }}</td>
-                                <td class="text-right" style="text-align: right;">{{ number_format($total, 2) }}</td>
                             </tr>
                         @endforeach
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th colspan="2">TOTAL</th>
-                            <th style="text-align: right;">{{ number_format($rcvAmount, 2) }}</th>
-                            <th style="text-align: right;">{{ number_format($disAmount, 2) }}</th>
-                            <th></th>
+                            <th colspan="3">TOTAL</th>
+                            <th style="text-align: right;">{{ number_format($total, 2) }}</th>
                         </tr>
                         <tr>
-                            <th colspan="2">NET RECEIVE AMOUNT</th>
-                            <th style="text-align: center;" colspan="3">{{ number_format($rcvAmount, 2) }}</th>
+                            <th colspan="3">NET PAYABLE AMOUNT</th>
+                            <th style="text-align: center;" colspan="3">{{ number_format($total, 2) }}</th>
                         </tr>
                         <tr>
                             <td colspan="5">Inword: <span style="text-transform: capitalize; font-weight: bold">
                             <?php
                                 $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-                                echo $f->format($rcvAmount);
+                                echo $f->format($total);
                             ?> Taka only</span></td>
                         </tr>
                         </tfoot>

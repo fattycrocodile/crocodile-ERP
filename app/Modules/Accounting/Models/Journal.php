@@ -17,7 +17,7 @@ class Journal extends Model
 
     public function journalDetails()
     {
-        return $this->hasMany(JournalDetails::class);
+        return $this->hasMany(JournalDetails::class,'journal_id');
     }
 
     public function createdBy()
