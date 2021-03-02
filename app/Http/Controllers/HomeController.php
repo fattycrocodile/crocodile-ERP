@@ -23,6 +23,8 @@ class HomeController extends BaseController
      */
     public function index()
     {
+//        Fulls::orderBy(..)->take(5)->get();
+        
         $this->setPageTitle('Dashboard', 'Admin Dashboard');
         return view('home');
     }
