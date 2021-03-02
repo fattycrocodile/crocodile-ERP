@@ -10,12 +10,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Purchase extends Model
 {
+    protected $table = 'purchases';
     protected $guarded=[];
 
     const PAID = 1;
     const NOT_PAID = 0;
 
-    protected $table = 'purchases';
 
     public function maxSlNo(){
 

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StoreTransferDetails extends Model
 {
+    protected $table = 'store_transfer_details';
     protected $guarded=[];
 
     public $timestamps = false;
