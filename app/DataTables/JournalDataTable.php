@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 
+use App\Modules\Accounting\Models\Journal;
 use App\Modules\Accounting\Models\MoneyReceipt;
 use App\Modules\Accounting\Models\SuppliersPayment;
 use App\Modules\StoreInventory\Models\PurchaseReturn;
@@ -14,7 +15,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class PurchaseReturnDataTable extends DataTable
+class JournalDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -27,15 +28,6 @@ class PurchaseReturnDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addIndexColumn()
-            ->editColumn('supplier_id', function ($data) {
-                return isset($data->supplier->name) ? $data->supplier->name : 'N/A';
-            })
-            ->editColumn('purchase_id', function ($data) {
-                return isset($data->purchase->invoice_no) ? $data->purchase->invoice_no : 'N/A';
-            })
-            ->editColumn('store_id', function ($data) {
-                return isset($data->store->name) ? $data->store->name : 'N/A';
-            })
             ->addColumn('action', function ($data) {
                 return "
                     <div class='form-group'>
@@ -51,12 +43,12 @@ class PurchaseReturnDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param PurchaseReturn $model
+     * @param Journal $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(PurchaseReturn $model)
+    public function query(Journal $model)
     {
-        return $model->newQuery()->orderByDesc('return_no');
+        return $model->newQuery()->orderByDesc('voucher_no');
     }
 
     /**
@@ -67,8 +59,8 @@ class PurchaseReturnDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('purchase-return-table')
-            ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap'])
+            ->setTableId('journal-table')
+            ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap"'])
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->addAction(['width' => '80px'])
@@ -122,12 +114,10 @@ class PurchaseReturnDataTable extends DataTable
                 ->exportable(true)
                 ->printable(true),
             Column::make('date'),
-            Column::make('return_no'),
-            Column::make('purchase_id')->title('Purchase Order No'),
-            Column::make('supplier_id')
-                ->title('Supplier'),
-            Column::make('store_id')->title('Store'),
-            Column::make('amount'),
+            Column::make('voucher_no'),
+            Column::make('ref_no')->title('Reference'),
+            Column::make('ref_type')->title('Type'),
+            Column::make('grand_total')->title('Total'),
         ];
     }
 

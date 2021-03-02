@@ -16,8 +16,9 @@ class CreateJournalsTable extends Migration
         Schema::create('journals', function (Blueprint $table) {
             $table->id();
             $table->string('voucher_no');
-            $table->string('ref_no');
-            $table->string('ref_type');
+            $table->integer('max_sl_no');
+            $table->string('reference');
+            $table->string('type');
             $table->double('grand_total');
             $table->date('date');
             $table->unsignedBigInteger('created_by')->nullable();

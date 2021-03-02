@@ -32,4 +32,14 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::delete('/{id}/delete', 'SuppliersPaymentController@delete')->name('accounting.payment.delete');
         Route::post('/voucher-preview', 'SuppliersPaymentController@voucher')->name('accounting.payment.voucher');
     });
+
+    Route::group(['prefix' => 'accounting/journal'], function () {
+        Route::get('/', 'JournalController@index')->name('accounting.journal.index');
+        Route::get('/create', 'JournalController@create')->name('accounting.journal.create');
+        Route::post('/store', 'JournalController@store')->name('accounting.journal.store');
+        Route::get('/{id}/edit', 'JournalController@edit')->name('accounting.journal.edit');
+        Route::post('/{id}/update', 'JournalController@update')->name('accounting.journal.update');
+        Route::delete('/{id}/delete', 'JournalController@delete')->name('accounting.journal.delete');
+        Route::post('/voucher-preview', 'JournalController@voucher')->name('accounting.journal.voucher');
+    });
 });

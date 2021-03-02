@@ -20,9 +20,7 @@ class CreateJournalDetailsTable extends Migration
             $table->unsignedBigInteger('ca_id');
             $table->foreign('ca_id')->references('id')->on('chart_of_accounts');
             $table->string('remarks')->nullable();
-            $table->string('type');
             $table->double('amount');
-            $table->timestamps();
         });
     }
 
