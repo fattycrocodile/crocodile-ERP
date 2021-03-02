@@ -17,6 +17,6 @@ class JournalDetails extends Model
 
     public function chartOfAccount()
     {
-        return $this->belongsTo(ChartOfAccounts::class);
+        return $this->belongsTo(ChartOfAccounts::class,'ca_id');
     }
 }

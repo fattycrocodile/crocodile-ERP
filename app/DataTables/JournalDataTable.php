@@ -33,6 +33,7 @@ class JournalDataTable extends DataTable
                     <div class='form-group'>
                         <div class='btn-group' role='group' aria-label='Basic example'>
                             <button class='btn btn-icon btn-warning btn-preview' value='$data->id' title='Preview'><i class='fa fa-eye'></i></button>
+                            <button class='btn btn-icon btn-danger btn-delete' data-remote='journal/$data->id/delete' value='$data->id' title='Delete'><i class='fa fa-trash'></i></button>
                         </div>
                    </div>";
             })
@@ -115,8 +116,8 @@ class JournalDataTable extends DataTable
                 ->printable(true),
             Column::make('date'),
             Column::make('voucher_no'),
-            Column::make('ref_no')->title('Reference'),
-            Column::make('ref_type')->title('Type'),
+            Column::make('reference')->title('Reference'),
+            Column::make('type')->title('Type'),
             Column::make('grand_total')->title('Total'),
         ];
     }

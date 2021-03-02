@@ -116,14 +116,14 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var url = "{{ route('accounting.mr.voucher') }}";
+            var url = "{{ route('accounting.journal.voucher') }}";
 
-            var mr_no = $(this).val();
+            var id = $(this).val();
             $.ajax({
                 url: url,
                 type: 'POST',
                 dataType: 'json',
-                data: {method: 'POST', submit: true, mr_no: mr_no}
+                data: {method: 'POST', submit: true, id: id}
             }).always(function (result) {
                 $('#journal-table').DataTable().draw(false);
                 var message = result.message;
@@ -139,5 +139,7 @@
 
 
         });
+
+
     </script>
 @endpush
