@@ -339,6 +339,18 @@
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('accounting.reports.profit-and-loss-report') }}"
+                                   data-toggle="dropdown">Profit & Loss Reports
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('accounting.reports.liquid-money') }}"
+                                   data-toggle="dropdown">Liquid Money Reports
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
