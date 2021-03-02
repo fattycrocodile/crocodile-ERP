@@ -354,9 +354,27 @@
                             <submenu class="name"></submenu>
                         </a>
                         <ul class="dropdown-menu">
+
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('hr.attendance.index') }}" data-toggle="dropdown">Attendance
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('hr.leaves.index') }}" data-toggle="dropdown">Leave
+                                    Application
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
                             <li data-menu="">
                                 <a class="dropdown-item" href="{{ route('hr.employees.index') }}"
                                    data-toggle="dropdown">Salary Setup
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('hr.employees.index') }}"
+                                   data-toggle="dropdown">Employees
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
@@ -375,19 +393,6 @@
                             <li data-menu="">
                                 <a class="dropdown-item" href="{{ route('hr.designations.index') }}"
                                    data-toggle="dropdown">Designations
-                                    <submenu class="name"></submenu>
-                                </a>
-                            </li>
-
-                            <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('hr.leaves.index') }}" data-toggle="dropdown">Leave
-                                    Appliceation
-                                    <submenu class="name"></submenu>
-                                </a>
-                            </li>
-                            <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('hr.employees.index') }}"
-                                   data-toggle="dropdown">Employees
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>

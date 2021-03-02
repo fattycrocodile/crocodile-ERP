@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Modules\Hr\Models;
 
 
@@ -9,7 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Designations extends Model
 {
     protected $table = 'designations';
-    protected $guarded=[];
+    protected $guarded = [];
+
+    const ACTIVE = 1;
+    const INACTIVE = 0;
+
+    public function treeList()
+    {
+        return Designations::orderByRaw('-name ASC')
+            ->get();
+    }
 
     public function employees()
     {

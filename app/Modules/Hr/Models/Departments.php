@@ -8,7 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Departments extends Model
 {
     protected $table = 'departments';
-    protected $guarded=[];
+    protected $guarded = [];
+
+
+    const ACTIVE = 1;
+    const INACTIVE = 0;
+
+    public function treeList()
+    {
+        return Departments::orderByRaw('-name ASC')
+            ->get();
+    }
 
     public function employees()
     {

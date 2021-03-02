@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth:web']], function () {
 
         Route::group(array('module' => 'Hr', 'namespace' => '\App\Modules\Hr\Http\Controllers'), function () {
             Route::post('/employee-list', 'EmployeesController@getEmployeesListByName')->name('employee.list.autocomplete');
+            Route::post('/employee-list-for-attendance', 'AttendanceController@getEmployeesListForAttendance')->name('employee.list.attendance');
         });
 
         Route::group(array('module' => 'Crm', 'namespace' => '\App\Modules\Crm\Http\Controllers'), function () {

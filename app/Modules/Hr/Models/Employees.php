@@ -12,6 +12,9 @@ class Employees extends Model
     protected $table = 'employees';
     protected $guarded=[];
 
+    const ACTIVE = 1;
+    const IN_ACTIVE = 0;
+
     public function department()
     {
         return $this->belongsTo(Departments::class);
