@@ -273,78 +273,31 @@
         $().ready(function () {
             $('form#mr-form').submit(function (e) {
                 e.preventDefault();
-                // Get the Login Name value and trim it
                 var date = $.trim($('#date').val());
-                var store_id = $.trim($('#store_id').val());
-                var customer_id = $.trim($('#customer_id').val());
-                var payment_method = $.trim($('#payment_method').val());
-                var bank_id = $.trim($('#bank_id').val());
-                var cheque_no = $.trim($('#cheque_no').val());
-                var cheque_date = $.trim($('#cheque_date').val());
-                var grand_total = nanCheck(parseFloat($.trim($('#grand_total').val())));
-
                 if (date === '') {
                     toastr.warning(" Please select  date!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 }
-                if (store_id === '') {
-                    toastr.warning(" Please select  store!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    return false;
-                }
-                if (customer_id === '') {
-                    toastr.warning(" Please select  customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    return false;
-                }
-
-                if (payment_method === '' || payment_method <= 0) {
-                    toastr.warning(" Please select  payment method!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    return false;
-                }
-
-                payment_method = nanCheck(payment_method);
-                if (isValidCode(payment_method, bankArray)) {
-                    if (bank_id === '') {
-                        toastr.warning(" Please select  bank!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                        return false;
-                    }
-                    if (isValidCode(payment_method, paymentChequeArray)) {
-                        if (cheque_no === '' || cheque_date === '') {
-                            toastr.warning(" Please select  cheque no & cheque date!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                            return false;
-                        }
-                    }
-                }
-
-                var rowCount = $('#table-data-list tbody tr.cartList').length;
-                if (nanCheck(rowCount) <= 0 || rowCount === 'undefined') {
-                    toastr.warning(" Please add at least one item to grid!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    return false;
-                }
-                // console.log(grand_total);
-                if (grand_total <= 0 || grand_total === "") {
-                    toastr.warning(" Please insert mr amount!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                    return false;
-                } else {
-                    ajaxSave();
-                }
+                ajaxSave();
             });
         });
 
         function ajaxSave() {
+            var date = $("#date").val();
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
             $.ajax({
-                url: "{{ route('accounting.mr.store') }}",
+                url: "{{ route('hr.attendance.store') }}",
                 type: 'post',
                 dataType: "json",
                 cache: false,
                 data: $('form').serialize(),
                 beforeSend: function () {
-                    if (customer_id == "" || customer_id == 0 || customer_id == null) {
-                        toastr.warning(" Please select customer!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    if (date == "") {
+                        toastr.warning(" Please select date!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                         return false;
                     }
                     $('#invoice-infos').html("");
@@ -352,27 +305,22 @@
                 },
                 success: function (result) {
                     if (result.error === false) {
-                        $(".print-success-msg").css('display', 'block');
-                        $(".print-success-msg").html(result.message);
-                        $('.modal-body').html(result.data);
-                        $('#xlarge').modal('show');
-                        flashMessage('success');
+                        toastr.success(result.message, 'Message <i class="fa fa-bell faa-ring animated"></i>')
                     } else {
-                        printErrorMsg(result.data);
-                        flashMessage('error');
+                        toastr.error(result.message, 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     }
                     $(".spinner-div").hide();
                     $(".invoice-infos").html("");
                 },
                 error: function (xhr, textStatus, thrownError) {
                     alert(xhr + "\n" + textStatus + "\n" + thrownError);
-                    $(".spinner-div").hide();
-                    $(".invoice-infos").html("");
+                    // $(".spinner-div").hide();
+                    // $(".invoice-infos").html("");
                 }
             }).done(function (data) {
-                console.log("REQUEST DONE;");
+                // console.log("REQUEST DONE;");
             }).fail(function (jqXHR, textStatus) {
-                console.log("REQUEST FAILED;");
+                // console.log("REQUEST FAILED;");
                 $(".spinner-div").hide();
                 $(".invoice-infos").html("");
             });
@@ -397,11 +345,12 @@
                 });
             }
         }
-        $("#reset").click(function(){
+
+        $("#reset").click(function () {
             clearSearch();
         });
 
-        function clearSearch(){
+        function clearSearch() {
             $("#department_id").val("");
             $("#designation_id").val("");
             $("#employee_id").val("");

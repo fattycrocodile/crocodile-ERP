@@ -25,8 +25,8 @@ class AttendanceDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addIndexColumn()
-            ->editColumn('root_id', function ($data) {
-                return isset($data->parent->name) ? $data->parent->name : 'N/A';
+            ->editColumn('employee_id', function ($data) {
+                return isset($data->employee->full_name) ? $data->employee->full_name : 'N/A';
             })
             ->addColumn('action', function ($data) {
                 return "
@@ -36,16 +36,9 @@ class AttendanceDataTable extends DataTable
                             <button data-remote='categories/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
                         </div>
                    </div>";
-            })
-            ->editColumn('image', function ($data) {
-                if ($photo = $data->image) {
-                    $url = asset($data->image);
-                    return "<img class='img' style='height: 100px; width: 100px; text-align: center;' src='$url'></img>";
-                }
-                return '';
-            })
-            ->rawColumns(['image', 'action'])
-            ->removeColumn('id');
+            });
+//            ->rawColumns(['image', 'action'])
+//            ->removeColumn('id');
     }
 
     /**
@@ -72,7 +65,7 @@ class AttendanceDataTable extends DataTable
             ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap'])
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->addAction(['width' => '80px'])
+//            ->addAction(['width' => '80px'])
             ->parameters([
                 'dom' => 'Bfrtip',
                 'stateSave' => true,
@@ -124,9 +117,10 @@ class AttendanceDataTable extends DataTable
                 ->exportable(true)
                 ->printable(true),
 
-            Column::make('name'),
-
-
+            Column::make('employee_id')->title('Name'),
+            Column::make('in_time'),
+            Column::make('out_time'),
+            Column::make('comments'),
         ];
     }
 

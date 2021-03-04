@@ -18,6 +18,11 @@
                     <tbody>
                     @if(!$data->isEmpty())
                         @foreach($data as $key => $dt)
+                            <?php
+                            $model = \App\Modules\Hr\Models\Attendance::where('employee_id', '=', $dt->id)->where('date', '=', $date)->first();
+                            $in_time = $model ? $model->in_time : "";
+                            $out_time = $model ? $model->out_time : "";
+                            ?>
                             <tr class="cartList">
                                 <th scope="row" class="count">{{ ++$key }}</th>
                                 <td>
@@ -33,13 +38,14 @@
                                     {{ $dt->designation->name }}
                                 </td>
                                 <td class="text-center">
-                                    <input type="text" name="attendance[in_time][]" class="form-control out-time"
+                                    <input type="time" name="attendance[in_time][]" class="form-control out-time"
                                            placeholder="09:00"
-                                           value="">
+                                           value="<?= $in_time ?>">
                                 </td>
                                 <td>
-                                    <input type="text" placeholder="18:00" class="form-control out-time"
-                                           name="attendance[out_time][]">
+                                    <input type="time" placeholder="18:00" class="form-control out-time"
+                                           name="attendance[out_time][]"
+                                           value="<?= $out_time ?>">
                                 </td>
                                 <td>
                                     <input type="text" class="form-control remarks"
