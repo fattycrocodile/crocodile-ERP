@@ -166,50 +166,38 @@ class JournalController extends BaseController
         $expense = NULL;
         if ($request->has('month')) {
             $date = date("Y-m-d", strtotime($request->month));
-            $expense = new Journal();
-            $expense = $expense->whereMonth('date', '=', Carbon::parse($date)->month);
-            $expense = $expense->whereYear('date', '=', Carbon::parse($date)->year);
-            $expense = $expense->orderby('date', 'asc');
-            $expense = $expense->get();
 
-            $moneyReceipt = new MoneyReceipt();
-            $moneyReceipt = $moneyReceipt->whereMonth('date', '=', Carbon::parse($date)->month);
-            $moneyReceipt = $moneyReceipt->whereYear('date', '=', Carbon::parse($date)->year);
-            $moneyReceipt = $moneyReceipt->orderby('date', 'asc');
-            $moneyReceipt = $moneyReceipt->get();
+            $expenses = DB::table('journals as j')
+                ->select(DB::raw('ca.name, sum(jd.amount) as amount'))
+                ->leftJoin('journal_details as jd','j.id','=','jd.journal_id')
+                ->leftJoin('chart_of_accounts as ca','jd.ca_id','=','ca.id')
+                ->where(DB::raw("year(j.date)"),"=",Carbon::parse($date)->year)
+                ->where(DB::raw("month(j.date)"),"=",Carbon::parse($date)->month)
+                ->groupBy('jd.ca_id')->get();
 
-            $payment = new SuppliersPayment();
-            $payment = $payment->whereMonth('date', '=', Carbon::parse($date)->month);
-            $payment = $payment->whereYear('date', '=', Carbon::parse($date)->year);
-            $payment = $payment->orderby('date', 'asc');
-            $payment = $payment->get();
 
             $purchase = new Purchase();
             $purchase = $purchase->whereMonth('date', '=', Carbon::parse($date)->month);
             $purchase = $purchase->whereYear('date', '=', Carbon::parse($date)->year);
-            $purchase = $purchase->orderby('date', 'asc');
-            $purchase = $purchase->get();
+            $purchase = $purchase->sum('grand_total');
 
             $purchaseReturn = new PurchaseReturn();
             $purchaseReturn = $purchaseReturn->whereMonth('date', '=', Carbon::parse($date)->month);
             $purchaseReturn = $purchaseReturn->whereYear('date', '=', Carbon::parse($date)->year);
-            $purchaseReturn = $purchaseReturn->orderby('date', 'asc');
-            $purchaseReturn = $purchaseReturn->get();
+            $purchaseReturn = $purchaseReturn->sum('amount');
 
             $sales = new Invoice();
             $sales = $sales->whereMonth('date', '=', Carbon::parse($date)->month);
             $sales = $sales->whereYear('date', '=', Carbon::parse($date)->year);
-            $sales = $sales->orderby('date', 'asc');
-            $sales = $sales->get();
+            $sales = $sales->sum('grand_total');
 
             $salesReturn = new InvoiceReturn();
             $salesReturn = $salesReturn->whereMonth('date', '=', Carbon::parse($date)->month);
             $salesReturn = $salesReturn->whereYear('date', '=', Carbon::parse($date)->year);
-            $salesReturn = $salesReturn->orderby('date', 'asc');
-            $salesReturn = $salesReturn->get();
+            $salesReturn = $salesReturn->sum('return_amount');
         }
 
-        $returnHTML = view('Crm::customers.due-report-view', compact('data', 'date', 'store_id', 'customer_id'))->render();
+        $returnHTML = view('Accounting::reports.profit-report-view', compact('expenses', 'purchase', 'purchaseReturn', 'sales','salesReturn','date'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
 
     }
