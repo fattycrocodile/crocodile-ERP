@@ -42,4 +42,13 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::delete('/{id}/delete', 'JournalController@delete')->name('accounting.journal.delete');
         Route::post('/voucher-preview', 'JournalController@voucher')->name('accounting.journal.voucher');
     });
+
+    Route::group(['prefix' => 'accounting/reports'], function () {
+        Route::get('/liquid_money', 'JournalController@liquidMoney')->name('accounting.reports.liquid-money');
+        Route::post('/liquid_money_view', 'JournalController@liquidMoneyView')->name('accounting.reports.liquid-money-view');
+
+        Route::get('/profit_and_loss_report', 'JournalController@profitAndLossReport')->name('accounting.reports.profit-and-loss-report');
+        Route::post('/profit_and_loss_report_view', 'JournalController@profitAndLossReportView')->name('accounting.reports.profit-and-loss-report-view');
+
+    });
 });

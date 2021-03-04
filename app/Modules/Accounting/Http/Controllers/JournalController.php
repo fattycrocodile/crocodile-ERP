@@ -8,10 +8,17 @@ use App\Http\Controllers\BaseController;
 use App\Modules\Accounting\Models\ChartOfAccounts;
 use App\Modules\Accounting\Models\Journal;
 use App\Modules\Accounting\Models\JournalDetails;
+use App\Modules\Accounting\Models\MoneyReceipt;
+use App\Modules\Accounting\Models\SuppliersPayment;
+use App\Modules\Commercial\Models\Purchase;
+use App\Modules\Crm\Models\Invoice;
+use App\Modules\Crm\Models\InvoiceReturn;
+use App\Modules\StoreInventory\Models\PurchaseReturn;
 use Carbon\Carbon;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -27,18 +34,18 @@ class JournalController extends BaseController
     }
 
     /**
-     * @param JournalDataTable $dataTable
+     * @param JournalDataTable $expenseTable
      * @return Factory|View
      */
-    public function index(JournalDataTable $dataTable)
+    public function index(JournalDataTable $expenseTable)
     {
         $this->setPageTitle('Journal List', 'List of all Journal');
-        return $dataTable->render('Accounting::journal.index');
+        return $expenseTable->render('Accounting::journal.index');
     }
 
     public function create()
     {
-        $ca = ChartOfAccounts::where('root_id','<>',null)->get();
+        $ca = ChartOfAccounts::where('root_id', '<>', null)->get();
         $this->setPageTitle('Create Journal', 'Create Journal');
         return view('Accounting::journal.create', compact('ca'));
     }
@@ -80,7 +87,7 @@ class JournalController extends BaseController
                         $journal_details->ca_id = $ca_id;
                         $journal_details->remarks = $remarks;
                         $journal_details->amount = $amount;
-                        if($journal_details->save()) {
+                        if ($journal_details->save()) {
 
                         }
                     } else {
@@ -110,8 +117,6 @@ class JournalController extends BaseController
             throw new InvalidArgumentException($exception->getMessage());
             //return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
         }
-
-
     }
 
     public function voucher(Request $request)
@@ -149,4 +154,63 @@ class JournalController extends BaseController
         }
     }
 
+    public function profitAndLossReport()
+    {
+        $this->setPageTitle('PROFIT AND LOSS REPORT', 'PROFIT AND LOSS REPORT');
+        return view('Accounting::reports.profit-report');
+    }
+
+    public function profitAndLossReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $expense = NULL;
+        if ($request->has('month')) {
+            $date = date("Y-m-d", strtotime($request->month));
+            $expense = new Journal();
+            $expense = $expense->whereMonth('date', '=', Carbon::parse($date)->month);
+            $expense = $expense->whereYear('date', '=', Carbon::parse($date)->year);
+            $expense = $expense->orderby('date', 'asc');
+            $expense = $expense->get();
+
+            $moneyReceipt = new MoneyReceipt();
+            $moneyReceipt = $moneyReceipt->whereMonth('date', '=', Carbon::parse($date)->month);
+            $moneyReceipt = $moneyReceipt->whereYear('date', '=', Carbon::parse($date)->year);
+            $moneyReceipt = $moneyReceipt->orderby('date', 'asc');
+            $moneyReceipt = $moneyReceipt->get();
+
+            $payment = new SuppliersPayment();
+            $payment = $payment->whereMonth('date', '=', Carbon::parse($date)->month);
+            $payment = $payment->whereYear('date', '=', Carbon::parse($date)->year);
+            $payment = $payment->orderby('date', 'asc');
+            $payment = $payment->get();
+
+            $purchase = new Purchase();
+            $purchase = $purchase->whereMonth('date', '=', Carbon::parse($date)->month);
+            $purchase = $purchase->whereYear('date', '=', Carbon::parse($date)->year);
+            $purchase = $purchase->orderby('date', 'asc');
+            $purchase = $purchase->get();
+
+            $purchaseReturn = new PurchaseReturn();
+            $purchaseReturn = $purchaseReturn->whereMonth('date', '=', Carbon::parse($date)->month);
+            $purchaseReturn = $purchaseReturn->whereYear('date', '=', Carbon::parse($date)->year);
+            $purchaseReturn = $purchaseReturn->orderby('date', 'asc');
+            $purchaseReturn = $purchaseReturn->get();
+
+            $sales = new Invoice();
+            $sales = $sales->whereMonth('date', '=', Carbon::parse($date)->month);
+            $sales = $sales->whereYear('date', '=', Carbon::parse($date)->year);
+            $sales = $sales->orderby('date', 'asc');
+            $sales = $sales->get();
+
+            $salesReturn = new InvoiceReturn();
+            $salesReturn = $salesReturn->whereMonth('date', '=', Carbon::parse($date)->month);
+            $salesReturn = $salesReturn->whereYear('date', '=', Carbon::parse($date)->year);
+            $salesReturn = $salesReturn->orderby('date', 'asc');
+            $salesReturn = $salesReturn->get();
+        }
+
+        $returnHTML = view('Crm::customers.due-report-view', compact('data', 'date', 'store_id', 'customer_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+
+    }
 }
