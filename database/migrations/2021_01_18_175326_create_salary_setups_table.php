@@ -15,6 +15,7 @@ class CreateSalarySetupsTable extends Migration
     {
         Schema::create('salary_setups', function (Blueprint $table) {
             $table->id();
+            $table->date('effective_date');
             $table->unsignedBigInteger('employee_id');
             $table->foreign('employee_id')->references('id')->on('employees');
             $table->double('basic_amount');

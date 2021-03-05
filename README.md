@@ -2,12 +2,31 @@
 
 - [x] Sales Order Create
 - [x] Invoice create from order
-- [ ] Invoice Return
+- [x] Invoice Return
 - [x] Money Receipt Create
 - [x] Purchase Order Create
 - [x] Purchase Receive
-- [ ] Purchase Return
+- [x] Purchase Return
 - [x] Supplier Payment Create
+- [x] Salary Setup Entry
+- [ ] Salary Setup Edit
+- [ ] Att. Report
+- [ ] Employees. Report
+- [ ] Joining. Report
+- [ ] Salary Sheet
+- [ ] Collection Report
+- [ ] Payment Report
+- [ ] Expense Report
+- [ ] Expense Report
+- [ ] Profit & Loss Report
+- [ ] Liquid Money Report
+- [ ] Purchase Report Summary
+- [ ] Product Wise Purchase Report Summary
+- [ ] Purchase Report
+- [ ] Supplier Due Report
+- [ ] Stock Qty Report
+- [ ] Stock Value Report
+- [ ] Stock Ledger Report
 
 # ERP PLANNING 
 
