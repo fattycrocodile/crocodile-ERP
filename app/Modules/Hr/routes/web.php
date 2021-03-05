@@ -56,4 +56,13 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/{id}//update', 'AttendanceController@update')->name('hr.attendance.update');
         Route::delete('/{id}/delete', 'AttendanceController@delete')->name('hr.attendance.delete');
     });
+
+    Route::group(['prefix' => 'hr/salary'], function () {
+        Route::get('/', 'SalarySetupController@index')->name('hr.salary.index');
+        Route::get('/create', 'SalarySetupController@create')->name('hr.salary.create');
+        Route::post('/store', 'SalarySetupController@store')->name('hr.salary.store');
+        Route::get('/{id}/edit', 'SalarySetupController@edit')->name('hr.salary.edit');
+        Route::post('/{id}//update', 'SalarySetupController@update')->name('hr.salary.update');
+        Route::delete('/{id}/delete', 'SalarySetupController@delete')->name('hr.salary.delete');
+    });
 });

@@ -24,6 +24,14 @@ class SalarySetup extends Model
 
     public function employee()
     {
-        return $this->belongsTo(Employees::class);
+        return $this->belongsTo(Employees::class, 'employee_id');
+    }
+    public function designation()
+    {
+        return $this->belongsTo(Designations::class, 'designation_id');
+    }
+    public function department()
+    {
+        return $this->belongsTo(Departments::class, 'department_id');
     }
 }

@@ -3,8 +3,8 @@
     <div class="card">
         <div class="card-content">
             <div class="row table-responsive">
-                <table class="table table-de mb-0" id="table-data-list">
-                    <thead>
+                <table class="table table-de mb-0 table-sm table-bordered table-hover" id="table-data-list">
+                    <thead class="table-inverse ">
                     <tr>
                         <th>#</th>
                         <th>Full Name</th>

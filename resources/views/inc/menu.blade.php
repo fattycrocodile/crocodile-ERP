@@ -329,12 +329,6 @@
                             </li>
                             <li data-menu="">
                                 <a class="dropdown-item" href="{{ route('accounting.mr.create') }}"
-                                   data-toggle="dropdown">Due Reports
-                                    <submenu class="name"></submenu>
-                                </a>
-                            </li>
-                            <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('accounting.mr.create') }}"
                                    data-toggle="dropdown">Expense Reports
                                     <submenu class="name"></submenu>
                                 </a>
@@ -379,7 +373,7 @@
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('hr.employees.index') }}"
+                                <a class="dropdown-item" href="{{ route('hr.salary.index') }}"
                                    data-toggle="dropdown">Salary Setup
                                     <submenu class="name"></submenu>
                                 </a>
