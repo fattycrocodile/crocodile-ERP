@@ -37,6 +37,12 @@
                                     <input type="hidden" name="salary[employee_id][]"
                                            class="form-control employee_id"
                                            value="{{ $dt->id }}">
+                                    <input type="hidden" name="salary[department_id][]"
+                                           class="form-control department_id"
+                                           value="{{ $dt->department_id }}">
+                                    <input type="hidden" name="salary[designation_id][]"
+                                           class="form-control designation_id"
+                                           value="{{ $dt->designation_id }}">
                                 </td>
                                 <td class="text-center">
                                     {{ $dt->department->name }}

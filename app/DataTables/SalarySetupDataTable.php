@@ -32,8 +32,8 @@ class SalarySetupDataTable extends DataTable
                 return "
                     <div class='form-group'>
                         <div class='btn-group' role='group' aria-label='Basic example'>
-                            <a href='categories/$data->id/edit' class='btn btn-icon btn-secondary'><i class='fa fa-pencil-square-o'></i> Edit</a>
-                            <button data-remote='categories/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
+                            <a href='salary/$data->id/edit' class='btn btn-icon btn-secondary'><i class='fa fa-pencil-square-o'></i> Edit</a>
+                            <button data-remote='salary/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
                         </div>
                    </div>";
             })
@@ -65,7 +65,7 @@ class SalarySetupDataTable extends DataTable
             ->setTableAttribute(['class' => 'table table-striped table-bordered dataex-fixh-responsive-bootstrap'])
             ->columns($this->getColumns())
             ->minifiedAjax()
-//            ->addAction(['width' => '80px'])
+            ->addAction(['width' => '80px'])
             ->parameters([
                 'dom' => 'Bfrtip',
                 'stateSave' => true,

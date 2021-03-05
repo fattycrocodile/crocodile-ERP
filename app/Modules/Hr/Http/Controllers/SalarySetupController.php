@@ -72,6 +72,8 @@ class SalarySetupController extends BaseController
             $effective_date = $params['effective_date'];
             $i = 0;
             foreach ($params['salary']['employee_id'] as $employee_id) {
+                $department_id = $params['salary']['department_id'][$i];
+                $designation_id = $params['salary']['designation_id'][$i];
                 $basic_amount = $params['salary']['basic_amount'][$i];
                 $home_allowance = $params['salary']['home_allowance'][$i];
                 $medical_allowance = $params['salary']['medical_allowance'][$i];
@@ -83,6 +85,8 @@ class SalarySetupController extends BaseController
                 if ($total_salary > 0) {
                     $model = new SalarySetup();
                     $model->employee_id = $employee_id;
+                    $model->department_id = $department_id;
+                    $model->designation_id = $designation_id;
                     $model->effective_date = $effective_date;
                     $model->basic_amount = $basic_amount;
                     $model->home_allowance = $home_allowance;
@@ -103,6 +107,37 @@ class SalarySetupController extends BaseController
         return $this->responseJson(true, 200, "Please try again!");
 //        return $this->responseJson(true, 200, "Something is wrong", $validator->errors()->all());
     }
+
+    public function edit($id)
+    {
+        $data = SalarySetup::findOrFail($id);
+        $this->setPageTitle('Edit Salary', 'Edit a salary');
+        return view('Hr::salary-setup.edit', compact('data'));
+    }
+
+    public function update(Request $req, $id)
+    {
+        $req->validate([
+            'effective_date' => 'required|date',
+            'total_salary' => 'required|min:1'
+        ]);
+        $model = SalarySetup::findOrFail($id);
+        $model->effective_date = $req->effective_date;
+        $model->basic_amount = $req->basic_amount;
+        $model->home_allowance = $req->home_allowance;
+        $model->medical_allowance = $req->medical_allowance;
+        $model->ta = $req->ta;
+        $model->da = $req->da;
+        $model->other_allowances = $req->other_allowances;
+        $model->updated_by = auth()->user()->id;
+
+        if (!$model->update()) {
+            return $this->responseRedirectBack('Error occurred while Editing Unit.', 'error', true, true);
+        }
+        return $this->responseRedirect('Hr::salary-setup.index', 'Salary Updated successfully', 'success', false, false);
+    }
+
+
 
     public function getEmployeesListForSalary(Request $request): ?JsonResponse
     {

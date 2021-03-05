@@ -9,7 +9,7 @@
 - [x] Purchase Return
 - [x] Supplier Payment Create
 - [x] Salary Setup Entry
-- [ ] Salary Setup Edit
+- [ ] Salary Setup Edit (WIP)
 - [ ] Att. Report
 - [ ] Employees. Report
 - [ ] Joining. Report
