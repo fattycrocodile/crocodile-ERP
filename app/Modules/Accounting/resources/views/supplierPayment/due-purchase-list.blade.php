@@ -94,6 +94,7 @@
                     $count = 0;
                     ?>
                     @if(!$data->isEmpty())
+{{--                        {{dd($data)}}--}}
                         @foreach($data as $key => $dt)
                             <?php
                             $mrAmount = \App\Modules\Accounting\Models\SuppliersPayment::totalMrAmountOfInvoice($dt->id);

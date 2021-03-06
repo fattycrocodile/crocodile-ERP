@@ -19,8 +19,6 @@ class CreatePurchaseReturnsTable extends Migration
             $table->integer('max_sl_no');
             $table->unsignedBigInteger('purchase_id');
             $table->foreign('purchase_id')->references('id')->on('purchases');
-            $table->unsignedBigInteger('payment_id')->nullable();
-            $table->foreign('payment_id')->references('id')->on('suppliers_payments');
             $table->unsignedBigInteger('supplier_id');
             $table->foreign('supplier_id')->references('id')->on('suppliers');
             $table->unsignedBigInteger('store_id');

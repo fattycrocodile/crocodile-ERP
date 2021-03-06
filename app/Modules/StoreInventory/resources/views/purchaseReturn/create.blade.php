@@ -529,7 +529,7 @@
                     due = [];
                     var len = data.length;
                     $("#invoice_no").empty();
-                    if (len <= 1) {
+                    if (len < 1) {
                         $("#invoice_no").append("<option value='0'>PO Not Found!</option>");
                     } else {
                         $("#invoice_no").append("<option value='0'>Select PO</option>");

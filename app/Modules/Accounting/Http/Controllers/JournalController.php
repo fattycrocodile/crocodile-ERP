@@ -218,7 +218,10 @@ class JournalController extends BaseController
             ->leftJoin('chart_of_accounts as ca', 'jd.ca_id', '=', 'ca.id')
             ->where(DB::raw("j.date"), "<", $date)->first();
 
-        $paymentOP = DB::select("SELECT (sum(sp.amount) - sum(pr.amount)) as payment FROM
+        $paymentOP  = new SuppliersPayment();
+        $paymentOP = $paymentOP->where('date','<',$date)->sum('amount');
+
+        /*$paymentOP = DB::select("SELECT (sum(sp.amount) - sum(pr.amount)) as payment FROM
                                 (
                                    SELECT po_no,SUM(amount) as amount from `suppliers_payments` WHERE date < '$date' GROUP by po_no
                                 ) as sp
@@ -226,12 +229,13 @@ class JournalController extends BaseController
                                 (
                                    SELECT purchase_id, SUM(amount) as amount from `purchase_returns`
                                 )
-                                 as pr on sp.po_no = pr.purchase_id");
+                                 as pr on sp.po_no = pr.purchase_id");*/
 
-        $payment = new SuppliersPayment();
-        $payment = $payment->where('date','=',$date)->get();
+        $moneyReceiptOP = new MoneyReceipt();
+        $moneyReceiptOP = $moneyReceiptOP->where('date','<', $date);
+        $moneyReceiptOP = $moneyReceiptOP->sum('amount');
 
-        $purchaseReturn = new PurchaseReturn();
+        $openingBalance = $moneyReceiptOP- ($expensesOP->amount + $paymentOP);
 
 
         $expenses = DB::table('journals as j')
@@ -239,6 +243,14 @@ class JournalController extends BaseController
             ->leftJoin('journal_details as jd', 'j.id', '=', 'jd.journal_id')
             ->leftJoin('chart_of_accounts as ca', 'jd.ca_id', '=', 'ca.id')
             ->where(DB::raw("j.date"), "=", $date)->get();
-        dd($payment);
+
+        $payments = new SuppliersPayment();
+        $payments = $payments->where('date','=',$date)->get();
+
+        $moneyReceipts = new MoneyReceipt();
+        $moneyReceipts = $moneyReceipts->where('date','=', $date)->get();
+
+        $returnHTML = view('Accounting::reports.cash-report-view', compact('openingBalance', 'expenses', 'payments', 'moneyReceipts', 'date'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 }

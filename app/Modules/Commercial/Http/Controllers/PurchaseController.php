@@ -201,7 +201,7 @@ class PurchaseController extends BaseController
             $data = $data->get();
         }
 
-        if (!$data->isEmpty()) {
+        if (count($data) >0) {
             foreach ($data as $dt) {
                 $mrAmount = \App\Modules\Accounting\Models\SuppliersPayment::totalMrAmountOfInvoice($dt->id);
                 $returnAmount = \App\Modules\StoreInventory\Models\PurchaseReturn::totalReturnAmountOfPurchase($dt->id);
