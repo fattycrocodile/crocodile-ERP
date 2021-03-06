@@ -67,8 +67,8 @@
                         <tr>
                             <td>{{$moneyReceipt->date}}</td>
                             <td>{{$moneyReceipt->mr_no}}</td>
-                            <td>{{ number_format($moneyReceipt->amount, 2) }}</td>
                             <td></td>
+                            <td>{{ number_format($moneyReceipt->amount, 2) }}</td>
                             <td>{{ number_format($balance, 2) }}</td>
                         </tr>
                     @endforeach
