@@ -81,7 +81,7 @@
                                         <div class="form-group">
                                             <label for="basic_amount">Basic Amount</label>
                                             <input type="text"
-                                                   class="form-control @error('basic_amount') is-invalid @enderror"
+                                                   class="form-control basic_amount @error('basic_amount') is-invalid @enderror"
                                                    id="effective_date"
                                                    value="{!! old('basic_amount', $data->basic_amount)  !!}"
                                                    name="basic_amount">
@@ -93,7 +93,7 @@
                                         <div class="form-group">
                                             <label for="home_allowance">Home Allow.</label>
                                             <input type="text"
-                                                   class="form-control @error('home_allowance') is-invalid @enderror"
+                                                   class="form-control home_allowance @error('home_allowance') is-invalid @enderror"
                                                    id="home_allowance"
                                                    value="{!! old('home_allowance', $data->home_allowance)  !!}"
                                                    name="home_allowance">
@@ -105,7 +105,7 @@
                                         <div class="form-group">
                                             <label for="medical_allowance">Medical Allow.</label>
                                             <input type="text"
-                                                   class="form-control @error('medical_allowance') is-invalid @enderror"
+                                                   class="form-control medical_allowance @error('medical_allowance') is-invalid @enderror"
                                                    id="medical_allowance"
                                                    value="{!! old('medical_allowance', $data->medical_allowance)  !!}"
                                                    name="medical_allowance">
@@ -117,7 +117,7 @@
                                         <div class="form-group">
                                             <label for="ta">TA</label>
                                             <input type="text"
-                                                   class="form-control @error('ta') is-invalid @enderror"
+                                                   class="form-control ta @error('ta') is-invalid @enderror"
                                                    id="ta"
                                                    value="{!! old('ta', $data->ta)  !!}"
                                                    name="ta">
@@ -129,7 +129,7 @@
                                         <div class="form-group">
                                             <label for="da">DA</label>
                                             <input type="text"
-                                                   class="form-control @error('da') is-invalid @enderror"
+                                                   class="form-control da @error('da') is-invalid @enderror"
                                                    id="da"
                                                    value="{!! old('da', $data->da)  !!}"
                                                    name="da">
@@ -141,7 +141,7 @@
                                         <div class="form-group">
                                             <label for="other_allowances">Others Allow.</label>
                                             <input type="text"
-                                                   class="form-control @error('other_allowances') is-invalid @enderror"
+                                                   class="form-control other_allowances @error('other_allowances') is-invalid @enderror"
                                                    id="other_allowances"
                                                    value="{!! old('other_allowances', $data->other_allowances)  !!}"
                                                    name="other_allowances">
@@ -153,11 +153,11 @@
                                         <div class="form-group">
                                             <label for="row_total">Total</label>
                                             <input type="text"
-                                                   class="form-control @error('row_total') is-invalid @enderror"
-                                                   id="row_total"
-                                                   value="{!! old('row_total', $data->row_total)  !!}"
-                                                   name="row_total" required readonly min="1">
-                                            @error('row_total')
+                                                   class="form-control total_salary @error('total_salary') is-invalid @enderror"
+                                                   id="total_salary"
+                                                   value="{!! old('row_total', $data->basic_amount + $data->home_allowance + $data->medical_allowance + $data->ta + $data->da + $data->other_allowances)  !!}"
+                                                   name="total_salary" required readonly min="1">
+                                            @error('total_salary')
                                             <div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
                                     </div>
@@ -198,7 +198,47 @@
             });
 
         });
+
+
+        $(document).ready(function () {
+            $(document).on('focus', ':input', function () {
+                $(this).attr('autocomplete', 'off');
+            });
+        });
+
+        function nanCheck(value) {
+            return isNaN(value) ? 0 : value;
+        }
+
+        function isValidCode(code, codes) {
+            return ($.inArray(code, codes) > -1);
+        }
+
+        // Restricts input for the set of matched elements to the given inputFilter function.
+        $(document).on('input keyup  drop paste', ".basic_amount, .home_allowance, .medical_allowance, .ta, .da, .other_allowances, .total_salary", function (evt) {
+            var self = $(this);
+            self.val(self.val().replace(/[^0-9\.]/g, ''));
+            if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) {
+                evt.preventDefault();
+            }
+            calculateTotal();
+        });
+
+        function calculateTotal(){
+            var temp_basic_amount = nanCheck(parseFloat($(".basic_amount").val()));
+            var temp_home_allowance = nanCheck(parseFloat($(".home_allowance").val()));
+            var temp_medical_allowance = nanCheck(parseFloat($(".medical_allowance").val()));
+            var temp_ta = nanCheck(parseFloat($(".ta").val()));
+            var temp_da = nanCheck(parseFloat($(".da").val()));
+            var temp_other_allowances = nanCheck(parseFloat($(".other_allowances").val()));
+            var row_total = temp_basic_amount + temp_home_allowance + temp_medical_allowance + temp_ta + temp_da + temp_other_allowances;
+            if (row_total > 0) {
+                $(".total_salary").val(row_total.toFixed(2));
+            }
+        }
     </script>
+
+
 @endpush
 
 

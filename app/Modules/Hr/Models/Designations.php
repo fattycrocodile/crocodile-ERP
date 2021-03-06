@@ -15,7 +15,7 @@ class Designations extends Model
 
     public function treeList()
     {
-        return Designations::orderByRaw('-name ASC')
+        return Designations::orderByRaw('name ASC')
             ->get();
     }
 

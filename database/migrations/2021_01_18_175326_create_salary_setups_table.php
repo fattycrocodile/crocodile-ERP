@@ -28,6 +28,7 @@ class CreateSalarySetupsTable extends Migration
             $table->double('ta')->nullable()->default(0);
             $table->double('da')->nullable()->default(0);
             $table->double('other_allowances')->nullable()->default(0);
+            $table->double('total_amount');
             $table->boolean('status')->default(1);
             $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users');

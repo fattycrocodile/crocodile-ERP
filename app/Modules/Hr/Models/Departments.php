@@ -16,7 +16,7 @@ class Departments extends Model
 
     public function treeList()
     {
-        return Departments::orderByRaw('-name ASC')
+        return Departments::orderByRaw('name ASC')
             ->get();
     }
 
