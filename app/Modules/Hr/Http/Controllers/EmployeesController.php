@@ -14,6 +14,21 @@ use Illuminate\Http\Request;
 
 class EmployeesController extends BaseController
 {
+    public $department;
+    public $designation;
+    public $lookup;
+    public $model;
+    public $stores;
+
+    public function __construct(Employees $model)
+    {
+        $this->model = $model;
+        $this->department = new Departments();
+        $this->designation = new Designations();
+        $this->lookup = new Lookup();
+        $this->stores = new Stores();
+    }
+
     public function index(EmployeesDataTable $dataTable)
     {
         $this->setPageTitle('Employees', 'List of Employees');
@@ -253,5 +268,79 @@ class EmployeesController extends BaseController
             $response[] = array("value" => '', "label" => 'No data found!', "designation" => '', 'department_id' => '', 'department' => '');
         }
         return response()->json($response);
+    }
+
+    public function employeesReport()
+    {
+        $stores = $this->stores->treeList();
+        $department = $this->department->treeList();
+        $designation = $this->designation->treeList();
+        $genders = Lookup::items('gender');
+        $religions = Lookup::items('religion');
+        $marital_status = Lookup::items('marital_status');
+        $this->setPageTitle('Employees Report', 'Employees Report');
+        return view('Hr::employees.employees-report', compact('stores', 'department', 'designation', 'genders', 'religions', 'marital_status'));
+    }
+
+    public function employeesReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = new Employees();
+        if ($request->has('store_id')) {
+            $store_id = $request->store_id;
+            if ($store_id > 0)
+                $data = $data->where('store_id', '=', $store_id);
+        }
+        if ($request->has('store_id')) {
+            $store_id = $request->store_id;
+            if ($store_id > 0)
+                $data = $data->where('store_id', '=', $store_id);
+        }
+        if ($request->has('department_id')) {
+            $department_id = $request->department_id;
+            if ($department_id > 0)
+                $data = $data->where('department_id', '=', $department_id);
+        }
+        if ($request->has('designation_id')) {
+            $designation_id = $request->designation_id;
+            if ($designation_id > 0)
+                $data = $data->where('designation_id', '=', $designation_id);
+        }
+        if ($request->has('gender_id')) {
+            $gender_id = $request->gender_id;
+            if ($gender_id > 0)
+                $data = $data->where('gender_id', '=', $gender_id);
+        }
+        if ($request->has('religion_id')) {
+            $religion_id = $request->religion_id;
+            if ($religion_id > 0)
+                $data = $data->where('religion_id', '=', $religion_id);
+        }
+        if ($request->has('marital_status')) {
+            $marital_status = $request->marital_status;
+            if ($marital_status > 0)
+                $data = $data->where('marital_status', '=', $marital_status);
+        }
+        if ($request->has('status')) {
+            $status = $request->status;
+            if ($status != "")
+                $data = $data->where('status', '=', $status);
+        }
+        if ($request->has('full_name')) {
+            $full_name = trim($request->full_name);
+            if ($full_name != "")
+                $data = $data->where('full_name', 'like', '%' . $full_name . '%');
+        }
+        if ($request->has('contact_no')) {
+            $contact_no = trim($request->contact_no);
+            if ($contact_no != "")
+                $data = $data->where('contact_no', 'like', '%' . $contact_no . '%');
+        }
+
+        $data = $data->orderby('full_name', 'asc');
+        $data = $data->get();
+
+        $returnHTML = view('Hr::employees.employees-report-view', compact('data'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 }

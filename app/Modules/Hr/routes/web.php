@@ -65,4 +65,9 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/{id}//update', 'SalarySetupController@update')->name('hr.salary.update');
         Route::delete('/{id}/delete', 'SalarySetupController@delete')->name('hr.salary.delete');
     });
+
+    Route::group(['prefix' => 'hr/reports'], function () {
+        Route::get('/employees-report', 'EmployeesController@employeesReport')->name('hr.reports.employees-report');
+        Route::post('/employees-report-view', 'EmployeesController@employeesReportView')->name('hr.reports.employees-report-view');
+    });
 });

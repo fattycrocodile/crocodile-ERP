@@ -298,13 +298,15 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('accounting.journal.index') }}" data-toggle="dropdown">Journal Manage
+                                <a class="dropdown-item" href="{{ route('accounting.journal.index') }}"
+                                   data-toggle="dropdown">Journal Manage
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
 
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('accounting.journal.create') }}" data-toggle="dropdown">Journal Create
+                                <a class="dropdown-item" href="{{ route('accounting.journal.create') }}"
+                                   data-toggle="dropdown">Journal Create
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
@@ -362,7 +364,8 @@
                         <ul class="dropdown-menu">
 
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('hr.attendance.index') }}" data-toggle="dropdown">Attendance
+                                <a class="dropdown-item" href="{{ route('hr.attendance.index') }}"
+                                   data-toggle="dropdown">Attendance
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
@@ -416,7 +419,7 @@
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('hr.holidaysetup.index') }}"
+                                <a class="dropdown-item" href="{{ route('hr.reports.employees-report') }}"
                                    data-toggle="dropdown">Employees Report
                                     <submenu class="name"></submenu>
                                 </a>
