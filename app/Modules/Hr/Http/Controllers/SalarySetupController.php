@@ -94,6 +94,7 @@ class SalarySetupController extends BaseController
                     $model->ta = $ta;
                     $model->da = $da;
                     $model->other_allowances = $other_allowances;
+                    $model->total_amount = $total_salary;
                     $model->created_by = auth()->user()->id;
                     $model->save();
                 }
@@ -129,14 +130,14 @@ class SalarySetupController extends BaseController
         $model->ta = $req->ta;
         $model->da = $req->da;
         $model->other_allowances = $req->other_allowances;
+        $model->total_amount = $req->total_salary;
         $model->updated_by = auth()->user()->id;
 
         if (!$model->update()) {
-            return $this->responseRedirectBack('Error occurred while Editing Unit.', 'error', true, true);
+            return $this->responseRedirectBack('Error occurred while Editing salary.', 'error', true, true);
         }
-        return $this->responseRedirect('Hr::salary-setup.index', 'Salary Updated successfully', 'success', false, false);
+        return $this->responseRedirect('hr.salary.index', 'Salary Updated successfully', 'success', false, false);
     }
-
 
 
     public function getEmployeesListForSalary(Request $request): ?JsonResponse

@@ -125,6 +125,7 @@ class SalarySetupDataTable extends DataTable
             Column::make('ta'),
             Column::make('da'),
             Column::make('other_allowances'),
+            Column::make('total_amount')->title('Total Salary'),
         ];
     }
 
