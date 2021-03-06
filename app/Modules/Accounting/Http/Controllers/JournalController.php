@@ -169,10 +169,10 @@ class JournalController extends BaseController
 
             $expenses = DB::table('journals as j')
                 ->select(DB::raw('ca.name, sum(jd.amount) as amount'))
-                ->leftJoin('journal_details as jd','j.id','=','jd.journal_id')
-                ->leftJoin('chart_of_accounts as ca','jd.ca_id','=','ca.id')
-                ->where(DB::raw("year(j.date)"),"=",Carbon::parse($date)->year)
-                ->where(DB::raw("month(j.date)"),"=",Carbon::parse($date)->month)
+                ->leftJoin('journal_details as jd', 'j.id', '=', 'jd.journal_id')
+                ->leftJoin('chart_of_accounts as ca', 'jd.ca_id', '=', 'ca.id')
+                ->where(DB::raw("year(j.date)"), "=", Carbon::parse($date)->year)
+                ->where(DB::raw("month(j.date)"), "=", Carbon::parse($date)->month)
                 ->groupBy('jd.ca_id')->get();
 
 
@@ -197,8 +197,48 @@ class JournalController extends BaseController
             $salesReturn = $salesReturn->sum('return_amount');
         }
 
-        $returnHTML = view('Accounting::reports.profit-report-view', compact('expenses', 'purchase', 'purchaseReturn', 'sales','salesReturn','date'))->render();
+        $returnHTML = view('Accounting::reports.profit-report-view', compact('expenses', 'purchase', 'purchaseReturn', 'sales', 'salesReturn', 'date'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
 
+    }
+
+    public function liquidMoney()
+    {
+        $this->setPageTitle('Liquid Money Report', 'Liquid Money Report');
+        return view('Accounting::reports.cash-report');
+    }
+
+    public function liquidMoneyView(Request $request): ?JsonResponse
+    {
+        $date = $request->date;
+
+        $expensesOP = DB::table('journals as j')
+            ->select(DB::raw('sum(jd.amount) as amount'))
+            ->leftJoin('journal_details as jd', 'j.id', '=', 'jd.journal_id')
+            ->leftJoin('chart_of_accounts as ca', 'jd.ca_id', '=', 'ca.id')
+            ->where(DB::raw("j.date"), "<", $date)->first();
+
+        $paymentOP = DB::select("SELECT (sum(sp.amount) - sum(pr.amount)) as payment FROM
+                                (
+                                   SELECT po_no,SUM(amount) as amount from `suppliers_payments` WHERE date < '$date' GROUP by po_no
+                                ) as sp
+                                LEFT JOIN
+                                (
+                                   SELECT purchase_id, SUM(amount) as amount from `purchase_returns`
+                                )
+                                 as pr on sp.po_no = pr.purchase_id");
+
+        $payment = new SuppliersPayment();
+        $payment = $payment->where('date','=',$date)->get();
+
+        $purchaseReturn = new PurchaseReturn();
+
+
+        $expenses = DB::table('journals as j')
+            ->select(DB::raw('j.date, j.voucher_no, j.reference, ca.name, jd.amount as amount'))
+            ->leftJoin('journal_details as jd', 'j.id', '=', 'jd.journal_id')
+            ->leftJoin('chart_of_accounts as ca', 'jd.ca_id', '=', 'ca.id')
+            ->where(DB::raw("j.date"), "=", $date)->get();
+        dd($payment);
     }
 }

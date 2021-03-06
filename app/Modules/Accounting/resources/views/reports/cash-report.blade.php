@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title') {{ isset($pageTitle) ? $pageTitle : 'Profit and Loss Report' }} @endsection
+@section('title') {{ isset($pageTitle) ? $pageTitle : 'Liquid Money Report' }} @endsection
 
 @push('styles')
     <!-- CSS -->
@@ -22,7 +22,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" id="basic-layout-form">PROFIT AND LOSS REPORT CRITERIA</h4>
+                        <h4 class="card-title" id="basic-layout-form">LIQUID MONEY REPORT CRITERIA</h4>
                         <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                         <div class="heading-elements">
                             <ul class="list-inline mb-0">
@@ -38,7 +38,7 @@
                             <div class="card-text">
                             </div>
                             <form class="form" id="mr-form"
-                                  action="{{route('accounting.reports.profit-and-loss-report-view')}}"
+                                  action="{{route('accounting.reports.liquid-money-view')}}"
                                   method="post"
                                   autocomplete="off">
                                 @csrf
@@ -47,12 +47,12 @@
                                     <div class="row">
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="date">Month</label>
+                                                <label for="date">Select Date</label>
                                                 <input type="text"
-                                                       class="form-control @error('month') is-invalid @enderror"
-                                                       id="month" value="{!! date('M Y') !!}" name="month"
+                                                       class="form-control @error('date') is-invalid @enderror"
+                                                       id="date" value="{!! date('Y-m-d') !!}" name="date"
                                                        required>
-                                                @error('month')
+                                                @error('date')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
@@ -115,17 +115,14 @@
 
         // datepicker
         $(function () {
-            $('#month').datepicker({
+            $('#date').datepicker({
                 changeMonth: true,
                 changeYear: true,
                 showButtonPanel: true,
                 altFormat: "DD, d MM, yy",
                 prevText: "click for previous months",
                 nextText: "click for next months",
-                dateFormat: 'MM yy',
-                onClose: function (dateText, inst) {
-                    $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-                }
+                dateFormat: 'yy-mm-dd',
             });
         });
 
@@ -144,7 +141,7 @@
             $('form#mr-form').submit(function (e) {
                 e.preventDefault();
                 // Get the Login Name value and trim it
-                var date = $.trim($('#month').val());
+                var date = $.trim($('#date').val());
                 if (date === '') {
                     toastr.warning(" Please select  date!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
@@ -154,14 +151,14 @@
         });
 
         function ajaxSave() {
-            var date = $("#month").val();
+            var date = $("#date").val();
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
             $.ajax({
-                url: "{{ route('accounting.reports.profit-and-loss-report-view') }}",
+                url: "{{ route('accounting.reports.liquid-money-view') }}",
                 type: 'post',
                 dataType: "json",
                 cache: false,
