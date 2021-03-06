@@ -425,7 +425,7 @@
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('hr.departments.index') }}"
+                                <a class="dropdown-item" href="{{ route('hr.reports.joining-report') }}"
                                    data-toggle="dropdown">Joining Report
                                     <submenu class="name"></submenu>
                                 </a>

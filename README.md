@@ -11,8 +11,8 @@
 - [x] Salary Setup Entry
 - [ ] Salary Setup Edit (WIP)
 - [ ] Att. Report
-- [ ] Employees. Report
-- [ ] Joining. Report
+- [x] Employees. Report
+- [x] Joining. Report
 - [ ] Salary Sheet
 - [ ] Collection Report
 - [ ] Payment Report

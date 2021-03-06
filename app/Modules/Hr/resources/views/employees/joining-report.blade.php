@@ -22,7 +22,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" id="basic-layout-form">EMPLOYEE REPORT CRITERIA</h4>
+                        <h4 class="card-title" id="basic-layout-form">EMPLOYEE JOINING REPORT CRITERIA</h4>
                         <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                         <div class="heading-elements">
                             <ul class="list-inline mb-0">
@@ -37,13 +37,35 @@
                         <div class="card-body">
                             <div class="card-text">
                             </div>
-                            <form class="form" id="mr-form" action="{{route('hr.reports.employees-report-view')}}"
+                            <form class="form" id="mr-form" action="{{route('hr.reports.joining-report-view')}}"
                                   method="post"
                                   autocomplete="off">
                                 @csrf
 
                                 <div class="form-body">
                                     <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="start_date">Start Date</label>
+                                                <input type="text"
+                                                       class="form-control @error('start_date') is-invalid @enderror"
+                                                       id="start_date" value="{!! date('Y-m-01') !!}" name="start_date"
+                                                       required>
+                                                @error('start_date')
+                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="end_date">End Date</label>
+                                                <input type="text"
+                                                       class="form-control @error('end_date') is-invalid @enderror"
+                                                       id="end_date" value="{!! date('Y-m-d') !!}" name="end_date"
+                                                       required>
+                                                @error('end_date')
+                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                            </div>
+                                        </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="store_id">Store</label>
@@ -154,8 +176,8 @@
                                                 <select id="status" name="status"
                                                         class="select2 form-control @error('status') is-invalid @enderror">
                                                     <option value="" selected="">Select Status</option>
-                                                        <option value="1"> Active </option>
-                                                        <option value="0"> Inactive </option>
+                                                    <option value="1"> Active</option>
+                                                    <option value="0"> Inactive</option>
                                                 </select>
                                                 @error('status')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
@@ -165,7 +187,7 @@
                                     <div class="col-12">
                                         <div class="form-actions center">
                                             <a type="button" class="btn btn-warning mb-1"
-                                               href="{{route('hr.reports.employees-report')}}">
+                                               href="{{route('hr.reports.joining-report')}}">
                                                 <i class="ft-refresh-ccw"></i> Reload
                                             </a>
                                             <button type="submit" class="btn btn-primary mb-1 search-btn"
@@ -191,7 +213,7 @@
         <div class="col-sm-12">
             <div id="kick-start" class="card">
                 <div class="card-header">
-                    <h4 class="card-title">EMPLOYEE REPORT</h4>
+                    <h4 class="card-title">EMPLOYEE JOINING REPORT</h4>
                 </div>
                 <div class="card-content collapse show">
                     <div class="card-body">
@@ -216,6 +238,34 @@
             return ($.inArray(code, codes) > -1);
         }
 
+        // datepicker
+        $(function () {
+            $("#start_date").datepicker({
+                // appendText:"(yy-mm-dd)",
+                dateFormat: "yy-mm-dd",
+                altField: "#datepicker",
+                altFormat: "DD, d MM, yy",
+                prevText: "click for previous months",
+                nextText: "click for next months",
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                maxDate: new Date()
+            });
+        });
+        $(function () {
+            $("#end_date").datepicker({
+                // appendText:"(yy-mm-dd)",
+                dateFormat: "yy-mm-dd",
+                altField: "#datepicker",
+                altFormat: "DD, d MM, yy",
+                prevText: "click for previous months",
+                nextText: "click for next months",
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                // maxDate: new Date()
+            });
+        });
+
 
         $(document).ready(function () {
             $(document).on('focus', ':input', function () {
@@ -237,7 +287,7 @@
                 }
             });
             $.ajax({
-                url: "{{ route('hr.reports.employees-report-view') }}",
+                url: "{{ route('hr.reports.joining-report-view') }}",
                 type: 'post',
                 dataType: "json",
                 cache: false,
