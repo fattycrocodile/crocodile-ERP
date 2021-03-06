@@ -139,6 +139,28 @@ class SalarySetupController extends BaseController
         return $this->responseRedirect('hr.salary.index', 'Salary Updated successfully', 'success', false, false);
     }
 
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function delete($id)
+    {
+        $data = SalarySetup::find($id);
+        if($data->delete()) {
+            return response()->json([
+                'success' => true,
+                'status_code' => 200,
+                'message' => 'Record has been deleted successfully!',
+            ]);
+        } else{
+            return response()->json([
+                'success' => false,
+                'status_code' => 200,
+                'message' => 'Please try again!',
+            ]);
+        }
+    }
+
 
     public function getEmployeesListForSalary(Request $request): ?JsonResponse
     {

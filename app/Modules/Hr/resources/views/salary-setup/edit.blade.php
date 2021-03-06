@@ -153,11 +153,11 @@
                                         <div class="form-group">
                                             <label for="row_total">Total</label>
                                             <input type="text"
-                                                   class="form-control total_salary @error('row_total') is-invalid @enderror"
-                                                   id="row_total"
+                                                   class="form-control total_salary @error('total_salary') is-invalid @enderror"
+                                                   id="total_salary"
                                                    value="{!! old('row_total', $data->basic_amount + $data->home_allowance + $data->medical_allowance + $data->ta + $data->da + $data->other_allowances)  !!}"
                                                    name="total_salary" required readonly min="1">
-                                            @error('row_total')
+                                            @error('total_salary')
                                             <div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
                                     </div>
