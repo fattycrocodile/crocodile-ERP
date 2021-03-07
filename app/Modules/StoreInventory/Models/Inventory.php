@@ -56,7 +56,7 @@ class Inventory extends Model
         $data = DB::table('inventories')
             ->select(DB::raw('sum(stock_in) as stock_in'), DB::raw('sum(stock_out) as stock_out'))
             ->where('product_id', '=', $product_id)
-            ->where('date', '=', $date)
+            ->where('date', '<=', $date)
             ->first();
         return $data ? ($data->stock_in - $data->stock_out) : 0;
     }

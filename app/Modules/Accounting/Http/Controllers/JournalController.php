@@ -176,7 +176,7 @@ class JournalController extends BaseController
                 ->where(DB::raw("month(j.date)"), "=", Carbon::parse($date)->month)
                 ->groupBy('jd.ca_id')->get();
 
-            $product = Product::all();
+            $products = Product::all();
 
             $purchase = new Purchase();
             $purchase = $purchase->whereMonth('date', '=', Carbon::parse($date)->month);
@@ -199,7 +199,7 @@ class JournalController extends BaseController
             $salesReturn = $salesReturn->sum('return_amount');
         }
 
-        $returnHTML = view('Accounting::reports.profit-report-view', compact('expenses', 'purchase', 'purchaseReturn', 'sales', 'salesReturn', 'product', 'date'))->render();
+        $returnHTML = view('Accounting::reports.profit-report-view', compact('expenses', 'purchase', 'purchaseReturn', 'sales', 'salesReturn', 'products', 'date'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
 
     }
