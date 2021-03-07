@@ -32,6 +32,35 @@ class Inventory extends Model
         return $data ? ($data->stock_in - $data->stock_out) : 0;
     }
 
+    public static function openingStockWithStore($date, $product_id, $store_id = NULL)
+    {
+        $data = DB::table('inventories');
+        $data = $data->select(DB::raw('sum(stock_in) as stock_in'), DB::raw('sum(stock_out) as stock_out'));
+        $data = $data->where('date', '<=', $date);
+        $data = $data->where('product_id', '=', $product_id);
+        if ($store_id > 0)
+            $data = $data->where('store_id', '=', $store_id);
+        $data = $data->first();
+        return $data ? ($data->stock_in - $data->stock_out) : 0;
+    }
+
+    public static function stockInOutWithStore($start_date, $end_date, $product_id, $store_id = NULL)
+    {
+        $stock = ['stock_in' => 0, 'stock_out' => 0];
+        $data = DB::table('inventories');
+        $data = $data->select(DB::raw('sum(stock_in) as stock_in'), DB::raw('sum(stock_out) as stock_out'));
+        $data = $data->where('date', '>=', $start_date);
+        $data = $data->where('date', '<=', $end_date);
+        $data = $data->where('product_id', '=', $product_id);
+        if ($store_id > 0)
+            $data = $data->where('store_id', '=', $store_id);
+        $data = $data->first();
+        $stock['stock_in'] = $data ? ($data->stock_in) : 0;
+        $stock['stock_out'] = $data ? ($data->stock_out) : 0;
+        return $stock;
+    }
+
+
     public function store()
     {
         return $this->belongsTo(Stores::class);
