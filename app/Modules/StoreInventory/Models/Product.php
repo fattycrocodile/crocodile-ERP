@@ -24,6 +24,19 @@ class Product extends Model
         return $data ? $data->total : 0;
     }
 
+    public static function productName($product_id)
+    {
+        $data = DB::table('products')
+            ->select(DB::raw('name'))->where('id','=',$product_id)->first();
+        return $data ? $data->name : '';
+    }
+    public static function productCode($product_id)
+    {
+        $data = DB::table('products')
+            ->select(DB::raw('code'))->where('id','=',$product_id)->first();
+        return $data ? $data->code : '';
+    }
+
     public static function productAvaragePrice($product_id)
     {
         $data = DB::table('products')

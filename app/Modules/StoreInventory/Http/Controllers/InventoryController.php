@@ -98,7 +98,7 @@ class InventoryController extends BaseController
     public function stockValueReport()
     {
         $stores = $this->store->treeList();
-        $this->setPageTitle('Stock Report', 'Stock Value Report');
+        $this->setPageTitle('Stock Value Report', 'Stock Value Report');
         return view('StoreInventory::inventory.stock-value-report', compact('stores'));
     }
 
@@ -120,6 +120,42 @@ class InventoryController extends BaseController
         }
 
         $returnHTML = view('StoreInventory::inventory.stock-value-report-view', compact('data', 'start_date', 'end_date', 'store_id', 'product_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
+
+    public function stockLedgerReport()
+    {
+        $stores = $this->store->treeList();
+        $this->setPageTitle('Stock Ledger Report', 'Stock Value Report');
+        return view('StoreInventory::inventory.stock-ledger-report', compact('stores'));
+    }
+
+    public function stockLedgerReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $store_id = trim($request->store_id);
+            $product_id = trim($request->product_id);
+
+            $data = new Inventory();
+
+            $data = $data->where('date', '>=', $start_date);
+            $data = $data->where('date', '<=', $end_date);
+            if ($product_id > 0) {
+                $data = $data->where('product_id', '=', $product_id);
+            }
+            if ($store_id > 0) {
+                $data = $data->where('store_id', '=', $store_id);
+            }
+            $data = $data->select('inventories.*', DB::raw('sum(stock_in) as total_stock_in, sum(stock_out) as total_stock_out'));
+            $data = $data->orderby('date', 'asc');
+            $data = $data->get();
+        }
+
+        $returnHTML = view('StoreInventory::inventory.stock-ledger-report-view', compact('data', 'start_date', 'end_date', 'store_id', 'product_id'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 }

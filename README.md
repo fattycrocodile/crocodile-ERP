@@ -26,7 +26,7 @@
 - [ ] Supplier Due Report
 - [x] Stock Qty Report
 - [x] Stock Value Report
-- [ ] Stock Ledger Report
+- [x] Stock Ledger Report
 
 # ERP PLANNING 
 
