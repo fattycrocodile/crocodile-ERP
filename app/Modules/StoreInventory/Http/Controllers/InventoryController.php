@@ -94,4 +94,32 @@ class InventoryController extends BaseController
         $returnHTML = view('StoreInventory::inventory.stock-report-view', compact('data', 'start_date', 'end_date', 'store_id', 'product_id'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
     }
+
+    public function stockValueReport()
+    {
+        $stores = $this->store->treeList();
+        $this->setPageTitle('Stock Report', 'Stock Value Report');
+        return view('StoreInventory::inventory.stock-value-report', compact('stores'));
+    }
+
+    public function stockValueReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $store_id = trim($request->store_id);
+            $product_id = trim($request->product_id);
+            $data = new Product();
+            if ($product_id > 0) {
+                $data = $data->where('id', '=', $product_id);
+            }
+            $data = $data->orderby('name', 'asc');
+            $data = $data->get();
+        }
+
+        $returnHTML = view('StoreInventory::inventory.stock-value-report-view', compact('data', 'start_date', 'end_date', 'store_id', 'product_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
 }
