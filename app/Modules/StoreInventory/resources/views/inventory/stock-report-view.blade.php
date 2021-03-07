@@ -7,12 +7,12 @@
                 <thead>
                 <tr>
                     <th class="text-center">#</th>
-                    <th>Name</th>
-                    <th>Code</th>
-                    <th>Opening</th>
-                    <th>Stock In</th>
-                    <th>Stock Out</th>
-                    <th>Closing</th>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Code</th>
+                    <th class="text-center">Opening</th>
+                    <th class="text-center">Stock In</th>
+                    <th class="text-center">Stock Out</th>
+                    <th class="text-center">Closing</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -29,10 +29,10 @@
                         <th scope="row" class="text-center">{{ ++$key }}</th>
                         <td>{{ $dt->name }}</td>
                         <td>{{ $dt->code }}</td>
-                        <td>{{ number_format($opening_stock) }}</td>
-                        <td>{{ number_format($stock_in) }}</td>
-                        <td>{{ number_format($stock_out) }}</td>
-                        <td class="text-right">{{ number_format($closing_stock) }}</td>
+                        <td class="text-center">{{ number_format($opening_stock) }}</td>
+                        <td class="text-center">{{ number_format($stock_in) }}</td>
+                        <td class="text-center">{{ number_format($stock_out) }}</td>
+                        <td class="text-center">{{ number_format($closing_stock) }}</td>
                     </tr>
                     <?php
                     }

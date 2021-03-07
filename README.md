@@ -24,9 +24,9 @@
 - [ ] Product Wise Purchase Report Summary
 - [ ] Purchase Report
 - [ ] Supplier Due Report
-- [ ] Stock Qty Report
-- [ ] Stock Value Report
-- [ ] Stock Ledger Report
+- [x] Stock Qty Report
+- [x] Stock Value Report
+- [x] Stock Ledger Report
 
 # ERP PLANNING 
 

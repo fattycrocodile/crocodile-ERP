@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title') {{ isset($pageTitle) ? $pageTitle : 'Stock Value Report' }} @endsection
+@section('title') {{ isset($pageTitle) ? $pageTitle : 'Stock Ledger Report' }} @endsection
 
 @push('styles')
     <!-- CSS -->
@@ -22,7 +22,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" id="basic-layout-form">STOCK VLAUE CRITERIA</h4>
+                        <h4 class="card-title" id="basic-layout-form">STOCK LEDGER CRITERIA</h4>
                         <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                         <div class="heading-elements">
                             <ul class="list-inline mb-0">
@@ -37,7 +37,8 @@
                         <div class="card-body">
                             <div class="card-text">
                             </div>
-                            <form class="form" id="mr-form" action="{{route('storeInventory.reports.stock-value-report-view')}}"
+                            <form class="form" id="mr-form"
+                                  action="{{route('storeInventory.reports.stock-ledger-report-view')}}"
                                   method="post"
                                   autocomplete="off">
                                 @csrf
@@ -106,7 +107,7 @@
                                     <div class="col-12">
                                         <div class="form-actions center">
                                             <a type="button" class="btn btn-warning mb-1"
-                                               href="{{route('storeInventory.reports.stock-value-report')}}">
+                                               href="{{route('storeInventory.reports.stock-ledger-report')}}">
                                                 <i class="ft-refresh-ccw"></i> Reload
                                             </a>
                                             <button type="submit" class="btn btn-primary mb-1 search-btn"
@@ -132,7 +133,7 @@
         <div class="col-sm-12">
             <div id="kick-start" class="card">
                 <div class="card-header">
-                    <h4 class="card-title">STOCK VALUE REPORT</h4>
+                    <h4 class="card-title">STOCK LEDGER REPORT</h4>
                 </div>
                 <div class="card-content collapse show">
                     <div class="card-body">
@@ -302,7 +303,7 @@
                 }
             });
             $.ajax({
-                url: "{{ route('storeInventory.reports.stock-value-report-view') }}",
+                url: "{{ route('storeInventory.reports.stock-ledger-report-view') }}",
                 type: 'post',
                 dataType: "json",
                 cache: false,
