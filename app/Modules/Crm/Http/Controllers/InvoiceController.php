@@ -95,7 +95,7 @@ class InvoiceController extends BaseController
             $invoice->invoice_no = $invNo;
             $invoice->order_id = isset($params['order_id']) ? $params['order_id'] : NULL;
             $invoice->store_id = $params['store_id'];
-            $invoice->customer_id = $params['customer_id'];
+            $invoice->customer_id = $customer_id =  $params['customer_id'];
             $invoice->discount_amount = 0;
             $invoice->grand_total = $grand_total = $params['grand_total'];
             $invoice->date = $date = $params['date'];
@@ -154,6 +154,7 @@ class InvoiceController extends BaseController
                     $mr->date = $date;
                     $mr->received_by = $created_by;
                     $mr->created_by = $created_by;
+                    $mr->customer_id = $customer_id;
                     $mr->invoice_id = $invoice_id;
                     if ($payment_type !== Lookup::PAYMENT_CASH) {
                         $mr->bank_id = $bank_id;

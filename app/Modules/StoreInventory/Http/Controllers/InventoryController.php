@@ -4,8 +4,10 @@ namespace App\Modules\StoreInventory\Http\Controllers;
 
 use App\DataTables\InventoryDataTable;
 use App\Http\Controllers\BaseController;
-use App\Http\Controllers\Controller;
+use App\Modules\Config\Models\Lookup;
 use App\Modules\StoreInventory\Models\Inventory;
+use App\Modules\StoreInventory\Models\Product;
+use App\Modules\StoreInventory\Models\Stores;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,10 +16,14 @@ class InventoryController extends BaseController
 {
 
     public $model;
+    public $store;
+    public $lookup;
 
     public function __construct(Inventory $model)
     {
         $this->model = $model;
+        $this->store = new Stores();
+        $this->lookup = new Lookup();
     }
 
     public function index(InventoryDataTable $dataTable)
@@ -59,5 +65,61 @@ class InventoryController extends BaseController
             $response = array("stock_in" => 0, "stock_out" => 0, "closing_balance" => 0);
         }
         return response()->json($response);
+    }
+
+    public function stockReport()
+    {
+        $stores = $this->store->treeList();
+        $this->setPageTitle('Stock Report', 'Stock Report');
+        return view('StoreInventory::inventory.stock-report', compact('stores'));
+    }
+
+    public function stockReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $store_id = trim($request->store_id);
+            $product_id = trim($request->product_id);
+            $data = new Product();
+            if ($product_id > 0) {
+                $data = $data->where('id', '=', $product_id);
+            }
+            $data = $data->orderby('name', 'asc');
+            $data = $data->get();
+        }
+
+        $returnHTML = view('StoreInventory::inventory.stock-report-view', compact('data', 'start_date', 'end_date', 'store_id', 'product_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
+
+    public function stockValueReport()
+    {
+        $stores = $this->store->treeList();
+        $this->setPageTitle('Stock Report', 'Stock Value Report');
+        return view('StoreInventory::inventory.stock-value-report', compact('stores'));
+    }
+
+    public function stockValueReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $store_id = trim($request->store_id);
+            $product_id = trim($request->product_id);
+            $data = new Product();
+            if ($product_id > 0) {
+                $data = $data->where('id', '=', $product_id);
+            }
+            $data = $data->orderby('name', 'asc');
+            $data = $data->get();
+        }
+
+        $returnHTML = view('StoreInventory::inventory.stock-value-report-view', compact('data', 'start_date', 'end_date', 'store_id', 'product_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 }

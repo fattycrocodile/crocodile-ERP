@@ -158,19 +158,19 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('commercial.purchase.create') }}"
+                                <a class="dropdown-item" href="{{ route('storeInventory.reports.stock-report') }}"
                                    data-toggle="dropdown">Stock Report
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('commercial.purchase.create') }}"
+                                <a class="dropdown-item" href="{{ route('storeInventory.reports.stock-value-report') }}"
                                    data-toggle="dropdown">Stock Value Report
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('commercial.purchase.create') }}"
+                                <a class="dropdown-item" href="{{ route('storeInventory.reports.stock-ledger-report') }}"
                                    data-toggle="dropdown">Stock Ledger Report
                                     <submenu class="name"></submenu>
                                 </a>
@@ -318,7 +318,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('accounting.mr.index') }}"
+                                <a class="dropdown-item" href="{{ route('accounting.reports.collection') }}"
                                    data-toggle="dropdown">Collection Reports
                                     <submenu class="name"></submenu>
                                 </a>

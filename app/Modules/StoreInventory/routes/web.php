@@ -100,4 +100,15 @@ Route::group(['middleware' => ['auth:web']], function () {
 //        Route::post('/{id}/update', 'InventoryController@update')->name('storeInventory.inventory.update');
 //        Route::delete('/{id}/delete', 'InventoryController@delete')->name('storeInventory.inventory.delete');
     });
+
+    Route::group(['prefix' => 'inventory/reports'], function () {
+        Route::get('/stock_report', 'InventoryController@stockReport')->name('storeInventory.reports.stock-report');
+        Route::post('/stock_report_view', 'InventoryController@stockReportView')->name('storeInventory.reports.stock-report-view');
+
+        Route::get('/stock_value_report', 'InventoryController@stockValueReport')->name('storeInventory.reports.stock-value-report');
+        Route::post('/stock_value_report_view', 'InventoryController@stockValueReportView')->name('storeInventory.reports.stock-value-report-view');
+
+        Route::get('/stock_ledger_report', 'InventoryController@stockLedgerReport')->name('storeInventory.reports.stock-ledger-report');
+        Route::post('/stock_ledger_report_view', 'InventoryController@stockLedgerReportView')->name('storeInventory.reports.stock-ledger-report-view');
+    });
 });
