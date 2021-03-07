@@ -84,7 +84,7 @@ class PurchaseController extends BaseController
             $invoice->invoice_no = $invNo;
             $invoice->supplier_id = $params['supplier_id'];
             $invoice->others_charge = 0;
-            $invoice->is_receive = 0;
+            $invoice->is_receive = 1;
             $invoice->grand_total = $grand_total = $params['grand_total'];
             $invoice->date = $date = $params['date'];
             $invoice->created_by = $created_by = auth()->user()->id;
@@ -96,6 +96,7 @@ class PurchaseController extends BaseController
                     $purchase_price = $params['product']['temp_purchase_price'][$i];
                     $purchase_qty = $params['product']['temp_purchase_qty'][$i];
                     $row_purchase_price = $params['product']['temp_row_purchase_price'][$i];
+                    $stock = Inventory::closingStock($product_id);
 
                     $inventory = new Inventory();
                     $inventory->store_id = $store_id;
@@ -114,7 +115,16 @@ class PurchaseController extends BaseController
                         $invoiceDetails->purchase_price = $purchase_price;
                         $invoiceDetails->others_charges = 0;
                         $invoiceDetails->row_total = $row_purchase_price;
-                        $invoiceDetails->save();
+                        if ($invoiceDetails->save())
+                        {
+                            $price = Product::productAvaragePrice($product_id);
+                            $stockValue = $stock*$price;
+                            $totalStock = $stock + $purchase_qty;
+                            $avgPrice = ($stockValue+$row_purchase_price)/$totalStock;
+                            $product = Product::find($product_id);
+                            $product->avg_price = $avgPrice;
+                            $product->save();
+                        }
                     }
                     $i++;
                 }

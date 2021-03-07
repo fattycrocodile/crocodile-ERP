@@ -13,6 +13,7 @@ use App\Modules\Accounting\Models\SuppliersPayment;
 use App\Modules\Commercial\Models\Purchase;
 use App\Modules\Crm\Models\Invoice;
 use App\Modules\Crm\Models\InvoiceReturn;
+use App\Modules\StoreInventory\Models\Product;
 use App\Modules\StoreInventory\Models\PurchaseReturn;
 use Carbon\Carbon;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
@@ -175,6 +176,7 @@ class JournalController extends BaseController
                 ->where(DB::raw("month(j.date)"), "=", Carbon::parse($date)->month)
                 ->groupBy('jd.ca_id')->get();
 
+            $product = Product::all();
 
             $purchase = new Purchase();
             $purchase = $purchase->whereMonth('date', '=', Carbon::parse($date)->month);
@@ -197,7 +199,7 @@ class JournalController extends BaseController
             $salesReturn = $salesReturn->sum('return_amount');
         }
 
-        $returnHTML = view('Accounting::reports.profit-report-view', compact('expenses', 'purchase', 'purchaseReturn', 'sales', 'salesReturn', 'date'))->render();
+        $returnHTML = view('Accounting::reports.profit-report-view', compact('expenses', 'purchase', 'purchaseReturn', 'sales', 'salesReturn', 'product', 'date'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
 
     }

@@ -32,6 +32,35 @@ class Inventory extends Model
         return $data ? ($data->stock_in - $data->stock_out) : 0;
     }
 
+    public static function closingStock($product_id)
+    {
+        $data = DB::table('inventories')
+            ->select(DB::raw('sum(stock_in) as stock_in'), DB::raw('sum(stock_out) as stock_out'))
+            ->where('product_id', '=', $product_id)
+            ->first();
+        return $data ? ($data->stock_in - $data->stock_out) : 0;
+    }
+
+    public static function closingStockToDate($product_id,$date)
+    {
+        $data = DB::table('inventories')
+            ->select(DB::raw('sum(stock_in) as stock_in'), DB::raw('sum(stock_out) as stock_out'))
+            ->where('product_id', '=', $product_id)
+            ->where('date', '<', $date)
+            ->first();
+        return $data ? ($data->stock_in - $data->stock_out) : 0;
+    }
+
+    public static function closingStockOfDate($product_id,$date)
+    {
+        $data = DB::table('inventories')
+            ->select(DB::raw('sum(stock_in) as stock_in'), DB::raw('sum(stock_out) as stock_out'))
+            ->where('product_id', '=', $product_id)
+            ->where('date', '=', $date)
+            ->first();
+        return $data ? ($data->stock_in - $data->stock_out) : 0;
+    }
+
     public function store()
     {
         return $this->belongsTo(Stores::class);

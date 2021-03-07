@@ -28,6 +28,7 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->integer('min_stock_qty')->nullable();
             $table->integer('min_order_qty')->nullable();
+            $table->double('avg_price')->default(0);
             $table->boolean('status')->default(1);
             $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users');

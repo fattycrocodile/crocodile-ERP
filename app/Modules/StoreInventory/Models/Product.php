@@ -24,6 +24,13 @@ class Product extends Model
         return $data ? $data->total : 0;
     }
 
+    public static function productAvaragePrice($product_id)
+    {
+        $data = DB::table('products')
+            ->select(DB::raw('avg_price'))->where('id','=',$product_id)->first();
+        return $data ? $data->avg_price : 0;
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
