@@ -318,7 +318,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('accounting.mr.index') }}"
+                                <a class="dropdown-item" href="{{ route('accounting.reports.collection') }}"
                                    data-toggle="dropdown">Collection Reports
                                     <submenu class="name"></submenu>
                                 </a>

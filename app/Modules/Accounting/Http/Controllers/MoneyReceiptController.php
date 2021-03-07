@@ -6,6 +6,7 @@ namespace App\Modules\Accounting\Http\Controllers;
 use App\DataTables\MoneyReceiptDataTable;
 use App\Http\Controllers\BaseController;
 use App\Modules\Accounting\Models\MoneyReceipt;
+use App\Modules\Config\Models\Lookup;
 use App\Modules\Crm\Models\Invoice;
 use App\Modules\StoreInventory\Models\Stores;
 use App\Traits\UploadAble;
@@ -229,5 +230,50 @@ class MoneyReceiptController extends BaseController
         } else {
             return $this->responseJson(true, 200, "Please insert mr no!");
         }
+    }
+
+    public function collectionReport()
+    {
+        $stores = $this->store->treeList();
+        $cash_credit = Lookup::items('cash_credit');
+        $banks = Lookup::items('bank');
+        $collection_types = Lookup::items('payment_method');
+        $this->setPageTitle('Collection Report', 'Collection Report');
+        return view('Accounting::moneyReceipt.collection-report', compact('stores', 'cash_credit', 'banks', 'collection_types'));
+    }
+
+    public function collectionReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $store_id = trim($request->store_id);
+            $customer_id = trim($request->customer_id);
+            $collection_type = trim($request->collection_type);
+            $bank_id = trim($request->bank_id);
+            $data = new MoneyReceipt();
+//            $data = $data->whereBetween('date', ["'$start_date'", "'$end_date'"]);
+            $data = $data->where('date', '>=', $start_date);
+            $data = $data->where('date', '<=', $end_date);
+            if ($customer_id > 0) {
+                $data = $data->where('customer_id', '=', $customer_id);
+            }
+            if ($store_id > 0) {
+                $data = $data->where('store_id', '=', $store_id);
+            }
+            if ($collection_type > 0) {
+                $data = $data->where('collection_type', '=', $collection_type);
+            }
+            if ($bank_id > 0) {
+                $data = $data->where('bank_id', '=', $bank_id);
+            }
+            $data = $data->orderby('date', 'asc');
+            $data = $data->get();
+        }
+
+        $returnHTML = view('Accounting::moneyReceipt.collection-report-view', compact('data', 'start_date', 'end_date', 'store_id', 'customer_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 }
