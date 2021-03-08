@@ -324,13 +324,13 @@
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('accounting.mr.create') }}"
+                                <a class="dropdown-item" href="{{ route('accounting.reports.payment') }}"
                                    data-toggle="dropdown">Payment Reports
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('accounting.mr.create') }}"
+                                <a class="dropdown-item" href="{{ route('accounting.reports.expense') }}"
                                    data-toggle="dropdown">Expense Reports
                                     <submenu class="name"></submenu>
                                 </a>

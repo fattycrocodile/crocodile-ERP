@@ -53,5 +53,11 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::get('/collection_report', 'MoneyReceiptController@collectionReport')->name('accounting.reports.collection');
         Route::post('/collection_report_view', 'MoneyReceiptController@collectionReportView')->name('accounting.reports.collection-view');
 
+        Route::get('/expense_report', 'JournalController@expenseReport')->name('accounting.reports.expense');
+        Route::post('/expense_report_view', 'JournalController@expenseReportView')->name('accounting.reports.expense-view');
+
+        Route::get('/payment_report', 'SuppliersPaymentController@paymentReport')->name('accounting.reports.payment');
+        Route::post('/payment_report_view', 'SuppliersPaymentController@paymentReportView')->name('accounting.reports.payment-view');
+
     });
 });

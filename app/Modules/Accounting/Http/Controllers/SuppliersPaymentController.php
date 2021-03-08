@@ -129,4 +129,14 @@ class SuppliersPaymentController extends BaseController
         }
     }
 
+    public function paymentReport()
+    {
+
+    }
+
+    public function paymentReportView()
+    {
+
+    }
+
 }

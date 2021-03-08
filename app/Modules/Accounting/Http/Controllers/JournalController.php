@@ -255,4 +255,45 @@ class JournalController extends BaseController
         $returnHTML = view('Accounting::reports.cash-report-view', compact('openingBalance', 'expenses', 'payments', 'moneyReceipts', 'date'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
     }
+
+
+    public function expenseReport()
+    {
+        $this->setPageTitle('EXPENSE REPORT', 'EXPENSE REPORT');
+        $cas = ChartOfAccounts::all();
+        return view('Accounting::reports.expense-report',compact('cas'));
+    }
+
+    public function expenseReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        if ($request->has('start_date')) {
+            $start_date = $request->start_date;
+            $end_date = $request->end_date;
+            $ca_id = $request->ca_head;
+
+
+            if ($ca_id == "" || $ca_id == 0 || $ca_id === '' || $ca_id == null) {
+                $expenses = DB::table('journals as j')
+                    ->select(DB::raw('j.date,j.voucher_no,j.reference, ca.name, jd.amount'))
+                    ->leftJoin('journal_details as jd', 'j.id', '=', 'jd.journal_id')
+                    ->leftJoin('chart_of_accounts as ca', 'jd.ca_id', '=', 'ca.id')
+                    ->whereBetween(DB::raw("j.date"), [$start_date, $end_date])
+                    ->orderBy('j.date', 'asc')->get();
+            } else {
+                $expenses = DB::table('journals as j')
+                    ->select(DB::raw('j.date,j.voucher_no,j.reference, ca.name, jd.amount'))
+                    ->leftJoin('journal_details as jd', 'j.id', '=', 'jd.journal_id')
+                    ->leftJoin('chart_of_accounts as ca', 'jd.ca_id', '=', 'ca.id')
+                    ->whereBetween(DB::raw("j.date"), [$start_date, $end_date])
+                    ->where(DB::raw('jd.ca_id'), '=', $ca_id)
+                    ->orderBy('j.date', 'asc')->get();
+            }
+
+        }
+
+        $returnHTML = view('Accounting::reports.expense-report-view', compact('expenses',  'start_date','end_date'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+
+    }
 }
