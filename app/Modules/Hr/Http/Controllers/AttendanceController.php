@@ -9,6 +9,7 @@ use App\Modules\Hr\Models\Attendance;
 use App\Modules\Hr\Models\Departments;
 use App\Modules\Hr\Models\Designations;
 use App\Modules\Hr\Models\Employees;
+use App\Modules\StoreInventory\Models\Stores;
 use App\Traits\UploadAble;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\QueryException;
@@ -27,6 +28,7 @@ class AttendanceController extends BaseController
     public $lookup;
     public $department;
     public $designation;
+    public $stores;
 
     public function __construct(Attendance $model)
     {
@@ -34,6 +36,7 @@ class AttendanceController extends BaseController
         $this->lookup = new Lookup();
         $this->department = new Departments();
         $this->designation = new Designations();
+        $this->stores = new Stores();
     }
 
     /**
@@ -137,5 +140,84 @@ class AttendanceController extends BaseController
         } else {
             return $this->responseJson(true, 200, "DATA NOT FOUND");
         }
+    }
+
+    public function attendanceReport()
+    {
+        $stores = $this->stores->treeList();
+        $department = $this->department->treeList();
+        $designation = $this->designation->treeList();
+        $genders = Lookup::items('gender');
+        $religions = Lookup::items('religion');
+        $marital_status = Lookup::items('marital_status');
+        $this->setPageTitle('Employees Attendance Report', 'Employees Attendance Report');
+        return view('Hr::attendance.attendance-report', compact('stores', 'department', 'designation', 'genders', 'religions', 'marital_status'));
+    }
+
+    public function attendanceReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $data = new Employees();
+            if ($request->has('store_id')) {
+                $store_id = $request->store_id;
+                if ($store_id > 0)
+                    $data = $data->where('store_id', '=', $store_id);
+            }
+            if ($request->has('store_id')) {
+                $store_id = $request->store_id;
+                if ($store_id > 0)
+                    $data = $data->where('store_id', '=', $store_id);
+            }
+            if ($request->has('department_id')) {
+                $department_id = $request->department_id;
+                if ($department_id > 0)
+                    $data = $data->where('department_id', '=', $department_id);
+            }
+            if ($request->has('designation_id')) {
+                $designation_id = $request->designation_id;
+                if ($designation_id > 0)
+                    $data = $data->where('designation_id', '=', $designation_id);
+            }
+            if ($request->has('gender_id')) {
+                $gender_id = $request->gender_id;
+                if ($gender_id > 0)
+                    $data = $data->where('gender_id', '=', $gender_id);
+            }
+            if ($request->has('religion_id')) {
+                $religion_id = $request->religion_id;
+                if ($religion_id > 0)
+                    $data = $data->where('religion_id', '=', $religion_id);
+            }
+            if ($request->has('marital_status')) {
+                $marital_status = $request->marital_status;
+                if ($marital_status > 0)
+                    $data = $data->where('marital_status', '=', $marital_status);
+            }
+            if ($request->has('status')) {
+                $status = $request->status;
+                if ($status != "")
+                    $data = $data->where('status', '=', $status);
+            }
+            if ($request->has('full_name')) {
+                $full_name = trim($request->full_name);
+                if ($full_name != "")
+                    $data = $data->where('full_name', 'like', '%' . $full_name . '%');
+            }
+            if ($request->has('contact_no')) {
+                $contact_no = trim($request->contact_no);
+                if ($contact_no != "")
+                    $data = $data->where('contact_no', 'like', '%' . $contact_no . '%');
+            }
+
+            $data = $data->orderby('join_date', 'asc');
+            $data = $data->get();
+        }
+
+        $returnHTML = view('Hr::attendance.attendance-report-view', compact('data','start_date', 'end_date'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 }

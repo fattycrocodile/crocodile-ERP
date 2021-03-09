@@ -134,7 +134,7 @@
             var toStartDate = new Date(ev.date.valueOf());
 
             $('.todate').datetimepicker({
-                minDate: toStartDate,
+                // minDate: toStartDate,
             });
         });
 

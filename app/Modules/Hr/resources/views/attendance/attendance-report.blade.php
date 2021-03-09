@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title') {{ isset($pageTitle) ? $pageTitle : 'Employees Report' }} @endsection
+@section('title') {{ isset($pageTitle) ? $pageTitle : 'Employees Attendance Report' }} @endsection
 
 @push('styles')
     <!-- CSS -->
@@ -22,7 +22,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" id="basic-layout-form">EMPLOYEE JOINING REPORT CRITERIA</h4>
+                        <h4 class="card-title" id="basic-layout-form">EMPLOYEE ATTENDANCE REPORT CRITERIA</h4>
                         <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                         <div class="heading-elements">
                             <ul class="list-inline mb-0">
@@ -37,7 +37,7 @@
                         <div class="card-body">
                             <div class="card-text">
                             </div>
-                            <form class="form" id="mr-form" action="{{route('hr.reports.joining-report-view')}}"
+                            <form class="form" id="mr-form" action="{{route('hr.reports.attendance-report-view')}}"
                                   method="post"
                                   autocomplete="off">
                                 @csrf
@@ -170,24 +170,11 @@
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="status">Status</label>
-                                                <select id="status" name="status"
-                                                        class="select2 form-control @error('status') is-invalid @enderror">
-                                                    <option value="" selected="">Select Status</option>
-                                                    <option value="1"> Active</option>
-                                                    <option value="0"> Inactive</option>
-                                                </select>
-                                                @error('status')
-                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-actions center">
                                             <a type="button" class="btn btn-warning mb-1"
-                                               href="{{route('hr.reports.joining-report')}}">
+                                               href="{{route('hr.reports.attendance-report')}}">
                                                 <i class="ft-refresh-ccw"></i> Reload
                                             </a>
                                             <button type="submit" class="btn btn-primary mb-1 search-btn"
@@ -213,7 +200,7 @@
         <div class="col-sm-12">
             <div id="kick-start" class="card">
                 <div class="card-header">
-                    <h4 class="card-title">EMPLOYEE JOINING REPORT</h4>
+                    <h4 class="card-title">ATTENDANCE REPORT</h4>
                 </div>
                 <div class="card-content collapse show">
                     <div class="card-body">
@@ -287,7 +274,7 @@
                 }
             });
             $.ajax({
-                url: "{{ route('hr.reports.joining-report-view') }}",
+                url: "{{ route('hr.reports.attendance-report-view') }}",
                 type: 'post',
                 dataType: "json",
                 cache: false,
