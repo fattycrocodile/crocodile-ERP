@@ -1,13 +1,17 @@
 <div class="row">
     <div class="col-12">
-        <h2 class="text-center">Atendance Report</h2>
+        <h2 class="text-center">Attendance Report</h2>
+        <div class="row col-md-6" style="color: green;">
+            A: Absent <br>
+            H: Holiday <br>
+            L: Leave <br>
+            P: Present <br>
+        </div>
+        <div class="row  col-md-6" style="color: green;">
+            Present: Present + Leave
+        </div>
         <div class="table-responsive">
-            <div class="notification-text" style="color: green;">
-                A: Absent <br>
-                H: Holiday <br>
-                L: Leave <br>
-                P: Present <br>
-            </div>
+
             <table class="table table-bordered table-striped table-sm">
                 <thead>
                 <tr>
