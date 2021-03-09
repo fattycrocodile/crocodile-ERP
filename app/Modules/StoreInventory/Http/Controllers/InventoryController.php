@@ -150,7 +150,7 @@ class InventoryController extends BaseController
             if ($store_id > 0) {
                 $data = $data->where('store_id', '=', $store_id);
             }
-            $data = $data->select('inventories.*', DB::raw('sum(stock_in) as total_stock_in, sum(stock_out) as total_stock_out'));
+//            $data = $data->select('inventories.*', DB::raw('sum(stock_in) as total_stock_in, sum(stock_out) as total_stock_out'));
             $data = $data->orderby('date', 'asc');
             $data = $data->get();
         }

@@ -34,9 +34,9 @@
                         <th scope="row" class="text-center">{{ ++$key }}</th>
                         <td class="text-center">{{ $dt->date }}</td>
                         <td class="text-center">{{ $dt->mr_no }}</td>
-                        <td>{{ $dt->store->name }}</td>
-                        <td>{{ $dt->customer->name }}</td>
-                        <td class="text-center">{{ $dt->customer->code }}</td>
+                        <td>{{ isset($dt->store->name)?$dt->store->name:"N/A" }}</td>
+                        <td>{{ isset($dt->customer->name)?$dt->customer->name:"N/A" }}</td>
+                        <td class="text-center">{{ isset($dt->customer->code)?$dt->customer->code:"N/A" }}</td>
                         <td class="text-center">{{ $dt->invoice->invoice_no }}</td>
                         <td class="text-center">{{ \App\Modules\Config\Models\Lookup::item('payment_method', $dt->collection_type) }}</td>
                         <td class="text-center">{{ \App\Modules\Config\Models\Lookup::item('bank', $dt->bank_id) }}</td>

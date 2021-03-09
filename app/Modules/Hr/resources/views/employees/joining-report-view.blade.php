@@ -1,4 +1,3 @@
-\
 <div class="row">
     <div class="col-12">
         <h2 class="text-center">Employees Report</h2>
@@ -38,7 +37,7 @@
                             <td>{{ \App\Modules\Config\Models\Lookup::item('marital_status', $dt->marital_status) }}</td>
                             <td>{{ $dt->appointment_date }}</td>
                             <td>{{ $dt->tin }}</td>
-                            <td>{{ $dt->present_address }}</td>
+                            <td>{!! $dt->present_address !!}</td>
                             <td>{{ $dt->status === \App\Modules\Hr\Models\Employees::ACTIVE ? "ACTIVE" : "INACTIVE" }}</td>
                         </tr>
                     @endforeach
