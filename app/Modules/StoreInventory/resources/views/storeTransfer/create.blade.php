@@ -382,6 +382,8 @@
         });
 
         function add() {
+            var send_store_id = nanCheck($("#send_store_id").val());
+            var rcv_store_id = nanCheck($("#rcv_store_id").val());
             var product_id = nanCheck($("#product_id").val());
             var stock_qty = nanCheck(parseFloat($("#stock_qty").val()));
             var transfer_qty = nanCheck(parseFloat($("#qty").val()));
@@ -391,6 +393,8 @@
                 message = "Please select a product!";
             } else if (transfer_qty > stock_qty) {
                 message = "Transfer Quantity Exceeded stock Quantity !";
+            } else if (send_store_id == rcv_store_id) {
+                message = "Send Store and Receive Store should not be same !";
             } else if (transfer_qty <= 0 || transfer_qty === '') {
                 message = "Please insert Transfer qty!";
             } else {

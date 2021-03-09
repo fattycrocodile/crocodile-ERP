@@ -21,8 +21,8 @@
                         <td class="text-center">{{ $dt->date }}</td>
                         <td>{{ \App\Modules\StoreInventory\Models\Product::productName($dt->product_id) }}</td>
                         <td class="text-center">{{ \App\Modules\StoreInventory\Models\Product::productCode($dt->product_id) }}</td>
-                        <td class="text-center">{{ number_format($dt->total_stock_in) }}</td>
-                        <td class="text-center">{{ number_format($dt->total_stock_out) }}</td>
+                        <td class="text-center">{{ number_format($dt->stock_in) }}</td>
+                        <td class="text-center">{{ number_format($dt->stock_out) }}</td>
                     </tr>
                 @endforeach
                 </tbody>

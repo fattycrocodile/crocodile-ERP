@@ -50,7 +50,7 @@
                                                 <label for="start_date">Start Date</label>
                                                 <input type="text"
                                                        class="form-control @error('start_date') is-invalid @enderror"
-                                                       id="start_date" value="{!! date('Y-m-d') !!}" name="start_date"
+                                                       id="start_date" value="{!! date('Y-m-1') !!}" name="start_date"
                                                        required>
                                                 @error('start_date')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
