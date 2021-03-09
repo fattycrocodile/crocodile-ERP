@@ -10,12 +10,22 @@ use Illuminate\Support\Facades\DB;
 class LeaveApplication extends Model
 {
     protected $table = 'leave_applications';
-    protected $guarded=[];
+    protected $guarded = [];
 
     public function maxLeaveNo()
     {
-        $model= DB::select(DB::raw('SELECT MAX(CONVERT(SUBSTRING_INDEX(sl_no,"-",-1),UNSIGNED INTEGER)) AS num FROM `leave_applications`'));
-        return $model? $model[0]->num + 1 : 1;
+        $model = DB::select(DB::raw('SELECT MAX(CONVERT(SUBSTRING_INDEX(sl_no,"-",-1),UNSIGNED INTEGER)) AS num FROM `leave_applications`'));
+        return $model ? $model[0]->num + 1 : 1;
+    }
+
+    public static function findLeave($date, $employee_id)
+    {
+        $data = new LeaveApplication();
+        $data = $data->where('from_date', '>=', $date);
+        $data = $data->where('to_date', '>=', $date);
+        $data = $data->where('employee_id', '=', $employee_id);
+        $data = $data->first();
+        return $data ? 1 : 0;
     }
 
     public function employee()

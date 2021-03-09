@@ -72,5 +72,8 @@ Route::group(['middleware' => ['auth:web']], function () {
 
         Route::get('/employees-joining-report', 'EmployeesController@joiningReport')->name('hr.reports.joining-report');
         Route::post('/employees-joining-report-view', 'EmployeesController@joiningReportView')->name('hr.reports.joining-report-view');
+
+        Route::get('/attendance-report', 'AttendanceController@attendanceReport')->name('hr.reports.attendance-report');
+        Route::post('/attendance-report', 'AttendanceController@attendanceReportView')->name('hr.reports.attendance-report-view');
     });
 });

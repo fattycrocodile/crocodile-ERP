@@ -413,7 +413,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('hr.employees.index') }}"
+                                <a class="dropdown-item" href="{{ route('hr.reports.attendance-report') }}"
                                    data-toggle="dropdown">Daily Attendance Report
                                     <submenu class="name"></submenu>
                                 </a>
