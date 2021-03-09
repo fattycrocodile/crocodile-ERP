@@ -10,7 +10,7 @@
 - [x] Supplier Payment Create
 - [x] Salary Setup Entry
 - [x] Salary Setup Edit
-- [ ] Att. Report
+- [x] Att. Report
 - [x] Employees. Report
 - [x] Joining. Report
 - [ ] Salary Sheet
@@ -18,8 +18,8 @@
 - [ ] Payment Report
 - [ ] Expense Report
 - [ ] Expense Report
-- [ ] Profit & Loss Report
-- [ ] Liquid Money Report
+- [x] Profit & Loss Report
+- [x] Liquid Money Report
 - [ ] Purchase Report Summary
 - [ ] Product Wise Purchase Report Summary
 - [ ] Purchase Report
