@@ -311,7 +311,7 @@
                                                             </td>
                                                             <td style='text-align: center;'>
                                                                 <input type='text' class='form-control temp_sell_price '
-                                                                       name='product[temp_sell_price][]'
+                                                                       name='product[temp_sell_price][]' readonly
                                                                        onkeyup='calculateRowTotalOnChange();'
                                                                        value='{{ $details->sell_price }}'>
                                                                 <input type='hidden'
@@ -940,8 +940,8 @@
             var min_sell_price = nanCheck(parseFloat($("#min_sell_price").val()));
             if (sell_price < min_sell_price) {
                 toastr.error("Minimum sell price for this product is: " + min_sell_price, 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                $("#sell_price").val(min_sell_price);
-                $("#total_sell_price").val(qty * min_sell_price);
+                // $("#sell_price").val(min_sell_price);
+                $("#total_sell_price").val(qty * sell_price);
             } else {
                 $("#total_sell_price").val(qty * sell_price);
             }

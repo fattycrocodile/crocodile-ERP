@@ -561,7 +561,7 @@
             var appendTxt = "<tr class='cartList'>"
             appendTxt += "<td class='count' style='text-align: center;'>" + slNumber + "</td>";
             appendTxt += "<td style='text-align: left;'>Name: " + product_name + "<br><small class='cart-product-code'>Code: " + product_code + "</small><input type='hidden' class='temp_product_id' name='product[temp_product_id][]' value='" + product_id + "'></td>";
-            appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_sell_price ' name='product[temp_sell_price][]' onkeyup='calculateRowTotalOnChange();' value='" + sell_price + "'><input type='hidden' name='product[temp_min_sell_price][]' class='temp_min_sell_price' value='" + min_sell_price + "'></td>";
+            appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_sell_price ' readonly name='product[temp_sell_price][]' onkeyup='calculateRowTotalOnChange();' value='" + sell_price + "'><input type='hidden' name='product[temp_min_sell_price][]' class='temp_min_sell_price' value='" + min_sell_price + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_sell_qty' name='product[temp_sell_qty][]' onkeyup='calculateRowTotalOnChange();' value='" + sell_qty + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_row_sell_price' name='product[temp_row_sell_price][]' readonly value='" + total_sell_price + "'></td>";
             appendTxt += "<td style='text-align: center;'><button title=\"remove\"  type=\"button\" class=\"rdelete dltBtn btn btn-danger btn-md\" onclick=\"deleteRows($(this))\"><i class=\"icon-trash\"></i></button></td>";
@@ -652,8 +652,8 @@
             var min_sell_price = nanCheck(parseFloat($("#min_sell_price").val()));
             if (sell_price < min_sell_price) {
                 toastr.error("Minimum sell price for this product is: " + min_sell_price, 'Message <i class="fa fa-bell faa-ring animated"></i>');
-                $("#sell_price").val(min_sell_price);
-                $("#total_sell_price").val(qty * min_sell_price);
+                //$("#sell_price").val(min_sell_price);
+                $("#total_sell_price").val(qty * sell_price);
             } else {
                 $("#total_sell_price").val(qty * sell_price);
             }
