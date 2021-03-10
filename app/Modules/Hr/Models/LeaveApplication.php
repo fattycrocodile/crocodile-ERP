@@ -25,10 +25,10 @@ class LeaveApplication extends Model
     public static function findLeave($date, $employee_id)
     {
         $data = new LeaveApplication();
-        $data = $data->where('from_date', '>=', $date);
-        $data = $data->where('to_date', '<=', $date);
+        $data = $data->where('from_date', '<=', $date);
+        $data = $data->where('to_date', '>=', $date);
         $data = $data->where('employee_id', '=', $employee_id);
-        $data = $data->where('statuss', '=', self::APPROVE);
+        $data = $data->where('status', '=', self::APPROVE);
         $data = $data->first();
         return $data ? 1 : 0;
     }
