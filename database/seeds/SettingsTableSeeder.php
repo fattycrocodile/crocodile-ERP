@@ -12,15 +12,15 @@ class SettingsTableSeeder extends Seeder
     protected $settings = [
         [
             'key' => 'site_name',
-            'value' => 'Clouster ERP'
+            'value' => 'Cluster ERP'
         ],
         [
             'key' => 'site_title',
-            'value' => 'Clouster ERP'
+            'value' => 'Cluster ERP'
         ],
         [
             'key' => 'company_name',
-            'value' => 'Enterprise Resource Planning (ERP)'
+            'value' => 'Dhaka International University'
         ],
         [
             'key' => 'road_no',

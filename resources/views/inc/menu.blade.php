@@ -13,7 +13,7 @@
             </li>
             <li class="dropdown nav-item" data-menu="dropdown">
                 <a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">
-                    <i class="ft-settings"></i><span>Software Configuration</span>
+                    <i class="ft-settings"></i><span>Software Settings</span>
                 </a>
                 <ul class="dropdown-menu">
                     <li data-menu="">
@@ -354,7 +354,7 @@
 
             <li class="dropdown nav-item" data-menu="dropdown">
                 <a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">
-                    <i class="ft-users"></i><span>HR</span>
+                    <i class="ft-users"></i><span>HR & Payroll</span>
                 </a>
                 <ul class="dropdown-menu">
                     <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
