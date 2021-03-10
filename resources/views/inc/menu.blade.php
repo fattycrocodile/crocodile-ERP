@@ -431,7 +431,7 @@
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('hr.designations.index') }}"
+                                <a class="dropdown-item" href="{{ route('hr.reports.salary-sheet') }}"
                                    data-toggle="dropdown">Salary Sheet
                                     <submenu class="name"></submenu>
                                 </a>

@@ -163,7 +163,7 @@
                 nextText: "click for next months",
                 showOtherMonths: true,
                 selectOtherMonths: true,
-                maxDate: new Date()
+                // maxDate: new Date()
             });
 
         });

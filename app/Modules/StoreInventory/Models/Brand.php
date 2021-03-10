@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Brand extends Model
 {
 
-    protected $table = 'brand';
+    protected $table = 'brands';
     protected $guarded=[];
 
     public function product()
