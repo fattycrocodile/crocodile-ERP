@@ -6,12 +6,16 @@ namespace App\Modules\Hr\Models;
 use App\Model\User\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\Self_;
 
 class LeaveApplication extends Model
 {
     protected $table = 'leave_applications';
     protected $guarded = [];
 
+    const APPROVE = 1;
+    const PENDING = 0;
+    const DENY = 2;
     public function maxLeaveNo()
     {
         $model = DB::select(DB::raw('SELECT MAX(CONVERT(SUBSTRING_INDEX(sl_no,"-",-1),UNSIGNED INTEGER)) AS num FROM `leave_applications`'));
@@ -22,8 +26,9 @@ class LeaveApplication extends Model
     {
         $data = new LeaveApplication();
         $data = $data->where('from_date', '>=', $date);
-        $data = $data->where('to_date', '>=', $date);
+        $data = $data->where('to_date', '<=', $date);
         $data = $data->where('employee_id', '=', $employee_id);
+        $data = $data->where('statuss', '=', self::APPROVE);
         $data = $data->first();
         return $data ? 1 : 0;
     }

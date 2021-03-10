@@ -133,7 +133,7 @@
                                                 <label for="full_name">Name</label>
                                                 <input type="text"
                                                        class="form-control @error('full_name') is-invalid @enderror"
-                                                       id="full_name">
+                                                       id="full_name" name="full_name">
                                                 @error('full_name')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
@@ -143,7 +143,7 @@
                                                 <label for="contact_no">Contact</label>
                                                 <input type="text"
                                                        class="form-control @error('contact_no') is-invalid @enderror"
-                                                       id="contact_no">
+                                                       id="contact_no" name="contact_no">
                                                 @error('contact_no')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
