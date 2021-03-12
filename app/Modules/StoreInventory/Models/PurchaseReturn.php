@@ -28,6 +28,15 @@ class PurchaseReturn extends Model
         return $data ? $data->return_amount : 0;
     }
 
+    public static function totalPurchaseReturnAmountOfSupplierUpTo($date, $supplier_id)
+    {
+        $data = DB::table('purchase_returns')
+            ->select(DB::raw('sum(amount) as return_amount'))
+            ->where('date', '<=', $date)
+            ->where('supplier_id', '=', $supplier_id)->first();
+        return $data ? $data->return_amount : 0;
+    }
+
     public function purchase()
     {
         return $this->belongsTo(Purchase::class);

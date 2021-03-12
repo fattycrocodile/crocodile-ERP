@@ -7,6 +7,7 @@ use App\Modules\StoreInventory\Models\PurchaseReturn;
 use App\Modules\StoreInventory\Models\ReceivePurchase;
 use App\Model\User\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Purchase extends Model
 {
@@ -21,6 +22,15 @@ class Purchase extends Model
 
         $maxSn = $this->max('max_sl_no');
         return $maxSn ? $maxSn + 1 : 1;
+    }
+
+    public static function totalPurchaseAmountOfSupplierUpTo($date, $supplier_id)
+    {
+        $data = DB::table('purchases')
+            ->select(DB::raw('sum(grand_total) as grand_total'))
+            ->where('date', '<=', $date)
+            ->where('supplier_id', '=', $supplier_id)->first();
+        return $data ? $data->grand_total : 0;
     }
 
     public function purchaseDetails()

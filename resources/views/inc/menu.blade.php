@@ -347,6 +347,12 @@
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('accounting.reports.supplier-due') }}"
+                                   data-toggle="dropdown">Supplier Due Reports
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>

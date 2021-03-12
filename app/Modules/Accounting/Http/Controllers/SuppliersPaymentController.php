@@ -7,6 +7,7 @@ use App\DataTables\SupplierPaymentDataTable;
 use App\Http\Controllers\BaseController;
 use App\Modules\Accounting\Models\SuppliersPayment;
 use App\Modules\Commercial\Models\Purchase;
+use App\Modules\Commercial\Models\Suppliers;
 use App\Modules\Config\Models\Lookup;
 use App\Modules\StoreInventory\Models\Stores;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
@@ -153,7 +154,6 @@ class SuppliersPaymentController extends BaseController
             $payment_type = trim($request->payment_type);
             $bank_id = trim($request->bank_id);
             $data = new SuppliersPayment();
-//            $data = $data->whereBetween('date', ["'$start_date'", "'$end_date'"]);
             $data = $data->where('date', '>=', $start_date);
             $data = $data->where('date', '<=', $end_date);
             if ($supplier_id > 0) {
@@ -170,6 +170,32 @@ class SuppliersPaymentController extends BaseController
         }
 
         $returnHTML = view('Accounting::reports.payment-report-view', compact('data', 'start_date', 'end_date', 'supplier_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
+
+    public function supplierDueReport()
+    {
+        $this->setPageTitle('Supplier Due Report', 'Supplier Due Report');
+        return view('Accounting::reports.supplier-due-report');
+    }
+
+    public function supplierDueReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('date')) {
+            $date = trim($request->date);
+            $supplier_id = trim($request->supplier_id);
+            $data = new Suppliers();
+            if ($supplier_id > 0) {
+                $data = $data->where('id', '=', $supplier_id);
+            }
+            $data = $data->orderby('name', 'asc');
+            $data = $data->get();
+
+        }
+
+        $returnHTML = view('Accounting::reports.supplier-due-report-view', compact('data', 'date', 'supplier_id'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 
