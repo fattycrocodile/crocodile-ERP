@@ -7,9 +7,11 @@ use App\DataTables\SupplierPaymentDataTable;
 use App\Http\Controllers\BaseController;
 use App\Modules\Accounting\Models\SuppliersPayment;
 use App\Modules\Commercial\Models\Purchase;
+use App\Modules\Config\Models\Lookup;
 use App\Modules\StoreInventory\Models\Stores;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -85,6 +87,7 @@ class SuppliersPaymentController extends BaseController
                         $model->created_by = $created_by;
                         $model->supplier_id = $supplier_id;
                         $model->save();
+                        $id = $model->id;
                         if ($row_due <= 0) {
                             $invoice = Purchase::findOrFail($invoice);
                             if ($invoice) {
@@ -96,7 +99,7 @@ class SuppliersPaymentController extends BaseController
                     $i++;
                 }
                 $data = new SuppliersPayment();
-                $data = $data->where('pr_no', '=', $invNo);
+                $data = $data->where('id', '=', $id);
                 $data = $data->get();
                 if ($data) {
                     $returnHTML = view('Accounting::supplierPayment.voucher', compact('data'))->render();
@@ -131,12 +134,43 @@ class SuppliersPaymentController extends BaseController
 
     public function paymentReport()
     {
-
+        $stores = $this->store->treeList();
+        $cash_credit = Lookup::items('cash_credit');
+        $banks = Lookup::items('bank');
+        $collection_types = Lookup::items('payment_method');
+        $this->setPageTitle('Payment Report', 'Payment Report');
+        return view('Accounting::reports.payment-report', compact('stores', 'cash_credit', 'banks', 'collection_types'));
     }
 
-    public function paymentReportView()
+    public function paymentReportView(Request $request): ?JsonResponse
     {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $supplier_id = trim($request->supplier_id);
+            $payment_type = trim($request->payment_type);
+            $bank_id = trim($request->bank_id);
+            $data = new SuppliersPayment();
+//            $data = $data->whereBetween('date', ["'$start_date'", "'$end_date'"]);
+            $data = $data->where('date', '>=', $start_date);
+            $data = $data->where('date', '<=', $end_date);
+            if ($supplier_id > 0) {
+                $data = $data->where('supplier_id', '=', $supplier_id);
+            }
+            if ($payment_type > 0) {
+                $data = $data->where('payment_type', '=', $payment_type);
+            }
+            if ($bank_id > 0) {
+                $data = $data->where('bank_id', '=', $bank_id);
+            }
+            $data = $data->orderby('date', 'asc');
+            $data = $data->get();
+        }
 
+        $returnHTML = view('Accounting::reports.payment-report-view', compact('data', 'start_date', 'end_date', 'supplier_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 
 }
