@@ -114,5 +114,8 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::get('/purchase_return_report', 'PurchaseReturnController@purchaseReturnReport')->name('storeInventory.reports.purchase-return-report');
         Route::post('/purchase_return_report_view', 'PurchaseReturnController@purchaseReturnReportView')->name('storeInventory.reports.purchase-return-report-view');
 
+        Route::get('/product-wise-purchase_return_report', 'PurchaseReturnController@productWisePurchaseReturnReport')->name('storeInventory.reports.product-wise-purchase-return-report');
+        Route::post('/product-wise-purchase_return_report_view', 'PurchaseReturnController@productWisePurchaseReturnReportView')->name('storeInventory.reports.product-wise-purchase-return-report-view');
+
     });
 });

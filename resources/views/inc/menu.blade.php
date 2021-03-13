@@ -182,7 +182,7 @@
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('storeInventory.reports.stock-ledger-report') }}"
+                                <a class="dropdown-item" href="{{ route('storeInventory.reports.product-wise-purchase-return-report') }}"
                                    data-toggle="dropdown">Product Wise Purchase Return Report
                                     <submenu class="name"></submenu>
                                 </a>
