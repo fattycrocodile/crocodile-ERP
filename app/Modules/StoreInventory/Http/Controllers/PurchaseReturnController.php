@@ -13,6 +13,7 @@ use App\Modules\StoreInventory\Models\Stores;
 use Carbon\Carbon;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -147,6 +148,35 @@ class PurchaseReturnController extends BaseController
         } else {
             return $this->responseJson(true, 200, "Please insert 55 no!");
         }
+    }
+
+    public function purchaseReturnReport()
+    {
+        $this->setPageTitle('Purchase Return Report', 'Purchase Return Report');
+        return view('StoreInventory::reports.purchase-return-report');
+    }
+
+    public function purchaseReturnReportView(Request $request):?jsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $supplier_id = trim($request->supplier_id);
+            $data = new PurchaseReturn();
+            $data = $data->where('date','>=',$start_date);
+            $data = $data->where('date','<=',$end_date);
+            if ($supplier_id > 0) {
+                $data = $data->where('supplier_id', '=', $supplier_id);
+            }
+            $data = $data->orderby('id', 'desc');
+            $data = $data->get();
+
+        }
+
+        $returnHTML = view('StoreInventory::reports.purchase-return-report-view', compact('data', 'start_date', 'end_date', 'supplier_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 
 }

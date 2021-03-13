@@ -110,5 +110,9 @@ Route::group(['middleware' => ['auth:web']], function () {
 
         Route::get('/stock_ledger_report', 'InventoryController@stockLedgerReport')->name('storeInventory.reports.stock-ledger-report');
         Route::post('/stock_ledger_report_view', 'InventoryController@stockLedgerReportView')->name('storeInventory.reports.stock-ledger-report-view');
+
+        Route::get('/purchase_return_report', 'PurchaseReturnController@purchaseReturnReport')->name('storeInventory.reports.purchase-return-report');
+        Route::post('/purchase_return_report_view', 'PurchaseReturnController@purchaseReturnReportView')->name('storeInventory.reports.purchase-return-report-view');
+
     });
 });
