@@ -223,7 +223,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('commercial.purchase.index') }}"
+                                <a class="dropdown-item" href="{{ route('commercial.reports.purchase') }}"
                                    data-toggle="dropdown">Purchase Report
                                     <submenu class="name"></submenu>
                                 </a>

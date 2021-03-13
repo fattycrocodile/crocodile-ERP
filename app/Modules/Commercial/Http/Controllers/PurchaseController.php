@@ -229,4 +229,33 @@ class PurchaseController extends BaseController
         return response()->json($response);
     }
 
+    public function purchaseReport()
+    {
+        $this->setPageTitle('Purchase Report','Purchase Report');
+        return view('Commercial::reports.purchase-report');
+    }
+
+    public function purchaseReportView(Request $request):?jsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $supplier_id = trim($request->supplier_id);
+            $data = new Purchase();
+            $data = $data->where('date','>=',$start_date);
+            $data = $data->where('date','<=',$end_date);
+            if ($supplier_id > 0) {
+                $data = $data->where('supplier_id', '=', $supplier_id);
+            }
+            $data = $data->orderby('id', 'desc');
+            $data = $data->get();
+
+        }
+
+        $returnHTML = view('Commercial::reports.purchase-report-view', compact('data', 'start_date', 'end_date', 'supplier_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
+
 }
