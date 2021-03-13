@@ -228,6 +228,12 @@
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('commercial.reports.product-wise-purchase') }}"
+                                   data-toggle="dropdown">Product Wise Purchase Report
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
