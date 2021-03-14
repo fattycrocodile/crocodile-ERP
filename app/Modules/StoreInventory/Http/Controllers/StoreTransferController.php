@@ -11,6 +11,7 @@ use App\Modules\StoreInventory\Models\StoreTransferDetails;
 use Carbon\Carbon;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,6 +19,7 @@ class StoreTransferController extends BaseController
 {
     public $model;
     public $store;
+    public $product_id;
 
     public function __construct(StoreTransfer $model)
     {
@@ -208,5 +210,52 @@ class StoreTransferController extends BaseController
         }
     }
 
+    public function storeTransferReport()
+    {
+        $stores = $this->store->treeList();
+        $this->setPageTitle('Store Transfer Report', 'Store Transfer Report');
+        return view('StoreInventory::reports.store-transfer-report', compact('stores'));
+    }
+
+    public function storeTransferReportView(Request $request):?jsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $send_store_id = trim($request->send_store_id);
+            $rcv_store_id = trim($request->rcv_store_id);
+            $product_id = trim($request->product_id);
+
+            $data = DB::table('store_transfers as p')
+                ->select(DB::raw('p.date,ss.name as send_sore,rs.name as receive_store, pd.name as product, sum(pdt.qty) as qty'))
+                ->leftJoin('store_transfer_details as pdt', 'p.id', '=', 'pdt.transfer_id')
+                ->leftJoin('products as pd', 'pdt.product_id', '=', 'pd.id')
+                ->leftJoin('stores as ss', 'p.send_store_id', '=', 'ss.id')
+                ->leftJoin('stores as rs', 'p.rcv_store_id', '=', 'rs.id')
+                ->where(DB::raw("p.date"), ">=", $start_date)
+                ->where(DB::raw("p.date"), "<=", $end_date)
+                ->where(DB::raw("pdt.rcv_qty"), ">", 0);
+            if ($product_id > 0) {
+                $data = $data->where(DB::raw("pdt.product_id"), "=", $product_id);
+            }
+
+            if ($send_store_id > 0) {
+                $data = $data->where(DB::raw("p.send_store_id"), "=", $send_store_id);
+            }
+
+            if ($rcv_store_id > 0) {
+                $data = $data->where(DB::raw("p.rcv_store_id"), "=", $rcv_store_id);
+            }
+
+            $data = $data->orderBy(DB::raw("p.date"),'DESC')
+                ->groupBy(DB::raw("pdt.product_id,p.send_store_id,p.rcv_store_id"))
+                ->get();
+        }
+
+        $returnHTML = view('StoreInventory::reports.store-transfer-report-view', compact('data', 'start_date', 'end_date', 'product_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
 
 }

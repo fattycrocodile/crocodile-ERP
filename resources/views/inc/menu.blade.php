@@ -176,6 +176,12 @@
                                 </a>
                             </li>
                             <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('storeInventory.reports.store-transfer-report') }}"
+                                   data-toggle="dropdown">Store Transfer Report
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
                                 <a class="dropdown-item" href="{{ route('storeInventory.reports.purchase-return-report') }}"
                                    data-toggle="dropdown">Purchase Return Report
                                     <submenu class="name"></submenu>
