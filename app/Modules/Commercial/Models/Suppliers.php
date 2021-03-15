@@ -7,6 +7,7 @@ use App\Modules\Accounting\Models\SuppliersPayment;
 use App\Modules\StoreInventory\Models\PurchaseReturn;
 use App\Model\User\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Suppliers extends Model
 {

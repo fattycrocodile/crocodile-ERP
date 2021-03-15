@@ -110,5 +110,15 @@ Route::group(['middleware' => ['auth:web']], function () {
 
         Route::get('/stock_ledger_report', 'InventoryController@stockLedgerReport')->name('storeInventory.reports.stock-ledger-report');
         Route::post('/stock_ledger_report_view', 'InventoryController@stockLedgerReportView')->name('storeInventory.reports.stock-ledger-report-view');
+
+        Route::get('/purchase_return_report', 'PurchaseReturnController@purchaseReturnReport')->name('storeInventory.reports.purchase-return-report');
+        Route::post('/purchase_return_report_view', 'PurchaseReturnController@purchaseReturnReportView')->name('storeInventory.reports.purchase-return-report-view');
+
+        Route::get('/product_wise_purchase_return_report', 'PurchaseReturnController@productWisePurchaseReturnReport')->name('storeInventory.reports.product-wise-purchase-return-report');
+        Route::post('/product_wise_purchase_return_report_view', 'PurchaseReturnController@productWisePurchaseReturnReportView')->name('storeInventory.reports.product-wise-purchase-return-report-view');
+
+        Route::get('/store_transfer_report', 'StoreTransferController@storeTransferReport')->name('storeInventory.reports.store-transfer-report');
+        Route::post('/store_transfer_report_view', 'StoreTransferController@storeTransferReportView')->name('storeInventory.reports.store-transfer-report-view');
+
     });
 });

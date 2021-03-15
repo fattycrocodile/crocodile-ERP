@@ -59,5 +59,8 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::get('/payment_report', 'SuppliersPaymentController@paymentReport')->name('accounting.reports.payment');
         Route::post('/payment_report_view', 'SuppliersPaymentController@paymentReportView')->name('accounting.reports.payment-view');
 
+        Route::get('/supplier_due_report', 'SuppliersPaymentController@supplierDueReport')->name('accounting.reports.supplier-due');
+        Route::post('/supplier_due_report_view', 'SuppliersPaymentController@supplierDueReportView')->name('accounting.reports.supplier-due-view');
+
     });
 });

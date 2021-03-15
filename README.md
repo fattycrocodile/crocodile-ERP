@@ -1,32 +1,12 @@
 ### Task List
 
-- [x] Sales Order Create
-- [x] Invoice create from order
-- [x] Invoice Return
-- [x] Money Receipt Create
-- [x] Purchase Order Create
-- [x] Purchase Receive
-- [x] Purchase Return
-- [x] Supplier Payment Create
-- [x] Salary Setup Entry
-- [x] Salary Setup Edit
-- [x] Att. Report
-- [x] Employees. Report
-- [x] Joining. Report
+- [ ] User Permission Integration
 - [ ] Salary Sheet
-- [x] Collection Report
-- [ ] Payment Report
-- [ ] Expense Report
-- [ ] Expense Report
-- [x] Profit & Loss Report
-- [x] Liquid Money Report
+- [ ] Approve Leave
+- [ ] profit and loss with date
+- [ ] Many Delete option
+- [ ] Item wise sales report
 - [ ] Purchase Report Summary
-- [ ] Product Wise Purchase Report Summary
-- [ ] Purchase Report
-- [ ] Supplier Due Report
-- [x] Stock Qty Report
-- [x] Stock Value Report
-- [x] Stock Ledger Report
 
 # ERP PLANNING 
 

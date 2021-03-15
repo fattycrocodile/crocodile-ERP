@@ -22,6 +22,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class PurchaseController extends BaseController
@@ -229,4 +230,77 @@ class PurchaseController extends BaseController
         return response()->json($response);
     }
 
+    public function purchaseReport()
+    {
+        $this->setPageTitle('Purchase Report','Purchase Report');
+        return view('Commercial::reports.purchase-report');
+    }
+
+    public function purchaseReportView(Request $request):?jsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $supplier_id = trim($request->supplier_id);
+            $data = new Purchase();
+            $data = $data->where('date','>=',$start_date);
+            $data = $data->where('date','<=',$end_date);
+            if ($supplier_id > 0) {
+                $data = $data->where('supplier_id', '=', $supplier_id);
+            }
+            $data = $data->orderby('id', 'desc');
+            $data = $data->get();
+
+        }
+
+        $returnHTML = view('Commercial::reports.purchase-report-view', compact('data', 'start_date', 'end_date', 'supplier_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
+
+    public function productWisePurchaseReport()
+    {
+        $this->setPageTitle('Product Wise Purchase Report','Product Wise Purchase Report');
+        return view('Commercial::reports.product-wise-purchase-report');
+    }
+
+    public function productWisePurchaseReportView(Request $request):?jsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $product_id = trim($request->product_id);
+            if ($product_id > 0) {
+                $data = DB::table('purchases as p')
+                    ->select(DB::raw('p.date, pd.name, sum(pdt.qty) as qty, pdt.purchase_price, sum(pdt.row_total) as amount'))
+                    ->leftJoin('purchase_details as pdt', 'p.id', '=', 'pdt.purchase_id')
+                    ->leftJoin('products as pd', 'pdt.product_id', '=', 'pd.id')
+                    ->where(DB::raw("p.date"), ">=", $start_date)
+                    ->where(DB::raw("p.date"), "<=", $end_date)
+                    ->where(DB::raw("pdt.product_id"), "=", $product_id)
+                    ->orderBy(DB::raw("p.date"),'DESC')
+                    ->groupBy(DB::raw("pdt.product_id"))
+                    ->get();
+            }
+            else
+            {
+                $data = DB::table('purchases as p')
+                    ->select(DB::raw('p.date, pd.name, sum(pdt.qty) as qty, pdt.purchase_price, sum(pdt.row_total) as amount'))
+                    ->leftJoin('purchase_details as pdt', 'p.id', '=', 'pdt.purchase_id')
+                    ->leftJoin('products as pd', 'pdt.product_id', '=', 'pd.id')
+                    ->where(DB::raw("p.date"), ">=", $start_date)
+                    ->where(DB::raw("p.date"), "<=", $end_date)
+                    ->orderBy(DB::raw("p.date"),'DESC')
+                    ->groupBy(DB::raw("pdt.product_id"))
+                    ->get();
+            }
+
+        }
+
+        $returnHTML = view('Commercial::reports.product-wise-purchase-report-view', compact('data', 'start_date', 'end_date', 'product_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
 }

@@ -24,4 +24,12 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::delete('/{id}/delete', 'PurchaseController@delete')->name('commercial.purchase.delete');
         Route::get('/{id}/voucher', 'PurchaseController@voucher')->name('commercial.purchase.voucher');
     });
+
+    Route::group(['prefix' => 'commercial/reports'], function () {
+        Route::get('/purchase_report', 'PurchaseController@purchaseReport')->name('commercial.reports.purchase');
+        Route::post('/purchase_report_view', 'PurchaseController@purchaseReportView')->name('commercial.reports.purchase-view');
+
+        Route::get('/product_wise_purchase_report', 'PurchaseController@productWisePurchaseReport')->name('commercial.reports.product-wise-purchase');
+        Route::post('/product_wise_purchase_report_view', 'PurchaseController@productWisePurchaseReportView')->name('commercial.reports.product-wise-purchase-view');
+    });
 });

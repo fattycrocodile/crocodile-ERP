@@ -13,6 +13,7 @@ use App\Modules\StoreInventory\Models\Stores;
 use Carbon\Carbon;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -147,6 +148,79 @@ class PurchaseReturnController extends BaseController
         } else {
             return $this->responseJson(true, 200, "Please insert 55 no!");
         }
+    }
+
+    public function purchaseReturnReport()
+    {
+        $this->setPageTitle('Purchase Return Report', 'Purchase Return Report');
+        return view('StoreInventory::reports.purchase-return-report');
+    }
+
+    public function purchaseReturnReportView(Request $request):?jsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $supplier_id = trim($request->supplier_id);
+            $data = new PurchaseReturn();
+            $data = $data->where('date','>=',$start_date);
+            $data = $data->where('date','<=',$end_date);
+            if ($supplier_id > 0) {
+                $data = $data->where('supplier_id', '=', $supplier_id);
+            }
+            $data = $data->orderby('id', 'desc');
+            $data = $data->get();
+
+        }
+
+        $returnHTML = view('StoreInventory::reports.purchase-return-report-view', compact('data', 'start_date', 'end_date', 'supplier_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
+
+    public function productWisePurchaseReturnReport()
+    {
+        $this->setPageTitle('Product Wise Purchase Return Report', 'Product Wise Purchase Return Report');
+        return view('StoreInventory::reports.product-wise-purchase-return-report');
+    }
+
+    public function productWisePurchaseReturnReportView(Request $request):?jsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $product_id = trim($request->product_id);
+            if ($product_id > 0) {
+                $data = DB::table('purchase_returns as p')
+                    ->select(DB::raw('p.date, pd.name, sum(pdt.qty) as qty, pdt.price, sum(pdt.row_total) as amount'))
+                    ->leftJoin('purchase_return_details as pdt', 'p.id', '=', 'pdt.return_id')
+                    ->leftJoin('products as pd', 'pdt.product_id', '=', 'pd.id')
+                    ->where(DB::raw("p.date"), ">=", $start_date)
+                    ->where(DB::raw("p.date"), "<=", $end_date)
+                    ->orderBy(DB::raw("p.date"),'DESC')
+                    ->where(DB::raw("pdt.product_id"), "=", $product_id)
+                    ->groupBy(DB::raw("pdt.product_id"))
+                    ->get();
+            }
+            else
+            {
+                $data = DB::table('purchase_returns as p')
+                    ->select(DB::raw('p.date, pd.name, sum(pdt.qty) as qty, pdt.price, sum(pdt.row_total) as amount'))
+                    ->leftJoin('purchase_return_details as pdt', 'p.id', '=', 'pdt.return_id')
+                    ->leftJoin('products as pd', 'pdt.product_id', '=', 'pd.id')
+                    ->where(DB::raw("p.date"), ">=", $start_date)
+                    ->where(DB::raw("p.date"), "<=", $end_date)
+                    ->groupBy(DB::raw("pdt.product_id"))
+                    ->get();
+            }
+
+        }
+
+        $returnHTML = view('StoreInventory::reports.product-wise-purchase-return-report-view', compact('data', 'start_date', 'end_date', 'product_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 
 }

@@ -175,6 +175,24 @@
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('storeInventory.reports.store-transfer-report') }}"
+                                   data-toggle="dropdown">Store Transfer Report
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('storeInventory.reports.purchase-return-report') }}"
+                                   data-toggle="dropdown">Purchase Return Report
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('storeInventory.reports.product-wise-purchase-return-report') }}"
+                                   data-toggle="dropdown">Product Wise Purchase Return Report
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -223,8 +241,14 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('commercial.purchase.index') }}"
+                                <a class="dropdown-item" href="{{ route('commercial.reports.purchase') }}"
                                    data-toggle="dropdown">Purchase Report
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('commercial.reports.product-wise-purchase') }}"
+                                   data-toggle="dropdown">Product Wise Purchase Report
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
@@ -344,6 +368,12 @@
                             <li data-menu="">
                                 <a class="dropdown-item" href="{{ route('accounting.reports.liquid-money') }}"
                                    data-toggle="dropdown">Liquid Money Reports
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('accounting.reports.supplier-due') }}"
+                                   data-toggle="dropdown">Supplier Due Reports
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>

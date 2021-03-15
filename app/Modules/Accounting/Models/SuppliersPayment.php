@@ -40,6 +40,15 @@ class SuppliersPayment extends Model
         return $data;
     }
 
+    public static function totalPurchasePaymentAmountOfSupplierUpTo($date, $supplier_id)
+    {
+        $data = DB::table('suppliers_payments')
+            ->select(DB::raw('sum(amount) as amount'))
+            ->where('date', '<=', $date)
+            ->where('supplier_id', '=', $supplier_id)->first();
+        return $data ? $data->amount : 0;
+    }
+
     public function purchase()
     {
         return $this->belongsTo(Purchase::class,'po_no','id');
