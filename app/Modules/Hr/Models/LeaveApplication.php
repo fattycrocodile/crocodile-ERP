@@ -33,6 +33,7 @@ class LeaveApplication extends Model
         return $data ? 1 : 0;
     }
 
+
     public function employee()
     {
         return $this->belongsTo(Employees::class);

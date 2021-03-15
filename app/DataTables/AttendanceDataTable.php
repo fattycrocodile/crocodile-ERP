@@ -118,6 +118,7 @@ class AttendanceDataTable extends DataTable
                 ->printable(true),
 
             Column::make('employee_id')->title('Name'),
+            Column::make('date'),
             Column::make('in_time'),
             Column::make('out_time'),
             Column::make('comments'),
