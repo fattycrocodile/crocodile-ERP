@@ -44,7 +44,7 @@
                         <td class="text-right">{{ $dt->code }}</td>
                         <td class="text-center">{{ number_format($invoice_amount, 2) }}</td>
                         <td class="text-right">{{ number_format($invoice_return_amount, 2) }}</td>
-                        <td class="text-right">{{ number_format($mr_total, 2) }}</td>
+                        <td class="text-right">{{ number_format($invoice_mr_amount, 2) }}</td>
                         <td class="text-right">{{ number_format($due, 2) }}</td>
                     </tr>
                     <?php
