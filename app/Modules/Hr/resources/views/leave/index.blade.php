@@ -76,5 +76,37 @@
             }
 
         });
+
+
+        $('#leave-table').on('click', '.approve-leave', function (e) {
+            e.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            var url = "{{ route('hr.leaves.approve') }}";
+
+            var id = $(this).val();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: {method: 'POST', submit: true, id: id}
+            }).always(function (result) {
+                $('#leave-table').DataTable().draw(false);
+                var message = result.message;
+                if (result.error === false) {
+                    toastr.error(message, 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                } else {
+                    if (!message)
+                        message = "Please try again!";
+                    toastr.error(message, 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                }
+            });
+
+
+        });
+
     </script>
 @endpush

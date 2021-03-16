@@ -5,11 +5,13 @@ namespace App\Modules\Hr\Http\Controllers;
 use App\DataTables\LeaveApplicationsDataTable;
 use App\Http\Controllers\BaseController;
 use App\Modules\Hr\Models\LeaveApplication;
+use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Carbon;
 use App\Modules\Hr\Models\Employees;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LeaveApplicationController extends BaseController
 {
@@ -106,6 +108,31 @@ class LeaveApplicationController extends BaseController
         {
             return $exception;
             //return $this->responseRedirectBack('Error occurred while updating Leave Application.', 'error', true, true);
+        }
+    }
+
+    public function approve(Request $request)
+    {
+        if ($request->has('id')) {
+            $id = $request->id;
+            try {
+                $leave = LeaveApplication::findOrFail($id);
+                if ($leave->status != LeaveApplication::APPROVE) {
+
+                    $leave->id = $id;
+                    $leave->status = LeaveApplication::APPROVE;
+                    $leave->updated_by = auth()->user()->id;
+                    if ($leave->save()) {
+                        return $this->responseJson(false, 200, "Leave Approved Successfully.");
+                    } else {
+                        return $this->responseJson(true, 200, "Please Try again");
+                    }
+
+                }
+
+            } catch (QueryException $exception) {
+                throw new InvalidArgumentException($exception->getMessage());
+            }
         }
     }
 

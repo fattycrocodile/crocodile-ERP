@@ -2,8 +2,8 @@
 
 - [ ] User Permission Integration
 - [ ] Salary Sheet
-- [ ] Approve Leave
-- [ ] profit and loss with date
+- [x] Approve Leave
+- [x] profit and loss with date
 - [ ] Many Delete option
 - [ ] Item wise sales report
 

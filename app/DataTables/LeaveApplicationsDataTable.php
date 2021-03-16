@@ -30,10 +30,15 @@ class LeaveApplicationsDataTable extends DataTable
                 return $data->status == 1 ? 'Approved' : ($data->status == 2 ? 'Rejected' : 'Pending');
             })
             ->addColumn('action', function ($data) {
+                $approve = '';
+                if ($data->status == LeaveApplication::PENDING) {
+                    $approve = " <button href='leaves/$data->id/approve' value='$data->id' class='btn btn-icon btn-success approve-leave' title='Approve Leave'><i class='fa fa-check'></i></button>";
+                }
                 return "
                     <div class='form-group'>
                         <div class='btn-group' role='group' aria-label='Basic example'>
                             <a href='leaves/$data->id/edit' class='btn btn-icon btn-secondary'><i class='fa fa-pencil-square-o'></i> Edit</a>
+                            $approve
                             <button data-remote='leaves/$data->id/delete' class='btn btn-icon btn-danger btn-delete'><i class='fa fa-trash-o'></i> Delete</button>
                         </div>
                    </div>";

@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::post('/store', 'LeaveApplicationController@store')->name('hr.leaves.store');
         Route::get('/{id}/edit', 'LeaveApplicationController@edit')->name('hr.leaves.edit');
         Route::post('/{id}//update', 'LeaveApplicationController@update')->name('hr.leaves.update');
+        Route::post('/approve', 'LeaveApplicationController@approve')->name('hr.leaves.approve');
         Route::delete('/{id}/delete', 'LeaveApplicationController@delete')->name('hr.leaves.delete');
     });
 
