@@ -204,6 +204,58 @@ class JournalController extends BaseController
 
     }
 
+
+    public function profitLossReport()
+    {
+        $this->setPageTitle('PROFIT AND LOSS REPORT', 'PROFIT AND LOSS REPORT');
+        return view('Accounting::reports.profit-loss-report');
+    }
+
+    public function profitLossReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $expense = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = $request->start_date;
+            $end_date = $request->end_date;;
+
+            $expenses = DB::table('journals as j')
+                ->select(DB::raw('ca.name, sum(jd.amount) as amount'))
+                ->leftJoin('journal_details as jd', 'j.id', '=', 'jd.journal_id')
+                ->leftJoin('chart_of_accounts as ca', 'jd.ca_id', '=', 'ca.id')
+                ->where(DB::raw("j.date"), ">=", $start_date)
+                ->where(DB::raw("j.date"), "<=", $end_date)
+                ->groupBy('jd.ca_id')->get();
+
+            $products = Product::all();
+
+            $purchase = new Purchase();
+            $purchase = $purchase->where('date', '>=', $start_date);
+            $purchase = $purchase->where('date', '<=', $end_date);
+            $purchase = $purchase->sum('grand_total');
+
+            $purchaseReturn = new PurchaseReturn();
+            $purchaseReturn = $purchaseReturn->where('date', '>=', $start_date);
+            $purchaseReturn = $purchaseReturn->where('date', '<=', $end_date);
+            $purchaseReturn = $purchaseReturn->sum('amount');
+
+            $sales = new Invoice();
+            $sales = $sales->where('date', '>=', $start_date);
+            $sales = $sales->where('date', '<=', $end_date);
+            $sales = $sales->sum('grand_total');
+
+            $salesReturn = new InvoiceReturn();
+            $salesReturn = $salesReturn->where('date', '>=', $start_date);
+            $salesReturn = $salesReturn->where('date', '<=', $end_date);
+            $salesReturn = $salesReturn->sum('return_amount');
+        }
+
+        $returnHTML = view('Accounting::reports.profit-loss-report-view', compact('expenses', 'purchase', 'purchaseReturn', 'sales', 'salesReturn', 'products', 'start_date','end_date'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+
+    }
+
+
     public function liquidMoney()
     {
         $this->setPageTitle('Liquid Money Report', 'Liquid Money Report');

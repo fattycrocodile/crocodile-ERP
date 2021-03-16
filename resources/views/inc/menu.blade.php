@@ -360,8 +360,14 @@
                                 </a>
                             </li>
                             <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('accounting.reports.profit-and-loss-report') }}"
+                                <a class="dropdown-item" href="{{ route('accounting.reports.profit-loss-report') }}"
                                    data-toggle="dropdown">Profit & Loss Reports
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('accounting.reports.profit-and-loss-report') }}"
+                                   data-toggle="dropdown">Monthly Profit & Loss Reports
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>

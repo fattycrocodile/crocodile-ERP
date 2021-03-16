@@ -50,6 +50,10 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::get('/profit_and_loss_report', 'JournalController@profitAndLossReport')->name('accounting.reports.profit-and-loss-report');
         Route::post('/profit_and_loss_report_view', 'JournalController@profitAndLossReportView')->name('accounting.reports.profit-and-loss-report-view');
 
+        Route::get('/profit_loss_report', 'JournalController@profitLossReport')->name('accounting.reports.profit-loss-report');
+        Route::post('/profit_loss_report_view', 'JournalController@profitLossReportView')->name('accounting.reports.profit-loss-report-view');
+
+
         Route::get('/collection_report', 'MoneyReceiptController@collectionReport')->name('accounting.reports.collection');
         Route::post('/collection_report_view', 'MoneyReceiptController@collectionReportView')->name('accounting.reports.collection-view');
 

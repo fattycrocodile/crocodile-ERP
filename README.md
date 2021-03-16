@@ -6,7 +6,6 @@
 - [ ] profit and loss with date
 - [ ] Many Delete option
 - [ ] Item wise sales report
-- [ ] Purchase Report Summary
 
 # ERP PLANNING 
 
