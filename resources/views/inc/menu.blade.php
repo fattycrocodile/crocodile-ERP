@@ -563,6 +563,12 @@
                                 </a>
                             </li>
                             <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('crm.reports.product-wise-sales') }}"
+                                   data-toggle="dropdown">Product Wise Sales Report
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
                                 <a class="dropdown-item" href="{{ route('crm.reports.invoice-return-report') }}"
                                    data-toggle="dropdown">Invoice Return Report
                                     <submenu class="name"></submenu>

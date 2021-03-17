@@ -65,5 +65,8 @@ Route::group(['middleware' => ['auth:web']], function () {
 
         Route::get('/customer_due_report', 'CustomersController@customerDueReport')->name('crm.reports.due-report');
         Route::post('/customer_due_report_view', 'CustomersController@customerDueReportView')->name('crm.reports.due-report-view');
+
+        Route::get('/product_wise_sales_report', 'InvoiceController@productWiseSalesReport')->name('crm.reports.product-wise-sales');
+        Route::post('/product_wise_sales_report_view', 'InvoiceController@productWiseSalesReportView')->name('crm.reports.product-wise-sales-view');
     });
 });

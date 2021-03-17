@@ -102,7 +102,7 @@ class InvoiceController extends BaseController
             $invoice->invoice_no = $invNo;
             $invoice->order_id = isset($params['order_id']) ? $params['order_id'] : NULL;
             $invoice->store_id = $params['store_id'];
-            $invoice->customer_id = $customer_id =  $params['customer_id'];
+            $invoice->customer_id = $customer_id = $params['customer_id'];
             $invoice->discount_amount = 0;
             $invoice->grand_total = $grand_total = $params['grand_total'];
             $invoice->date = $date = $params['date'];
@@ -209,39 +209,6 @@ class InvoiceController extends BaseController
         return view('StoreInventory::brands.edit', compact('brands'));
     }
 
-    /**
-     * @param Request $request
-     * @return RedirectResponse
-     * @throws ValidationException
-     */
-    public function update(Request $request)
-    {
-        $this->validate($request, [
-            'name' => 'required|max:191',
-            'image' => 'mimes:jpg,jpeg,png|max:1000'
-        ]);
-        $params = $request->except('_token');
-        try {
-            $brand = Invoice::findOrFail($params['id']);
-            $collection = collect($params)->except('_token');
-            $logo = $brand->logo;
-            if ($collection->has('logo') && ($params['logo'] instanceof UploadedFile)) {
-                if ($brand->logo != null) {
-                    $this->deleteOne($brand->logo);
-                }
-                $logo = $this->uploadOne($params['logo'], 'brands');
-            }
-            $merge = $collection->merge(compact('logo'));
-            $brand->update($merge->all());
-
-            if (!$brand) {
-                return $this->responseRedirectBack('Error occurred while updating invoice.', 'error', true, true);
-            }
-            return $this->responseRedirect('crm.invoice.index', 'invoice updated successfully', 'success', false, false);
-        } catch (ModelNotFoundException $e) {
-            throw new ModelNotFoundException($e);
-        }
-    }
 
     /**
      * @param $id
@@ -250,21 +217,47 @@ class InvoiceController extends BaseController
     public function delete($id)
     {
         $data = Invoice::find($id);
-        $logo = $data->logo;
-        if ($data->delete()) {
-            if ($logo != null) {
-                $this->deleteOne($logo);
+        if ($data) {
+            $mr = DB::table('money_receipts')
+                ->where('invoice_id', '=', $id)->first();
+            if (!$mr) {
+                $inv_return = DB::table('invoice_returns')
+                    ->where('invoice_id', '=', $id)->first();
+                if (!$inv_return) {
+                    DB::table('inventories')->where('ref_id', $id)->where('ref_type', '=', Inventory::REF_INVOICE)->where('store_id', '=', $data->store_id)->delete();
+                    DB::table('invoice_details')->where('invoice_id', $id)->delete();
+                    if ($data->delete()) {
+                        return response()->json([
+                            'success' => true,
+                            'status_code' => 200,
+                            'message' => 'Invoice has been deleted successfully!',
+                        ]);
+                    } else {
+                        return response()->json([
+                            'success' => false,
+                            'status_code' => 200,
+                            'message' => 'Please try again!',
+                        ]);
+                    }
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'status_code' => 200,
+                        'message' => 'You cannot delete this invoice! Return Found on this invoice.',
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'status_code' => 200,
+                    'message' => 'You cannot delete this invoice! Money Receipt Found on this invoice.',
+                ]);
             }
-            return response()->json([
-                'success' => true,
-                'status_code' => 200,
-                'message' => 'Record has been deleted successfully!',
-            ]);
         } else {
             return response()->json([
                 'success' => false,
                 'status_code' => 200,
-                'message' => 'Please try again!',
+                'message' => 'Invoice Not Found!',
             ]);
         }
     }
@@ -399,6 +392,49 @@ class InvoiceController extends BaseController
         }
 
         $returnHTML = view('Crm::invoice.customer-sales-report-view', compact('data', 'start_date', 'end_date', 'store_id', 'customer_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
+
+    public function productWiseSalesReport()
+    {
+        $this->setPageTitle('Product Wise Sales Report', 'Product Wise Sales Report');
+        return view('Crm::invoice.product-wise-sales-report');
+    }
+
+    public function productWiseSalesReportView(Request $request): ?jsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $product_id = trim($request->product_id);
+            if ($product_id > 0) {
+                $data = DB::table('invoices as inv')
+                    ->select(DB::raw('inv.date, pd.name, sum(pdt.qty) as qty, pdt.sell_price, sum(pdt.row_total) as amount'))
+                    ->leftJoin('invoice_details as pdt', 'inv.id', '=', 'pdt.invoice_id')
+                    ->leftJoin('products as pd', 'pdt.product_id', '=', 'pd.id')
+                    ->where(DB::raw("inv.date"), ">=", $start_date)
+                    ->where(DB::raw("inv.date"), "<=", $end_date)
+                    ->where(DB::raw("pdt.product_id"), "=", $product_id)
+                    ->orderBy(DB::raw("inv.date"), 'DESC')
+                    ->groupBy(DB::raw("pdt.product_id"))
+                    ->get();
+            } else {
+                $data = DB::table('invoices as inv')
+                    ->select(DB::raw('inv.date, pd.name, sum(pdt.qty) as qty, pdt.sell_price, sum(pdt.row_total) as amount'))
+                    ->leftJoin('invoice_details as pdt', 'inv.id', '=', 'pdt.invoice_id')
+                    ->leftJoin('products as pd', 'pdt.product_id', '=', 'pd.id')
+                    ->where(DB::raw("inv.date"), ">=", $start_date)
+                    ->where(DB::raw("inv.date"), "<=", $end_date)
+                    ->orderBy(DB::raw("inv.date"), 'DESC')
+                    ->groupBy(DB::raw("pdt.product_id"))
+                    ->get();
+            }
+
+        }
+
+        $returnHTML = view('Crm::invoice.product-wise-sales-report-view', compact('data', 'start_date', 'end_date', 'product_id'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 }
