@@ -19,6 +19,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -146,26 +147,19 @@ class SellOrderController extends BaseController
     {
         $this->validate($request, [
             'name' => 'required|max:191',
-            'image' => 'mimes:jpg,jpeg,png|max:1000'
         ]);
         $params = $request->except('_token');
         try {
             $brand = SellOrder::findOrFail($params['id']);
             $collection = collect($params)->except('_token');
             $logo = $brand->logo;
-            if ($collection->has('logo') && ($params['logo'] instanceof UploadedFile)) {
-                if ($brand->logo != null) {
-                    $this->deleteOne($brand->logo);
-                }
-                $logo = $this->uploadOne($params['logo'], 'brands');
-            }
             $merge = $collection->merge(compact('logo'));
             $brand->update($merge->all());
 
             if (!$brand) {
                 return $this->responseRedirectBack('Error occurred while updating invoice.', 'error', true, true);
             }
-            return $this->responseRedirect('Crm::sell-order.index', 'invoice updated successfully', 'success', false, false);
+            return $this->responseRedirect('Crm::sell-order.index', 'Order updated successfully', 'success', false, false);
         } catch (ModelNotFoundException $e) {
             throw new ModelNotFoundException($e);
         }
@@ -197,21 +191,26 @@ class SellOrderController extends BaseController
     public function delete($id)
     {
         $data = SellOrder::find($id);
-        $logo = $data->logo;
-        if ($data->delete()) {
-            if ($logo != null) {
-                $this->deleteOne($logo);
+        if ($data) {
+            DB::table('sell_order_details')->where('order_id', $id)->delete();
+            if ($data->delete()) {
+                return response()->json([
+                    'success' => true,
+                    'status_code' => 200,
+                    'message' => 'Order has been deleted successfully!',
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'status_code' => 200,
+                    'message' => 'Please try again!',
+                ]);
             }
-            return response()->json([
-                'success' => true,
-                'status_code' => 200,
-                'message' => 'Record has been deleted successfully!',
-            ]);
         } else {
             return response()->json([
                 'success' => false,
                 'status_code' => 200,
-                'message' => 'Please try again!',
+                'message' => 'Order Not Found!',
             ]);
         }
     }
