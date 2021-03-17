@@ -17,6 +17,11 @@ class SellPriceController extends BaseController
 
     public function __construct(SellPrice $model)
     {
+        $this->middleware('permission:sell_price.index|sell_price.create|sell_price.edit|sell_price.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:sell_price.create', ['only' => ['create','store']]);
+        $this->middleware('permission:sell_price.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:sell_price.delete', ['only' => ['delete']]);
+
         $this->model = $model;
     }
 

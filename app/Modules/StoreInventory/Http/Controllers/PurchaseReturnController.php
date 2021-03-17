@@ -24,6 +24,13 @@ class PurchaseReturnController extends BaseController
 
     public function __construct(PurchaseReturn $model)
     {
+        $this->middleware('permission:purchase_return.index|purchase_return.create|purchase_return.edit|purchase_return.delete|purchase_return.report|purchase_return.product_wise_report', ['only' => ['index','show']]);
+        $this->middleware('permission:purchase_return.create', ['only' => ['create','store']]);
+        $this->middleware('permission:purchase_return.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:purchase_return.delete', ['only' => ['delete']]);
+        $this->middleware('permission:purchase_return.report', ['only' => ['purchaseReturnReport','purchaseReturnReportView']]);
+        $this->middleware('permission:purchase_return.product_wise_report', ['only' => ['productWisePurchaseReturnReport','productWisePurchaseReturnReportView']]);
+
         $this->model = $model;
         $this->store = new Stores();
     }

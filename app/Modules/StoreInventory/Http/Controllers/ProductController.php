@@ -21,6 +21,11 @@ class ProductController extends BaseController
 
     public function __construct(Product $model)
     {
+        $this->middleware('permission:product.index|product.create|product.edit|product.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:product.create', ['only' => ['create','store']]);
+        $this->middleware('permission:product.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:product.delete', ['only' => ['delete']]);
+
         $this->model = $model;
     }
 

@@ -31,6 +31,15 @@ class JournalController extends BaseController
 
     public function __construct(Journal $model)
     {
+        $this->middleware('permission:journal.index|journal.create|journal.edit|journal.delete|journal.expense_report|journal.profit_loss_report|journal.profit_loss_report_by_date|journal.liquid_money_report', ['only' => ['index','show']]);
+        $this->middleware('permission:journal.create', ['only' => ['create','store']]);
+        $this->middleware('permission:journal.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:journal.delete', ['only' => ['delete']]);
+        $this->middleware('permission:journal.expense_report', ['only' => ['expenseReport','expenseReportView']]);
+        $this->middleware('permission:journal.profit_loss_report', ['only' => ['profitAndLossReport','profitAndLossReportView']]);
+        $this->middleware('permission:journal.profit_loss_report_by_date', ['only' => ['profitLossReport','profitLossReportView']]);
+        $this->middleware('permission:journal.liquid_money_report', ['only' => ['liquidMoney','liquidMoneyView']]);
+
         $this->model = $model;
     }
 

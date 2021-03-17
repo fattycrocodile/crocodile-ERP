@@ -32,6 +32,14 @@ class SellOrderController extends BaseController
 
     public function __construct(SellOrder $model)
     {
+        $this->middleware('permission:sales_order.index|sales_order.create|sales_order.edit|sales_order.delete|sales_order.report|sales_order.invoice_create', ['only' => ['index','show']]);
+        $this->middleware('permission:sales_order.create', ['only' => ['create','store']]);
+        $this->middleware('permission:sales_order.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:sales_order.delete', ['only' => ['delete']]);
+        $this->middleware('permission:sales_order.report', ['only' => ['orderReport','orderReportView']]);
+        $this->middleware('permission:sales_order.invoice_create', ['only' => ['invoiceCreate']]);
+
+
         $this->model = $model;
         $this->store = new Stores();
         $this->lookup = new Lookup();

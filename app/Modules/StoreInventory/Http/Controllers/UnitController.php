@@ -10,6 +10,15 @@ use Illuminate\Http\Request;
 
 class UnitController extends BaseController
 {
+
+    function __construct()
+    {
+        $this->middleware('permission:unit.index|unit.create|unit.edit|unit.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:unit.create', ['only' => ['create','store']]);
+        $this->middleware('permission:unit.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:unit.delete', ['only' => ['delete']]);
+    }
+
     public function index(UnitsDataTable $dataTable)
     {
         $units = Unit::all();

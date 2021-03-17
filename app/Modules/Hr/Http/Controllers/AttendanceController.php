@@ -32,6 +32,12 @@ class AttendanceController extends BaseController
 
     public function __construct(Attendance $model)
     {
+        $this->middleware('permission:attendance.index|attendance.create|attendance.edit|attendance.delete|attendance.report', ['only' => ['index','show']]);
+        $this->middleware('permission:attendance.create', ['only' => ['create','store']]);
+        $this->middleware('permission:attendance.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:attendance.delete', ['only' => ['delete']]);
+        $this->middleware('permission:attendance.report', ['only' => ['attendanceReport','attendanceReportView']]);
+
         $this->model = $model;
         $this->lookup = new Lookup();
         $this->department = new Departments();

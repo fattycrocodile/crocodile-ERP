@@ -11,6 +11,14 @@ use Illuminate\Http\Request;
 
 class DepartmentsController extends BaseController
 {
+    function __construct()
+    {
+        $this->middleware('permission:department.index|department.create|department.edit|department.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:department.create', ['only' => ['create','store']]);
+        $this->middleware('permission:department.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:department.delete', ['only' => ['delete']]);
+    }
+
     public function index(DepartmentsDataTable $dataTable)
     {
         $this->setPageTitle('Departments List','List of Departments');

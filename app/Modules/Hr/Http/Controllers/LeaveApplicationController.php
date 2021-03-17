@@ -15,7 +15,16 @@ use Illuminate\Support\Facades\DB;
 
 class LeaveApplicationController extends BaseController
 {
-    public function index(LeaveApplicationsDataTable $dataTable)
+    public function __construct()
+    {
+        $this->middleware('permission:leave.index|leave.create|leave.edit|leave.delete|leave.approve', ['only' => ['index', 'show']]);
+        $this->middleware('permission:leave.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:leave.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:leave.delete', ['only' => ['delete']]);
+        $this->middleware('permission:leave.approve', ['only' => ['approve']]);
+    }
+
+        public function index(LeaveApplicationsDataTable $dataTable)
     {
         $this->setPageTitle('Leave Applications','List of Leave Applications');
         return $dataTable->render('Hr::leave.index');

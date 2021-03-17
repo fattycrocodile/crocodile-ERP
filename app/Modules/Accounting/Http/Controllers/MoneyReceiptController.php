@@ -33,6 +33,12 @@ class MoneyReceiptController extends BaseController
 
     public function __construct(MoneyReceipt $model)
     {
+        $this->middleware('permission:money_receipt.index|money_receipt.create|money_receipt.edit|money_receipt.delete|money_receipt.collection_report', ['only' => ['index','show']]);
+        $this->middleware('permission:money_receipt.create', ['only' => ['create','store']]);
+        $this->middleware('permission:money_receipt.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:money_receipt.delete', ['only' => ['delete']]);
+        $this->middleware('permission:money_receipt.collection_report', ['only' => ['collectionReport','collectionReportView']]);
+
         $this->model = $model;
         $this->store = new Stores();
     }

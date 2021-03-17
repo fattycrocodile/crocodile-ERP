@@ -29,6 +29,13 @@ class SalarySetupController extends BaseController
 
     public function __construct(SalarySetup $model)
     {
+        $this->middleware('permission:salary_setup.index|salary_setup.create|salary_setup.edit|salary_setup.delete|salary_setup.salary_sheet', ['only' => ['index','show']]);
+        $this->middleware('permission:salary_setup.create', ['only' => ['create','store']]);
+        $this->middleware('permission:salary_setup.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:salary_setup.delete', ['only' => ['delete']]);
+        $this->middleware('permission:salary_setup.salary_sheet', ['only' => ['salarySheet','salarySheetView']]);
+
+
         $this->model = $model;
         $this->lookup = new Lookup();
         $this->department = new Departments();

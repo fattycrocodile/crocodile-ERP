@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class DesignationsController extends BaseController
 {
+    function __construct()
+    {
+        $this->middleware('permission:designation.index|designation.create|designation.edit|designation.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:designation.create', ['only' => ['create','store']]);
+        $this->middleware('permission:designation.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:designation.delete', ['only' => ['delete']]);
+    }
+
     public function index(DesignationsDataTable $dataTable)
     {
         $this->setPageTitle('Designations List','List of Designations');

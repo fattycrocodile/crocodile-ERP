@@ -10,6 +10,14 @@ use Illuminate\Http\Request;
 
 class HolidaySetupController extends BaseController
 {
+    function __construct()
+    {
+        $this->middleware('permission:holiday.index|holiday.create|holiday.edit|holiday.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:holiday.create', ['only' => ['create','store']]);
+        $this->middleware('permission:holiday.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:holiday.delete', ['only' => ['delete']]);
+    }
+
     public function index(HolidaySetupDataTable $dataTable)
     {
         $this->setPageTitle('Holiday Setup','List of Holidays');

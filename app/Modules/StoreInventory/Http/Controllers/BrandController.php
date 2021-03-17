@@ -26,6 +26,11 @@ class BrandController extends BaseController
 
     public function __construct(Brand $model)
     {
+        $this->middleware('permission:brand.index|brand.create|brand.edit|brand.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:brand.create', ['only' => ['create','store']]);
+        $this->middleware('permission:brand.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:brand.delete', ['only' => ['delete']]);
+
         $this->model = $model;
     }
 
