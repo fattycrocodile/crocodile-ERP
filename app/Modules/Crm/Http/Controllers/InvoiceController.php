@@ -387,4 +387,47 @@ class InvoiceController extends BaseController
         $returnHTML = view('Crm::invoice.customer-sales-report-view', compact('data', 'start_date', 'end_date', 'store_id', 'customer_id'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
     }
+
+    public function productWiseSalesReport()
+    {
+        $this->setPageTitle('Product Wise Sales Report', 'Product Wise Sales Report');
+        return view('Crm::invoice.product-wise-sales-report');
+    }
+
+    public function productWiseSalesReportView(Request $request): ?jsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $product_id = trim($request->product_id);
+            if ($product_id > 0) {
+                $data = DB::table('invoices as inv')
+                    ->select(DB::raw('inv.date, pd.name, sum(pdt.qty) as qty, pdt.sell_price, sum(pdt.row_total) as amount'))
+                    ->leftJoin('invoice_details as pdt', 'inv.id', '=', 'pdt.invoice_id')
+                    ->leftJoin('products as pd', 'pdt.product_id', '=', 'pd.id')
+                    ->where(DB::raw("inv.date"), ">=", $start_date)
+                    ->where(DB::raw("inv.date"), "<=", $end_date)
+                    ->where(DB::raw("pdt.product_id"), "=", $product_id)
+                    ->orderBy(DB::raw("inv.date"), 'DESC')
+                    ->groupBy(DB::raw("pdt.product_id"))
+                    ->get();
+            } else {
+                $data = DB::table('invoices as inv')
+                    ->select(DB::raw('inv.date, pd.name, sum(pdt.qty) as qty, pdt.sell_price, sum(pdt.row_total) as amount'))
+                    ->leftJoin('invoice_details as pdt', 'inv.id', '=', 'pdt.invoice_id')
+                    ->leftJoin('products as pd', 'pdt.product_id', '=', 'pd.id')
+                    ->where(DB::raw("inv.date"), ">=", $start_date)
+                    ->where(DB::raw("inv.date"), "<=", $end_date)
+                    ->orderBy(DB::raw("inv.date"), 'DESC')
+                    ->groupBy(DB::raw("pdt.product_id"))
+                    ->get();
+            }
+
+        }
+
+        $returnHTML = view('Crm::invoice.product-wise-sales-report-view', compact('data', 'start_date', 'end_date', 'product_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
 }
