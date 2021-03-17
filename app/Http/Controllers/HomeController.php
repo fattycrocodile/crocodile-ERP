@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Modules\Crm\Models\Invoice;
 use Illuminate\Http\Request;
 
 class HomeController extends BaseController
@@ -23,9 +24,9 @@ class HomeController extends BaseController
      */
     public function index()
     {
-//        Fulls::orderBy(..)->take(5)->get();
-        
+        $invoice = Invoice::orderBy('date', 'desc')->take(5)->get();
+
         $this->setPageTitle('Dashboard', 'Admin Dashboard');
-        return view('home');
+        return view('home', compact('invoice'));
     }
 }

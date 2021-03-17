@@ -5,7 +5,7 @@
 - [x] Approve Leave
 - [x] profit and loss with date
 - [ ] Many Delete option
-- [ ] Item wise sales report
+- [x] Item wise sales report
 
 # ERP PLANNING 
 

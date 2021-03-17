@@ -9,7 +9,9 @@
                     </div>
                     <div class="p-2 bg-gradient-x-primary white media-body">
                         <h5>Products</h5>
-                        <h5 class="text-bold-400 mb-0"><i class="ft-plus"></i> {{ number_format(\App\Modules\StoreInventory\Models\Product::totalProductCount()) }}</h5>
+                        <h5 class="text-bold-400 mb-0"><i
+                                class="ft-plus"></i> {{ number_format(\App\Modules\StoreInventory\Models\Product::totalProductCount()) }}
+                        </h5>
                     </div>
                 </div>
             </div>
@@ -24,7 +26,9 @@
                     </div>
                     <div class="p-2 bg-gradient-x-danger white media-body">
                         <h5>Customer</h5>
-                        <h5 class="text-bold-400 mb-0"><i class="ft-arrow-up"></i>{{ number_format(\App\Modules\Crm\Models\Customers::totalCustomerCount()) }}</h5>
+                        <h5 class="text-bold-400 mb-0"><i
+                                class="ft-arrow-up"></i>{{ number_format(\App\Modules\Crm\Models\Customers::totalCustomerCount()) }}
+                        </h5>
                     </div>
                 </div>
             </div>
@@ -39,7 +43,9 @@
                     </div>
                     <div class="p-2 bg-gradient-x-warning white media-body">
                         <h5>Orders</h5>
-                        <h5 class="text-bold-400 mb-0"><i class="ft-plus"></i> {{ number_format(\App\Modules\Crm\Models\SellOrder::totalOrderCount()) }}</h5>
+                        <h5 class="text-bold-400 mb-0"><i
+                                class="ft-plus"></i> {{ number_format(\App\Modules\Crm\Models\SellOrder::totalOrderCount()) }}
+                        </h5>
                     </div>
                 </div>
             </div>
@@ -54,7 +60,9 @@
                     </div>
                     <div class="p-2 bg-gradient-x-success white media-body">
                         <h5>Invoice</h5>
-                        <h5 class="text-bold-400 mb-0"><i class="ft-arrow-up"></i> {{ number_format(\App\Modules\Crm\Models\Invoice::totalInvoiceCount()) }}</h5>
+                        <h5 class="text-bold-400 mb-0"><i
+                                class="ft-arrow-up"></i> {{ number_format(\App\Modules\Crm\Models\Invoice::totalInvoiceCount()) }}
+                        </h5>
                     </div>
                 </div>
             </div>
@@ -87,59 +95,31 @@
                     <table id="recent-orders" class="table table-hover mb-0 ps-container ps-theme-default">
                         <thead>
                         <tr>
-                            <th>SKU</th>
+                            <th>DATE</th>
                             <th>Invoice#</th>
                             <th>Customer Name</th>
-                            <th>Status</th>
+                            <th>Store</th>
                             <th>Amount</th>
                         </tr>
                         </thead>
                         <tbody>
+                        <?php
+                        if ($invoice){
+                        foreach ($invoice as $inv){
+                        ?>
                         <tr>
-                            <td class="text-truncate">PO-10521</td>
-                            <td class="text-truncate"><a href="#">INV-001001</a></td>
-                            <td class="text-truncate">Elizabeth W.</td>
+                            <td class="text-truncate">{{ $inv->date }}</td>
+                            <td class="text-truncate"><a href="#">{{ $inv->invoice_no }}</a></td>
+                            <td class="text-truncate">{{ $inv->customer->name }}</td>
                             <td class="text-truncate">
-                                <span class="badge badge-default badge-success">Paid</span>
+                                <span class="badge badge-default badge-success">{{ $inv->store->name }}</span>
                             </td>
-                            <td class="text-truncate">$ 1200.00</td>
+                            <td class="text-truncate">{{ number_format($inv->grand_total, 2) }}</td>
                         </tr>
-                        <tr>
-                            <td class="text-truncate">PO-532521</td>
-                            <td class="text-truncate"><a href="#">INV-01112</a></td>
-                            <td class="text-truncate">Doris R.</td>
-                            <td class="text-truncate">
-                                <span class="badge badge-default badge-warning">Overdue</span>
-                            </td>
-                            <td class="text-truncate">$ 5685.00</td>
-                        </tr>
-                        <tr>
-                            <td class="text-truncate">PO-05521</td>
-                            <td class="text-truncate"><a href="#">INV-001012</a></td>
-                            <td class="text-truncate">Andrew D.</td>
-                            <td class="text-truncate">
-                                <span class="badge badge-default badge-success">Paid</span>
-                            </td>
-                            <td class="text-truncate">$ 152.00</td>
-                        </tr>
-                        <tr>
-                            <td class="text-truncate">PO-15521</td>
-                            <td class="text-truncate"><a href="#">INV-001401</a></td>
-                            <td class="text-truncate">Megan S.</td>
-                            <td class="text-truncate">
-                                <span class="badge badge-default badge-success">Paid</span>
-                            </td>
-                            <td class="text-truncate">$ 1450.00</td>
-                        </tr>
-                        <tr>
-                            <td class="text-truncate">PO-32521</td>
-                            <td class="text-truncate"><a href="#">INV-008101</a></td>
-                            <td class="text-truncate">Walter R.</td>
-                            <td class="text-truncate">
-                                <span class="badge badge-default badge-warning">Overdue</span>
-                            </td>
-                            <td class="text-truncate">$ 685.00</td>
-                        </tr>
+                        <?php
+                        }
+                        }
+                        ?>
                         </tbody>
                     </table>
                 </div>
