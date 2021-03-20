@@ -45,7 +45,7 @@
                             $grossSalary = $salaryData['total_amount'];
                             $workingDays = $count - $holidayCount;
                             if ($grossSalary > 0) {
-                                $perDaySalary = @$grossSalary / @$attendance;
+                                $perDaySalary = @$grossSalary / @$workingDays;
                                 $netPayable = $perDaySalary * $attendance;
                             } else
                                 $netPayable = 0;
