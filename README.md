@@ -1,11 +1,11 @@
 ### Task List
 
-- [ ] User Permission Integration
+- [X] User Permission Integration
 - [ ] Salary Sheet
 - [x] Approve Leave
 - [x] profit and loss with date
 - [ ] Many Delete option
-- [ ] Item wise sales report
+- [x] Item wise sales report
 
 # ERP PLANNING 
 

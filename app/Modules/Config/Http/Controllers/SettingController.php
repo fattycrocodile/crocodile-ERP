@@ -15,6 +15,14 @@ use Illuminate\Http\UploadedFile;
  */
 class SettingController extends BaseController
 {
+    function __construct()
+    {
+        $this->middleware('permission:settings.index|settings.create|settings.edit|settings.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:settings.create', ['only' => ['create','store']]);
+        $this->middleware('permission:settings.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:settings.delete', ['only' => ['delete']]);
+    }
+
     use UploadAble;
 
     /**
