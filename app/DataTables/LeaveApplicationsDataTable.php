@@ -31,7 +31,7 @@ class LeaveApplicationsDataTable extends DataTable
             })
             ->addColumn('action', function ($data) {
                 $approve = '';
-                if ($data->status == LeaveApplication::PENDING) {
+                if ($data->status == LeaveApplication::PENDING && auth()->user()->can('leave.approve')) {
                     $approve = " <button href='leaves/$data->id/approve' value='$data->id' class='btn btn-icon btn-success approve-leave' title='Approve Leave'><i class='fa fa-check'></i></button>";
                 }
                 return "
