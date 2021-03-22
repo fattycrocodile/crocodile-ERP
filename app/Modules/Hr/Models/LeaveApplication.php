@@ -33,6 +33,32 @@ class LeaveApplication extends Model
         return $data ? 1 : 0;
     }
 
+    public static function findApprovedLeave($stat_date,$end_date, $employee_id)
+    {
+        $data = DB::table('leave_applications');
+        $data = $data->select(DB::raw('sum(DATEDIFF(to_date,from_date)+1) as day'))
+                    ->where('from_date','>=',$stat_date)
+                    ->where('to_date','<=',$end_date)
+                    ->where('employee_id', '=', $employee_id)
+                    ->where('status', '=', self::APPROVE)->first();
+        $datafh = DB::table('leave_applications');
+        $datafh = $datafh->select(DB::raw('sum(DATEDIFF(to_date,"'.$stat_date.'")+1) as day'))
+            ->where('from_date','<',$stat_date)
+            ->where('to_date','>=',$stat_date)
+            ->where('to_date','<=',$end_date)
+            ->where('employee_id', '=', $employee_id)
+            ->where('status', '=', self::APPROVE)->first();
+
+        $datalh = DB::table('leave_applications');
+        $datalh = $datalh->select(DB::raw('sum(DATEDIFF(from_date,"'.$end_date.'")+1) as day'))
+            ->where('from_date','>=',$stat_date)
+            ->where('from_date','<=',$end_date)
+            ->where('to_date','>',$end_date)
+            ->where('employee_id', '=', $employee_id)
+            ->where('status', '=', self::APPROVE)->first();
+
+        return $data->day+$datafh->day+$datalh->day;
+    }
 
     public function employee()
     {

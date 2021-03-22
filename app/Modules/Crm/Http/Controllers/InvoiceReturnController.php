@@ -24,6 +24,13 @@ class InvoiceReturnController extends BaseController
 
     public function __construct(InvoiceReturn $model)
     {
+        $this->middleware('permission:invoice_return.index|invoice_return.create|invoice_return.edit|invoice_return.delete|invoice_return.report|invoice_return.customer_return_report', ['only' => ['index','show']]);
+        $this->middleware('permission:invoice_return.create', ['only' => ['create','store']]);
+        $this->middleware('permission:invoice_return.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:invoice_return.delete', ['only' => ['delete']]);
+        $this->middleware('permission:invoice_return.report', ['only' => ['invoiceReturnReport','invoiceReturnReportView']]);
+        $this->middleware('permission:invoice_return.customer_return_report', ['only' => ['customerReturnReport','customerReturnReportView']]);
+
         $this->model = $model;
         $this->store = new Stores();
     }

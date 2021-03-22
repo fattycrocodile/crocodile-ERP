@@ -14,6 +14,10 @@ class StoresController extends BaseController
 
     public function __construct()
     {
+        $this->middleware('permission:store.index|store.create|store.edit|store.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:store.create', ['only' => ['create','store']]);
+        $this->middleware('permission:store.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:store.delete', ['only' => ['delete']]);
         $this->model = new Stores;
     }
 

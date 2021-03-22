@@ -97,7 +97,7 @@
                 $('#leave-table').DataTable().draw(false);
                 var message = result.message;
                 if (result.error === false) {
-                    toastr.error(message, 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    toastr.success(message, 'Message <i class="fa fa-bell faa-ring animated"></i>');
                 } else {
                     if (!message)
                         message = "Please try again!";

@@ -38,14 +38,14 @@
                             $count = $diff->format("%a") + 1;
 
                             $holiday = \App\Modules\Hr\Models\HolidaySetup::totalHolidayInDateRange($start_date, $end_date);
-                            $leave = 0; //todo:: amdad will calculate the leave
+                            $leave = \App\Modules\Hr\Models\LeaveApplication::findApprovedLeave($start_date, $end_date, $dt->id);
                             $attendance = \App\Modules\Hr\Models\Attendance::totalAttendanceOfEmployeeInDateRange($start_date, $end_date, $dt->id);
                             $attendance += $leave;
                             $salaryData = \App\Modules\Hr\Models\SalarySetup::getSalary($start_date, $dt->id);
                             $grossSalary = $salaryData['total_amount'];
                             $workingDays = $count - $holidayCount;
                             if ($grossSalary > 0) {
-                                $perDaySalary = @$grossSalary / @$attendance;
+                                $perDaySalary = @$grossSalary / @$workingDays;
                                 $netPayable = $perDaySalary * $attendance;
                             } else
                                 $netPayable = 0;

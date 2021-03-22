@@ -19,6 +19,13 @@ class CustomersController extends BaseController
 
     public function __construct(Customers $model)
     {
+        $this->middleware('permission:customer.index|customer.create|customer.edit|customer.delete|customer.due_report', ['only' => ['index','show']]);
+        $this->middleware('permission:customer.create', ['only' => ['create','store']]);
+        $this->middleware('permission:customer.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:customer.delete', ['only' => ['delete']]);
+        $this->middleware('permission:customer.due_report', ['only' => ['customerDueReport','customerDueReportView']]);
+
+
         $this->model = $model;
         $this->store = new Stores();
         $this->lookup = new Lookup();

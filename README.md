@@ -1,7 +1,7 @@
 ### Task List
 
-- [ ] User Permission Integration
-- [ ] Salary Sheet
+- [X] User Permission Integration
+- [x] Salary Sheet
 - [x] Approve Leave
 - [x] profit and loss with date
 - [ ] Many Delete option

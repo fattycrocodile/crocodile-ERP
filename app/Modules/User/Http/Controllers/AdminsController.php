@@ -13,6 +13,14 @@ use Spatie\Permission\Models\Role;
 
 class AdminsController extends BaseController
 {
+    function __construct()
+    {
+        $this->middleware('permission:admin.index|admin.create|admin.edit|admin.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:admin.create', ['only' => ['create','store']]);
+        $this->middleware('permission:admin.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:admin.delete', ['only' => ['delete']]);
+    }
+
     public function index(AdminsDataTable $dataTable)
     {
         $this->setPageTitle('Admins', 'List of all admins');

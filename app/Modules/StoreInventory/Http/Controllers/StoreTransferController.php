@@ -23,6 +23,14 @@ class StoreTransferController extends BaseController
 
     public function __construct(StoreTransfer $model)
     {
+        $this->middleware('permission:store_transfer.index|store_transfer.create|store_transfer.edit|store_transfer.delete|store_transfer.report|store_transfer.receive', ['only' => ['index','show']]);
+        $this->middleware('permission:store_transfer.create', ['only' => ['create','store']]);
+        $this->middleware('permission:store_transfer.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:store_transfer.delete', ['only' => ['delete']]);
+        $this->middleware('permission:store_transfer.report', ['only' => ['storeTransferReport','storeTransferReportView']]);
+        $this->middleware('permission:store_transfer.receive', ['only' => ['receive']]);
+
+
         $this->model = $model;
         $this->store = new Stores();
     }

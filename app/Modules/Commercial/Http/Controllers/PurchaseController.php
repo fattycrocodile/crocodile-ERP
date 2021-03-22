@@ -36,6 +36,13 @@ class PurchaseController extends BaseController
 
     public function __construct(Purchase $model)
     {
+        $this->middleware('permission:purchase.index|purchase.create|purchase.edit|purchase.delete|purchase.report|purchase.product_wise_report', ['only' => ['index','show']]);
+        $this->middleware('permission:purchase.create', ['only' => ['create','store']]);
+        $this->middleware('permission:purchase.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:purchase.delete', ['only' => ['delete']]);
+        $this->middleware('permission:purchase.report', ['only' => ['purchaseReport','purchaseReportView']]);
+        $this->middleware('permission:purchase.product_wise_report', ['only' => ['productWisePurchaseReport','productWisePurchaseReportView']]);
+
         $this->model = $model;
         $this->supplier = new Suppliers();
         $this->products = new Product();

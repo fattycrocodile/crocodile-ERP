@@ -22,6 +22,13 @@ class EmployeesController extends BaseController
 
     public function __construct(Employees $model)
     {
+        $this->middleware('permission:employee.index|employee.create|employee.edit|employee.delete|employee.report|employee.joining_report', ['only' => ['index','show']]);
+        $this->middleware('permission:employee.create', ['only' => ['create','store']]);
+        $this->middleware('permission:employee.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:employee.delete', ['only' => ['delete']]);
+        $this->middleware('permission:employee.report', ['only' => ['employeesReport','employeesReportView']]);
+        $this->middleware('permission:employee.joining_report', ['only' => ['joiningReport','joiningReportView']]);
+
         $this->model = $model;
         $this->department = new Departments();
         $this->designation = new Designations();

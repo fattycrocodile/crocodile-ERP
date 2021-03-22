@@ -12,6 +12,14 @@ use Illuminate\Http\Request;
 
 class SuppliersController extends BaseController
 {
+    function __construct()
+    {
+        $this->middleware('permission:supplier.index|supplier.create|supplier.edit|supplier.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:supplier.create', ['only' => ['create','store']]);
+        $this->middleware('permission:supplier.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:supplier.delete', ['only' => ['delete']]);
+    }
+
     public function index(SuppliersDataTable $dataTable)
     {
         $this->setPageTitle('Suppliers','Suppliers List');

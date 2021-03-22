@@ -12,6 +12,15 @@ use Spatie\Permission\Models\Role;
 
 class RolesController extends BaseController
 {
+
+    function __construct()
+    {
+        $this->middleware('permission:role.index|role.create|role.edit|role.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:role.create', ['only' => ['create','store']]);
+        $this->middleware('permission:role.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:role.delete', ['only' => ['delete']]);
+    }
+
     public function index(RolesDataTable $dataTable)
     {
         $this->setPageTitle('Roles', 'List of all Roles');

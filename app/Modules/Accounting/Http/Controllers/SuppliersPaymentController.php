@@ -23,6 +23,13 @@ class SuppliersPaymentController extends BaseController
 
     public function __construct(SuppliersPayment $model)
     {
+        $this->middleware('permission:supplier_payment.index|supplier_payment.create|supplier_payment.edit|supplier_payment.delete|supplier_payment.payment_report|supplier_payment.supplier_due_report', ['only' => ['index','show']]);
+        $this->middleware('permission:supplier_payment.create', ['only' => ['create','store']]);
+        $this->middleware('permission:supplier_payment.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:supplier_payment.delete', ['only' => ['delete']]);
+        $this->middleware('permission:supplier_payment.payment_report', ['only' => ['paymentReport','paymentReportView']]);
+        $this->middleware('permission:supplier_payment.supplier_due_report', ['only' => ['supplierDueReport','supplierDueReportView']]);
+
         $this->model = $model;
         $this->store = new Stores();
     }

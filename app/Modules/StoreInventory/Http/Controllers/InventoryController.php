@@ -21,6 +21,14 @@ class InventoryController extends BaseController
 
     public function __construct(Inventory $model)
     {
+        $this->middleware('permission:inventory.index|inventory.create|inventory.edit|inventory.delete|inventory.report|inventory.value_report|inventory.ledger_report', ['only' => ['index','show']]);
+        $this->middleware('permission:inventory.create', ['only' => ['create','store']]);
+        $this->middleware('permission:inventory.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:inventory.delete', ['only' => ['delete']]);
+        $this->middleware('permission:inventory.report', ['only' => ['stockReport','stockReportView']]);
+        $this->middleware('permission:inventory.value_report', ['only' => ['stockValueReport','stockValueReportView']]);
+        $this->middleware('permission:inventory.ledger_report', ['only' => ['stockLedgerReport','stockLedgerReportView']]);
+
         $this->model = $model;
         $this->store = new Stores();
         $this->lookup = new Lookup();

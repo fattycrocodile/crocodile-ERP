@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class LookupController extends BaseController
 {
+    function __construct()
+    {
+        $this->middleware('permission:lookup.index|lookup.create|lookup.edit|lookup.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:lookup.create', ['only' => ['create','store']]);
+        $this->middleware('permission:lookup.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:lookup.delete', ['only' => ['delete']]);
+    }
+
     public function index(LookupsDataTable $dataTable)
     {
         $this->setPageTitle('Lookups', 'List of all lookups');

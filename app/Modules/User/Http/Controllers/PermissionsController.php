@@ -6,10 +6,20 @@ use App\DataTables\PermissionsDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 class PermissionsController extends BaseController
 {
+
+    function __construct()
+    {
+        $this->middleware('permission:permission.index|permission.create|permission.edit|permission.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:permission.create', ['only' => ['create','store']]);
+        $this->middleware('permission:permission.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:permission.delete', ['only' => ['delete']]);
+    }
+
     public function index(PermissionsDataTable $dataTable)
     {
         $this->setPageTitle('Permissions', 'List of all permissions');

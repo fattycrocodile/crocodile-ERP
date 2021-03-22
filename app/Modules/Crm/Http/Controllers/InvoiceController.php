@@ -36,6 +36,13 @@ class InvoiceController extends BaseController
 
     public function __construct(Invoice $model)
     {
+        $this->middleware('permission:invoice.index|invoice.create|invoice.edit|invoice.delete|invoice.report|invoice.customer_sales_report', ['only' => ['index','show']]);
+        $this->middleware('permission:invoice.create', ['only' => ['create','store']]);
+        $this->middleware('permission:invoice.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:invoice.delete', ['only' => ['delete']]);
+        $this->middleware('permission:invoice.report', ['only' => ['invoiceReport','invoiceReportView']]);
+        $this->middleware('permission:invoice.customer_sales_report', ['only' => ['customerSalesReport','customerSalesReportView']]);
+
         $this->model = $model;
         $this->store = new Stores();
         $this->lookup = new Lookup();

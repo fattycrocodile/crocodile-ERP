@@ -10,6 +10,14 @@ use Illuminate\Http\Request;
 
 class ChartOfAccountsController extends BaseController
 {
+    function __construct()
+    {
+        $this->middleware('permission:chart_of_accounts.index|chart_of_accounts.create|chart_of_accounts.edit|chart_of_accounts.delete', ['only' => ['index','show']]);
+        $this->middleware('permission:chart_of_accounts.create', ['only' => ['create','store']]);
+        $this->middleware('permission:chart_of_accounts.edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:chart_of_accounts.delete', ['only' => ['delete']]);
+    }
+
     public function index(ChartOfAcDataTable $dataTable)
     {
         $this->setPageTitle('Chart Of Accounts','List Of Chart Of Accounts');
