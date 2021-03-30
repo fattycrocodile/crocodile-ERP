@@ -81,7 +81,7 @@
 *	Leave Application
 *	Salary Setup
 *	Report
-    - Daily Attendance Repot
+    - Daily Attendance Report
     - Employees Report
     - Joining Report
     - Salary Sheet
