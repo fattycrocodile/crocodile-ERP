@@ -124,7 +124,8 @@ class UsersTableSeeder extends Seeder
                     'store_transfer.create',
                     'store_transfer.edit',
                     'store_transfer.delete',
-                    'store_transfer.report'
+                    'store_transfer.report',
+                    'store_transfer.receive'
                 ]
             ],
             [
