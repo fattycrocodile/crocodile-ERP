@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 
+use App\Model\User\User;
 use App\Modules\Accounting\Models\MoneyReceipt;
 use App\Modules\Accounting\Models\SuppliersPayment;
 use App\Modules\Crm\Models\InvoiceReturn;
@@ -55,7 +56,13 @@ class InvoiceReturnDataTable extends DataTable
      */
     public function query(InvoiceReturn $model)
     {
-        return $model->newQuery()->orderByDesc('return_no');
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            return $model->newQuery()->where('store_id', '=', $store_id)->orderByDesc('return_no');
+        } else {
+            return $model->newQuery()->orderByDesc('return_no');
+        }
+//        return $model->newQuery()->orderByDesc('return_no');
     }
 
     /**

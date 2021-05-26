@@ -4,6 +4,7 @@ namespace App\Modules\Crm\Http\Controllers;
 
 use App\DataTables\InvoiceDataTable;
 use App\Http\Controllers\BaseController;
+use App\Model\User\User;
 use App\Modules\Accounting\Models\MoneyReceipt;
 use App\Modules\Config\Models\Lookup;
 use App\Modules\Crm\Models\Invoice;
@@ -63,7 +64,12 @@ class InvoiceController extends BaseController
      */
     public function create()
     {
-        $stores = $this->store->treeList();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            $stores =  Stores::where('id', '=', $store_id)->get();
+        }else {
+            $stores = Stores::all();
+        }
         $payment_type = Lookup::items('payment_method');
         $cash_credit = Lookup::items('cash_credit');
         $bank = Lookup::items('bank');

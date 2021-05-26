@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 
+use App\Model\User\User;
 use App\Modules\Crm\Models\Invoice;
 use App\Modules\Crm\Models\SellOrder;
 use Yajra\DataTables\DataTableAbstract;
@@ -32,7 +33,7 @@ class SellOrderDataTable extends DataTable
             ->addColumn('action', function ($data) {
                 $invoice = $delete = $edit = "";
                 if ($data->is_invoice != SellOrder::INV_CREATED) {
-                    $edit = "<a href='order/$data->id/edit' class='btn btn-icon btn-secondary' title='Order Edit'><i class='fa fa-pencil-square-o'></i></a> ";
+//                    $edit = "<a href='order/$data->id/edit' class='btn btn-icon btn-secondary' title='Order Edit'><i class='fa fa-pencil-square-o'></i></a> ";
                     $invoice = " <a href='order/$data->id/invoice-create' class='btn btn-icon btn-success' title='Invoice Create'><i class='fa fa-calculator'></i></a>";
                     $delete = " <button data-remote='order/$data->id/delete' class='btn btn-icon btn-danger btn-delete' title='Delete'><i class='fa fa-trash-o'></i></button>";
                 }
@@ -58,7 +59,12 @@ class SellOrderDataTable extends DataTable
      */
     public function query(SellOrder $model)
     {
-        return $model->newQuery()->orderByDesc('order_no');
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            return $model->newQuery()->where('store_id', '=', $store_id)->orderByDesc('order_no');
+        } else {
+            return $model->newQuery()->orderByDesc('order_no');
+        }
 //        return $model->newQuery()->select('*');
     }
 

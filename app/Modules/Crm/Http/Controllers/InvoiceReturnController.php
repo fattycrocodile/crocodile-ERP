@@ -4,6 +4,7 @@ namespace App\Modules\Crm\Http\Controllers;
 
 use App\DataTables\InvoiceReturnDataTable;
 use App\Http\Controllers\BaseController;
+use App\Model\User\User;
 use App\Modules\Config\Models\Lookup;
 use App\Modules\Crm\Models\Invoice;
 use App\Modules\Crm\Models\InvoiceReturn;
@@ -44,7 +45,12 @@ class InvoiceReturnController extends BaseController
 
     public function create()
     {
-        $stores = $this->store->treeList();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            $stores =  Stores::where('id', '=', $store_id)->get();
+        }else {
+            $stores = Stores::all();
+        }
         $this->setPageTitle('Create Invoice Return', 'Create Invoice Return');
         return view('Crm::invoice-return.create', compact('stores'));
     }

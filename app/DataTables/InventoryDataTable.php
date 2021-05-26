@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 
+use App\Model\User\User;
 use App\Modules\Crm\Models\Invoice;
 use App\Modules\StoreInventory\Models\Inventory;
 use Yajra\DataTables\DataTableAbstract;
@@ -44,7 +45,13 @@ class InventoryDataTable extends DataTable
     public function query(Inventory $model)
     {
 //        return $model->newQuery()->with(['store_name'])->orderByDesc('id');
-        return $model->newQuery()->orderByDesc('id');
+//        return $model->newQuery()->orderByDesc('id');
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            return $model->newQuery()->where('store_id', '=', $store_id)->orderByDesc('id');
+        } else {
+            return $model->newQuery()->orderByDesc('id');
+        }
 //        return $model->newQuery()->select('*');
     }
 

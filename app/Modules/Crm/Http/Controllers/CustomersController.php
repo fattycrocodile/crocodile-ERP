@@ -5,6 +5,7 @@ namespace App\Modules\Crm\Http\Controllers;
 
 use App\DataTables\CustomersDataTable;
 use App\Http\Controllers\BaseController;
+use App\Model\User\User;
 use App\Modules\Config\Models\Lookup;
 use App\Modules\Crm\Models\Customers;
 use App\Modules\StoreInventory\Models\Stores;
@@ -39,7 +40,12 @@ class CustomersController extends BaseController
 
     public function create()
     {
-        $stores = Stores::all();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            $stores =  Stores::where('id', '=', $store_id)->get();
+        }else {
+            $stores = Stores::all();
+        }
         $this->setPageTitle('Create Customers', 'create new customers');
         return view('Crm::customers.create', compact('stores'));
     }
@@ -86,7 +92,12 @@ class CustomersController extends BaseController
     public function edit($id)
     {
         $data = Customers::find($id);
-        $stores = Stores::all();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            $stores =  Stores::where('id', '=', $store_id)->get();
+        }else {
+            $stores = Stores::all();
+        }
         $this->setPageTitle('Edit Customer', 'Edit selected customer');
         return view('Crm::customers.edit', compact('data', 'stores'));
     }
@@ -164,6 +175,10 @@ class CustomersController extends BaseController
                     $data = $data->where('store_id', '=', $store_id);
                 }
             }
+            $store_id = User::getStoreId(auth()->user()->id);
+            if ($store_id > 0){
+                $data = $data->where('store_id', '=', $store_id);
+            }
             $data = $data->limit(20);
             $data = $data->orderby('name', 'asc');
             $data = $data->get();
@@ -196,6 +211,10 @@ class CustomersController extends BaseController
                     $data = $data->where('store_id', '=', $store_id);
                 }
             }
+            $store_id = User::getStoreId(auth()->user()->id);
+            if ($store_id > 0){
+                $data = $data->where('store_id', '=', $store_id);
+            }
             $data = $data->limit(20);
             $data = $data->orderby('code', 'asc');
             $data = $data->get();
@@ -227,6 +246,10 @@ class CustomersController extends BaseController
                 if ($store_id > 0) {
                     $data = $data->where('store_id', '=', $store_id);
                 }
+            }
+            $store_id = User::getStoreId(auth()->user()->id);
+            if ($store_id > 0){
+                $data = $data->where('store_id', '=', $store_id);
             }
             $data = $data->limit(20);
             $data = $data->orderby('code', 'asc');

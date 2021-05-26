@@ -65,7 +65,7 @@
                                                         class="select2 form-control @error('send_store_id') is-invalid @enderror">
                                                     <option value="none" selected="">Select Store</option>
                                                     @foreach($stores as $key => $store)
-                                                        <option value="{{ $key }}"> {{ $store }} </option>
+                                                        <option value="{{ $store->id }}"> {{ $store->name }} </option>
                                                     @endforeach
                                                 </select>
                                                 @error('send_store_id')
@@ -78,8 +78,8 @@
                                                 <select id="rcv_store_id" name="rcv_store_id" required
                                                         class="select2 form-control @error('rcv_store_id') is-invalid @enderror">
                                                     <option value="none" selected="">Select Store</option>
-                                                    @foreach($stores as $key => $store)
-                                                        <option value="{{ $key }}"> {{ $store }} </option>
+                                                    @foreach($stores2 as $key => $store)
+                                                        <option value="{{ $store->id }}"> {{ $store->name }} </option>
                                                     @endforeach
                                                 </select>
                                                 @error('rcv_store_id')

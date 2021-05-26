@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 
+use App\Model\User\User;
 use App\Modules\Crm\Models\Invoice;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
@@ -56,7 +57,12 @@ class InvoiceDataTable extends DataTable
      */
     public function query(Invoice $model)
     {
-        return $model->newQuery()->orderByDesc('invoice_no');
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            return $model->newQuery()->where('store_id', '=', $store_id)->orderByDesc('invoice_no');
+        } else {
+            return $model->newQuery()->orderByDesc('invoice_no');
+        }
 //        return $model->newQuery()->select('*');
     }
 

@@ -5,6 +5,7 @@ namespace App\Modules\Accounting\Http\Controllers;
 
 use App\DataTables\MoneyReceiptDataTable;
 use App\Http\Controllers\BaseController;
+use App\Model\User\User;
 use App\Modules\Accounting\Models\MoneyReceipt;
 use App\Modules\Config\Models\Lookup;
 use App\Modules\Crm\Models\Invoice;
@@ -58,7 +59,12 @@ class MoneyReceiptController extends BaseController
      */
     public function create()
     {
-        $stores = $this->store->treeList();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            $stores =  Stores::where('id', '=', $store_id)->get();
+        }else {
+            $stores = Stores::all();
+        }
         $this->setPageTitle('Create MR', 'Create Money Receipt');
         return view('Accounting::moneyReceipt.create', compact('stores'));
     }

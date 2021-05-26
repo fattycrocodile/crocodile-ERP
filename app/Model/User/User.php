@@ -6,6 +6,7 @@ use App\Modules\StoreInventory\Models\Stores;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -42,5 +43,13 @@ class User extends Authenticatable
     public function store()
     {
         return $this->belongsTo(Stores::class);
+    }
+
+    public static function getStoreId($id){
+        $data = DB::table('users')
+            ->select(DB::raw('store_id'))
+            ->where('id', '=', $id)
+            ->first();
+        return $data ? $data->store_id : 0;
     }
 }

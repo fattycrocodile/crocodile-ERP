@@ -4,6 +4,7 @@ namespace App\Modules\StoreInventory\Http\Controllers;
 
 use App\DataTables\StoreTransferDataTable;
 use App\Http\Controllers\BaseController;
+use App\Model\User\User;
 use App\Modules\StoreInventory\Models\Inventory;
 use App\Modules\StoreInventory\Models\Stores;
 use App\Modules\StoreInventory\Models\StoreTransfer;
@@ -43,9 +44,15 @@ class StoreTransferController extends BaseController
 
     public function create()
     {
-        $stores = $this->store->treeList();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            $stores =  Stores::where('id', '=', $store_id)->get();
+        }else {
+            $stores = Stores::all();
+        }
+        $stores2 = Stores::all();
         $this->setPageTitle('Create Store Transfer', 'Create Store Transfer');
-        return view('StoreInventory::storeTransfer.create', compact('stores'));
+        return view('StoreInventory::storeTransfer.create', compact('stores', 'stores2'));
     }
 
     public function store(Request $request)

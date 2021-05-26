@@ -65,7 +65,7 @@
                                                         class="select2 form-control @error('store_id') is-invalid @enderror">
                                                     <option value="none" selected="">Select Store</option>
                                                     @foreach($stores as $key => $store)
-                                                        <option value="{{ $key }}"> {{ $store }} </option>
+                                                        <option value="{{ $store->id }}"> {{ $store->name }} </option>
                                                     @endforeach
                                                 </select>
                                                 @error('store_id')
@@ -892,6 +892,7 @@
                         $('#contact_no').val('');
                         $('#invoice_due').val('');
                         $('#invoice_no').html("");
+                        $('#grand_total_text').html("");
 
 
                         flashMessage('success');

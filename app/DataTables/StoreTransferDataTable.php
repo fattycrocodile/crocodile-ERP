@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 
+use App\Model\User\User;
 use App\Modules\Accounting\Models\MoneyReceipt;
 use App\Modules\Accounting\Models\SuppliersPayment;
 use App\Modules\StoreInventory\Models\PurchaseReturn;
@@ -63,7 +64,13 @@ class StoreTransferDataTable extends DataTable
      */
     public function query(StoreTransfer $model)
     {
-        return $model->newQuery()->orderByDesc('invoice_no');;
+//        return $model->newQuery()->orderByDesc('invoice_no');
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            return $model->newQuery()->where('rcv_store_id', '=', $store_id)->orderByDesc('invoice_no');
+        } else {
+            return $model->newQuery()->orderByDesc('invoice_no');
+        }
     }
 
     /**
