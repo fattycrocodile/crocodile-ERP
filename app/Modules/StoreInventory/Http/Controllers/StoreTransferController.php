@@ -227,9 +227,15 @@ class StoreTransferController extends BaseController
 
     public function storeTransferReport()
     {
-        $stores = $this->store->treeList();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            $stores =  Stores::where('id', '=', $store_id)->get();
+        }else {
+            $stores = Stores::all();
+        }
+        $stores2 = Stores::all();
         $this->setPageTitle('Store Transfer Report', 'Store Transfer Report');
-        return view('StoreInventory::reports.store-transfer-report', compact('stores'));
+        return view('StoreInventory::reports.store-transfer-report', compact('stores', 'stores2'));
     }
 
     public function storeTransferReportView(Request $request):?jsonResponse
@@ -258,6 +264,10 @@ class StoreTransferController extends BaseController
 
             if ($send_store_id > 0) {
                 $data = $data->where(DB::raw("p.send_store_id"), "=", $send_store_id);
+            }
+            $user_store_id = User::getStoreId(auth()->user()->id);
+            if ($user_store_id > 0){
+                $data = $data->where('p.send_store_id', '=', $user_store_id);
             }
 
             if ($rcv_store_id > 0) {

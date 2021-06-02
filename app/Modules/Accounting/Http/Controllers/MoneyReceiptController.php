@@ -246,7 +246,12 @@ class MoneyReceiptController extends BaseController
 
     public function collectionReport()
     {
-        $stores = $this->store->treeList();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            $stores =  Stores::where('id', '=', $store_id)->get();
+        }else {
+            $stores = Stores::all();
+        }
         $cash_credit = Lookup::items('cash_credit');
         $banks = Lookup::items('bank');
         $collection_types = Lookup::items('payment_method');
@@ -274,6 +279,10 @@ class MoneyReceiptController extends BaseController
             }
             if ($store_id > 0) {
                 $data = $data->where('store_id', '=', $store_id);
+            }
+            $user_store_id = User::getStoreId(auth()->user()->id);
+            if ($user_store_id > 0){
+                $data = $data->where('store_id', '=', $user_store_id);
             }
             if ($collection_type > 0) {
                 $data = $data->where('collection_type', '=', $collection_type);

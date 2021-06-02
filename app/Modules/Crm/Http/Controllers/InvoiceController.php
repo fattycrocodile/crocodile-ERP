@@ -331,7 +331,12 @@ class InvoiceController extends BaseController
 
     public function invoiceReport()
     {
-        $stores = $this->store->treeList();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            $stores =  Stores::where('id', '=', $store_id)->get();
+        }else {
+            $stores = Stores::all();
+        }
         $cash_credit = Lookup::items('cash_credit');
         $this->setPageTitle('Sales Report', 'Sales Report');
         return view('Crm::invoice.invoice-report', compact('stores', 'cash_credit'));
@@ -356,6 +361,10 @@ class InvoiceController extends BaseController
             if ($store_id > 0) {
                 $data = $data->where('store_id', '=', $store_id);
             }
+            $user_store_id = User::getStoreId(auth()->user()->id);
+            if ($user_store_id > 0){
+                $data = $data->where('store_id', '=', $user_store_id);
+            }
             $data = $data->orderby('date', 'asc');
             $data = $data->get();
         }
@@ -366,7 +375,12 @@ class InvoiceController extends BaseController
 
     public function customerSalesReport()
     {
-        $stores = $this->store->treeList();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            $stores =  Stores::where('id', '=', $store_id)->get();
+        }else {
+            $stores = Stores::all();
+        }
         $cash_credit = Lookup::items('cash_credit');
         $this->setPageTitle('Customer Sales Report', 'Customer Sales Report');
         return view('Crm::invoice.customer-sales-report', compact('stores', 'cash_credit'));
@@ -390,6 +404,10 @@ class InvoiceController extends BaseController
             }
             if ($store_id > 0) {
                 $data = $data->where('store_id', '=', $store_id);
+            }
+            $user_store_id = User::getStoreId(auth()->user()->id);
+            if ($user_store_id > 0){
+                $data = $data->where('store_id', '=', $user_store_id);
             }
             $data = $data->select('invoices.*', DB::raw('count(*) as invoice_count, sum(grand_total) as customer_total'));
             $data = $data->groupBy('customer_id');

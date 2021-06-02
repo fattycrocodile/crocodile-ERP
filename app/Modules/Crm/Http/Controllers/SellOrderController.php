@@ -241,7 +241,12 @@ class SellOrderController extends BaseController
 
     public function orderReport()
     {
-        $stores = $this->store->treeList();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            $stores =  Stores::where('id', '=', $store_id)->get();
+        }else {
+            $stores = Stores::all();
+        }
         $this->setPageTitle('Order Report', 'Order Report');
         return view('Crm::sell-order.order-report', compact('stores'));
     }
@@ -263,6 +268,11 @@ class SellOrderController extends BaseController
             }
             if ($store_id > 0) {
                 $data = $data->where('store_id', '=', $store_id);
+            }
+
+            $user_store_id = User::getStoreId(auth()->user()->id);
+            if ($user_store_id > 0){
+                $data = $data->where('store_id', '=', $user_store_id);
             }
             $data = $data->orderby('date', 'asc');
             $data = $data->get();

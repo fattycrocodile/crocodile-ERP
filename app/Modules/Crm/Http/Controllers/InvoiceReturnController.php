@@ -156,7 +156,12 @@ class InvoiceReturnController extends BaseController
 
     public function invoiceReturnReport()
     {
-        $stores = $this->store->treeList();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            $stores =  Stores::where('id', '=', $store_id)->get();
+        }else {
+            $stores = Stores::all();
+        }
         $cash_credit = Lookup::items('cash_credit');
         $this->setPageTitle('Return Report', 'Return Report');
         return view('Crm::invoice-return.invoice-return-report', compact('stores', 'cash_credit'));
@@ -181,6 +186,10 @@ class InvoiceReturnController extends BaseController
             if ($store_id > 0) {
                 $data = $data->where('store_id', '=', $store_id);
             }
+            $user_store_id = User::getStoreId(auth()->user()->id);
+            if ($user_store_id > 0){
+                $data = $data->where('store_id', '=', $user_store_id);
+            }
             $data = $data->orderby('date', 'asc');
             $data = $data->get();
         }
@@ -191,7 +200,12 @@ class InvoiceReturnController extends BaseController
 
     public function customerReturnReport()
     {
-        $stores = $this->store->treeList();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            $stores =  Stores::where('id', '=', $store_id)->get();
+        }else {
+            $stores = Stores::all();
+        }
         $cash_credit = Lookup::items('cash_credit');
         $this->setPageTitle('Customer Sales Report', 'Customer Return Report');
         return view('Crm::invoice-return.customer-return-report', compact('stores', 'cash_credit'));
@@ -215,6 +229,10 @@ class InvoiceReturnController extends BaseController
             }
             if ($store_id > 0) {
                 $data = $data->where('store_id', '=', $store_id);
+            }
+            $user_store_id = User::getStoreId(auth()->user()->id);
+            if ($user_store_id > 0){
+                $data = $data->where('store_id', '=', $user_store_id);
             }
             $data = $data->select('invoice_returns.*', DB::raw('count(*) as return_count, sum(return_amount) as customer_total'));
             $data = $data->groupBy('customer_id');

@@ -75,7 +75,7 @@
                                                         class="select2 form-control @error('store_id') is-invalid @enderror">
                                                     <option value="" selected="">Select Store</option>
                                                     @foreach($stores as $key => $store)
-                                                        <option value="{{ $key }}"> {{ $store }} </option>
+                                                        <option value="{{ $store->id }}"> {{ $store->name }} </option>
                                                     @endforeach
                                                 </select>
                                                 @error('store_id')

@@ -4,6 +4,7 @@ namespace App\Modules\StoreInventory\Http\Controllers;
 
 use App\DataTables\InventoryDataTable;
 use App\Http\Controllers\BaseController;
+use App\Model\User\User;
 use App\Modules\Config\Models\Lookup;
 use App\Modules\StoreInventory\Models\Inventory;
 use App\Modules\StoreInventory\Models\Product;
@@ -77,7 +78,12 @@ class InventoryController extends BaseController
 
     public function stockReport()
     {
-        $stores = $this->store->treeList();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            $stores =  Stores::where('id', '=', $store_id)->get();
+        }else {
+            $stores = Stores::all();
+        }
         $this->setPageTitle('Stock Report', 'Stock Report');
         return view('StoreInventory::inventory.stock-report', compact('stores'));
     }
@@ -90,6 +96,10 @@ class InventoryController extends BaseController
             $start_date = trim($request->start_date);
             $end_date = trim($request->end_date);
             $store_id = trim($request->store_id);
+            $user_store_id = User::getStoreId(auth()->user()->id);
+            if ($user_store_id > 0){
+                $store_id =  $user_store_id;
+            }
             $product_id = trim($request->product_id);
             $data = new Product();
             if ($product_id > 0) {
@@ -105,7 +115,12 @@ class InventoryController extends BaseController
 
     public function stockValueReport()
     {
-        $stores = $this->store->treeList();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            $stores =  Stores::where('id', '=', $store_id)->get();
+        }else {
+            $stores = Stores::all();
+        }
         $this->setPageTitle('Stock Value Report', 'Stock Value Report');
         return view('StoreInventory::inventory.stock-value-report', compact('stores'));
     }
@@ -118,6 +133,10 @@ class InventoryController extends BaseController
             $start_date = trim($request->start_date);
             $end_date = trim($request->end_date);
             $store_id = trim($request->store_id);
+            $user_store_id = User::getStoreId(auth()->user()->id);
+            if ($user_store_id > 0){
+                $store_id =  $user_store_id;
+            }
             $product_id = trim($request->product_id);
             $data = new Product();
             if ($product_id > 0) {
@@ -133,7 +152,12 @@ class InventoryController extends BaseController
 
     public function stockLedgerReport()
     {
-        $stores = $this->store->treeList();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0){
+            $stores =  Stores::where('id', '=', $store_id)->get();
+        }else {
+            $stores = Stores::all();
+        }
         $this->setPageTitle('Stock Ledger Report', 'Stock Value Report');
         return view('StoreInventory::inventory.stock-ledger-report', compact('stores'));
     }
@@ -157,6 +181,10 @@ class InventoryController extends BaseController
             }
             if ($store_id > 0) {
                 $data = $data->where('store_id', '=', $store_id);
+            }
+            $user_store_id = User::getStoreId(auth()->user()->id);
+            if ($user_store_id > 0){
+                $data = $data->where('store_id', '=', $user_store_id);
             }
 //            $data = $data->select('inventories.*', DB::raw('sum(stock_in) as total_stock_in, sum(stock_out) as total_stock_out'));
             $data = $data->orderby('date', 'asc');
