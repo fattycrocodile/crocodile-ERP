@@ -31,6 +31,15 @@ class Invoice extends Model
         return $data ? $data->grand_total : 0;
     }
 
+    public static function monthlySales($year, $month)
+    {
+        $data = DB::table('invoices')
+            ->select(DB::raw('sum(grand_total) as total'))
+            ->whereYear('date','=',$year)
+            ->whereMonth('date','=',$month)->first();
+        return $data ? $data->total : 0;
+    }
+
     public static function totalInvoiceCount()
     {
         $data = DB::table('invoices')
