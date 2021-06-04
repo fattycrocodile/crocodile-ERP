@@ -656,6 +656,7 @@ class ComposerStaticInitb20e0c43184310ec6720a8451e270455
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\DataTables\\AdminsDataTable' => __DIR__ . '/../..' . '/app/DataTables/AdminsDataTable.php',
+        'App\\DataTables\\AreaDataTable' => __DIR__ . '/../..' . '/app/DataTables/AreaDataTable.php',
         'App\\DataTables\\AttendanceDataTable' => __DIR__ . '/../..' . '/app/DataTables/AttendanceDataTable.php',
         'App\\DataTables\\BrandsDataTable' => __DIR__ . '/../..' . '/app/DataTables/BrandsDataTable.php',
         'App\\DataTables\\CategoriesDataTable' => __DIR__ . '/../..' . '/app/DataTables/CategoriesDataTable.php',
@@ -684,6 +685,7 @@ class ComposerStaticInitb20e0c43184310ec6720a8451e270455
         'App\\DataTables\\StoresDataTable' => __DIR__ . '/../..' . '/app/DataTables/StoresDataTable.php',
         'App\\DataTables\\SupplierPaymentDataTable' => __DIR__ . '/../..' . '/app/DataTables/SupplierPaymentDataTable.php',
         'App\\DataTables\\SuppliersDataTable' => __DIR__ . '/../..' . '/app/DataTables/SuppliersDataTable.php',
+        'App\\DataTables\\TerritoryDataTable' => __DIR__ . '/../..' . '/app/DataTables/TerritoryDataTable.php',
         'App\\DataTables\\UnitsDataTable' => __DIR__ . '/../..' . '/app/DataTables/UnitsDataTable.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
