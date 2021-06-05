@@ -494,6 +494,13 @@
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
+
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('supplyChain.territory.index') }}"
+                                   data-toggle="dropdown">Territory
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>

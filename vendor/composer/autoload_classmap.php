@@ -164,6 +164,7 @@ return array(
     'App\\Providers\\EventServiceProvider' => $baseDir . '/app/Providers/EventServiceProvider.php',
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
     'App\\Providers\\SettingServiceProvider' => $baseDir . '/app/Providers/SettingServiceProvider.php',
+    'App\\Territory' => $baseDir . '/app/Territory.php',
     'App\\Traits\\FlashMessages' => $baseDir . '/app/Traits/FlashMessages.php',
     'App\\Traits\\UploadAble' => $baseDir . '/app/Traits/UploadAble.php',
     'ArtemSchander\\L5Modular\\Console\\ControllerMakeCommand' => $vendorDir . '/artem-schander/l5-modular/src/Console/ControllerMakeCommand.php',

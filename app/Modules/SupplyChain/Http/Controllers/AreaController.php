@@ -82,7 +82,7 @@ class AreaController extends BaseController
         if (!$area->save()) {
             return $this->responseRedirectBack('Error occurred while creating area.', 'error', true, true);
         }
-        return $this->responseRedirect('supplyChain::area.index', 'Area added successfully', 'success', false, false);
+        return $this->responseRedirect('supplyChain.area.index', 'Area added successfully', 'success', false, false);
     }
 
     /**

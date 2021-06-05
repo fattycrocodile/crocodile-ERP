@@ -13,15 +13,16 @@ class CreateTerritoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('territories', function (Blueprint $table) {
+        Schema::create('territory', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('area_id');
-            $table->foreign('area_id')->references('id')->on('areas');
+//            $table->foreign('area_id')->references('id')->on('areas');
             $table->string('name');
             $table->string('code');
-            $table->text('address');
+            $table->text('address')->nullable();
+            $table->string('contact_no')->nullable();
             $table->unsignedBigInteger('created_by');
-            $table->unsignedBigInteger('updated_by');
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }
