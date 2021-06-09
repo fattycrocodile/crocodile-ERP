@@ -479,6 +479,35 @@
 
             <li class="dropdown nav-item" data-menu="dropdown">
                 <a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">
+                    <i class="ft-users"></i><span>Supply Chain</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Configuration
+                            <submenu class="name"></submenu>
+                        </a>
+                        <ul class="dropdown-menu">
+
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('supplyChain.area.index') }}"
+                                   data-toggle="dropdown">Area
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('supplyChain.territory.index') }}"
+                                   data-toggle="dropdown">Territory
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="dropdown nav-item" data-menu="dropdown">
+                <a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">
                     <i class="ft-circle"></i><span>CRM</span>
                 </a>
                 <ul class="dropdown-menu">

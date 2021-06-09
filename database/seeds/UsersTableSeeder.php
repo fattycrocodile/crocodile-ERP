@@ -325,6 +325,24 @@ class UsersTableSeeder extends Seeder
                     'invoice_return.customer_return_report',
                 ]
             ],
+            [
+                'group_name' => 'area',
+                'permissions' => [
+                    'area.view',
+                    'area.create',
+                    'area.edit',
+                    'area.delete'
+                ]
+            ],
+            [
+                'group_name' => 'territory',
+                'permissions' => [
+                    'territory.view',
+                    'territory.create',
+                    'territory.edit',
+                    'territory.delete'
+                ]
+            ],
         ];
 
         for ($i=0;$i<count($permissions);$i++)

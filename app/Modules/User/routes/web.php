@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
-Route::get('users', 'usersController@welcome');
+//Route::get('users', 'usersController@welcome');
 
 Route::group(['middleware' => ['auth:web']], function () {
     Route::group(['prefix' => 'users/permissions'], function () {

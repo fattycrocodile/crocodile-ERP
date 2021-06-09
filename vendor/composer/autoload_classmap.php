@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\DataTables\\AdminsDataTable' => $baseDir . '/app/DataTables/AdminsDataTable.php',
+    'App\\DataTables\\AreaDataTable' => $baseDir . '/app/DataTables/AreaDataTable.php',
     'App\\DataTables\\AttendanceDataTable' => $baseDir . '/app/DataTables/AttendanceDataTable.php',
     'App\\DataTables\\BrandsDataTable' => $baseDir . '/app/DataTables/BrandsDataTable.php',
     'App\\DataTables\\CategoriesDataTable' => $baseDir . '/app/DataTables/CategoriesDataTable.php',
@@ -36,6 +37,7 @@ return array(
     'App\\DataTables\\StoresDataTable' => $baseDir . '/app/DataTables/StoresDataTable.php',
     'App\\DataTables\\SupplierPaymentDataTable' => $baseDir . '/app/DataTables/SupplierPaymentDataTable.php',
     'App\\DataTables\\SuppliersDataTable' => $baseDir . '/app/DataTables/SuppliersDataTable.php',
+    'App\\DataTables\\TerritoryDataTable' => $baseDir . '/app/DataTables/TerritoryDataTable.php',
     'App\\DataTables\\UnitsDataTable' => $baseDir . '/app/DataTables/UnitsDataTable.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
@@ -162,6 +164,7 @@ return array(
     'App\\Providers\\EventServiceProvider' => $baseDir . '/app/Providers/EventServiceProvider.php',
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
     'App\\Providers\\SettingServiceProvider' => $baseDir . '/app/Providers/SettingServiceProvider.php',
+    'App\\Territory' => $baseDir . '/app/Territory.php',
     'App\\Traits\\FlashMessages' => $baseDir . '/app/Traits/FlashMessages.php',
     'App\\Traits\\UploadAble' => $baseDir . '/app/Traits/UploadAble.php',
     'ArtemSchander\\L5Modular\\Console\\ControllerMakeCommand' => $vendorDir . '/artem-schander/l5-modular/src/Console/ControllerMakeCommand.php',
