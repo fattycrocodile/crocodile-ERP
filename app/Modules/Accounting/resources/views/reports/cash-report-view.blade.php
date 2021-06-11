@@ -16,7 +16,7 @@
 <div class="row d-flex justify-content-center">
     <div class="col-12 col-lg-9 col-sm-12 col-xl-9 col-md-9">
         <h2 class="text-center">
-            Profit and Loss Report Upto {{  date("F jS, Y", strtotime($date)) }}
+            Liquid Money Report Upto {{  date("F jS, Y", strtotime($date)) }}
         </h2>
         <div class="table-responsive ">
             <table class="table table-hover table-xs">

@@ -88,7 +88,7 @@
         <div class="col-sm-12">
             <div id="kick-start" class="card">
                 <div class="card-header">
-                    <h4 class="card-title">PROFIT AND LOSS REPORT</h4>
+                    <h4 class="card-title">LIQUID MONEY REPORT</h4>
                 </div>
                 <div class="card-content collapse show">
                     <div class="card-body">
