@@ -34,6 +34,6 @@ class CreateTerritoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('territories');
+        Schema::dropIfExists('territory');
     }
 }
