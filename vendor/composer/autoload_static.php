@@ -812,7 +812,6 @@ class ComposerStaticInitb20e0c43184310ec6720a8451e270455
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\Providers\\SettingServiceProvider' => __DIR__ . '/../..' . '/app/Providers/SettingServiceProvider.php',
-        'App\\Territory' => __DIR__ . '/../..' . '/app/Territory.php',
         'App\\Traits\\FlashMessages' => __DIR__ . '/../..' . '/app/Traits/FlashMessages.php',
         'App\\Traits\\UploadAble' => __DIR__ . '/../..' . '/app/Traits/UploadAble.php',
         'ArtemSchander\\L5Modular\\Console\\ControllerMakeCommand' => __DIR__ . '/..' . '/artem-schander/l5-modular/src/Console/ControllerMakeCommand.php',
