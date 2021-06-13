@@ -15,9 +15,9 @@
             <table class="table table-bordered table-striped table-sm">
                 <thead>
                 <tr>
+                    <th>SL</th>
                     <th>Name</th>
                     <th>Department</th>
-                    <th>Birth Date</th>
                     <th>Designation</th>
                     <th>Store</th>
                     <?php
@@ -49,9 +49,9 @@
                         <tr>
                             <th scope="row" class="text-center">{{ ++$key }}</th>
                             <td>{{ $dt->full_name }}</td>
-                            <td>{{ $dt->join_date }}</td>
                             <td>{{ $dt->department->name }}</td>
                             <td>{{ $dt->designation->name }}</td>
+                            <td>{{ $dt->store->name }}</td>
                             <?php
                             $count = $holidayCount = $leaveCount = $presentCount = $absentCount = 0;
                             foreach ($period as $date) {
