@@ -703,8 +703,8 @@
             var appendTxt = "<tr class='cartList'>"
             appendTxt += "<td class='count' style='text-align: center;'>" + slNumber + "</td>";
             appendTxt += "<td style='text-align: left;'>Name: " + product_name + "<br><small class='cart-product-code'>Code: " + product_code + "</small><input type='hidden' class='temp_product_id' name='product[temp_product_id][]' value='" + product_id + "'></td>";
-            appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_return_price ' name='product[temp_return_price][]' onkeyup='calculateRowTotalOnChange();' value='" + return_price + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_return_qty' name='product[temp_return_qty][]' onkeyup='calculateRowTotalOnChange();' value='" + return_qty + "'></td>";
+            appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_return_price ' name='product[temp_return_price][]' onkeyup='calculateRowTotalOnChange();' value='" + return_price + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_row_return_price' name='product[temp_row_return_price][]' readonly value='" + total_return_price + "'></td>";
             appendTxt += "<td style='text-align: center;'><button title=\"remove\"  type=\"button\" class=\"rdelete dltBtn btn btn-danger btn-md\" onclick=\"deleteRows($(this))\"><i class=\"icon-trash\"></i></button></td>";
             appendTxt += "</tr>";
