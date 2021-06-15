@@ -1,3 +1,15 @@
+@push('styles')
+    <style>
+
+    #salesChart{
+        position: relative;
+        max-width: 1024px;
+        min-width: 320px;
+        margin: 0 auto;
+    }
+    </style>
+@endpush
+
 <!-- Stats -->
 <div class="row">
     <div class="col-xl-3 col-lg-6 col-12">
@@ -132,8 +144,8 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Basic Column Chart</h4>
-                 {{\App\Modules\Crm\Models\Invoice::monthlySales(2021,2)}}
+                <h4 class="card-title">Yearly Sales Analysis</h4>
+
                 <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                 <div class="heading-elements">
 
@@ -141,16 +153,37 @@
             </div>
             <div class="card-content collapse show">
                 <div class="card-body">
-                    <canvas id="salesChart" width="1000" height="400"></canvas>
+                    <canvas id="salesChart" width="1000px" height="350px" ></canvas>
                 </div>
             </div>
         </div>
     </div>
 </div>
 @php
-    $label = [1,2,3,4,5,6,7,8,9];
-    $data = [100,200,300,400,500,600,700,800,900];
+    $year = date('Y');
+    $month = date('m')+1;
+    $label = [];
+    $data = [];
 @endphp
+
+@for($i = 0; $i < 12; $i++)
+    @php
+        $month-=1;
+        if($month==0)
+            {
+                $month = 12;
+                $year -=1;
+            }
+        $monthSales = \App\Modules\Crm\Models\Invoice::monthlySales($year,$month);
+        $monthOYear = date("M", mktime(0, 0, 0, $month, 10)).'-'.$year;
+
+        array_push($label,$monthOYear);
+        array_push($data,$monthSales);
+        $rlabel = array_reverse($label);
+        $rdata = array_reverse($data);
+    @endphp
+@endfor
+
 <!--/Recent Orders & Monthly Salse -->
 @push('scripts')
 
@@ -163,10 +196,10 @@
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: <?php echo json_encode($label); ?>,
+                labels: <?php echo json_encode($rlabel); ?>,
                 datasets: [{
                     label: 'Sales',
-                    data: <?php echo json_encode($data); ?>,
+                    data: <?php echo json_encode($rdata); ?>,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.4)',
                         'rgba(54, 162, 235, 0.4)',
