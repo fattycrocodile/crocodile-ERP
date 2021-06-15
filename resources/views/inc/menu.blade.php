@@ -503,6 +503,38 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Sales Order
+                            <submenu class="name"></submenu>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('crm.sales.order.create') }}"
+                                   data-toggle="dropdown">Order Create
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('crm.sales.order.index') }}"
+                                   data-toggle="dropdown">Order Manage
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Reports
+                            <submenu class="name"></submenu>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('crm.reports.order-report') }}"
+                                   data-toggle="dropdown">Sales Order Reports
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
 
@@ -524,25 +556,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Sales Order
-                            <submenu class="name"></submenu>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('crm.sales.order.create') }}"
-                                   data-toggle="dropdown">Order Create
-                                    <submenu class="name"></submenu>
-                                </a>
-                            </li>
-                            <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('crm.sales.order.index') }}"
-                                   data-toggle="dropdown">Order Manage
-                                    <submenu class="name"></submenu>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+
                     <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Invoice
                             <submenu class="name"></submenu>
@@ -579,12 +593,6 @@
                             <submenu class="name"></submenu>
                         </a>
                         <ul class="dropdown-menu">
-                            <li data-menu="">
-                                <a class="dropdown-item" href="{{ route('crm.reports.order-report') }}"
-                                   data-toggle="dropdown">Sales Order Reports
-                                    <submenu class="name"></submenu>
-                                </a>
-                            </li>
                             <li data-menu="">
                                 <a class="dropdown-item" href="{{ route('crm.reports.invoice-report') }}"
                                    data-toggle="dropdown">Invoice Report
