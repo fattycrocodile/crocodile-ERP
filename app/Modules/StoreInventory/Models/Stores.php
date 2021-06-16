@@ -8,7 +8,9 @@ use App\Modules\Crm\Models\Customers;
 use App\Modules\Crm\Models\Invoice;
 use App\Modules\Crm\Models\InvoiceReturn;
 use App\Modules\Crm\Models\SellOrder;
+use App\Modules\Hr\Models\Employees;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use TypiCMS\NestableTrait;
 
 class Stores extends Model
@@ -19,6 +21,8 @@ class Stores extends Model
     protected $guarded=[];
 
     const DEFAULT_WAREHOUSE = 1;
+    const ACTIVE = 1;
+    const IN_ACTIVE = 0;
 
     /**
      * @return mixed
@@ -29,6 +33,15 @@ class Stores extends Model
             ->get()
             ->nest()
             ->listsFlattened('name');
+    }
+
+    public static function totalStores()
+    {
+        $data = new Stores();
+        $data = $data->select(DB::raw('count(*) as total'));
+        $data = $data->where('status', '=', self::ACTIVE);
+        $data = $data->first();
+        return $data ? $data->total : 0;
     }
 
     public function sellOrder()

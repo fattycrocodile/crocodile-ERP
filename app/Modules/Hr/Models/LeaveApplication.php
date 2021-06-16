@@ -60,6 +60,17 @@ class LeaveApplication extends Model
         return $data->day+$datafh->day+$datalh->day;
     }
 
+    public static function findApprovedLeaveDate($date)
+    {
+        $data = DB::table('leave_applications');
+        $data = $data->select(DB::raw('count(*) as total'))
+            ->where('from_date','>=',$date)
+            ->where('to_date','<=',$date)
+            ->where('status', '=', self::APPROVE)->first();
+
+        return $data ? $data->total : 0;
+    }
+
     public function employee()
     {
         return $this->belongsTo(Employees::class);

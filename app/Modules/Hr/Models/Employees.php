@@ -6,6 +6,7 @@ namespace App\Modules\Hr\Models;
 use App\Modules\StoreInventory\Models\Stores;
 use App\Model\User\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Employees extends Model
 {
@@ -14,6 +15,16 @@ class Employees extends Model
 
     const ACTIVE = 1;
     const IN_ACTIVE = 0;
+
+    public static function totalEmployees()
+    {
+        $data = new Employees();
+        $data = $data->select(DB::raw('count(*) as total'));
+        $data = $data->where('status', '=', self::ACTIVE);
+        $data = $data->first();
+        return $data ? $data->total : 0;
+    }
+
 
     public function department()
     {

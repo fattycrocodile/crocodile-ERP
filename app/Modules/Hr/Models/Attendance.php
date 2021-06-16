@@ -35,4 +35,13 @@ class Attendance extends Model
         $data = $data->first();
         return $data ? $data->total : 0;
     }
+
+    public static function totalAttendanceOfEmployeeInDate($date)
+    {
+        $data = new Attendance();
+        $data = $data->select(DB::raw('count(*) as total'));
+        $data = $data->where('date', '=', $date);
+        $data = $data->first();
+        return $data ? $data->total : 0;
+    }
 }
