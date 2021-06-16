@@ -366,7 +366,17 @@
                                             @php
                                                 $values = explode(".",$employee->cv_file);
                                             @endphp
-                                            {{$values[1].'.'.$values[2]}}
+                                            <?php
+                                            if(isset($values[1])){
+                                                echo $values[1];
+                                            }
+
+                                            if(isset($values[2])){
+                                                echo "." . $values[2];
+                                            }
+
+                                            ?>
+{{--                                            {{(isset($values[1]) ? $values[1] : "")(isset($values[1]) ? '.' .$values[2] : "")}}--}}
                                         </p>
                                     </div>
                                 </div>

@@ -6,6 +6,7 @@ use App\DataTables\AreaDataTable;
 use App\DataTables\TerritoryDataTable;
 use App\Http\Controllers\BaseController;
 use App\Model\User\User;
+use App\Modules\Hr\Models\Employees;
 use App\Modules\StoreInventory\Models\Stores;
 use App\Modules\SupplyChain\Models\Area;
 use App\Modules\SupplyChain\Models\Territory;
@@ -50,8 +51,9 @@ class TerritoryController extends BaseController
     public function create()
     {
         $areas = Area::all();
+        $employees = Employees::all();
         $this->setPageTitle('Territory', 'Create Territory');
-        return view('SupplyChain::territory.create', compact('areas'));
+        return view('SupplyChain::territory.create', compact('areas', 'employees'));
     }
 
     /**
@@ -74,6 +76,7 @@ class TerritoryController extends BaseController
         $territory->code = $request->code;
         $territory->address = $request->address;
         $territory->contact_no = $request->contact_no;
+        $territory->employee_id = $request->employee_id;
         $territory->created_by = auth()->user()->id;
 
         if (!$territory->save()) {
@@ -89,14 +92,11 @@ class TerritoryController extends BaseController
     public function edit($id)
     {
         $targetterritory = Territory::findOrFail($id);
-        $store_id = User::getStoreId(auth()->user()->id);
-        if ($store_id > 0) {
-            $stores = Stores::where('id', '=', $store_id)->get();
-        } else {
-            $stores = Stores::all();
-        }
+
+        $areas = Area::all();
+        $employees = Employees::all();
         $this->setPageTitle('Edit Territory', 'Edit Territory : ' . $targetterritory->name);
-        return view('SupplyChain::territory.edit', compact('stores', 'targetterritory'));
+        return view('SupplyChain::territory.edit', compact('areas', 'targetterritory', 'employees'));
     }
 
     /**
@@ -119,6 +119,7 @@ class TerritoryController extends BaseController
         $territory->code = $request->code;
         $territory->address = $request->address;
         $territory->contact_no = $request->contact_no;
+        $territory->employee_id = $request->employee_id;
         $territory->updated_by = auth()->user()->id;
 
         if (!$territory->update()) {

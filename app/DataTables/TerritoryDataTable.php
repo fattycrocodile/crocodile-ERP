@@ -31,6 +31,9 @@ class TerritoryDataTable extends DataTable
             ->editColumn('area_id', function ($data) {
                 return isset($data->area->name) ? $data->area->name : 'N/A';
             })
+            ->editColumn('employee_id', function ($data) {
+                return isset($data->employee->full_name) ? $data->employee->full_name : 'N/A';
+            })
             ->addColumn('action', function ($data) {
                 return "
                     <div class='form-group'>
@@ -122,6 +125,7 @@ class TerritoryDataTable extends DataTable
             Column::make('area_id')->title('Area'),
             Column::make('name'),
             Column::make('code'),
+            Column::make('employee_id')->title('TSO'),
             Column::make('contact_no'),
             Column::make('address'),
             Column::computed('action')
