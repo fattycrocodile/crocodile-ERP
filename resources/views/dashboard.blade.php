@@ -81,6 +81,77 @@
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-xl-3 col-lg-6 col-12">
+        <div class="card">
+            <div class="card-content">
+                <div class="media align-items-stretch">
+                    <div class="p-2 text-center bg-success bg-darken-2">
+                        <i class="icon-users font-large-2 white"></i>
+                    </div>
+                    <div class="p-2 bg-gradient-x-success white media-body">
+                        <h5>Total Employee</h5>
+                        <h5 class="text-bold-400 mb-0"><i
+                                class="ft-plus"></i> {{ number_format(\App\Modules\Hr\Models\Employees::totalEmployees()) }}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-12">
+        <div class="card">
+            <div class="card-content">
+                <div class="media align-items-stretch">
+                    <div class="p-2 text-center bg-secondary bg-darken-2">
+                        <i class="icon-user-following font-large-2 white"></i>
+                    </div>
+                    <div class="p-2 bg-secondary white media-body">
+                        <h5>Present Today</h5>
+                        <h5 class="text-bold-400 mb-0"><i
+                                class="ft-arrow-up"></i>{{ number_format(\App\Modules\Hr\Models\Attendance::totalAttendanceOfEmployeeInDate(date('Y-m-d'))) }}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-12">
+        <div class="card">
+            <div class="card-content">
+                <div class="media align-items-stretch">
+                    <div class="p-2 text-center bg-danger bg-darken-2">
+                        <i class="icon-user-unfollow font-large-2 white"></i>
+                    </div>
+                    <div class="p-2 bg-gradient-x-danger white media-body">
+                        <h5>Employee in Leave</h5>
+                        <h5 class="text-bold-400 mb-0"><i
+                                class="ft-plus"></i> {{ number_format(\App\Modules\Hr\Models\LeaveApplication::findApprovedLeaveDate(date('Y-m-d'))) }}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-12">
+        <div class="card">
+            <div class="card-content">
+                <div class="media align-items-stretch">
+                    <div class="p-2 text-center bg-info bg-darken-2">
+                        <i class="icon-target font-large-2 white"></i>
+                    </div>
+                    <div class="p-2 bg-gradient-x-info white media-body">
+                        <h5>Total Store</h5>
+                        <h5 class="text-bold-400 mb-0"><i
+                                class="ft-arrow-up"></i> {{ number_format(\App\Modules\StoreInventory\Models\Stores::totalStores()) }}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!--/ Stats -->
 <!--Recent Orders & Monthly Salse -->
 <div class="row match-height">
