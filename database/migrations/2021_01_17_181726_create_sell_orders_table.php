@@ -25,6 +25,10 @@ class CreateSellOrdersTable extends Migration
             $table->double('discount_amount')->nullable()->default(0);
             $table->double('grand_total');
             $table->date('date');
+            $table->unsignedBigInteger('area_id')->nullable();
+            $table->unsignedBigInteger('territory_id')->nullable();
+            $table->unsignedBigInteger('area_employee_id')->nullable();
+            $table->unsignedBigInteger('territory_employee_id')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users');
             $table->unsignedBigInteger('updated_by')->nullable();

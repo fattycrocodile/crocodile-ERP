@@ -24,6 +24,10 @@ class CreateInvoicesTable extends Migration
             $table->unsignedBigInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->unsignedBigInteger('order_id')->nullable();
+            $table->unsignedBigInteger('area_id')->nullable();
+            $table->unsignedBigInteger('territory_id')->nullable();
+            $table->unsignedBigInteger('area_employee_id')->nullable();
+            $table->unsignedBigInteger('territory_employee_id')->nullable();
             $table->double('discount_amount')->default(0)->nullable();
             $table->double('grand_total');
             $table->tinyInteger('full_paid')->default(0)->comment("0=>Unpaid, 1=>paid");
