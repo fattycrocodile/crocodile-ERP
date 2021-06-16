@@ -117,7 +117,7 @@ class InvoiceController extends BaseController
             $territory = Territory::findOrFail($customer->territory_id);
             $area = Area::findOrFail($territory->area_id);
 
-            $invoice->area_id = $area ? $area->area_id : NULL;
+            $invoice->area_id = $area ? $area->id : NULL;
             $invoice->area_employee_id = $area ? $area->employee_id : NULL;
             $invoice->territory_id = $customer ? $customer->territory_id : NULL;
             $invoice->territory_employee_id = $territory ? $territory->employee_id : NULL;

@@ -110,7 +110,7 @@ class SellOrderController extends BaseController
             $order->store_id = $params['store_id'];
             $order->customer_id = $params['customer_id'];
 
-            $order->area_id = $area ? $area->area_id : NULL;
+            $order->area_id = $area ? $area->id : NULL;
             $order->area_employee_id = $area ? $area->employee_id : NULL;
             $order->territory_id = $customer ? $customer->territory_id : NULL;
             $order->territory_employee_id = $territory ? $territory->employee_id : NULL;
