@@ -9,6 +9,7 @@ use App\Model\User\User;
 use App\Modules\Config\Models\Lookup;
 use App\Modules\Crm\Models\Customers;
 use App\Modules\StoreInventory\Models\Stores;
+use App\Modules\SupplyChain\Models\Territory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -17,6 +18,7 @@ class CustomersController extends BaseController
     public $model;
     public $store;
     public $lookup;
+    public $territories;
 
     public function __construct(Customers $model)
     {
@@ -30,6 +32,7 @@ class CustomersController extends BaseController
         $this->model = $model;
         $this->store = new Stores();
         $this->lookup = new Lookup();
+        $this->territories = new Territory();
     }
 
     public function index(CustomersDataTable $dataTable)
@@ -46,8 +49,10 @@ class CustomersController extends BaseController
         }else {
             $stores = Stores::all();
         }
+
+        $territories =  Territory::all();
         $this->setPageTitle('Create Customers', 'create new customers');
-        return view('Crm::customers.create', compact('stores'));
+        return view('Crm::customers.create', compact('stores', 'territories'));
     }
 
     public function store(Request $request)
@@ -57,6 +62,7 @@ class CustomersController extends BaseController
             'name' => "required|min:3",
             'contact_no' => "required|min:11",
             'store_id' => "required",
+            'territory_id' => "required",
             'address' => "required",
         ]);
 
@@ -74,6 +80,7 @@ class CustomersController extends BaseController
         $customers->code = $store->code . "-" . str_pad($Max_sn, 4, '0', STR_PAD_LEFT);
         //Assigning Form data to customer
         $customers->name = $request->name;
+        $customers->territory_id = $request->territory_id;
         $customers->contact_no = $request->contact_no;
         $customers->store_id = $request->store_id;
         $customers->address = $request->address;
@@ -98,8 +105,9 @@ class CustomersController extends BaseController
         }else {
             $stores = Stores::all();
         }
+        $territories =  Territory::all();
         $this->setPageTitle('Edit Customer', 'Edit selected customer');
-        return view('Crm::customers.edit', compact('data', 'stores'));
+        return view('Crm::customers.edit', compact('data', 'stores', 'territories'));
     }
 
     public function update(Request $req, $id)
@@ -128,6 +136,7 @@ class CustomersController extends BaseController
         $customers->contact_no = $req->contact_no;
         $customers->address = $req->address;
         $customers->store_id = $req->store_id;
+        $customers->territory_id = $req->territory_id;
         $customers->updated_by = auth()->user()->id;
 
         if ($customers->update()) {

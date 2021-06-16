@@ -4,6 +4,7 @@ namespace App\Modules\Crm\Models;
 
 use App\Model\User\User;
 use App\Modules\StoreInventory\Models\Stores;
+use App\Modules\SupplyChain\Models\Territory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -38,6 +39,11 @@ class Customers extends Model
     public function store()
     {
         return $this->belongsTo(Stores::class);
+    }
+
+    public function territory()
+    {
+        return $this->belongsTo(Territory::class);
     }
 
     public function updatedBy()

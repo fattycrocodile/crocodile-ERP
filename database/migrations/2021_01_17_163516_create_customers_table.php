@@ -24,6 +24,7 @@ class CreateCustomersTable extends Migration
             $table->string('code');
             $table->boolean('status')->default(1);
             $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('territory_id')->nullable();
             $table->foreign('created_by')->references('id')->on('users');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->foreign('updated_by')->references('id')->on('users');

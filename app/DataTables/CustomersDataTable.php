@@ -25,6 +25,12 @@ class CustomersDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            ->editColumn('store_id', function ($data) {
+                return isset($data->store->name) ? $data->store->name : 'N/A';
+            })
+            ->editColumn('territory_id', function ($data) {
+                return isset($data->territory->name) ? $data->territory->name : 'N/A';
+            })
             ->addColumn('action', function ($data) {
                 return "
                     <div class='form-group'>
@@ -101,6 +107,10 @@ class CustomersDataTable extends DataTable
             Column::make('address'),
             Column::make('contact_no'),
             Column::make('code'),
+            Column::make('store_id')
+                ->title('Store'),
+            Column::make('territory_id')
+                ->title('Territory'),
 //            Column::computed('action'),
 //            Column::make('created_at'),
 //            Column::make('updated_at'),

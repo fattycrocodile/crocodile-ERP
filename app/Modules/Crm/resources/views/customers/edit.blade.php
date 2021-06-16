@@ -66,6 +66,19 @@
                                             <div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="territory_id" >Territory</label>
+                                            <select id="territory" name="territory_id" class="select2 form-control @error('territory_id') is-invalid @enderror">
+                                                <option value="none" selected="" disabled="">Select Territory</option>
+                                                @foreach($territories as $territory)
+                                                    <option
+                                                        value="{{$territory->id}}" {{$territory->id==(old('territory_id')?old('territory_id'):$data->territory_id)?'selected':''}} >{{$territory->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('territory_id')<div class="help-block text-danger">{{ $message }} </div> @enderror
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
