@@ -30,6 +30,9 @@ class AreaDataTable extends DataTable
             ->editColumn('store_id', function ($data) {
                 return isset($data->store->name) ? $data->store->name : 'N/A';
             })
+            ->editColumn('employee_id', function ($data) {
+                return isset($data->employee->full_name) ? $data->employee->full_name : 'N/A';
+            })
             ->addColumn('action', function ($data) {
                 return "
                     <div class='form-group'>
@@ -119,6 +122,7 @@ class AreaDataTable extends DataTable
 
 //            Column::make('id'),
             Column::make('store_id')->title('Store'),
+            Column::make('employee_id')->title('Area Manager'),
             Column::make('name'),
             Column::make('code'),
             Column::make('contact_no'),

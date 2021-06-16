@@ -21,6 +21,7 @@ class CreateAreasTable extends Migration
             $table->string('code');
             $table->text('address')->nullable();
             $table->string('contact_no')->nullable();
+            $table->unsignedBigInteger('employee_id')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

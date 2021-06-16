@@ -5,6 +5,7 @@ namespace App\Modules\SupplyChain\Http\Controllers;
 use App\DataTables\AreaDataTable;
 use App\Http\Controllers\BaseController;
 use App\Model\User\User;
+use App\Modules\Hr\Models\Employees;
 use App\Modules\StoreInventory\Models\Category;
 use App\Modules\StoreInventory\Models\Stores;
 use App\Modules\SupplyChain\Models\Area;
@@ -53,8 +54,9 @@ class AreaController extends BaseController
         } else {
             $stores = Stores::all();
         }
+        $employees = Employees::all();
         $this->setPageTitle('Area', 'Create Area');
-        return view('SupplyChain::area.create', compact('stores'));
+        return view('SupplyChain::area.create', compact('stores', 'employees'));
     }
 
     /**
@@ -77,6 +79,7 @@ class AreaController extends BaseController
         $area->code = $request->code;
         $area->address = $request->address;
         $area->contact_no = $request->contact_no;
+        $area->employee_id = $request->employee_id;
         $area->created_by = auth()->user()->id;
 
         if (!$area->save()) {
@@ -98,8 +101,9 @@ class AreaController extends BaseController
         } else {
             $stores = Stores::all();
         }
+        $employees = Employees::all();
         $this->setPageTitle('Edit Area', 'Edit Area : ' . $targetArea->name);
-        return view('SupplyChain::area.edit', compact('stores', 'targetArea'));
+        return view('SupplyChain::area.edit', compact('stores', 'targetArea', 'employees'));
     }
 
     /**
@@ -122,6 +126,7 @@ class AreaController extends BaseController
         $area->code = $request->code;
         $area->address = $request->address;
         $area->contact_no = $request->contact_no;
+        $area->employee_id = $request->employee_id;
         $area->updated_by = auth()->user()->id;
 
         if (!$area->update()) {

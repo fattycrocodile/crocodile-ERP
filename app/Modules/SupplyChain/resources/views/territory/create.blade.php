@@ -67,6 +67,7 @@
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
+
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="contact_no">Contact No</label>
@@ -75,6 +76,21 @@
                                                        placeholder="Contact" value="{{ old('contact_no') }}"
                                                        name="contact_no">
                                                 @error('contact_no')
+                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="employee_id">TSO</label>
+                                                <select id="employee_id" name="employee_id"
+                                                        class="select2 form-control @error('employee_id') is-invalid @enderror">
+                                                    <option value="none" selected="" disabled="">Select TSO
+                                                    </option>
+                                                    @foreach($employees as $key => $emp)
+                                                        <option value="{{ $emp->id }}"> {{ $emp->full_name }} </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('employee_id')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>

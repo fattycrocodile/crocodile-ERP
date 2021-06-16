@@ -78,6 +78,21 @@
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="employee_id">Area Manager</label>
+                                                <select id="employee_id" name="employee_id"
+                                                        class="select2 form-control @error('employee_id') is-invalid @enderror">
+                                                    <option value="none" selected="" disabled="">Select Manager
+                                                    </option>
+                                                    @foreach($employees as $key => $emp)
+                                                        <option value="{{ $emp->id }}"> {{ $emp->full_name }} </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('employee_id')
+                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                            </div>
+                                        </div>
 
                                         <div class="col-md-12">
                                             <div class="form-group">

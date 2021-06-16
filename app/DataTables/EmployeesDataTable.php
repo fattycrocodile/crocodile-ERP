@@ -34,6 +34,17 @@ class EmployeesDataTable extends DataTable
             ->editColumn('designation_id', function ($data) {
                 return isset($data->designation->name) ? $data->designation->name : 'N/A';
             })
+            ->editColumn('gender', function ($data) {
+                if ($data->gender == 1 )
+                    $string = "MALE";
+                else if ($data->gender == 2 )
+                    $string = "FEMALE";
+                else if ($data->gender == 3 )
+                    $string = "OTHERS";
+                else
+                    $string = "";
+                return $string;
+            })
             ->editColumn('image', function ($data) {
                 if ($photo = $data->image) {
                     $url = asset($data->image);

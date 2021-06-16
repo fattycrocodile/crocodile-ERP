@@ -26,7 +26,7 @@
                     <div class="card-content collpase show">
                         <div class="card-body">
                             <form class="form" method="post"
-                                  action="{{route('supplyChain.territory.update',$targetArea->id)}}">
+                                  action="{{route('supplyChain.territory.update',$targetterritory->id)}}">
                                 @method('post')
                                 @csrf
                                 <div class="form-body">
@@ -34,12 +34,12 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="parentCategory">Store</label>
-                                                <select id="parentCategory" name="store_id"
-                                                        class="select2 form-control @error('store_id') is-invalid @enderror">
-                                                    <option value="none" selected="" disabled="">Select Store
+                                                <select id="parentCategory" name="area_id"
+                                                        class="select2 form-control @error('area_id') is-invalid @enderror">
+                                                    <option value="none" selected="" disabled="">Select Area
                                                     </option>
-                                                    @foreach($stores as $key => $store)
-                                                        @if ($targetArea->store_id == $store->id)
+                                                    @foreach($areas as $key => $store)
+                                                        @if ($targetterritory->area_id == $store->id)
                                                             <option value="{{ $store->id }}"
                                                                     selected> {{ $store->name }} </option>
                                                         @else
@@ -48,7 +48,7 @@
                                                         @endif
                                                     @endforeach
                                                 </select>
-                                                @error('store_id')
+                                                @error('area_id')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
@@ -59,7 +59,7 @@
                                                        class="form-control @error('name') is-invalid @enderror"
                                                        placeholder="Territory Name"
                                                        name="name"
-                                                       value="{{old('name')?old('name'):$targetArea->name}}">
+                                                       value="{{old('name')?old('name'):$targetterritory->name}}">
                                                 @error('name')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
@@ -71,7 +71,7 @@
                                                 <input type="text" id="code"
                                                        class="form-control @error('code') is-invalid @enderror"
                                                        placeholder="Territory Code"
-                                                       value="{{old('code')?old('code'):$targetArea->code}}"
+                                                       value="{{old('code')?old('code'):$targetterritory->code}}"
                                                        name="code">
                                                 @error('code')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
@@ -83,7 +83,7 @@
                                                 <input type="text" id="contact_no"
                                                        class="form-control @error('contact_no') is-invalid @enderror"
                                                        placeholder="Contact"
-                                                       value="{{old('contact_no')?old('contact_no'):$targetArea->contact_no}}"
+                                                       value="{{old('contact_no')?old('contact_no'):$targetterritory->contact_no}}"
                                                        name="contact_no">
                                                 @error('contact_no')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
@@ -92,9 +92,31 @@
 
                                         <div class="col-md-12">
                                             <div class="form-group">
+                                                <label for="employee_id">TSO</label>
+                                                <select id="employee_id" name="employee_id"
+                                                        class="select2 form-control @error('employee_id') is-invalid @enderror">
+                                                    <option value="none" selected="" disabled="">Select TSO
+                                                    </option>
+                                                    @foreach($employees as $key => $emp)
+                                                        @if ($targetterritory->employee_id == $emp->id)
+                                                            <option value="{{ $emp->id }}"
+                                                                    selected> {{ $emp->full_name }} </option>
+                                                        @else
+                                                            <option
+                                                                value="{{ $emp->id }}"> {{ $emp->full_name }} </option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                @error('employee_id')
+                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
                                                 <label for="address">Address</label>
                                                 <textarea name="address" id="address" cols="50" rows="10"
-                                                          class="form-control @error('address') is-invalid @enderror">{{old('address')?old('address'):$targetArea->address}}</textarea>
+                                                          class="form-control @error('address') is-invalid @enderror">{{old('address')?old('address'):$targetterritory->address}}</textarea>
                                                 @error('address')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
