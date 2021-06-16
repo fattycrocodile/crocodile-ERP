@@ -37,7 +37,7 @@ class Invoice extends Model
             ->select(DB::raw('sum(grand_total) as total'))
             ->whereYear('date','=',$year)
             ->whereMonth('date','=',$month)->first();
-        return $data ? $data->total : 0;
+        return $data ? round($data->total, 2) : 0;
     }
 
     public static function totalInvoiceCount()

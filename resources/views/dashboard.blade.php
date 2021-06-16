@@ -1,12 +1,12 @@
 @push('styles')
     <style>
 
-    #salesChart{
-        position: relative;
-        max-width: 1024px;
-        min-width: 320px;
-        margin: 0 auto;
-    }
+        #salesChart {
+            position: relative;
+            max-width: 1024px;
+            min-width: 320px;
+            margin: 0 auto;
+        }
     </style>
 @endpush
 
@@ -153,7 +153,7 @@
             </div>
             <div class="card-content collapse show">
                 <div class="card-body">
-                    <canvas id="salesChart" width="1000px" height="350px" ></canvas>
+                    <canvas id="salesChart" width="1000px" height="350px"></canvas>
                 </div>
             </div>
         </div>
@@ -310,8 +310,8 @@
                     yAxes: [{
                         ticks: {
                             beginAtZero: true,
-                            callback: function(value, index, values) {
-                                return value+" ";
+                            callback: function (value, index, values) {
+                                return value + " ";
                             }
                         }
                     }]
