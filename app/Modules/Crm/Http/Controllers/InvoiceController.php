@@ -7,12 +7,15 @@ use App\Http\Controllers\BaseController;
 use App\Model\User\User;
 use App\Modules\Accounting\Models\MoneyReceipt;
 use App\Modules\Config\Models\Lookup;
+use App\Modules\Crm\Models\Customers;
 use App\Modules\Crm\Models\Invoice;
 use App\Modules\Crm\Models\InvoiceDetails;
 use App\Modules\Crm\Models\InvoiceReturn;
 use App\Modules\Crm\Models\SellOrder;
 use App\Modules\StoreInventory\Models\Inventory;
 use App\Modules\StoreInventory\Models\Stores;
+use App\Modules\SupplyChain\Models\Area;
+use App\Modules\SupplyChain\Models\Territory;
 use App\Traits\UploadAble;
 use Carbon\Carbon;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
@@ -109,6 +112,16 @@ class InvoiceController extends BaseController
             $invoice->order_id = isset($params['order_id']) ? $params['order_id'] : NULL;
             $invoice->store_id = $params['store_id'];
             $invoice->customer_id = $customer_id = $params['customer_id'];
+
+            $customer = Customers::findOrFail($params['customer_id']);
+            $territory = Territory::findOrFail($customer->territory_id);
+            $area = Area::findOrFail($territory->area_id);
+
+            $invoice->area_id = $area ? $area->area_id : NULL;
+            $invoice->area_employee_id = $area ? $area->employee_id : NULL;
+            $invoice->territory_id = $customer ? $customer->territory_id : NULL;
+            $invoice->territory_employee_id = $territory ? $territory->employee_id : NULL;
+
             $invoice->discount_amount = 0;
             $invoice->grand_total = $grand_total = $params['grand_total'];
             $invoice->date = $date = $params['date'];
