@@ -33,6 +33,20 @@ class Purchase extends Model
         return $data ? $data->grand_total : 0;
     }
 
+    public static function monthlyPurchase($year, $month)
+    {
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0) {
+            return 0;
+        }else{
+            $data = DB::table('purchases')
+                ->select(DB::raw('sum(grand_total) as total'))
+                ->whereYear('date', '=', $year)
+                ->whereMonth('date', '=', $month)->first();
+            return $data ? round($data->total, 2) : 0;
+        }
+    }
+
     public function purchaseDetails()
     {
         return $this->hasMany(PurchaseDetails::class);

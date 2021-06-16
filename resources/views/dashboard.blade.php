@@ -216,10 +216,14 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Yearly Sales Analysis</h4>
-
                 <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                 <div class="heading-elements">
-
+                    <ul class="list-inline mb-0">
+                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                        <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                        <li><a data-action="close"><i class="ft-x"></i></a></li>
+                    </ul>
                 </div>
             </div>
             <div class="card-content collapse show">
@@ -230,11 +234,38 @@
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Order, Sales and Purchase analysis</h4>
+                <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                <div class="heading-elements">
+                    <ul class="list-inline mb-0">
+                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                        <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                        <li><a data-action="close"><i class="ft-x"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-content collapse show">
+                <div class="card-body chartjs">
+                    <canvas id="line-stacked-area" height="500"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @php
     $year = date('Y');
     $month = date('m')+1;
     $label = [];
     $data = [];
+    $dataOrder = [];
+    $dataPurchase = [];
 @endphp
 
 @for($i = 0; $i < 12; $i++)
@@ -246,19 +277,134 @@
                 $year -=1;
             }
         $monthSales = \App\Modules\Crm\Models\Invoice::monthlySales($year,$month);
+        $monthOrders = \App\Modules\Crm\Models\SellOrder::monthlyOrders($year,$month);
+        $monthPurchases = \App\Modules\Commercial\Models\Purchase::monthlyPurchase($year,$month);
         $monthOYear = date("M", mktime(0, 0, 0, $month, 10)).'-'.$year;
 
         array_push($label,$monthOYear);
         array_push($data,$monthSales);
+        array_push($dataOrder,$monthOrders);
+        array_push($dataPurchase,$monthPurchases);
         $rlabel = array_reverse($label);
         $rdata = array_reverse($data);
+        $salesArray = $rdata;
+        $ordersArray = array_reverse($dataOrder);
+        $purchaseArray = array_reverse($dataPurchase);
+
     @endphp
 @endfor
 
 <!--/Recent Orders & Monthly Salse -->
 @push('scripts')
 
+    <script src="{{asset('app-assets/vendors/js/charts/chart.min.js" type="text/javascript')}}"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.js"></script>
+
+
+
+    <script type="text/javascript">
+        $(window).on("load", function(){
+
+            //Get the context of the Chart canvas element we want to select
+            // var ctx = document.getElementById("line-stacked-area").getContext("2d");
+            var ctx = $('#line-stacked-area');
+
+            // Chart Options
+            var chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    position: 'bottom',
+                },
+                hover: {
+                    mode: 'label'
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        gridLines: {
+                            color: "#f3f3f3",
+                            drawTicks: false,
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Month'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        gridLines: {
+                            color: "#f3f3f3",
+                            drawTicks: false,
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Value'
+                        }
+                    }]
+                },
+                title: {
+                    display: true,
+                    text: 'Order, Sales and Purchase Analysis'
+                }
+            };
+
+            // Chart Data
+            var chartData = {
+                labels: <?php echo json_encode($rlabel); ?>,
+                datasets: [{
+                    label: "Orders",
+                    data: <?php echo json_encode($ordersArray); ?>,
+                    backgroundColor: "rgba(22,211,154,.5)",
+                    borderColor: "transparent",
+                    pointBorderColor: "#16D39A",
+                    pointBackgroundColor: "#FFF",
+                    pointBorderWidth: 2,
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 4,
+                }, {
+                    label: "Sales",
+                    data: <?php echo json_encode($salesArray); ?>,
+                    backgroundColor: "rgba(81,117,224,.5)",
+                    borderColor: "transparent",
+                    pointBorderColor: "#5175E0",
+                    pointBackgroundColor: "#FFF",
+                    pointBorderWidth: 2,
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 4,
+                }, {
+                    label: "Purchases",
+                    data: <?php echo json_encode($purchaseArray); ?>,
+                    backgroundColor: "rgba(249,142,118,.5)",
+                    borderColor: "transparent",
+                    pointBorderColor: "#F98E76",
+                    pointBackgroundColor: "#FFF",
+                    pointBorderWidth: 2,
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 4,
+                }]
+            };
+
+            var config = {
+                type: 'line',
+
+                // Chart Options
+                options : chartOptions,
+
+                // Chart Data
+                data : chartData
+            };
+
+            // Create the chart
+            var stackedAreaChart = new Chart(ctx, config);
+        });
+    </script>
+
+
+
+
+
 
 
     <script type="text/javascript">

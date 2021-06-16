@@ -28,6 +28,27 @@ class SellOrder extends Model
         return $data ? $data->total : 0;
     }
 
+    public static function monthlyOrders($year, $month)
+    {
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0) {
+            $data = DB::table('sell_orders')
+                ->select(DB::raw('sum(grand_total) as total'))
+                ->where('store_id','=',$store_id)
+                ->whereYear('date', '=', $year)
+                ->whereMonth('date', '=', $month)->first();
+            return $data ? round($data->total, 2) : 0;
+        }
+        else
+        {
+            $data = DB::table('sell_orders')
+                ->select(DB::raw('sum(grand_total) as total'))
+                ->whereYear('date', '=', $year)
+                ->whereMonth('date', '=', $month)->first();
+            return $data ? round($data->total, 2) : 0;
+        }
+    }
+
     public function store()
     {
         return $this->belongsTo(Stores::class);

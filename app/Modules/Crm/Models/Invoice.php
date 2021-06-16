@@ -33,11 +33,23 @@ class Invoice extends Model
 
     public static function monthlySales($year, $month)
     {
-        $data = DB::table('invoices')
-            ->select(DB::raw('sum(grand_total) as total'))
-            ->whereYear('date','=',$year)
-            ->whereMonth('date','=',$month)->first();
-        return $data ? round($data->total, 2) : 0;
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0) {
+            $data = DB::table('invoices')
+                ->select(DB::raw('sum(grand_total) as total'))
+                ->where('store_id','=',$store_id)
+                ->whereYear('date', '=', $year)
+                ->whereMonth('date', '=', $month)->first();
+            return $data ? round($data->total, 2) : 0;
+        }
+        else
+        {
+            $data = DB::table('invoices')
+                ->select(DB::raw('sum(grand_total) as total'))
+                ->whereYear('date', '=', $year)
+                ->whereMonth('date', '=', $month)->first();
+            return $data ? round($data->total, 2) : 0;
+        }
     }
 
     public static function totalInvoiceCount()
