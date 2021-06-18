@@ -238,7 +238,7 @@ class EmployeesController extends BaseController
         if ($request->has('search')) {
             $search = trim($request->search);
             $data = new Employees();
-            $data = $data->select('id', 'full_name', 'designation_id', 'department_id');
+            $data = $data->select('id', 'full_name', 'designation_id', 'department_id','contact_no');
             if ($search != '') {
                 $data = $data->where('full_name', 'like', '%' . $search . '%');
             }
@@ -262,6 +262,7 @@ class EmployeesController extends BaseController
                     $response[] = array(
                         "value" => $dt->id,
                         "label" => $dt->full_name,
+                        "phone" => $dt->contact_no,
                         "designation_id" => $dt->designation_id,
                         "department_id" => $dt->department_id,
                         'designation' => isset($dt->designation->name) ? $dt->designation->name : '',
@@ -283,7 +284,7 @@ class EmployeesController extends BaseController
         if ($request->has('search')) {
             $search = trim($request->search);
             $data = new Employees();
-            $data = $data->select('id', 'full_name', 'designation_id', 'department_id');
+            $data = $data->select('id', 'full_name', 'designation_id', 'department_id','contact_no');
             if ($search != '') {
                 $data = $data->where('contact_no', 'like', '%' . $search . '%');
             }
@@ -307,6 +308,7 @@ class EmployeesController extends BaseController
                     $response[] = array(
                         "value" => $dt->id,
                         "label" => $dt->full_name,
+                        "phone" => $dt->contact_no,
                         "designation_id" => $dt->designation_id,
                         "department_id" => $dt->department_id,
                         'designation' => isset($dt->designation->name) ? $dt->designation->name : '',

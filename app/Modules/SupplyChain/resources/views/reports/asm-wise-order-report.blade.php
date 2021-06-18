@@ -22,7 +22,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" id="basic-layout-form">AREA WISE ORDER REPORT CRITERIA</h4>
+                        <h4 class="card-title" id="basic-layout-form">AREA SALES MANAGER WISE ORDER REPORT CRITERIA</h4>
                         <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                         <div class="heading-elements">
                             <ul class="list-inline mb-0">
@@ -37,7 +37,7 @@
                         <div class="card-body">
                             <div class="card-text">
                             </div>
-                            <form class="form" id="mr-form" action="{{route('supply-chain.reports.area-wise-sell-order-view')}}"
+                            <form class="form" id="mr-form" action="{{route('supply-chain.reports.asm-wise-sell-order-view')}}"
                                   method="post"
                                   autocomplete="off">
                                 @csrf
@@ -68,29 +68,29 @@
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="area_name">Area Name</label>
+                                                <label for="asm_name">ASM Name</label>
                                                 <input type="text"
-                                                       class="form-control @error('area_name') is-invalid @enderror"
-                                                       id="area_name">
+                                                       class="form-control @error('asm_name') is-invalid @enderror"
+                                                       id="asm_name">
                                                 <input type="hidden"
-                                                       class="form-control @error('area_id') is-invalid @enderror"
-                                                       id="area_id" name="area_id" required>
-                                                @error('area_id')
+                                                       class="form-control @error('asm_id') is-invalid @enderror"
+                                                       id="asm_id" name="asm_id" required>
+                                                @error('asm_id')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="area_code">Area Code</label>
+                                                <label for="asm_phone">ASM Phone</label>
                                                 <input type="text"
-                                                       class="form-control @error('area_code') is-invalid @enderror"
-                                                       id="area_code">
+                                                       class="form-control @error('asm_phone') is-invalid @enderror"
+                                                       id="asm_phone">
                                             </div>
                                         </div>
                                         <div class="col-12">
                                         <div class="form-actions center">
                                             <a type="button" class="btn btn-warning mb-1"
-                                               href="{{route('supply-chain.reports.area-wise-sell-order')}}">
+                                               href="{{route('supply-chain.reports.asm-wise-sell-order')}}">
                                                 <i class="ft-refresh-ccw"></i> Reload
                                             </a>
                                             <button type="submit" class="btn btn-primary mb-1 search-btn" name="report-view"
@@ -115,7 +115,7 @@
         <div class="col-sm-12">
             <div id="kick-start" class="card">
                 <div class="card-header">
-                    <h4 class="card-title">AREA WISE ORDER REPORT</h4>
+                    <h4 class="card-title">AREA SALES MANAGER WISE ORDER REPORT</h4>
                 </div>
                 <div class="card-content collapse show">
                     <div class="card-body">
@@ -172,12 +172,12 @@
         // CSRF Token
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         // customer name wise search start
-        $("#area_name").autocomplete({
+        $("#asm_name").autocomplete({
             minLength: 1,
             autoFocus: true,
             source: function (request, response) {
                 $.ajax({
-                    url: "{{ route('area.name.autocomplete') }}",
+                    url: "{{ route('employee.list.autocomplete') }}",
                     type: 'post',
                     dataType: "json",
                     data: {
@@ -196,17 +196,17 @@
             },
             select: function (event, ui) {
                 if (ui.item.value != '' || ui.item.value > 0) {
-                    $('#area_name').val(ui.item.name);
-                    $('#area_id').val(ui.item.value);
-                    $('#area_code').val(ui.item.code);
+                    $('#asm_name').val(ui.item.label);
+                    $('#asm_id').val(ui.item.value);
+                    $('#asm_phone').val(ui.item.phone);
                 } else {
-                    resetArea();
+                    resetAsm();
                 }
                 return false;
             },
         }).data("ui-autocomplete")._renderItem = function (ul, item) {
 
-            var inner_html = '<div>' + item.label + ' (<i>' + item.code + ')</i></div>';
+            var inner_html = '<div>' + item.label + ' (<i>' + item.phone + ')</i></div>';
             return $("<li>")
                 .data("item.autocomplete", item)
                 .append(inner_html)
@@ -215,13 +215,13 @@
         // customer name wise search end
 
         // customer name wise search start
-        $("#area_code").autocomplete({
+        $("#asm_phone").autocomplete({
             minLength: 1,
             autoFocus: true,
             source: function (request, response) {
                 // console.log('customer_code');
                 $.ajax({
-                    url: "{{ route('area.code.autocomplete') }}",
+                    url: "{{ route('employee.phone.autocomplete') }}",
                     type: 'post',
                     dataType: "json",
                     data: {
@@ -238,16 +238,16 @@
             },
             select: function (event, ui) {
                 if (ui.item.value != '' || ui.item.value > 0) {
-                    $('#area_name').val(ui.item.name);
-                    $('#area_id').val(ui.item.value);
-                    $('#area_code').val(ui.item.code);
+                    $('#asm_name').val(ui.item.label);
+                    $('#asm_id').val(ui.item.value);
+                    $('#asm_phone').val(ui.item.phone);
                 } else {
-                    resetCustomer();
+                    resetAsm();
                 }
                 return false;
             },
         }).data("ui-autocomplete")._renderItem = function (ul, item) {
-            var inner_html = '<div>' + item.label + ' (<i>' + item.code + ')</i></div>';
+            var inner_html = '<div>' + item.label + ' (<i>' + item.phone + ')</i></div>';
             return $("<li>")
                 .data("item.autocomplete", item)
                 .append(inner_html)
@@ -293,7 +293,7 @@
                 }
             });
             $.ajax({
-                url: "{{ route('supply-chain.reports.area-wise-sell-order-view') }}",
+                url: "{{ route('supply-chain.reports.asm-wise-sell-order-view') }}",
                 type: 'post',
                 dataType: "json",
                 cache: false,
@@ -347,10 +347,11 @@
             }
         }
 
-        function resetArea()
+        function resetAsm()
         {
-            $('#area_name').val("");
-            $('#area_id').val(0);
+            $('#asm_name').val('');
+            $('#asm_id').val(0);
+            $('#asm_phone').val('');
         }
     </script>
 @endpush
