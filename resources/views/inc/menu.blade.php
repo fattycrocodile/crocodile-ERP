@@ -533,6 +533,30 @@
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('supply-chain.reports.area-wise-sell-order') }}"
+                                   data-toggle="dropdown">Area Wise Sales Order Reports
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('supply-chain.reports.territory-wise-sell-order') }}"
+                                   data-toggle="dropdown">Territory Wise Sales Order Reports
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('supply-chain.reports.asm-wise-sell-order') }}"
+                                   data-toggle="dropdown">ASM Wise Sales Order Reports
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('supply-chain.reports.tso-wise-sell-order') }}"
+                                   data-toggle="dropdown">TSO Wise Sales Order Reports
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
