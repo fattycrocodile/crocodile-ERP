@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title') {{ isset($pageTitle) ? $pageTitle : 'Employees Attendance Report' }} @endsection
+@section('title') {{ isset($pageTitle) ? $pageTitle : 'Sales Order Report' }} @endsection
 
 @push('styles')
     <!-- CSS -->
@@ -22,7 +22,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" id="basic-layout-form">EMPLOYEE ATTENDANCE REPORT CRITERIA</h4>
+                        <h4 class="card-title" id="basic-layout-form">TERRITORY SALES OFFICER WISE ORDER REPORT CRITERIA</h4>
                         <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                         <div class="heading-elements">
                             <ul class="list-inline mb-0">
@@ -37,7 +37,7 @@
                         <div class="card-body">
                             <div class="card-text">
                             </div>
-                            <form class="form" id="mr-form" action="{{route('hr.reports.attendance-report-view')}}"
+                            <form class="form" id="mr-form" action="{{route('supply-chain.reports.tso-wise-sell-order-view')}}"
                                   method="post"
                                   autocomplete="off">
                                 @csrf
@@ -68,125 +68,40 @@
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="store_id">Store</label>
-                                                <select id="store_id" name="store_id"
-                                                        class="select2 form-control @error('store_id') is-invalid @enderror">
-                                                    <option value="" selected="">Select Store</option>
-                                                    @foreach($stores as $key => $store)
-                                                        <option value="{{ $key }}"> {{ $store }} </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('store_id')
-                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="department_id">Department</label>
-                                                <select id="department_id" name="department_id"
-                                                        class="select2 form-control @error('department_id') is-invalid @enderror">
-                                                    <option value="" selected="">Select Department</option>
-                                                    @foreach($department as $key => $dep)
-                                                        <option value="{{ $key }}"> {{ $dep->name }} </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('department_id')
-                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="designation_id">Designation</label>
-                                                <select id="designation_id" name="designation_id"
-                                                        class="select2 form-control @error('designation_id') is-invalid @enderror">
-                                                    <option value="" selected="">Select Designation</option>
-                                                    @foreach($designation as $key => $dsg)
-                                                        <option value="{{ $key }}"> {{ $dsg->name }} </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('designation_id')
-                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="gender_id">Gender</label>
-                                                <select id="gender_id" name="gender_id"
-                                                        class="select2 form-control @error('gender_id') is-invalid @enderror">
-                                                    <option value="" selected="">Select Gender</option>
-                                                    @foreach($genders as $key => $gender)
-                                                        <option value="{{ $key }}"> {{ $gender }} </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('gender_id')
-                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="religion_id">Religion</label>
-                                                <select id="religion_id" name="religion_id"
-                                                        class="select2 form-control @error('religion_id') is-invalid @enderror">
-                                                    <option value="" selected="">Select Religion</option>
-                                                    @foreach($religions as $key => $religion)
-                                                        <option value="{{ $key }}"> {{ $religion }} </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('religion_id')
-                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="marital_status">Martial Status</label>
-                                                <select id="marital_status" name="marital_status"
-                                                        class="select2 form-control @error('marital_status') is-invalid @enderror">
-                                                    <option value="" selected="">Select Marital Status</option>
-                                                    @foreach($marital_status as $key => $status)
-                                                        <option value="{{ $key }}"> {{ $status }} </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('marital_status')
-                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="full_name">Name</label>
+                                                <label for="tso_name">TSO Name</label>
                                                 <input type="text"
-                                                       class="form-control @error('full_name') is-invalid @enderror"
-                                                       id="full_name" name="full_name">
-                                                @error('full_name')
+                                                       class="form-control @error('tso_name') is-invalid @enderror"
+                                                       id="tso_name">
+                                                <input type="hidden"
+                                                       class="form-control @error('tso_id') is-invalid @enderror"
+                                                       id="tso_id" name="tso_id" required>
+                                                @error('tso_id')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="contact_no">Contact</label>
+                                                <label for="tso_phone">TSO Phone</label>
                                                 <input type="text"
-                                                       class="form-control @error('contact_no') is-invalid @enderror"
-                                                       id="contact_no" name="contact_no">
-                                                @error('contact_no')
-                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                                       class="form-control @error('tso_phone') is-invalid @enderror"
+                                                       id="tso_phone">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-12">
+                                        <div class="col-12">
                                         <div class="form-actions center">
                                             <a type="button" class="btn btn-warning mb-1"
-                                               href="{{route('hr.reports.attendance-report')}}">
+                                               href="{{route('supply-chain.reports.tso-wise-sell-order')}}">
                                                 <i class="ft-refresh-ccw"></i> Reload
                                             </a>
-                                            <button type="submit" class="btn btn-primary mb-1 search-btn"
-                                                    name="report-view"
+                                            <button type="submit" class="btn btn-primary mb-1 search-btn" name="report-view"
                                                     id="report-view">
                                                 <i class="fa fa-search"></i> Search
                                             </button>
-                                            <button type="button" class="btn btn-success mb-1 loading-text"
-                                                    style="display: none;">
+                                            <button type="button" class="btn btn-success mb-1 loading-text" style="display: none;">
                                                 <i class="fa fa-spinner fa-pulse fa-fw"></i> Please wait..
                                             </button>
                                         </div>
+                                    </div>
                                     </div>
                                 </div>
                             </form>
@@ -200,7 +115,7 @@
         <div class="col-sm-12">
             <div id="kick-start" class="card">
                 <div class="card-header">
-                    <h4 class="card-title">ATTENDANCE REPORT</h4>
+                    <h4 class="card-title">TERRITORY SALES OFFICER WISE ORDER REPORT</h4>
                 </div>
                 <div class="card-content collapse show">
                     <div class="card-body">
@@ -253,10 +168,11 @@
             });
         });
 
+
         // CSRF Token
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         // customer name wise search start
-        $("#full_name").autocomplete({
+        $("#tso_name").autocomplete({
             minLength: 1,
             autoFocus: true,
             source: function (request, response) {
@@ -280,11 +196,11 @@
             },
             select: function (event, ui) {
                 if (ui.item.value != '' || ui.item.value > 0) {
-                    $('#full_name').val(ui.item.label);
-                    $('#employee_id').val(ui.item.value);
-                    $('#contact_no').val(ui.item.phone);
+                    $('#tso_name').val(ui.item.label);
+                    $('#tso_id').val(ui.item.value);
+                    $('#tso_phone').val(ui.item.phone);
                 } else {
-                    resetEmployee();
+                    resetTso();
                 }
                 return false;
             },
@@ -299,7 +215,7 @@
         // customer name wise search end
 
         // customer name wise search start
-        $("#contact_no").autocomplete({
+        $("#tso_phone").autocomplete({
             minLength: 1,
             autoFocus: true,
             source: function (request, response) {
@@ -322,11 +238,11 @@
             },
             select: function (event, ui) {
                 if (ui.item.value != '' || ui.item.value > 0) {
-                    $('#full_name').val(ui.item.label);
-                    $('#employee_id').val(ui.item.value);
-                    $('#contact_no').val(ui.item.phone);
+                    $('#tso_name').val(ui.item.label);
+                    $('#tso_id').val(ui.item.value);
+                    $('#tso_phone').val(ui.item.phone);
                 } else {
-                    resetEmployee();
+                    resetTso();
                 }
                 return false;
             },
@@ -339,6 +255,11 @@
         };
         // customer code wise search end
 
+
+
+
+
+
         $(document).ready(function () {
             $(document).on('focus', ':input', function () {
                 $(this).attr('autocomplete', 'off');
@@ -348,6 +269,19 @@
         $().ready(function () {
             $('form#mr-form').submit(function (e) {
                 e.preventDefault();
+                // Get the Login Name value and trim it
+                var start_date = $.trim($('#start_date').val());
+                var end_date = $.trim($('#end_date').val());
+
+                if (start_date === '') {
+                    toastr.warning(" Please select  start date!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+                if (end_date === '') {
+                    toastr.warning(" Please select  end date!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+
                 ajaxSave();
             });
         });
@@ -359,12 +293,16 @@
                 }
             });
             $.ajax({
-                url: "{{ route('hr.reports.attendance-report-view') }}",
+                url: "{{ route('supply-chain.reports.tso-wise-sell-order-view') }}",
                 type: 'post',
                 dataType: "json",
                 cache: false,
                 data: $('form').serialize(),
                 beforeSend: function () {
+                    if (start_date === "" || end_date === "") {
+                        toastr.warning(" Please select date range!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                        return false;
+                    }
                     $(".loading-text").show();
                     $(".search-btn").hide();
                 },
@@ -409,11 +347,11 @@
             }
         }
 
-
-        function resetEmployee(){
-            $('#full_name').val("");
-            $('#employee_id').val(0);
-            $('#contact_no').val("");
+        function resetTso()
+        {
+            $('#tso_name').val('');
+            $('#tso_id').val(0);
+            $('#tso_phone').val('');
         }
     </script>
 @endpush
