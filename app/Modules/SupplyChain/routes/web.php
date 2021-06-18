@@ -2,6 +2,7 @@
 
 use App\Modules\SupplyChain\Http\Controllers\AreaController;
 use App\Modules\SupplyChain\Http\Controllers\TerritoryController;
+use App\Modules\Crm\Http\Controllers\SellOrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('supply-chain', 'SupplyChainController@welcome');
@@ -27,4 +28,12 @@ Route::group(['prefix' => 'supply-chain/', 'middleware' => ['auth:web'], 'as' =>
         Route::post('/{id}/update', [TerritoryController::class, 'update'])->name('update');
         Route::delete('/{id}/delete', [TerritoryController::class, 'delete'])->name('delete');
     });
+
+
+});
+
+Route::group(['prefix' => 'supply-chain/reports'], function () {
+
+    Route::get('/area_wise_sales_order_report', [SellOrderController::class, 'areaOrderReport'])->name('supply-chain.reports.area-wise-sell-order');
+    Route::post('/area_wise_sales_order_report_view', [SellOrderController::class,'areaOrderReportView'])->name('supply-chain.reports.area-wise-sell-order-view');
 });

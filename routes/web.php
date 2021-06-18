@@ -44,6 +44,11 @@ Route::group(['middleware' => ['auth:web']], function () {
             Route::post('/due-invoice-list', 'InvoiceController@getDueInvoiceList')->name('crm.invoice.due_invoice');
         });
 
+        Route::group(array('module' => 'SupplyChain', 'namespace' => '\App\Modules\SupplyChain\Http\Controllers'), function () {
+            Route::post('/area-list', 'AreaController@getAreaListByName')->name('area.name.autocomplete');
+            Route::post('/area-list-code', 'AreaController@getAreaListByCode')->name('area.code.autocomplete');
+        });
+
         Route::group(array('module' => 'Commercial', 'namespace' => '\App\Modules\Commercial\Http\Controllers'), function () {
             Route::post('/supplier-list', 'SuppliersController@getSupplierListByName')->name('supplier.name.autocomplete');
             Route::post('/supplier-contact-list', 'SuppliersController@getSupplierListByContactNo')->name('supplier.contact.autocomplete');

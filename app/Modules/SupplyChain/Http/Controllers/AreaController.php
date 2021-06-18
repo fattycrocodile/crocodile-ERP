@@ -5,6 +5,7 @@ namespace App\Modules\SupplyChain\Http\Controllers;
 use App\DataTables\AreaDataTable;
 use App\Http\Controllers\BaseController;
 use App\Model\User\User;
+use App\Modules\Crm\Models\Customers;
 use App\Modules\Hr\Models\Employees;
 use App\Modules\StoreInventory\Models\Category;
 use App\Modules\StoreInventory\Models\Stores;
@@ -135,6 +136,57 @@ class AreaController extends BaseController
         return $this->responseRedirect('supplyChain.area.index', 'Area Edited successfully', 'success', false, false);
     }
 
+    public function getAreaListByName(Request $request): ?JsonResponse
+    {
+        $response = array();
+        if ($request->has('search')) {
+            $search = trim($request->search);
+            $data = new Area();
+            $data = $data->select('id', 'name','code');
+            if ($search != '') {
+                $data = $data->where('name', 'like', '%' . $search . '%');
+            }
+            $data = $data->limit(20);
+            $data = $data->orderby('name', 'asc');
+            $data = $data->get();
+            if (!$data->isEmpty()) {
+                foreach ($data as $dt) {
+                    $response[] = array("value" => $dt->id, "label" => $dt->name, 'name' => $dt->name, 'code' => $dt->code);
+                }
+            } else {
+                $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'code' => '');
+            }
+        } else {
+            $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'code' => '');
+        }
+        return response()->json($response);
+    }
+
+    public function getAreaListByCode(Request $request): ?JsonResponse
+    {
+        $response = array();
+        if ($request->has('search')) {
+            $search = trim($request->search);
+            $data = new Area();
+            $data = $data->select('id', 'name','code');
+            if ($search != '') {
+                $data = $data->where('code', 'like', '%' . $search . '%');
+            }
+            $data = $data->limit(20);
+            $data = $data->orderby('name', 'asc');
+            $data = $data->get();
+            if (!$data->isEmpty()) {
+                foreach ($data as $dt) {
+                    $response[] = array("value" => $dt->id, "label" => $dt->name, 'name' => $dt->name, 'code' => $dt->code);
+                }
+            } else {
+                $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'code' => '');
+            }
+        } else {
+            $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'code' => '');
+        }
+        return response()->json($response);
+    }
     /**
      * @param $id
      * @return JsonResponse

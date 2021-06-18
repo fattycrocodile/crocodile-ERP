@@ -293,4 +293,36 @@ class SellOrderController extends BaseController
         $returnHTML = view('Crm::sell-order.order-report-view', compact('data', 'start_date', 'end_date', 'store_id', 'customer_id'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
     }
+
+    public function areaOrderReport()
+    {
+        $this->setPageTitle('Area Wise Order Report', 'Area Wise Order Report');
+        return view('SupplyChain::reports.area-wise-order-report');
+    }
+
+    public function areaOrderReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $area_id = trim($request->area_id);
+            $data = new SellOrder();
+            $data = $data->where('date', '>=', $start_date);
+            $data = $data->where('date', '<=', $end_date);
+            if ($area_id > 0) {
+                $data = $data->where('area_id', '=', $area_id);
+            }
+            $user_store_id = User::getStoreId(auth()->user()->id);
+            if ($user_store_id > 0){
+                $data = $data->where('store_id', '=', $user_store_id);
+            }
+            $data = $data->orderby('date', 'asc');
+            $data = $data->get();
+        }
+
+        $returnHTML = view('SupplyChain::reports.area-wise-order-report-view', compact('data', 'start_date', 'end_date', 'area_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
 }
