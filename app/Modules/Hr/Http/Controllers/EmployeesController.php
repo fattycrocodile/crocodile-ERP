@@ -277,6 +277,51 @@ class EmployeesController extends BaseController
         return response()->json($response);
     }
 
+    public function getEmployeesListByPhone(Request $request): ?JsonResponse
+    {
+        $response = array();
+        if ($request->has('search')) {
+            $search = trim($request->search);
+            $data = new Employees();
+            $data = $data->select('id', 'full_name', 'designation_id', 'department_id');
+            if ($search != '') {
+                $data = $data->where('contact_no', 'like', '%' . $search . '%');
+            }
+            if ($request->has('department_id')) {
+                $designation_id = trim($request->designation_id);
+                if ($designation_id > 0) {
+                    $data = $data->where('designation_id', '=', $designation_id);
+                }
+            }
+            if ($request->has('department_id')) {
+                $department_id = trim($request->department_id);
+                if ($department_id > 0) {
+                    $data = $data->where('department_id', '=', $department_id);
+                }
+            }
+            $data = $data->limit(20);
+            $data = $data->orderby('full_name', 'asc');
+            $data = $data->get();
+            if (!$data->isEmpty()) {
+                foreach ($data as $dt) {
+                    $response[] = array(
+                        "value" => $dt->id,
+                        "label" => $dt->full_name,
+                        "designation_id" => $dt->designation_id,
+                        "department_id" => $dt->department_id,
+                        'designation' => isset($dt->designation->name) ? $dt->designation->name : '',
+                        'department' => isset($dt->department->name) ? $dt->department->name : '',
+                    );
+                }
+            } else {
+                $response[] = array("value" => '', "label" => 'No data found!', 'designation' => '', 'department_id' => '', 'department' => '');
+            }
+        } else {
+            $response[] = array("value" => '', "label" => 'No data found!', "designation" => '', 'department_id' => '', 'department' => '');
+        }
+        return response()->json($response);
+    }
+
     public function employeesReport()
     {
         $stores = $this->stores->treeList();

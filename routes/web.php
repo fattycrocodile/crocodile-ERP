@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth:web']], function () {
 
         Route::group(array('module' => 'Hr', 'namespace' => '\App\Modules\Hr\Http\Controllers'), function () {
             Route::post('/employee-list', 'EmployeesController@getEmployeesListByName')->name('employee.list.autocomplete');
+            Route::post('/employee-list-phone', 'EmployeesController@getEmployeesListByPhone')->name('employee.phone.autocomplete');
             Route::post('/employee-list-for-attendance', 'AttendanceController@getEmployeesListForAttendance')->name('employee.list.attendance');
             Route::post('/employee-list-for-salary', 'SalarySetupController@getEmployeesListForSalary')->name('employee.list.salary-setup');
         });
@@ -47,6 +48,9 @@ Route::group(['middleware' => ['auth:web']], function () {
         Route::group(array('module' => 'SupplyChain', 'namespace' => '\App\Modules\SupplyChain\Http\Controllers'), function () {
             Route::post('/area-list', 'AreaController@getAreaListByName')->name('area.name.autocomplete');
             Route::post('/area-list-code', 'AreaController@getAreaListByCode')->name('area.code.autocomplete');
+
+            Route::post('/territory-list', 'TerritoryController@getTerritoryListByName')->name('territory.name.autocomplete');
+            Route::post('/territory-list-code', 'TerritoryController@getTerritoryListByCode')->name('territory.code.autocomplete');
         });
 
         Route::group(array('module' => 'Commercial', 'namespace' => '\App\Modules\Commercial\Http\Controllers'), function () {

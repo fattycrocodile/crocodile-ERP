@@ -37,12 +37,12 @@ Route::group(['prefix' => 'supply-chain/reports'], function () {
     Route::get('/area_wise_sales_order_report', [SellOrderController::class, 'areaOrderReport'])->name('supply-chain.reports.area-wise-sell-order');
     Route::post('/area_wise_sales_order_report_view', [SellOrderController::class,'areaOrderReportView'])->name('supply-chain.reports.area-wise-sell-order-view');
 
-    Route::get('/territory_wise_sales_order_report', [SellOrderController::class, 'areaOrderReport'])->name('supply-chain.reports.territory-wise-sell-order');
-    Route::post('/territory_wise_sales_order_report_view', [SellOrderController::class,'areaOrderReportView'])->name('supply-chain.reports.territory-wise-sell-order-view');
+    Route::get('/territory_wise_sales_order_report', [SellOrderController::class, 'territoryOrderReport'])->name('supply-chain.reports.territory-wise-sell-order');
+    Route::post('/territory_wise_sales_order_report_view', [SellOrderController::class,'territoryOrderReportView'])->name('supply-chain.reports.territory-wise-sell-order-view');
 
-    Route::get('/asm_wise_sales_order_report', [SellOrderController::class, 'areaOrderReport'])->name('supply-chain.reports.asm-wise-sell-order');
-    Route::post('/area_wise_sales_order_report_view', [SellOrderController::class,'areaOrderReportView'])->name('supply-chain.reports.asm-wise-sell-order-view');
+    Route::get('/asm_wise_sales_order_report', [SellOrderController::class, 'asmOrderReport'])->name('supply-chain.reports.asm-wise-sell-order');
+    Route::post('/asm_wise_sales_order_report_view', [SellOrderController::class,'asmOrderReportView'])->name('supply-chain.reports.asm-wise-sell-order-view');
 
-    Route::get('/tso_wise_sales_order_report', [SellOrderController::class, 'areaOrderReport'])->name('supply-chain.reports.tso-wise-sell-order');
-    Route::post('/tso_wise_sales_order_report_view', [SellOrderController::class,'areaOrderReportView'])->name('supply-chain.reports.tso-wise-sell-order-view');
+    Route::get('/tso_wise_sales_order_report', [SellOrderController::class, 'tsoOrderReport'])->name('supply-chain.reports.tso-wise-sell-order');
+    Route::post('/tso_wise_sales_order_report_view', [SellOrderController::class,'tsoOrderReportView'])->name('supply-chain.reports.tso-wise-sell-order-view');
 });

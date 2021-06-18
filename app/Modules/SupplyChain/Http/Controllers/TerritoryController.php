@@ -128,6 +128,68 @@ class TerritoryController extends BaseController
         return $this->responseRedirect('supplyChain.territory.index', 'Territory Edited successfully', 'success', false, false);
     }
 
+
+    public function getTerritoryListByName(Request $request): ?JsonResponse
+    {
+        $response = array();
+        if ($request->has('search')) {
+            $search = trim($request->search);
+            $area_id = trim($request->area_id);
+            $data = new Territory();
+            $data = $data->select('id', 'name','code');
+            if ($search != '') {
+                $data = $data->where('name', 'like', '%' . $search . '%');
+            }
+            if ($area_id != '') {
+                $data = $data->where('area_id', 'like', '%' . $area_id . '%');
+            }
+            $data = $data->limit(20);
+            $data = $data->orderby('name', 'asc');
+            $data = $data->get();
+            if (!$data->isEmpty()) {
+                foreach ($data as $dt) {
+                    $response[] = array("value" => $dt->id, "label" => $dt->name, 'name' => $dt->name, 'code' => $dt->code);
+                }
+            } else {
+                $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'code' => '');
+            }
+        } else {
+            $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'code' => '');
+        }
+        return response()->json($response);
+    }
+
+    public function getTerritoryListByCode(Request $request): ?JsonResponse
+    {
+        $response = array();
+        if ($request->has('search')) {
+            $search = trim($request->search);
+            $area_id = trim($request->area_id);
+            $data = new Territory();
+            $data = $data->select('id', 'name','code');
+            if ($search != '') {
+                $data = $data->where('code', 'like', '%' . $search . '%');
+            }
+            if ($area_id != '') {
+                $data = $data->where('area_id', 'like', '%' . $area_id . '%');
+            }
+            $data = $data->limit(20);
+            $data = $data->orderby('name', 'asc');
+            $data = $data->get();
+            if (!$data->isEmpty()) {
+                foreach ($data as $dt) {
+                    $response[] = array("value" => $dt->id, "label" => $dt->name, 'name' => $dt->name, 'code' => $dt->code);
+                }
+            } else {
+                $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'code' => '');
+            }
+        } else {
+            $response[] = array("value" => '', "label" => 'No data found!', 'name' => '', 'code' => '');
+        }
+        return response()->json($response);
+    }
+
+
     /**
      * @param $id
      * @return JsonResponse

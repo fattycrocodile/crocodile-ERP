@@ -325,4 +325,101 @@ class SellOrderController extends BaseController
         $returnHTML = view('SupplyChain::reports.area-wise-order-report-view', compact('data', 'start_date', 'end_date', 'area_id'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
     }
+
+    public function territoryOrderReport()
+    {
+        $this->setPageTitle('Area Wise Order Report', 'Area Wise Order Report');
+        return view('SupplyChain::reports.territory-wise-order-report');
+    }
+
+    public function territoryOrderReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $territory_id = trim($request->territory_id);
+            $data = new SellOrder();
+            $data = $data->where('date', '>=', $start_date);
+            $data = $data->where('date', '<=', $end_date);
+            if ($territory_id > 0) {
+                $data = $data->where('territory_id', '=', $territory_id);
+            }
+            $user_store_id = User::getStoreId(auth()->user()->id);
+            if ($user_store_id > 0){
+                $data = $data->where('store_id', '=', $user_store_id);
+            }
+            $data = $data->orderby('date', 'asc');
+            $data = $data->get();
+        }
+
+        $returnHTML = view('SupplyChain::reports.territory-wise-order-report-view', compact('data', 'start_date', 'end_date', 'territory_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
+
+    public function asmOrderReport()
+    {
+        $this->setPageTitle('Area Wise Order Report', 'Area Wise Order Report');
+        return view('SupplyChain::reports.asm-wise-order-report');
+    }
+
+    public function asmOrderReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $asm_id = trim($request->asm_id);
+            $data = new SellOrder();
+            $data = $data->where('date', '>=', $start_date);
+            $data = $data->where('date', '<=', $end_date);
+            if ($asm_id > 0) {
+                $data = $data->where('area_employee_id', '=', $asm_id);
+            }
+            $user_store_id = User::getStoreId(auth()->user()->id);
+            if ($user_store_id > 0){
+                $data = $data->where('store_id', '=', $user_store_id);
+            }
+            $data = $data->orderby('date', 'asc');
+            $data = $data->get();
+        }
+
+        $returnHTML = view('SupplyChain::reports.asm-wise-order-report-view', compact('data', 'start_date', 'end_date', 'asm_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
+
+    public function tsoOrderReport()
+    {
+        $this->setPageTitle('Area Wise Order Report', 'Area Wise Order Report');
+        return view('SupplyChain::reports.tso-wise-order-report');
+    }
+
+    public function tsoOrderReportView(Request $request): ?JsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $tso_id = trim($request->tso_id);
+            $data = new SellOrder();
+            $data = $data->where('date', '>=', $start_date);
+            $data = $data->where('date', '<=', $end_date);
+            if ($tso_id > 0) {
+                $data = $data->where('territory_employee_id', '=', $tso_id);
+            }
+            $user_store_id = User::getStoreId(auth()->user()->id);
+            if ($user_store_id > 0){
+                $data = $data->where('store_id', '=', $user_store_id);
+            }
+            $data = $data->orderby('date', 'asc');
+            $data = $data->get();
+        }
+
+        $returnHTML = view('SupplyChain::reports.asm-wise-order-report-view', compact('data', 'start_date', 'end_date', 'tso_id'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
+
 }
