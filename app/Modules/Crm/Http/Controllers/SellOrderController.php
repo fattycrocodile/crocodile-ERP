@@ -319,6 +319,7 @@ class SellOrderController extends BaseController
                 $data = $data->where('store_id', '=', $user_store_id);
             }
             $data = $data->orderby('date', 'asc');
+            $data = $data->orderby('area_employee_id', 'asc');
             $data = $data->get();
         }
 
@@ -351,6 +352,7 @@ class SellOrderController extends BaseController
                 $data = $data->where('store_id', '=', $user_store_id);
             }
             $data = $data->orderby('date', 'asc');
+            $data = $data->orderby('area_employee_id', 'asc');
             $data = $data->get();
         }
 
@@ -401,6 +403,7 @@ class SellOrderController extends BaseController
                     ->where('date','>=',$start_date)
                     ->where('date','<=',$end_date)
                     ->groupBy('sell_orders.territory_employee_id')
+                    ->orderBy('area_employee_id','asc')
                     ->get();
             }
         }
@@ -434,6 +437,7 @@ class SellOrderController extends BaseController
                 $data = $data->where('store_id', '=', $user_store_id);
             }
             $data = $data->orderby('date', 'asc');
+            $data = $data->orderby('area_employee_id', 'asc');
             $data = $data->get();
         }
 
