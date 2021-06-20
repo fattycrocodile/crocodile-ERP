@@ -9,6 +9,10 @@
                     <th class="text-center;">#</th>
                     <th>Date</th>
                     <th>Store</th>
+                    <th>Area</th>
+                    <th>ASM Name</th>
+                    <th>Territory</th>
+                    <th>TSO Name</th>
                     <th>Customer</th>
                     <th>Amount</th>
                 </tr>
@@ -25,12 +29,16 @@
                         <th scope="row" class="text-center">{{ ++$key }}</th>
                         <td>{{ $dt->date }}</td>
                         <td>{{ $dt->store->name }}</td>
+                        <td>{{ \App\Modules\SupplyChain\Models\Area::getAreaNameById($dt->area_id)  }}</td>
+                        <td>{{ \App\Modules\Hr\Models\Employees::getEmployeeNameById($dt->area_employee_id)  }}</td>
+                        <td>{{ \App\Modules\SupplyChain\Models\Territory::getTerritoryNameById($dt->territory_id)  }}</td>
+                        <td>{{ \App\Modules\Hr\Models\Employees::getEmployeeNameById($dt->territory_employee_id)  }}</td>
                         <td>{{ $dt->customer->name }}</td>
                         <td class="text-right">{{ number_format($dt->grand_total, 2) }}</td>
                     </tr>
                 @endforeach
                 <tr>
-                    <td colspan="4" class="text-right">GRAND TOTAL</td>
+                    <td colspan="8" class="text-right">GRAND TOTAL</td>
                     <td class="text-right">{{ number_format($grand_total, 2) }}</td>
                 </tr>
                 </tbody>
