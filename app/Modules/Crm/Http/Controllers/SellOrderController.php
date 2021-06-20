@@ -360,7 +360,7 @@ class SellOrderController extends BaseController
 
     public function asmOrderReport()
     {
-        $this->setPageTitle('Area Wise Order Report', 'Area Wise Order Report');
+        $this->setPageTitle('ASM Wise Order Report', 'ASM Wise Order Report');
         return view('SupplyChain::reports.asm-wise-order-report');
     }
 
@@ -403,11 +403,6 @@ class SellOrderController extends BaseController
                     ->groupBy('sell_orders.territory_employee_id')
                     ->get();
             }
-            $user_store_id = User::getStoreId(auth()->user()->id);
-            /*if ($user_store_id > 0){
-                $data = $data->where('store_id', '=', $user_store_id);
-            }*/
-
         }
 
         $returnHTML = view('SupplyChain::reports.asm-wise-order-report-view', compact('data', 'start_date', 'end_date', 'asm_id'))->render();
@@ -416,7 +411,7 @@ class SellOrderController extends BaseController
 
     public function tsoOrderReport()
     {
-        $this->setPageTitle('Area Wise Order Report', 'Area Wise Order Report');
+        $this->setPageTitle('TSO Wise Order Report', 'TSO Wise Order Report');
         return view('SupplyChain::reports.tso-wise-order-report');
     }
 
@@ -442,7 +437,7 @@ class SellOrderController extends BaseController
             $data = $data->get();
         }
 
-        $returnHTML = view('SupplyChain::reports.asm-wise-order-report-view', compact('data', 'start_date', 'end_date', 'tso_id'))->render();
+        $returnHTML = view('SupplyChain::reports.tso-wise-order-report-view', compact('data', 'start_date', 'end_date', 'tso_id'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 

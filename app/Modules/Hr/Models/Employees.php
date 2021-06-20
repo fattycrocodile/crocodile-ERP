@@ -25,6 +25,14 @@ class Employees extends Model
         return $data ? $data->total : 0;
     }
 
+    public static function getEmployeeNameById($employee_id)
+    {
+        $data = DB::table('employees')
+            ->select(DB::raw('full_name'))
+            ->where('id','=',$employee_id)
+            ->first();
+        return $data ? $data->full_name : 'N/A';
+    }
 
     public function department()
     {
