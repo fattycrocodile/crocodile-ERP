@@ -9,6 +9,10 @@
                     <th class="text-center;">#</th>
                     <th>Date</th>
                     <th>Store</th>
+                    <th>Area</th>
+                    <th>ASM Name</th>
+                    <th>Territory</th>
+                    <th>TSO Name</th>
                     <th>Customer</th>
                     <th>Amount</th>
                 </tr>
@@ -19,18 +23,22 @@
                 ?>
                 @foreach($data as $key => $dt)
                     <?php
-                    $grand_total += $dt->grand_total;
+                    $grand_total += $dt->total;
                     ?>
                     <tr>
                         <th scope="row" class="text-center">{{ ++$key }}</th>
                         <td>{{ $dt->date }}</td>
-                        <td>{{ $dt->store->name }}</td>
-                        <td>{{ $dt->customer->name }}</td>
-                        <td class="text-right">{{ number_format($dt->grand_total, 2) }}</td>
+                        <td>{{ $dt->store }}</td>
+                        <td>{{ $dt->area }}</td>
+                        <td>{{ $dt->asm }}</td>
+                        <td>{{ $dt->territories }}</td>
+                        <td>{{ $dt->tso }}</td>
+                        <td>{{ $dt->name }}</td>
+                        <td class="text-right">{{ number_format($dt->total, 2) }}</td>
                     </tr>
                 @endforeach
                 <tr>
-                    <td colspan="4" class="text-right">GRAND TOTAL</td>
+                    <td colspan="8" class="text-right">GRAND TOTAL</td>
                     <td class="text-right">{{ number_format($grand_total, 2) }}</td>
                 </tr>
                 </tbody>

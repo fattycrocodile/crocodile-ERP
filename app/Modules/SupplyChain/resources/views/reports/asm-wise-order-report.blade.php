@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title') {{ isset($pageTitle) ? $pageTitle : 'Sales Order Report' }} @endsection
+@section('title') {{ isset($pageTitle) ? $pageTitle : 'AREA SALES MANAGER WISE ORDER Report' }} @endsection
 
 @push('styles')
     <!-- CSS -->

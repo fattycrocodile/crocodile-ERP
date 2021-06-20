@@ -372,18 +372,42 @@ class SellOrderController extends BaseController
             $start_date = trim($request->start_date);
             $end_date = trim($request->end_date);
             $asm_id = trim($request->asm_id);
-            $data = new SellOrder();
-            $data = $data->where('date', '>=', $start_date);
-            $data = $data->where('date', '<=', $end_date);
+
             if ($asm_id > 0) {
-                $data = $data->where('area_employee_id', '=', $asm_id);
+
+                $data = DB::table('sell_orders')
+                    ->select('customers.name', DB::raw('SUM(grand_total) as total'),'stores.name as store','areas.name as area','territory.name as territories','asm.full_name as asm','tso.full_name as tso','date')
+                    ->join('customers', 'sell_orders.customer_id', '=', 'customers.id')
+                    ->join('stores', 'sell_orders.store_id', '=', 'stores.id')
+                    ->join('areas', 'sell_orders.area_id', '=', 'areas.id')
+                    ->join('territory', 'sell_orders.territory_id', '=', 'territory.id')
+                    ->join('employees as asm', 'sell_orders.area_employee_id', '=', 'asm.id')
+                    ->join('employees as tso', 'sell_orders.territory_employee_id', '=', 'tso.id')
+                    ->where('date','>=',$start_date)
+                    ->where('date','<=',$end_date)
+                    ->where('area_employee_id','=',$asm_id)
+                    ->groupBy('sell_orders.territory_employee_id')
+                    ->get();
+            }
+            else {
+                $data = DB::table('sell_orders')
+                    ->select('customers.name', DB::raw('SUM(grand_total) as total'),'stores.name as store','areas.name as area','territory.name as territories','asm.full_name as asm','tso.full_name as tso','date')
+                    ->join('customers', 'sell_orders.customer_id', '=', 'customers.id')
+                    ->join('stores', 'sell_orders.store_id', '=', 'stores.id')
+                    ->join('areas', 'sell_orders.area_id', '=', 'areas.id')
+                    ->join('territory', 'sell_orders.territory_id', '=', 'territory.id')
+                    ->join('employees as asm', 'sell_orders.area_employee_id', '=', 'asm.id')
+                    ->join('employees as tso', 'sell_orders.territory_employee_id', '=', 'tso.id')
+                    ->where('date','>=',$start_date)
+                    ->where('date','<=',$end_date)
+                    ->groupBy('sell_orders.territory_employee_id')
+                    ->get();
             }
             $user_store_id = User::getStoreId(auth()->user()->id);
-            if ($user_store_id > 0){
+            /*if ($user_store_id > 0){
                 $data = $data->where('store_id', '=', $user_store_id);
-            }
-            $data = $data->orderby('date', 'asc');
-            $data = $data->get();
+            }*/
+
         }
 
         $returnHTML = view('SupplyChain::reports.asm-wise-order-report-view', compact('data', 'start_date', 'end_date', 'asm_id'))->render();
