@@ -51,7 +51,7 @@
                             <td>{{ $dt->full_name }}</td>
                             <td>{{ $dt->department->name }}</td>
                             <td>{{ $dt->designation->name }}</td>
-                            <td>{{ $dt->store->name }}</td>
+                            <td>{{ $dt->store?$dt->store->name:'N/A' }}</td>
                             <?php
                             $count = $holidayCount = $leaveCount = $presentCount = $absentCount = 0;
                             foreach ($period as $date) {
