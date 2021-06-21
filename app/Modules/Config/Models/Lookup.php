@@ -3,6 +3,7 @@
 namespace App\Modules\Config\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Lookup extends Model
 {
@@ -65,4 +66,11 @@ class Lookup extends Model
         foreach ($models as $model)
             self::$_names[$name][$model->code] = $model->name;
     }
+
+    public static function typeList()
+    {
+        $types = self::query()->select(DB::raw('DISTINCT type'))->orderBy('type','asc')->get();
+        return $types;
+    }
+
 }

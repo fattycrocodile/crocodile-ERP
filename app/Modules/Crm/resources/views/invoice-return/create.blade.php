@@ -609,7 +609,7 @@
                     var len = data.length;
                     $("#invoice_no").empty();
                     $("#invoice_due").val("");
-                    if (len <= 1) {
+                    if (len < 1) {
                         $("#invoice_no").append("<option value=''>Invoice Not Found!</option>");
                     } else {
                         $("#invoice_no").append("<option value=''>Select Invoice</option>");

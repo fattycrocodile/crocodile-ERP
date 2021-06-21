@@ -44,9 +44,13 @@
                                             <select id="parentCategory" name="type" class="select2 form-control @error('type') is-invalid @enderror">
                                                 <option value="none" selected="" disabled="">Select Lookup Type
                                                 </option>
-                                                <option value="gender" {{(old('type')=="gender")?"selected":""}}> Gender </option>
-                                                <option value="religion" {{(old('type')=="religion")?"selected":""}}> Religion </option>
-                                                <option value="marital_status" {{(old('type')=="marital_status")?"selected":""}}> Marital Status </option>
+                                                @php
+                                                $types = \App\Modules\Config\Models\Lookup::typeList();
+                                                @endphp
+                                                @foreach($types as $type)
+                                                    <option value="{{$type->type}}" {{(old('type')==$type->type)?"selected":""}}> {{$type->type}} </option>
+                                                @endforeach
+
                                             </select>
                                             @error('type')<div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
