@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\User\User;
 use App\Modules\Crm\Models\Invoice;
+use App\Modules\StoreInventory\Models\Stores;
 use Illuminate\Http\Request;
 
 class HomeController extends BaseController
@@ -24,9 +26,14 @@ class HomeController extends BaseController
      */
     public function index()
     {
-        $invoice = Invoice::orderBy('date', 'desc')->take(5)->get();
+        $store_id = User::getStoreId(auth()->user()->id);
+        if ($store_id > 0) {
+            $invoice = Invoice::where('store_id', '=', $store_id)->orderBy('date', 'desc')->take(5)->get();
+        } else {
+            $invoice = Invoice::orderBy('date', 'desc')->take(5)->get();
+        }
 
         $this->setPageTitle('Dashboard', 'Admin Dashboard');
-        return view('home', compact('invoice'));
+        return view('home', compact('invoice', 'store_id'));
     }
 }
