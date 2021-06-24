@@ -127,7 +127,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-outline-primary">Print</button>
+                                    <button type="button" class="btn btn-outline-primary"  onclick="printDiv('printableArea')">Print</button>
                                 </div>
                             </div>
                         </div>

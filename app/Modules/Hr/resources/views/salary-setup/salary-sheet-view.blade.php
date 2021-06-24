@@ -52,8 +52,8 @@
                             ?>
                             <td class="text-center"><?= $count; ?></td>
                             <td class="text-center"><?= $attendance; ?></td>
-                            <td class="text-right"><?= $grossSalary; ?></td>
-                            <td class="text-right"><?= $netPayable; ?></td>
+                            <td class="text-right"><?= number_format($grossSalary, 2); ?></td>
+                            <td class="text-right"><?= number_format($netPayable, 2); ?></td>
                         </tr>
                     @endforeach
                 @else

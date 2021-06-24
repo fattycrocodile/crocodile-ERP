@@ -94,9 +94,9 @@
                         <tr>
                             <td colspan="5">Inword: <span style="text-transform: capitalize; font-weight: bold">
                             <?php
-                                $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-                                echo $f->format($rcvAmount);
-                            ?> Taka only</span></td>
+                                    $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
+                                    echo $f->format($rcvAmount);
+                                    ?> Taka only</span></td>
                         </tr>
                         </tfoot>
                     </table>
@@ -107,13 +107,33 @@
     </div>
 </section>
 
-    <script>
-        function printDiv(divName) {
-            var printContents = document.getElementById(divName).innerHTML;
-            var originalContents = document.body.innerHTML;
 
-            document.body.innerHTML = printContents;
-            window.print();
-            document.body.innerHTML = originalContents;
-        }
-    </script>
+<script src="{{asset('js/printThis.js')}}" type="text/javascript"></script>
+<script>
+    function printDiv(divName) {
+
+        $("#printableArea").printThis({
+            debug: false,               // show the iframe for debugging
+            importCSS: true,            // import parent page css
+            importStyle: true,         // import style tags
+            printContainer: true,       // print outer container/$.selector
+            loadCSS: "",                // path to additional css file - use an array [] for multiple
+            pageTitle: "",              // add title to print page
+            removeInline: false,        // remove inline styles from print elements
+            removeInlineSelector: "*",  // custom selectors to filter inline styles. removeInline must be true
+            printDelay: 333,            // variable print delay
+            header: null,               // prefix to html
+            footer: null,               // postfix to html
+            base: false,                // preserve the BASE tag or accept a string for the URL
+            formValues: true,           // preserve input/form values
+            canvas: false,              // copy canvas content
+            doctypeString: '...',       // enter a different doctype for older markup
+            removeScripts: false,       // remove script tags from print content
+            copyTagClasses: false,      // copy classes from the html & body tag
+            beforePrintEvent: null,     // function for printEvent in iframe
+            beforePrint: null,          // function called before iframe is filled
+            afterPrint: null            // function called before iframe is removed
+        });
+    }
+
+</script>
