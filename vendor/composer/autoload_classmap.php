@@ -147,6 +147,7 @@ return array(
     'App\\Modules\\StoreInventory\\Models\\StoreTransferDetails' => $baseDir . '/app/Modules/StoreInventory/Models/StoreTransferDetails.php',
     'App\\Modules\\StoreInventory\\Models\\Stores' => $baseDir . '/app/Modules/StoreInventory/Models/Stores.php',
     'App\\Modules\\StoreInventory\\Models\\Unit' => $baseDir . '/app/Modules/StoreInventory/Models/Unit.php',
+    'App\\Modules\\StoreInventory\\Models\\Warranty' => $baseDir . '/app/Modules/StoreInventory/Models/Warranty.php',
     'App\\Modules\\SupplyChain\\Http\\Controllers\\AreaController' => $baseDir . '/app/Modules/SupplyChain/Http/Controllers/AreaController.php',
     'App\\Modules\\SupplyChain\\Http\\Controllers\\SupplyChainController' => $baseDir . '/app/Modules/SupplyChain/Http/Controllers/SupplyChainController.php',
     'App\\Modules\\SupplyChain\\Http\\Controllers\\TerritoryController' => $baseDir . '/app/Modules/SupplyChain/Http/Controllers/TerritoryController.php',

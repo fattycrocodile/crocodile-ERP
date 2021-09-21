@@ -795,6 +795,7 @@ class ComposerStaticInitb20e0c43184310ec6720a8451e270455
         'App\\Modules\\StoreInventory\\Models\\StoreTransferDetails' => __DIR__ . '/../..' . '/app/Modules/StoreInventory/Models/StoreTransferDetails.php',
         'App\\Modules\\StoreInventory\\Models\\Stores' => __DIR__ . '/../..' . '/app/Modules/StoreInventory/Models/Stores.php',
         'App\\Modules\\StoreInventory\\Models\\Unit' => __DIR__ . '/../..' . '/app/Modules/StoreInventory/Models/Unit.php',
+        'App\\Modules\\StoreInventory\\Models\\Warranty' => __DIR__ . '/../..' . '/app/Modules/StoreInventory/Models/Warranty.php',
         'App\\Modules\\SupplyChain\\Http\\Controllers\\AreaController' => __DIR__ . '/../..' . '/app/Modules/SupplyChain/Http/Controllers/AreaController.php',
         'App\\Modules\\SupplyChain\\Http\\Controllers\\SupplyChainController' => __DIR__ . '/../..' . '/app/Modules/SupplyChain/Http/Controllers/SupplyChainController.php',
         'App\\Modules\\SupplyChain\\Http\\Controllers\\TerritoryController' => __DIR__ . '/../..' . '/app/Modules/SupplyChain/Http/Controllers/TerritoryController.php',

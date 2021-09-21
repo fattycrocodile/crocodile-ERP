@@ -75,6 +75,12 @@
                                 </a>
                             </li>
                             <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('storeInventory.warranties.index') }}"
+                                   data-toggle="dropdown">Warranties
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
                                 <a class="dropdown-item" href="{{ route('storeInventory.units.index') }}"
                                    data-toggle="dropdown">Unit
                                     <submenu class="name"></submenu>
