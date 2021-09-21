@@ -96,6 +96,47 @@ class CustomersController extends BaseController
         }
     }
 
+    public function ajaxStore(Request $request)
+    {
+        //validate Form Data
+        $request->validate([
+            'name' => "required|min:3",
+            'contact_no' => "required|min:11",
+            'store' => "required",
+            'address' => "required",
+        ]);
+
+        //Get store information by store id
+        $store = Stores::findOrFail($request->store);
+        //include Customer model
+        $customers = new Customers();
+        //find max sn no from customer table
+        $maxSn = $customers->where('store_id', '=', $request->store)->max('max_sn');
+        //Generate new Max SN no
+        $Max_sn = $maxSn ? $maxSn + 1 : 1;
+        //Assign new max_sn for user
+        $customers->max_sn = $Max_sn;
+        //Create and assign customer code
+        $customers->code = $store->code . "-" . str_pad($Max_sn, 4, '0', STR_PAD_LEFT);
+        //Assigning Form data to customer
+        $customers->name = $request->name;
+        $customers->contact_no = $request->contact_no;
+        $customers->store_id = $request->store;
+        $customers->address = $request->address;
+        $customers->created_by = auth()->user()->id;
+
+        //save all data to customer table
+        if ($customers->save()) {
+            $customer = Customers::findOrFail($customers->id);
+            //redirect to create customer page
+
+            return $this->responseJson(false, 200, "Customer Created Successfully.", $customer);
+
+        } else {
+            return $this->responseJson(true, 200, "Customer not found!");
+        }
+    }
+
     public function edit($id)
     {
         $data = Customers::find($id);

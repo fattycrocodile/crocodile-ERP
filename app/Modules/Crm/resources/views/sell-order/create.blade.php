@@ -17,6 +17,67 @@
 
     @include('inc.flash')
 
+
+    <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="demoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form class="form" id="customer-form" method="post" action="{{route('crm.customers.ajaxStore')}}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="demoModalLabel">Create new Customer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label for="customerName">Customer Name</label>
+                                <input type="text" id="customerName" class="form-control @error('name') is-invalid @enderror"
+                                       placeholder="Customer Name" value="{{ old('name') }}"
+                                       name="name">
+                                @error('name')<div class="help-block text-danger">{{ $message }} </div> @enderror
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="customerContact">Customer Contact</label>
+                                        <input type="text" id="customerContact" class="form-control @error('contact_no') is-invalid @enderror"
+                                               placeholder="Customer Contact" value="{{ old('contact_no') }}"
+                                               name="contact_no">
+                                        @error('contact_no')<div class="help-block text-danger">{{ $message }} </div> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="store" >Store</label>
+                                        <select id="store" name="store" class="select2 form-control @error('store_id') is-invalid @enderror">
+                                            <option value="none" selected="" disabled="">Select Store</option>
+                                            @foreach($stores as $store)
+                                                <option value="{{$store->id}}" {{ old('store_id')==$store->id?'selected':'' }}>{{$store->name}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('store_id')<div class="help-block text-danger">{{ $message }} </div> @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="address">Customer Address</label>
+                                <textarea id="address" rows="5" class="form-control @error('address') is-invalid @enderror" name="address"
+                                          placeholder="Customer Address">{{ old('address') }}</textarea>
+                                @error('address')<div class="help-block text-danger">{{ $message }} </div> @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" id="savecustomer" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <section id="basic-form-layouts">
         <div class="row match-height">
             <div class="col-md-12">
@@ -31,6 +92,7 @@
                                 <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
                                 <li><a data-action="close"><i class="ft-x"></i></a></li>
                             </ul>
+                            <button type="button" class="btn btn-primary m-2" data-toggle="modal" data-target="#demoModal">Create Customer</button>
                         </div>
                     </div>
                     <div class="card-content collapse show">
@@ -121,7 +183,7 @@
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-1">
                                             <div class="form-group">
                                                 <label for="qty">Qty</label>
                                                 <input type="text"
@@ -150,6 +212,20 @@
                                                        class="form-control @error('total_sell_price') is-invalid @enderror"
                                                        id="total_sell_price" name="total_sell_price" readonly>
                                                 @error('total_sell_price')
+                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="warranty_id">Warranty</label>
+                                                <select id="warranty_id" name="warranty_id"
+                                                        class="select2 form-control @error('warranty_id') is-invalid @enderror">
+                                                    <option value="none" selected="">Select Warranty</option>
+                                                    @foreach($warranties as $warranty)
+                                                        <option value="{{ $warranty->id }}"> {{ $warranty->name }} </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('warranty_id')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
@@ -251,7 +327,82 @@
                     return false;
                 }
             });
+
+            $('form#customer-form').submit(function (e) {
+                e.preventDefault();
+                // Get the Login Name value and trim it
+                var name = $.trim($('#customerName').val());
+                var store = $.trim($('#store').val());
+                var contract_no = $.trim($('#customerContact').val());
+                var address = $.trim($('#address').val());
+
+                if (name === '') {
+                    toastr.warning(" Please Enter Customer Name!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+                if (store === '') {
+                    toastr.warning(" Please select  store!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+                if (contract_no === '') {
+                    toastr.warning(" Please Enter Customer Mobile no!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+                if (address === '') {
+                    toastr.warning(" Please Enter Customer Address!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    return false;
+                }
+                ajaxSave();
+            });
+
         });
+
+
+        function ajaxSave() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "{{ route('crm.customers.ajaxStore') }}",
+                type: 'post',
+                dataType: "json",
+                cache: false,
+                data: $('form#customer-form').serialize(),
+                beforeSend: function () {
+                    var name = $.trim($('#customerName').val());
+                    if (name == "" || name == null) {
+                        toastr.warning(" Please Enter Customer name!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                        return false;
+                    }
+                },
+                success: function (result) {
+                    if (result.error === false) {
+                        $(".print-success-msg").css('display', 'block');
+                        $(".print-success-msg").html(result.message);
+                        $('#customer_name').val(result.data.name);
+                        $('#customer_code').val(result.data.code);
+                        $('#store_id').val(result.data.store_id);
+                        $('#customer_id').val(result.data.id);
+                        $('#contact_no').val(result.data.contact_no);
+                        toastr.success("Customer Created Successfully ", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                        $('#demoModal').modal('hide');
+                        flashMessage('success');
+                    } else {
+                        printErrorMsg(result.data);
+                        flashMessage('error');
+                    }
+                },
+                error: function (xhr, textStatus, thrownError) {
+                    alert(xhr + "\n" + textStatus + "\n" + thrownError);
+                }
+            }).done(function (data) {
+                console.log("REQUEST DONE;");
+            }).fail(function (jqXHR, textStatus) {
+                console.log("REQUEST FAILED;");
+            });
+        }
 
 
         $(document).ready(function () {
@@ -436,6 +587,7 @@
                     getProductPrice(ui.item.value);
                     $('#product_name').val(ui.item.name);
                     $('#product_code').val(ui.item.code);
+                    $('#warranty_id').val(ui.item.warranty);
                     $('#product_id').val(ui.item.value);
                 } else {
                     resetProduct();
@@ -482,6 +634,7 @@
                     getProductPrice(ui.item.value);
                     $('#product_name').val(ui.item.name);
                     $('#product_code').val(ui.item.code);
+                    $('#warranty_id').val(ui.item.warranty);
                     $('#product_id').val(ui.item.value);
                 } else {
                     resetProduct();
@@ -506,6 +659,7 @@
             var product_id = nanCheck($("#product_id").val());
             var sell_qty = nanCheck(parseFloat($("#qty").val()));
             var sell_price = nanCheck(parseFloat($("#sell_price").val()));
+            var warranty_id = nanCheck($("#warranty_id").val());
             var min_sell_price = nanCheck(parseFloat($("#min_sell_price").val()));
             var message;
             var error = true;
@@ -553,6 +707,8 @@
             var product_code = $("#product_code").val();
             var stock_qty = nanCheck(parseFloat($("#stock_qty").val()));
             var sell_qty = nanCheck(parseFloat($("#qty").val()));
+            var warranty_id = nanCheck($("#warranty_id").val());
+            var warrantyText = $("#warranty_id option:selected").text();
             var sell_price = nanCheck(parseFloat($("#sell_price").val()));
             var min_sell_price = nanCheck(parseFloat($("#min_sell_price").val()));
             var total_sell_price = nanCheck(parseFloat($("#total_sell_price").val()));
@@ -560,10 +716,10 @@
             var slNumber = $('#table-data-list tbody tr.cartList').length + 1;
             var appendTxt = "<tr class='cartList'>"
             appendTxt += "<td class='count' style='text-align: center;'>" + slNumber + "</td>";
-            appendTxt += "<td style='text-align: left;'>Name: " + product_name + "<br><small class='cart-product-code'>Code: " + product_code + "</small><input type='hidden' class='temp_product_id' name='product[temp_product_id][]' value='" + product_id + "'></td>";
+            appendTxt += "<td style='text-align: left;'>Name: " + product_name + "<br><small class='cart-product-code'>Code: " + product_code + "</small><br><small class='cart-product-warranty'>Warranty: " + warrantyText + "</small><input type='hidden' class='temp_product_id' name='product[temp_product_id][]' value='" + product_id + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_sell_price ' readonly name='product[temp_sell_price][]' onkeyup='calculateRowTotalOnChange();' value='" + sell_price + "'><input type='hidden' name='product[temp_min_sell_price][]' class='temp_min_sell_price' value='" + min_sell_price + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_sell_qty' name='product[temp_sell_qty][]' onkeyup='calculateRowTotalOnChange();' value='" + sell_qty + "'></td>";
-            appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_row_sell_price' name='product[temp_row_sell_price][]' readonly value='" + total_sell_price + "'></td>";
+            appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_row_sell_price' name='product[temp_row_sell_price][]' readonly value='" + total_sell_price + "'><input type='hidden' class='form-control temp_warranty' name='product[temp_warranty][]' readonly value='" + warranty_id + "'></td>";
             appendTxt += "<td style='text-align: center;'><button title=\"remove\"  type=\"button\" class=\"rdelete dltBtn btn btn-danger btn-md\" onclick=\"deleteRows($(this))\"><i class=\"icon-trash\"></i></button></td>";
             appendTxt += "</tr>";
 
@@ -717,6 +873,27 @@
                 $( this ).attr( 'autocomplete', 'off' );
             });
         });
+
+
+        function printErrorMsg(msg) {
+            $(".print-error-msg").find("ul").html('');
+            $(".print-error-msg").css('display', 'block');
+            $.each(msg, function (key, value) {
+                $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
+            });
+        }
+
+        function flashMessage(value = 'success') {
+            if (value === 'success') {
+                $(".print-success-msg-msg").fadeTo(2000, 500).slideUp(500, function () {
+                    $(".print-success-msg").slideUp(500);
+                });
+            } else {
+                $(".print-error-msg").fadeTo(2000, 500).slideUp(500, function () {
+                    $(".print-error-msg").slideUp(500);
+                });
+            }
+        }
     </script>
 
 @endpush

@@ -9,10 +9,10 @@
     @include('inc.flash')
     <section class="basic-elements">
         <div class="d-flex justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Create New Product</h4>
+                    <h4 class="card-title">Edit a Product</h4>
                     <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                     <div class="heading-elements">
                         <ul class="list-inline mb-0">
@@ -102,7 +102,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="stockQty">Minimum Stock Qty <span class="required text-danger">*</span></label>
                                             <input type="text" id="stockQty"
@@ -113,7 +113,7 @@
                                             <div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="orderQty">Minimum Order Qty <span class="required text-danger">*</span></label>
                                             <input type="text" id="orderQty"
@@ -121,6 +121,22 @@
                                                    placeholder="Minimum Order Qty" value="{{ old('min_order_qty')?old('min_order_qty'):$product->min_order_qty }}"
                                                    name="min_order_qty">
                                             @error('min_order_qty')
+                                            <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="warranty_id">Warranty <span class="required text-danger">*</span></label>
+                                            <select id="warranty_id" name="warranty_id"
+                                                    class="select2 form-control @error('warranty_id') is-invalid @enderror">
+                                                <option value="none" selected="" disabled="">Select Warranty
+                                                </option>
+                                                @foreach($warranties as $warranty)
+                                                    <option
+                                                        value="{{$warranty->id}}" {{ (old('warranty_id')?old('warranty_id'):$product->warranty_id)==$warranty->id?'selected':'' }}>{{$warranty->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('warranty_id')
                                             <div class="help-block text-danger">{{ $message }} </div> @enderror
                                         </div>
                                     </div>

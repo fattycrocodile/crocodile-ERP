@@ -19,6 +19,8 @@ class CreateSellOrderDetailsTable extends Migration
             $table->foreign('order_id')->references('id')->on('sell_orders');
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
+            $table->unsignedBigInteger('warranty_id')->nullable();
+            $table->foreign('warranty_id')->references('id')->on('warranties');
             $table->double('discount')->nullable()->default(0);
             $table->double('qty');
             $table->double('sell_price');

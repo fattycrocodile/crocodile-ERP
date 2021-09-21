@@ -4,6 +4,7 @@ namespace App\Modules\Crm\Models;
 
 use App\Modules\StoreInventory\Models\Product;
 use App\Model\User\User;
+use App\Modules\StoreInventory\Models\Warranty;
 use Illuminate\Database\Eloquent\Model;
 
 class InvoiceDetails extends Model
@@ -19,6 +20,11 @@ class InvoiceDetails extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function warranty()
+    {
+        return $this->belongsTo(Warranty::class);
     }
 
     public function createdBy()

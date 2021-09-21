@@ -1,7 +1,24 @@
 @extends('layouts.app')
 @section('title') {{ isset($pageTitle) ? $pageTitle : 'Invoice Preview' }} @endsection
 @push('styles')
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" media="all">
+    <style type="text/css">
+        @media print
+        {
+            * {
+                -webkit-print-color-adjust:exact;
+                color-adjust: exact !important;
+            }
 
+            table tr td {
+                background-color: transparent;
+            }
+        }
+
+        table tr td {
+            background-color: transparent;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -11,53 +28,55 @@
             Back</a>
         <a href="{{ route('commercial.purchase.index') }}" class="btn btn-icon btn-secondary"><i class="fa fa-list-ul"></i>
             Purchase Manage</a>
-        <a href="#" class="btn btn-icon btn-secondary print-btn" onclick="printDiv('printableArea')"><i class="fa fa-print"></i>
+        <a href="#" class="btn btn-icon btn-secondary" onclick="printDiv('printableArea')"><i class="fa fa-print"></i>
             Print</a>
     </div>
     <section class="card" id="printableArea">
+        <div class="container">
+            <img class="rounded mx-auto d-block" src="{{ asset('uploads/'. config('settings.site_logo')) }}" style=" position: absolute; left:0; right:0; margin:0 auto; opacity: 0.25;width: 50%; z-index: 9"/>
         <div id="invoice-template" class="card-body">
             <!-- Invoice Company Details -->
-            <div id="invoice-company-details" class="row">
-                <div class="col-md-6 col-sm-12 text-center text-md-left">
+            <div id="invoice-company-details" class="row" style="width: 100%;">
+                <div class="col-md-6 col-sm-6 col-xs-6 col-6 text-left text-md-left" style="width: 48%; float: left;">
                     <div class="media">
                         <img class="" alt="{{ config('settings.site_name') }}"
                              title="{{ config('settings.site_name') }}"
                              src="{{ asset('uploads/'. config('settings.site_logo')) }}"
                              style="height: 80px; width: 80px;">
-                        <div class="media-body">
+                        <div class="media-body" style="padding-left:5%;">
                             <ul class="ml-2 px-0 list-unstyled">
                                 <li class="text-bold-800">{{config('settings.company_name')}}</li>
-                                <li>{{ config('settings.house_no') }}</li>
-                                <li>{{ config('settings.road_no') }}</li>
-                                <li>{{ config('settings.post_code') }}</li>
+                                <li>{{ config('settings.house_no') }} {{ config('settings.road_no') }}</li>
                                 <li>{{ config('settings.phone') }}</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-12 text-center text-md-right">
-                    <h2>INVOICE</h2>
+                <div class="col-md-6 col-sm-6 col-xs-6 col-6 text-right text-md-right" style="width: 48%; float: left;">
+                    <h2>PURCHASE</h2>
                     <p class="pb-3"># {{ $invoice->invoice_no }}</p>
-                    {{--                    <ul class="px-0 list-unstyled">--}}
-                    {{--                        <li>Balance Due</li>--}}
-                    {{--                        <li class="lead text-bold-800">$ 12,000.00</li>--}}
-                    {{--                    </ul>--}}
                 </div>
             </div>
+            <hr>
             <!--/ Invoice Company Details -->
 
             <!-- Invoice Customer Details -->
-            <div id="invoice-customer-details" class="row pt-2">
-                <div class="col-sm-12 text-center text-md-left">
-                    <p class="text-muted">Purchase From</p>
+            <div id="invoice-customer-details" class="row" style="width:100%;">
+                <div class="" style="width:50%;">
+                <div class="col-md-12 col-sm-12 text-left text-md-left" style="width:30%;">
+                    <p class="">Purchase From</p>
                 </div>
-                <div class="col-md-6 col-sm-12 text-center text-md-left">
+                <div class="col-md-12 col-sm-12 text-left text-md-left" style="width:100%;">
                     <ul class="px-0 list-unstyled">
-                        <li class="text-bold-800">{{ $invoice->supplier->name }}</li>
-                        <li>{{ $invoice->supplier->address }}</li>
+                        <li class="text-bold-800 text-muted">Name : {{ $invoice->supplier->name }}</li>
+                        <li class="text-muted">Address : {{ $invoice->supplier->address }}</li>
+                        <li class="text-muted">Phone : {{ $invoice->supplier->contact_no }}</li>
                     </ul>
                 </div>
-                <div class="col-md-6 col-sm-12 text-center text-md-right">
+                </div>
+                <div class="" style="width:50%;">
+                <div class="col-md-12 col-sm-12 text-right text-md-right" style="width:100%; ">
+                    <p></p>
                     <p>
                         <span
                             class="text-muted">Invoice Date :</span> {{  date("F jS, Y", strtotime($invoice->date)) }}</li>
@@ -67,13 +86,14 @@
                             class="text-muted">Terms :</span> {{  $invoice->payment_type == \App\Modules\Config\Models\Lookup::CASH ? "CASH" : "DUE" }}
                     </p>
                 </div>
+                </div>
             </div>
             <!--/ Invoice Customer Details -->
             <!-- Invoice Items Details -->
             <div id="invoice-items-details" class="pt-2">
                 <div class="row">
                     <div class="table-responsive col-sm-12">
-                        <table class="table">
+                        <table class="table bg-transparent">
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -103,19 +123,26 @@
                                 </tr>
                             @endforeach
                             </tbody>
+
+                            <tr style="border-bottom: 0 !important;">
+                                <td colspan="4" class="text-right">Total</td>
+                                <td class="text-right">{{$salesTotal}}</td>
+                            </tr>
+
                         </table>
                     </div>
                 </div>
+                <br>
                 <div class="row">
-                    <div class="col-md-7 col-sm-12 text-center text-md-left">
+                    <div class="col-md-6 col-sm-6 text-left text-md-left" style="width: 50%;">
                         <?php
                         $total_mr = 0;
                         ?>
                         @if($invoice->payment_type == \App\Modules\Config\Models\Lookup::CASH)
                             <p class="lead">Payment Methods:</p>
                             <div class="row">
-                                <div class="col-md-8">
-                                    <table class="table table-borderless table-sm">
+                                <div class="col-md-12">
+                                    <table class="table table-borderless">
                                         <tbody>
                                         <?php
                                         $mr_info = \App\Modules\Accounting\Models\SuppliersPayment::mrInfo($id);
@@ -124,22 +151,22 @@
                                         @if($mr_info->payment_type == \App\Modules\Config\Models\Lookup::PAYMENT_CASH)
                                             <tr>
                                                 <td>Payment Method:</td>
-                                                <td class="text-right">Cash</td>
+                                                <td class="text-left">Cash</td>
                                             </tr>
                                         @else
                                             <tr>
                                                 <td>Bank name:</td>
-                                                <td class="text-right">
+                                                <td class="text-left">
                                                     {{ \App\Modules\Config\Models\Lookup::item('bank', $mr_info->bank_id) }}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Cheque/Transaction No:</td>
-                                                <td class="text-right">{{ $mr_info->cheque_no }}</td>
+                                                <td class="text-left">{{ $mr_info->cheque_no }}</td>
                                             </tr>
                                             <tr>
                                                 <td>MR no:</td>
-                                                <td class="text-right">{{ $mr_info->pr_no }}</td>
+                                                <td>{{ $mr_info->pr_no }}</td>
                                             </tr>
                                         @endif
                                         </tbody>
@@ -148,7 +175,7 @@
                             </div>
                         @endif
                     </div>
-                    <div class="col-md-5 col-sm-12">
+                    <div class="col-md-6 col-sm-6" style="width: 50%;">
                         <p class="lead">Total due</p>
                         <div class="table-responsive">
                             <table class="table">
@@ -173,33 +200,21 @@
             </div>
 
         </div>
+        </div>
     </section>
 
 @endsection
 @push('scripts')
-
     <script src="{{asset('js/printThis.js')}}" type="text/javascript"></script>
+
     <script>
         function printDiv(divName) {
-            // var printContents = document.getElementById(divName).innerHTML;
-            // var originalContents = document.body.innerHTML;
-            //
-            // document.body.innerHTML = printContents;
-            // window.print();
-            // document.body.innerHTML = originalContents;
-        }
-
-        $('.print-btn').on("click", function () {
-            // $('#printableArea').printThis({
-            //     base: "https://jasonday.github.io/printThis/"
-            // });
-
             $("#printableArea").printThis({
                 debug: false,               // show the iframe for debugging
                 importCSS: true,            // import parent page css
                 importStyle: true,         // import style tags
                 printContainer: true,       // print outer container/$.selector
-                loadCSS: "",                // path to additional css file - use an array [] for multiple
+                loadCSS: "app-assets/css/bootstrap.css",                // path to additional css file - use an array [] for multiple
                 pageTitle: "",              // add title to print page
                 removeInline: false,        // remove inline styles from print elements
                 removeInlineSelector: "*",  // custom selectors to filter inline styles. removeInline must be true
@@ -208,7 +223,7 @@
                 footer: null,               // postfix to html
                 base: false,                // preserve the BASE tag or accept a string for the URL
                 formValues: true,           // preserve input/form values
-                canvas: false,              // copy canvas content
+                canvas: true,              // copy canvas content
                 doctypeString: '...',       // enter a different doctype for older markup
                 removeScripts: false,       // remove script tags from print content
                 copyTagClasses: false,      // copy classes from the html & body tag
@@ -217,8 +232,8 @@
                 afterPrint: null            // function called before iframe is removed
             });
 
-        });
-
+        }
 
     </script>
+
 @endpush

@@ -9,6 +9,7 @@ use App\Modules\StoreInventory\Models\Category;
 use App\Modules\StoreInventory\Models\Product;
 use App\Modules\StoreInventory\Models\SellPrice;
 use App\Modules\StoreInventory\Models\Unit;
+use App\Modules\StoreInventory\Models\Warranty;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -39,9 +40,10 @@ class ProductController extends BaseController
     {
         $categories = Category::all();
         $brands = Brand::all();
+        $warranties = Warranty::all();
         $units = Unit::all();
         $this->setPageTitle('Create Products', 'Create new Products');
-        return view('StoreInventory::products.create', compact('categories', 'brands', 'units'));
+        return view('StoreInventory::products.create', compact('categories', 'brands', 'units','warranties'));
     }
 
     public function store(Request $req)
@@ -65,6 +67,7 @@ class ProductController extends BaseController
         $product->category_id = $req->category_id;
         $product->brand_id = $req->brand_id;
         $product->unit_id = $req->unit_id;
+        $product->warranty_id = $req->warranty_id;
         $product->min_stock_qty = $req->min_stock_qty;
         $product->min_order_qty = $req->min_order_qty;
         $product->code = $req->code;
@@ -100,10 +103,11 @@ class ProductController extends BaseController
         $product = Product::findOrFail($id);
         $categories = Category::all();
         $brands = Brand::all();
+        $warranties = Warranty::all();
         $units = Unit::all();
         $sellPrice = SellPrice::where('product_id', '=', $id)->where('status', '=', 1)->orderby('id', 'desc')->first();
         $this->setPageTitle('Edit product', 'Edit a Product');
-        return view('StoreInventory::products.edit', compact('product', 'categories', 'brands', 'units', 'sellPrice'));
+        return view('StoreInventory::products.edit', compact('product', 'categories', 'brands', 'units','warranties','sellPrice'));
     }
 
     public function update(Request $req, $id)
@@ -127,6 +131,7 @@ class ProductController extends BaseController
         $product->category_id = $req->category_id;
         $product->brand_id = $req->brand_id;
         $product->unit_id = $req->unit_id;
+        $product->warranty_id = $req->warranty_id;
         $product->min_stock_qty = $req->min_stock_qty;
         $product->min_order_qty = $req->min_order_qty;
         $product->code = $req->code;
@@ -194,7 +199,7 @@ class ProductController extends BaseController
         if ($request->has('search')) {
             $search = trim($request->search);
             $data = new Product();
-            $data = $data->select('id', 'name', 'code');
+            $data = $data->select('id', 'name', 'code','warranty_id');
             if ($search != '') {
                 $data = $data->where('name', 'like', '%' . $search . '%');
             }
@@ -203,7 +208,7 @@ class ProductController extends BaseController
             $data = $data->get();
             if (!$data->isEmpty()) {
                 foreach ($data as $dt) {
-                    $response[] = array("value" => $dt->id, "label" => $dt->name, "name" => $dt->name, 'code' => $dt->code);
+                    $response[] = array("value" => $dt->id, "label" => $dt->name, "name" => $dt->name, 'code' => $dt->code,'warranty' => $dt->warranty_id);
                 }
             } else {
                 $response[] = array("value" => '', "label" => 'No data found!', "name" => '', 'code' => '');
@@ -220,7 +225,7 @@ class ProductController extends BaseController
         if ($request->has('search')) {
             $search = trim($request->search);
             $data = new Product();
-            $data = $data->select('id', 'name', 'code');
+            $data = $data->select('id', 'name', 'code','warranty_id');
             if ($search != '') {
                 $data = $data->where('code', 'like', '%' . $search . '%');
             }
@@ -229,7 +234,7 @@ class ProductController extends BaseController
             $data = $data->get();
             if (!$data->isEmpty()) {
                 foreach ($data as $dt) {
-                    $response[] = array("value" => $dt->id, "label" => $dt->code, "name" => $dt->name, 'code' => $dt->code);
+                    $response[] = array("value" => $dt->id, "label" => $dt->code, "name" => $dt->name, 'code' => $dt->code, 'warranty' => $dt->warranty_id);
                 }
             } else {
                 $response[] = array("value" => '', "label" => 'No data found!', "name" => '', 'code' => '');

@@ -14,6 +14,7 @@ use App\Modules\Crm\Models\InvoiceReturn;
 use App\Modules\Crm\Models\SellOrder;
 use App\Modules\StoreInventory\Models\Inventory;
 use App\Modules\StoreInventory\Models\Stores;
+use App\Modules\StoreInventory\Models\Warranty;
 use App\Modules\SupplyChain\Models\Area;
 use App\Modules\SupplyChain\Models\Territory;
 use App\Traits\UploadAble;
@@ -75,9 +76,10 @@ class InvoiceController extends BaseController
         }
         $payment_type = Lookup::items('payment_method');
         $cash_credit = Lookup::items('cash_credit');
+        $warranties = Warranty::all();
         $bank = Lookup::items('bank');
         $this->setPageTitle('Create Invoice', 'Create Invoice');
-        return view('Crm::invoice.create', compact('stores', 'payment_type', 'cash_credit', 'bank'));
+        return view('Crm::invoice.create', compact('stores', 'payment_type','warranties', 'cash_credit', 'bank'));
     }
 
     /**
@@ -134,6 +136,7 @@ class InvoiceController extends BaseController
                     $stock_qty = $params['product']['temp_stock_qty'][$i];
                     $sell_price = $params['product']['temp_sell_price'][$i];
                     $sell_qty = $params['product']['temp_sell_qty'][$i];
+                    $warranty = $params['product']['temp_warranty'][$i];
                     $row_sell_price = $params['product']['temp_row_sell_price'][$i];
                     $stock_qty = \App\Modules\StoreInventory\Models\Inventory::closingStockWithStore($product_id, $invoice->store_id);
                     if ($stock_qty > 0) {
@@ -149,6 +152,7 @@ class InvoiceController extends BaseController
                         if ($inventory->save()) {
                             $invoiceDetails = new InvoiceDetails();
                             $invoiceDetails->invoice_id = $invoice_id;
+                            $invoiceDetails->warranty_id = $warranty;
                             $invoiceDetails->product_id = $product_id;
                             $invoiceDetails->qty = $sell_qty;
                             $invoiceDetails->sell_price = $sell_price;

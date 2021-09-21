@@ -11,6 +11,7 @@ use App\Modules\Crm\Models\Invoice;
 use App\Modules\Crm\Models\SellOrder;
 use App\Modules\Crm\Models\SellOrderDetails;
 use App\Modules\StoreInventory\Models\Stores;
+use App\Modules\StoreInventory\Models\Warranty;
 use App\Modules\SupplyChain\Models\Area;
 use App\Modules\SupplyChain\Models\Territory;
 use App\Traits\UploadAble;
@@ -73,10 +74,11 @@ class SellOrderController extends BaseController
         }
 //        $stores = $this->store->treeList();
         $payment_type = Lookup::items('payment_method');
+        $warranties = Warranty::all();
         $cash_credit = Lookup::items('cash_credit');
         $bank = Lookup::items('bank');
         $this->setPageTitle('Create Order', 'Create order');
-        return view('Crm::sell-order.create', compact('stores', 'payment_type', 'cash_credit', 'bank'));
+        return view('Crm::sell-order.create', compact('stores', 'payment_type','warranties', 'cash_credit', 'bank'));
     }
 
     /**
@@ -126,10 +128,12 @@ class SellOrderController extends BaseController
                     $sell_price = $params['product']['temp_sell_price'][$i];
                     $sell_qty = $params['product']['temp_sell_qty'][$i];
                     $row_sell_price = $params['product']['temp_row_sell_price'][$i];
+                    $warranty = $params['product']['temp_warranty'][$i];
 
                     $orderDetails = new SellOrderDetails();
                     $orderDetails->order_id = $order_id;
                     $orderDetails->product_id = $product_id;
+                    $orderDetails->warranty_id = $warranty;
                     $orderDetails->qty = $sell_qty;
                     $orderDetails->sell_price = $sell_price;
                     $orderDetails->discount = 0;

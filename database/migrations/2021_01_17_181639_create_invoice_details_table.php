@@ -19,6 +19,8 @@ class CreateInvoiceDetailsTable extends Migration
             $table->foreign('invoice_id')->references('id')->on('invoices');
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
+            $table->unsignedBigInteger('warranty_id')->nullable();
+            $table->foreign('warranty_id')->references('id')->on('warranties');
             $table->double('qty');
             $table->double('sell_price');
             $table->double('discount')->nullable()->default(0);

@@ -59,9 +59,9 @@ class InvoiceDataTable extends DataTable
     {
         $store_id = User::getStoreId(auth()->user()->id);
         if ($store_id > 0){
-            return $model->newQuery()->where('store_id', '=', $store_id)->orderByDesc('invoice_no');
+            return $model->newQuery()->where('store_id', '=', $store_id)->orderByDesc('id');
         } else {
-            return $model->newQuery()->orderByDesc('invoice_no');
+            return $model->newQuery()->orderByDesc('id');
         }
 //        return $model->newQuery()->select('*');
     }

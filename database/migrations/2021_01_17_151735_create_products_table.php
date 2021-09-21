@@ -21,6 +21,8 @@ class CreateProductsTable extends Migration
             $table->foreign('brand_id')->references('id')->on('brands');
             $table->unsignedBigInteger('unit_id');
             $table->foreign('unit_id')->references('id')->on('units');
+            $table->unsignedBigInteger('warranty_id')->nullable();
+            $table->foreign('warranty_id')->references('id')->on('warranties');
             $table->string('name');
             $table->string('code')->unique();
             $table->string('barcode')->nullable();
