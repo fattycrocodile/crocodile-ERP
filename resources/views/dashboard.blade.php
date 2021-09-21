@@ -187,7 +187,6 @@
                         </thead>
                         <tbody>
                         <?php
-                            echo $store_id . "test";
                         if ($invoice){
                         foreach ($invoice as $inv){
                         ?>
