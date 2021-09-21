@@ -14,8 +14,8 @@ class CustomerTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Modules\Crm\Models\Customers::class, 100)->create()->each(function($model){
+        /*factory(\App\Modules\Crm\Models\Customers::class, 100)->create()->each(function($model){
             $model->save();
-        });
+        });*/
     }
 }

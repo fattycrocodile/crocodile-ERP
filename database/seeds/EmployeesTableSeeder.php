@@ -10,6 +10,6 @@ class EmployeesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory('App\Modules\Hr\Models\Employees', 10)->create();
+        /*factory('App\Modules\Hr\Models\Employees', 10)->create();*/
     }
 }
