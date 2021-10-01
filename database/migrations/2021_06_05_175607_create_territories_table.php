@@ -22,7 +22,7 @@ class CreateTerritoriesTable extends Migration
             $table->text('address')->nullable();
             $table->string('contact_no')->nullable();
             $table->unsignedBigInteger('employee_id')->nullable();
-            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });

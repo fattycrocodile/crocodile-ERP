@@ -17,6 +17,6 @@ class CategoriesTableSeeder extends Seeder
             'root_id'     =>  null,
         ]);
 
-        factory('App\Modules\StoreInventory\Models\Category', 100)->create();
+        //factory('App\Modules\StoreInventory\Models\Category', 100)->create();
     }
 }

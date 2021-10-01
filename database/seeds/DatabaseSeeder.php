@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
         $this->call(DesignationsTableSeeder::class);
         $this->call(EmployeesTableSeeder::class);
         $this->call(ChartOfAccounts::class);
+        $this->call(AreaTableSeeder::class);
+        $this->call(TerritoryTableSeeder::class);
         //$this->call(UserSeeder::class);
     }
 }

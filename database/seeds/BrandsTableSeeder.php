@@ -14,14 +14,9 @@ class BrandsTableSeeder extends Seeder
      */
     public function run()
     {
-//        DB::table('brands')->insert([
-//            'name' => Str::random(10),
-//            'description' => Str::random(50),
-//            'logo' => Str::random(5),
-//        ]);
 
-        factory(\App\Modules\StoreInventory\Models\Brand::class, 100)->create()->each(function($brand){
+        /*factory(\App\Modules\StoreInventory\Models\Brand::class, 100)->create()->each(function($brand){
             $brand->save();
-        });
+        });*/
     }
 }
