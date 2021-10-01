@@ -18,6 +18,22 @@
         table tr td {
             background-color: transparent;
         }
+
+        .btext{
+            font-size: 16px;
+        }
+
+        .ptext{
+            font-size: 15px;
+        }
+        .ttext{
+            font-size: 18px;
+        }
+
+        .itext{
+            font-size: 20px;
+        }
+
     </style>
 @endpush
 
@@ -33,7 +49,7 @@
     </div>
     <section class="card" id="printableArea">
         <div class="container">
-            <img class="rounded mx-auto d-block" src="{{ asset('uploads/'. config('settings.site_logo')) }}" style=" position: absolute; left:0; right:0; margin:0 auto; opacity: 0.25;width: 50%; z-index: 9"/>
+            <img class="rounded mx-auto d-block" src="{{ asset('uploads/'. config('settings.site_logo')) }}" style=" position: absolute; left:0; right:0; margin:0 auto; opacity: 0.15;width: 50%; z-index: 9"/>
         <div id="invoice-template" class="card-body">
             <!-- Invoice Company Details -->
             <div id="invoice-company-details" class="row" style="width: 100%;">
@@ -43,7 +59,7 @@
                              title="{{ config('settings.site_name') }}"
                              src="{{ asset('uploads/'. config('settings.site_logo')) }}"
                              style="height: 80px; width: 80px;">
-                        <div class="media-body" style="padding-left:5%;">
+                        <div class="media-body itext" style="padding-left:5%;">
                             <ul class="ml-2 px-0 list-unstyled">
                                 <li class="text-bold-800">{{config('settings.company_name')}}</li>
                                 <li>{{ config('settings.house_no') }} {{ config('settings.road_no') }}</li>
@@ -54,34 +70,34 @@
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6 col-6 text-right text-md-right" style="width: 48%; float: left;">
                     <h2>INVOICE</h2>
-                    <p class="pb-3"># {{ $invoice->invoice_no }}</p>
+                    <p class="pb-3 ttext"># {{ $invoice->invoice_no }}</p>
                 </div>
             </div>
             <hr>
             <!--/ Invoice Company Details -->
 
             <!-- Invoice Customer Details -->
-            <div id="invoice-customer-details" class="row" style="width:100%;">
+            <div id="invoice-customer-details" class="row btext" style="width:100%;">
                 <div class="" style="width:50%;">
                 <div class="col-md-12 col-sm-12 text-left text-md-left" style="width:30%;">
                     <p class="">Bill To</p>
                 </div>
                 <div class="col-md-12 col-sm-12 text-left text-md-left" style="width:100%;">
-                    <ul class="px-0 list-unstyled">
-                        <li class="text-bold-800 text-muted">Name : {{ $invoice->customer->name }}</li>
-                        <li class="text-muted">Address : {{ $invoice->customer->address }}</li>
-                        <li class="text-muted">Phone : {{ $invoice->customer->contact_no }}</li>
+                    <ul class="px-0 list-unstyled ">
+                        <li class="text-bold-800 text-muted ">Name : {{ $invoice->customer->name }}</li>
+                        <li class="text-muted ">Address : {{ $invoice->customer->address }}</li>
+                        <li class="text-muted ">Phone : {{ $invoice->customer->contact_no }}</li>
                     </ul>
                 </div>
                 </div>
                 <div class="" style="width:50%;">
-                <div class="col-md-12 col-sm-12 text-right text-md-right" style="width:100%; ">
+                <div class="col-md-12 col-sm-12 text-right text-md-right " style="width:100%; ">
                     <p></p>
-                    <p>
+                    <p class="">
                         <span
                             class="text-muted">Invoice Date :</span> {{  date("F jS, Y", strtotime($invoice->date)) }}</li>
                     </p>
-                    <p>
+                    <p class="">
                         <span
                             class="text-muted">Terms :</span> {{  $invoice->cash_credit == \App\Modules\Config\Models\Lookup::CASH ? "CASH" : "DUE" }}
                     </p>
@@ -91,16 +107,16 @@
             <!--/ Invoice Customer Details -->
             <!-- Invoice Items Details -->
             <div id="invoice-items-details" class="pt-2">
-                <div class="row">
+                <div class="row ptext">
                     <div class="table-responsive col-sm-12">
-                        <table class="table bg-transparent">
+                        <table class="table bg-transparent" >
                             <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Item & Description</th>
-                                <th class="text-right">Qty</th>
-                                <th class="text-right">Sell Price</th>
-                                <th class="text-right">Amount</th>
+                                <th style="border-right: solid silver 0.5px;">#</th>
+                                <th style="border-right: solid silver 0.5px;">Item & Description</th>
+                                <th class="text-right" style="border-right: solid silver 0.5px;">Qty</th>
+                                <th class="text-right" style="border-right: solid silver 0.5px;">Sell Price</th>
+                                <th class="text-right" style="border-right: solid silver 0.5px;">Amount</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -112,21 +128,20 @@
                                 $salesTotal += $invD->row_total;
                                 ?>
                                 <tr>
-                                    <th scope="row" style="width: 2%;">{{ ++$key }}</th>
-                                    <td>
-                                        <p>{{ $invD->product->name }}</p>
+                                    <th scope="row" style="width: 2%;border-right: solid silver 0.5px;">{{ ++$key }}</th>
+                                    <td style="border-right: solid silver 0.5px;">
+                                        <p>{{ $invD->product->name}} {!! $invD->sn?'<br><span style="font-size:13px;">IMEI/SN: '.$invD->sn.'</span>':'' !!} </p>
                                         <p class="text-muted">{{ $invD->warranty?$invD->warranty->name:'No Warranty' }}</p>
                                     </td>
-                                    <td class="text-center">{{ $invD->qty }}</td>
-                                    <td class="text-right">{{ $invD->sell_price }}</td>
-                                    <td class="text-right">{{ $invD->row_total }}</td>
+                                    <td class="text-right" style="border-right: solid silver 0.5px;">{{ $invD->qty }}</td>
+                                    <td class="text-right" style="border-right: solid silver 0.5px;">{{ $invD->sell_price }}</td>
+                                    <td class="text-right" style="border-right: solid silver 0.5px;">{{ $invD->row_total }}</td>
                                 </tr>
                             @endforeach
                             </tbody>
-
                             <tr style="border-bottom: 0 !important;">
-                                <td colspan="4" class="text-right">Total</td>
-                                <td class="text-right">{{$salesTotal}}</td>
+                                <td colspan="4" class="text-right" style="border-right: solid silver 0.5px;">Total</td>
+                                <td class="text-right" style="border-right: solid silver 0.5px;">{{$salesTotal}}</td>
                             </tr>
 
                         </table>
@@ -185,12 +200,16 @@
                                     <td class="text-bold-800 text-right"> <?= number_format($salesTotal, 2) ?></td>
                                 </tr>
                                 <tr>
+                                    <td>Discount</td>
+                                    <td class="pink text-right">(-) <?= number_format($invoice->discount_amount, 2) ?></td>
+                                </tr>
+                                <tr>
                                     <td>Payment Made</td>
                                     <td class="pink text-right">(-) <?= number_format($total_mr, 2) ?></td>
                                 </tr>
                                 <tr class="bg-grey bg-lighten-4">
                                     <td class="text-bold-800">Balance Due</td>
-                                    <td class="text-bold-800 text-right"><?= number_format(($salesTotal - $total_mr), 2) ?></td>
+                                    <td class="text-bold-800 text-right"><?= number_format(($salesTotal - ($total_mr+$invoice->discount_amount)), 2) ?></td>
                                 </tr>
                                 </tbody>
                             </table>

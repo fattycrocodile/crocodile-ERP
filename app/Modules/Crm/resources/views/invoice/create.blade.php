@@ -11,6 +11,16 @@
         .cash_payment, .bank_other_payment, .cash_payment_bank {
             display: none;
         }
+
+        .col-1-5 {
+            flex: 0 0 12.3%;
+            max-width: 12.3%;
+            position: relative;
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
     </style>
 @endpush
 @section('content')
@@ -258,7 +268,7 @@
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-1-5">
                                             <div class="form-group">
                                                 <label for="product_code">Product Code</label>
                                                 <input type="text"
@@ -300,7 +310,7 @@
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-1-5">
                                             <div class="form-group">
                                                 <label for="total_sell_price">Total Sell Price</label>
                                                 <input type="text"
@@ -310,7 +320,16 @@
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-1-5">
+                                            <div class="form-group">
+                                                <label for="sn">IMEI/SN</label>
+                                                <textarea class="form-control @error('sn') is-invalid @enderror"
+                                                          id="sn" name="sn" placeholder="IMEI/SN"></textarea>
+                                                @error('sn')
+                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-1-5">
                                             <div class="form-group">
                                                 <label for="warranty_id">Warranty</label>
                                                 <select id="warranty_id" name="warranty_id"
@@ -341,6 +360,7 @@
                                                     <tr>
                                                         <th>SL</th>
                                                         <th>Product Info</th>
+                                                        <th>IMEI/SN</th>
                                                         <th>Stock Qty</th>
                                                         <th>Sell Price</th>
                                                         <th>Sell Qty</th>
@@ -352,12 +372,12 @@
                                                     </tbody>
                                                     <tfoot>
                                                     <tr>
-                                                        <th colspan="5" class="text-right"><label for="discount">Discount</label></th>
+                                                        <th colspan="6" class="text-right"><label for="discount">Discount</label></th>
                                                         <th style="text-align: center;">
                                                                 <div class="form-group">
                                                                     <input type="text"
                                                                            class="form-control discount @error('discount') is-invalid @enderror"
-                                                                           id="discount">
+                                                                           id="discount" name="discount">
                                                                     @error('discount')
                                                                     <div class="help-block text-danger">{{ $message }} </div> @enderror
                                                                 </div>
@@ -366,7 +386,7 @@
                                                         <th></th>
                                                     </tr>
                                                     <tr>
-                                                        <th colspan="5" class="text-right">Grand Total</th>
+                                                        <th colspan="6" class="text-right">Grand Total</th>
                                                         <th style="text-align: center;">
                                                             <div id="grand_total_text"></div>
                                                             <input type="hidden" id="grand_total" name="grand_total">
@@ -403,6 +423,13 @@
     <!-- Script -->
 
     <script type="text/javascript">
+
+        $('#sn').keydown(function(e){
+        if (e.keyCode == 13) { // barcode scanned!
+            $('#sn').val($('#sn').val() + ',');
+            return false;
+        }
+        });
 
         var cashArray = [1];
         var bankArray = [2, 3, 4, 5];
@@ -895,6 +922,7 @@
             var stock_qty = nanCheck(parseFloat($("#stock_qty").val()));
             var sell_qty = nanCheck(parseFloat($("#qty").val()));
             var warranty_id = nanCheck($("#warranty_id").val());
+            var sn = $("#sn").val();
             var warrantyText = $("#warranty_id option:selected").text();
             var sell_price = nanCheck(parseFloat($("#sell_price").val()));
             var min_sell_price = nanCheck(parseFloat($("#min_sell_price").val()));
@@ -905,6 +933,7 @@
             var appendTxt = "<tr class='cartList'>"
             appendTxt += "<td class='count' style='text-align: center;'>" + slNumber + "</td>";
             appendTxt += "<td style='text-align: left;'>Name: " + product_name + "<br><small class='cart-product-code'>Code: " + product_code + "</small><br><small class='cart-product-warranty'>Warranty: " + warrantyText + "</small><input type='hidden' class='temp_product_id' name='product[temp_product_id][]' value='" + product_id + "'></td>";
+            appendTxt += "<td style='text-align: center;'>"+sn+"<input type='hidden' class='form-control temp_sn' readonly name='product[temp_sn][]' value='" + sn + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_stock_qty' readonly name='product[temp_stock_qty][]' onkeyup='calculateRowTotalOnChange();' value='" + stock_qty + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_sell_price ' readonly name='product[temp_sell_price][]' onkeyup='calculateRowTotalOnChange();' value='" + sell_price + "'><input type='hidden' name='product[temp_min_sell_price][]' class='temp_min_sell_price' value='" + min_sell_price + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_sell_qty' name='product[temp_sell_qty][]' onkeyup='calculateRowTotalOnChange();' value='" + sell_qty + "'></td>";
@@ -1019,6 +1048,8 @@
             $('#sell_price').val("");
             $('#min_sell_price').val("");
             $('#total_sell_price').val("");
+            $("#warranty_id").val("none");
+            $("#sn").val("");
         }
 
         function clearCustomerData() {

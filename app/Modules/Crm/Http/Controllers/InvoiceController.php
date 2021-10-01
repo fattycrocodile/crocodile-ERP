@@ -114,7 +114,7 @@ class InvoiceController extends BaseController
             $invoice->order_id = isset($params['order_id']) ? $params['order_id'] : NULL;
             $invoice->store_id = $params['store_id'];
             $invoice->customer_id = $customer_id = $params['customer_id'];
-            $invoice->discount_amount = $params['discount'];
+            $invoice->discount_amount = $params['discount']?$params['discount']:0;
 
             $customer = Customers::findOrFail($params['customer_id']);
             $territory = Territory::findOrFail($customer->territory_id);
@@ -125,7 +125,6 @@ class InvoiceController extends BaseController
             $invoice->territory_id = $customer ? $customer->territory_id : NULL;
             $invoice->territory_employee_id = $territory ? $territory->employee_id : NULL;
 
-            $invoice->discount_amount = 0;
             $invoice->grand_total = $grand_total = $params['grand_total'];
             $invoice->date = $date = $params['date'];
             $invoice->created_by = $created_by = auth()->user()->id;
@@ -138,6 +137,7 @@ class InvoiceController extends BaseController
                     $sell_price = $params['product']['temp_sell_price'][$i];
                     $sell_qty = $params['product']['temp_sell_qty'][$i];
                     $warranty = $params['product']['temp_warranty'][$i];
+                    $sn = $params['product']['temp_sn'][$i];
                     $row_sell_price = $params['product']['temp_row_sell_price'][$i];
                     $stock_qty = \App\Modules\StoreInventory\Models\Inventory::closingStockWithStore($product_id, $invoice->store_id);
                     if ($stock_qty > 0) {
@@ -154,6 +154,7 @@ class InvoiceController extends BaseController
                             $invoiceDetails = new InvoiceDetails();
                             $invoiceDetails->invoice_id = $invoice_id;
                             $invoiceDetails->warranty_id = $warranty;
+                            $invoiceDetails->sn = $sn;
                             $invoiceDetails->product_id = $product_id;
                             $invoiceDetails->qty = $sell_qty;
                             $invoiceDetails->sell_price = $sell_price;

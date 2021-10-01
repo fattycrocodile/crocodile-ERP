@@ -129,11 +129,13 @@ class SellOrderController extends BaseController
                     $sell_qty = $params['product']['temp_sell_qty'][$i];
                     $row_sell_price = $params['product']['temp_row_sell_price'][$i];
                     $warranty = $params['product']['temp_warranty'][$i];
+                    $sn = $params['product']['temp_sn'][$i];
 
                     $orderDetails = new SellOrderDetails();
                     $orderDetails->order_id = $order_id;
                     $orderDetails->product_id = $product_id;
                     $orderDetails->warranty_id = $warranty;
+                    $orderDetails->sn = $sn;
                     $orderDetails->qty = $sell_qty;
                     $orderDetails->sell_price = $sell_price;
                     $orderDetails->discount = 0;

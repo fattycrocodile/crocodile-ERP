@@ -19,6 +19,7 @@ class CreatePurchaseDetailsTable extends Migration
             $table->foreign('purchase_id')->references('id')->on('purchases');
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
+            $table->string('sn')->nullable();
             $table->double('qty');
             $table->double('purchase_price');
             $table->double('others_charges')->nullable();

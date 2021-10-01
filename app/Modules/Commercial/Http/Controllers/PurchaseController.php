@@ -103,6 +103,7 @@ class PurchaseController extends BaseController
                     $stock_qty = $params['product']['temp_stock_qty'][$i];
                     $purchase_price = $params['product']['temp_purchase_price'][$i];
                     $purchase_qty = $params['product']['temp_purchase_qty'][$i];
+                    $sn = $params['product']['temp_sn'][$i];
                     $row_purchase_price = $params['product']['temp_row_purchase_price'][$i];
                     $stock = Inventory::closingStock($product_id);
 
@@ -119,6 +120,7 @@ class PurchaseController extends BaseController
                         $invoiceDetails = new PurchaseDetails();
                         $invoiceDetails->purchase_id = $invoice_id;
                         $invoiceDetails->product_id = $product_id;
+                        $invoiceDetails->sn = $sn;
                         $invoiceDetails->qty = $purchase_qty;
                         $invoiceDetails->purchase_price = $purchase_price;
                         $invoiceDetails->others_charges = 0;

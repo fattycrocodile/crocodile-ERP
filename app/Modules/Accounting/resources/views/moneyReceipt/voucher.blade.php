@@ -17,12 +17,26 @@
         table tr td {
             background-color: transparent;
         }
+        .btext{
+            font-size: 16px;
+        }
+
+        .ptext{
+            font-size: 15px;
+        }
+        .ttext{
+            font-size: 18px;
+        }
+
+        .itext{
+            font-size: 20px;
+        }
     </style>
 @endpush
 
     <section class="card" id="printableArea">
         <div class="container">
-            <img class="rounded mx-auto d-block" src="{{ asset('uploads/'. config('settings.site_logo')) }}" style=" position: absolute; left:0; right:0; margin:0 auto; opacity: 0.25;width: 50%; z-index: 9"/>
+            <img class="rounded mx-auto d-block" src="{{ asset('uploads/'. config('settings.site_logo')) }}" style=" position: absolute; left:0; right:0; margin:0 auto; opacity: 0.15;width: 50%; z-index: 9"/>
         <div id="invoice-template" class="card-body">
             <!-- Invoice Company Details -->
             <div id="invoice-company-details" class="row" style="width: 100%;">
@@ -33,7 +47,7 @@
                              src="{{ asset('uploads/'. config('settings.site_logo')) }}"
                              style="height: 80px; width: 80px;">
                         <div class="media-body" style="padding-left:5%;">
-                            <ul class="ml-2 px-0 list-unstyled">
+                            <ul class="ml-2 px-0 list-unstyled itext">
                                 <li class="text-bold-800">{{config('settings.company_name')}}</li>
                                 <li>{{ config('settings.house_no') }} {{ config('settings.road_no') }}</li>
                                 <li>{{ config('settings.phone') }}</li>
@@ -43,7 +57,7 @@
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6 col-6 text-right text-md-right" style="width: 48%; float: left;">
                     <h2>MONEY RECEIPT</h2>
-                    <p class="pb-3">MR NO: #{{ $data->first()->mr_no }}
+                    <p class="pb-3 ttext">MR NO: #{{ $data->first()->mr_no }}
                         <br>
                         MR Date: {{  date("F jS, Y", strtotime($data->first()->date)) }}
                     </p>
@@ -53,7 +67,7 @@
             <!--/ Invoice Company Details -->
 
             <!-- Invoice Customer Details -->
-            <div id="invoice-customer-details" class="row" style="width:100%;">
+            <div id="invoice-customer-details" class="row btext" style="width:100%;">
                 <div class="" style="width:50%;">
                 <div class="col-md-12 col-sm-12 text-left text-md-left" style="width:30%;">
                     <p class="">Receive From</p>
@@ -70,7 +84,7 @@
             <!--/ Invoice Customer Details -->
             <!-- Invoice Items Details -->
             <div id="invoice-items-details" class="pt-2">
-                <div class="row">
+                <div class="row ptext">
                     <div class="table-responsive col-sm-12">
                         <table class="table bg-transparent">
                             <thead>

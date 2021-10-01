@@ -11,6 +11,15 @@
         .cash_payment, .bank_other_payment, .cash_payment_bank {
             display: none;
         }
+
+        .col-1-5 {
+            flex: 0 0 12.3%;
+            max-width: 12.3%;
+            position: relative;
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
     </style>
 @endpush
 @section('content')
@@ -185,7 +194,7 @@
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-1">
                                             <div class="form-group">
                                                 <label for="qty">Qty</label>
                                                 <input type="text"
@@ -205,7 +214,7 @@
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-1-5">
                                             <div class="form-group">
                                                 <label for="purchase_price">Purchase Price</label>
                                                 <input type="text"
@@ -222,6 +231,15 @@
                                                        class="form-control @error('total_purchase_price') is-invalid @enderror"
                                                        id="total_purchase_price" name="total_purchase_price" readonly>
                                                 @error('total_purchase_price')
+                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-1-5">
+                                            <div class="form-group">
+                                                <label for="sn">IMEI/SN</label>
+                                                <textarea class="form-control @error('sn') is-invalid @enderror"
+                                                          id="sn" name="sn" placeholder="IMEI/SN"></textarea>
+                                                @error('sn')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
@@ -242,6 +260,7 @@
                                                     <tr>
                                                         <th>SL</th>
                                                         <th>Product Info</th>
+                                                        <th>IMEI/SN</th>
                                                         <th>Stock Qty</th>
                                                         <th>Purchase Price</th>
                                                         <th>Purchase Qty</th>
@@ -289,6 +308,13 @@
 
     <!-- Script -->
     <script type="text/javascript">
+
+        $('#sn').keydown(function(e){
+            if (e.keyCode == 13) { // barcode scanned!
+                $('#sn').val($('#sn').val() + ',');
+                return false;
+            }
+        });
 
         var cashArray = [1];
         var bankArray = [2, 3, 4, 5];
@@ -640,6 +666,7 @@
             var product_code = $("#product_code").val();
             var stock_qty = nanCheck(parseFloat($("#stock_qty").val()));
             var purchase_qty = nanCheck(parseFloat($("#qty").val()));
+            var sn = $("#sn").val();
             var purchase_price = nanCheck(parseFloat($("#purchase_price").val()));
             var total_purchase_price = nanCheck(parseFloat($("#total_purchase_price").val()));
 
@@ -648,6 +675,7 @@
             var appendTxt = "<tr class='cartList'>"
             appendTxt += "<td class='count' style='text-align: center;'>" + slNumber + "</td>";
             appendTxt += "<td style='text-align: left;'>Name: " + product_name + "<br><small class='cart-product-code'>Code: " + product_code + "</small><input type='hidden' class='temp_product_id' name='product[temp_product_id][]' value='" + product_id + "'></td>";
+            appendTxt += "<td style='text-align: center;'>"+sn+"<input type='hidden' class='form-control temp_sn' readonly name='product[temp_sn][]' value='" + sn + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_stock_qty' readonly name='product[temp_stock_qty][]' onkeyup='calculateRowTotalOnChange();' value='" + stock_qty + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_purchase_price ' name='product[temp_purchase_price][]' onkeyup='calculateRowTotalOnChange();' value='" + purchase_price + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_purchase_qty' name='product[temp_purchase_qty][]' onkeyup='calculateRowTotalOnChange();' value='" + purchase_qty + "'></td>";
@@ -752,6 +780,7 @@
             $('#stock_qty').val("");
             $('#purchase_price').val("");
             $('#total_purchase_price').val("");
+            $("#sn").val("");
         }
 
         function clearSupplierData() {
