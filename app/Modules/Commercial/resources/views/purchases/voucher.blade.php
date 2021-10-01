@@ -129,7 +129,7 @@
                                 <tr>
                                     <th scope="row" style="width: 2%;">{{ ++$key }}</th>
                                     <td>
-                                        <p>{{ $invD->product->name }}</p>
+                                        <p>{{ $invD->product->name }} {!! $invD->sn?'<br><span style="font-size:13px;">IMEI/SN: '.$invD->sn.'</span>':'' !!}</p>
                                         <p class="text-muted">{{ $invD->product->code }}</p>
                                     </td>
                                     <td class="text-center">{{ $invD->qty }}</td>
