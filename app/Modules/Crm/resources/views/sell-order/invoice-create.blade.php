@@ -214,7 +214,7 @@
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-1">
                                             <div class="form-group">
                                                 <label for="qty">Qty</label>
                                                 <input type="text"
@@ -224,7 +224,7 @@
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-1">
                                             <div class="form-group">
                                                 <label for="stock_qty">Stock Qty</label>
                                                 <input type="text"
@@ -253,6 +253,20 @@
                                                        class="form-control @error('total_sell_price') is-invalid @enderror"
                                                        id="total_sell_price" name="total_sell_price" readonly>
                                                 @error('total_sell_price')
+                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="warranty_id">Warranty</label>
+                                                <select id="warranty_id" name="warranty_id"
+                                                        class="select2 form-control @error('warranty_id') is-invalid @enderror">
+                                                    <option value="none" selected="">Select Warranty</option>
+                                                    @foreach($warranties as $warranty)
+                                                        <option value="{{ $warranty->id }}"> {{ $warranty->name }} </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('warranty_id')
                                                 <div class="help-block text-danger">{{ $message }} </div> @enderror
                                             </div>
                                         </div>
@@ -297,8 +311,15 @@
                                                             <td style='text-align: left;'>
                                                                 Name: {{ $details->product->name }}
                                                                 <br>
+                                                                <input type='hidden' class='temp_warranty'
+                                                                       name='product[temp_warranty][]'
+                                                                       value='{{ $details->warranty_id }}'>
                                                                 <small class='cart-product-code'>
                                                                     Code:{{ $details->product->code }}
+                                                                </small>
+                                                                <br>
+                                                                <small class='cart-product-code'>
+                                                                    Warranty: {{ $details->warranty->name }}
                                                                 </small>
                                                                 <input type='hidden' class='temp_product_id'
                                                                        name='product[temp_product_id][]'
@@ -342,6 +363,20 @@
                                                     @endforeach
                                                     </tbody>
                                                     <tfoot>
+                                                    <tr>
+                                                        <th colspan="5" class="text-right"><label for="discount">Discount</label></th>
+                                                        <th style="text-align: center;">
+                                                            <div class="form-group">
+                                                                <input type="text"
+                                                                       class="form-control discount @error('discount') is-invalid @enderror"
+                                                                       id="discount" value="{{$order->discount_amount?$order->discount_amount:0}}">
+                                                                @error('discount')
+                                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                                            </div>
+
+                                                        </th>
+                                                        <th></th>
+                                                    </tr>
                                                     <tr>
                                                         <th colspan="5" class="text-right">Grand Total</th>
                                                         <th style="text-align: center;">
@@ -656,6 +691,7 @@
                     getProductPrice(ui.item.value);
                     getProductStock(ui.item.value);
                     $('#product_name').val(ui.item.name);
+                    $('#warranty_id').val(ui.item.warranty);
                     $('#product_code').val(ui.item.code);
                     $('#product_id').val(ui.item.value);
                 } else {
@@ -707,6 +743,7 @@
                     getProductStock(ui.item.value);
                     $('#product_name').val(ui.item.name);
                     $('#product_code').val(ui.item.code);
+                    $('#warranty_id').val(ui.item.warranty);
                     $('#product_id').val(ui.item.value);
                 } else {
                     resetProduct();
@@ -749,6 +786,7 @@
             var sell_qty = nanCheck(parseFloat($("#qty").val()));
             var sell_price = nanCheck(parseFloat($("#sell_price").val()));
             var min_sell_price = nanCheck(parseFloat($("#min_sell_price").val()));
+            var warranty_id = nanCheck($("#warranty_id").val());
             // console.log("SELL PRICE:" + sell_price);
             var message;
             var error = true;
@@ -796,6 +834,8 @@
             var product_id = nanCheck(parseFloat($("#product_id").val()));
             var product_name = $("#product_name").val();
             var product_code = $("#product_code").val();
+            var warranty_id = nanCheck($("#warranty_id").val());
+            var warrantyText = $("#warranty_id option:selected").text();
             var stock_qty = nanCheck(parseFloat($("#stock_qty").val()));
             var sell_qty = nanCheck(parseFloat($("#qty").val()));
             var sell_price = nanCheck(parseFloat($("#sell_price").val()));
@@ -806,11 +846,11 @@
             var slNumber = $('#table-data-list tbody tr.cartList').length + 1;
             var appendTxt = "<tr class='cartList'>"
             appendTxt += "<td class='count' style='text-align: center;'>" + slNumber + "</td>";
-            appendTxt += "<td style='text-align: left;'>Name: " + product_name + "<br><small class='cart-product-code'>Code: " + product_code + "</small><input type='hidden' class='temp_product_id' name='product[temp_product_id][]' value='" + product_id + "'></td>";
+            appendTxt += "<td style='text-align: left;'>Name: " + product_name + "<br><small class='cart-product-code'>Code: " + product_code + "</small><br><small class='cart-product-warranty'>Warranty: " + warrantyText + "</small><input type='hidden' class='temp_product_id' name='product[temp_product_id][]' value='" + product_id + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_stock_qty' readonly name='product[temp_stock_qty][]' onkeyup='calculateRowTotalOnChange();' value='" + stock_qty + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_sell_price ' name='product[temp_sell_price][]' onkeyup='calculateRowTotalOnChange();' value='" + sell_price + "'><input type='hidden' name='product[temp_min_sell_price][]' class='temp_min_sell_price' value='" + min_sell_price + "'></td>";
             appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_sell_qty' name='product[temp_sell_qty][]' onkeyup='calculateRowTotalOnChange();' value='" + sell_qty + "'></td>";
-            appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_row_sell_price' name='product[temp_row_sell_price][]' readonly value='" + total_sell_price + "'></td>";
+            appendTxt += "<td style='text-align: center;'><input type='text' class='form-control temp_row_sell_price' name='product[temp_row_sell_price][]' readonly value='" + total_sell_price + "'><input type='hidden' class='form-control temp_warranty' name='product[temp_warranty][]' readonly value='" + warranty_id + "'></td>";
             appendTxt += "<td style='text-align: center;'><button title=\"remove\"  type=\"button\" class=\"rdelete dltBtn btn btn-danger btn-md\" onclick=\"deleteRows($(this))\"><i class=\"icon-trash\"></i></button></td>";
             appendTxt += "</tr>";
 
@@ -824,6 +864,10 @@
 
         $(document).on('input keyup drop paste', ".temp_sell_price, .temp_sell_qty", function (e) {
             calculateRowTotalOnChange();
+        });
+
+        $(document).on('input keyup drop paste', ".discount", function (e) {
+            calculateGrandTotal();
         });
 
         function deleteRows(element) {
@@ -957,11 +1001,12 @@
 
         function calculateGrandTotal() {
             var grand_total = 0;
+            var discount = nanCheck(parseFloat($("#discount").val()));
             $('#table-data-list .temp_row_sell_price').each(function () {
                 grand_total += nanCheck(parseFloat(this.value));
             });
-            $("#grand_total_text").html(grand_total);
-            $("#grand_total").val(grand_total);
+            $("#grand_total_text").html(grand_total-discount);
+            $("#grand_total").val(grand_total-discount);
         }
 
         function calculateRowTotalOnChange() {

@@ -204,6 +204,7 @@ class SellOrderController extends BaseController
     {
         try {
             $order = SellOrder::findOrFail($id);
+            $warranties = Warranty::all();
             $stores = $this->store->treeList();
             $payment_type = Lookup::items('payment_method');
             $cash_credit = Lookup::items('cash_credit');
@@ -212,7 +213,7 @@ class SellOrderController extends BaseController
         } catch (ModelNotFoundException $e) {
             throw new ModelNotFoundException($e);
         }
-        return view('Crm::sell-order.invoice-create', compact('order', 'stores', 'payment_type', 'cash_credit', 'bank'));
+        return view('Crm::sell-order.invoice-create', compact('order', 'stores', 'payment_type', 'cash_credit', 'bank','warranties'));
     }
 
     /**

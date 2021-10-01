@@ -352,6 +352,20 @@
                                                     </tbody>
                                                     <tfoot>
                                                     <tr>
+                                                        <th colspan="5" class="text-right"><label for="discount">Discount</label></th>
+                                                        <th style="text-align: center;">
+                                                                <div class="form-group">
+                                                                    <input type="text"
+                                                                           class="form-control discount @error('discount') is-invalid @enderror"
+                                                                           id="discount">
+                                                                    @error('discount')
+                                                                    <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                                                </div>
+
+                                                        </th>
+                                                        <th></th>
+                                                    </tr>
+                                                    <tr>
                                                         <th colspan="5" class="text-right">Grand Total</th>
                                                         <th style="text-align: center;">
                                                             <div id="grand_total_text"></div>
@@ -910,6 +924,10 @@
             calculateRowTotalOnChange();
         });
 
+        $(document).on('input keyup drop paste', ".discount", function (e) {
+            calculateGrandTotal();
+        });
+
         function deleteRows(element) {
             var result = confirm("Are you sure you want to Delete?");
             if (result) {
@@ -1041,11 +1059,12 @@
 
         function calculateGrandTotal() {
             var grand_total = 0;
+            var discount = nanCheck(parseFloat($("#discount").val()));
             $('#table-data-list .temp_row_sell_price').each(function () {
                 grand_total += nanCheck(parseFloat(this.value));
             });
-            $("#grand_total_text").html(grand_total);
-            $("#grand_total").val(grand_total);
+            $("#grand_total_text").html(grand_total-discount);
+            $("#grand_total").val(grand_total-discount);
         }
 
         function calculateRowTotalOnChange() {

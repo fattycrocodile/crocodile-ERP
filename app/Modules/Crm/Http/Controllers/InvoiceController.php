@@ -114,6 +114,7 @@ class InvoiceController extends BaseController
             $invoice->order_id = isset($params['order_id']) ? $params['order_id'] : NULL;
             $invoice->store_id = $params['store_id'];
             $invoice->customer_id = $customer_id = $params['customer_id'];
+            $invoice->discount_amount = $params['discount'];
 
             $customer = Customers::findOrFail($params['customer_id']);
             $territory = Territory::findOrFail($customer->territory_id);
