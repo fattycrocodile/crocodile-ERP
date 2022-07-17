@@ -14,6 +14,7 @@ class Lookup extends Model
     const CREDIT = 2;
 
     const PAYMENT_CASH = 1;
+    const PAYMENT_BKASH = 2;
 
     const GENDER_MALE = 1;
     const GENDER_FEMALE = 2;

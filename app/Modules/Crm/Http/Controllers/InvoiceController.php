@@ -203,7 +203,7 @@ class InvoiceController extends BaseController
                 }
                 DB::commit();
                 if ($isAnyItemIsMissing == false) {
-                    return $this->responseRedirectToWithParameters('crm.invoice.voucher', ['id' => $invoice->id], 'Invoice created successfully', 'success', false, false);
+                    return $this->responseRedirectToWithParameters('crm.invoice.pos.voucher', ['id' => $invoice->id], 'Invoice created successfully', 'success', false, false);
                 } else {
                     DB::rollback();
                     return $this->responseRedirectBack('Error occurred while creating invoice.', 'error', true, true);
@@ -294,6 +294,16 @@ class InvoiceController extends BaseController
         $this->setPageTitle('Invoice No-' . $invoice_no, 'Invoice Preview : ' . $invoice_no);
 
         return view('Crm::invoice.voucher', compact('invoice', 'id'));
+    }
+
+
+    public function posVoucher($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        $invoice_no = $invoice->invoice_no;
+        $this->setPageTitle('Invoice No-' . $invoice_no, 'Invoice Preview : ' . $invoice_no);
+
+        return view('Crm::invoice.pos-voucher', compact('invoice', 'id'));
     }
 
 

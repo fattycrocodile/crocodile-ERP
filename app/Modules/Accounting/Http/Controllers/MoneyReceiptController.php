@@ -234,7 +234,7 @@ class MoneyReceiptController extends BaseController
             $data = $data->where('mr_no', '=', $request->mr_no);
             $data = $data->get();
             if ($data) {
-                $returnHTML = view('Accounting::MoneyReceipt.voucher', compact('data'))->render();
+                $returnHTML = view('Accounting::moneyReceipt.voucher', compact('data'))->render();
                 return $this->responseJson(false, 200, "", $returnHTML);
             } else {
                 return $this->responseJson(true, 200, "Voucher not found!");

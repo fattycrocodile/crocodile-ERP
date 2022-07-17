@@ -40,7 +40,7 @@ class InvoiceDataTable extends DataTable
                 return "
                     <div class='form-group text-center'>
                         <div class='btn-group' role='group' aria-label='Basic example'>
-                            <a href='sales/$data->id/voucher' class='btn btn-icon btn-warning' title='Invoice Preview'><i class='fa fa-eye'></i></a>
+                            <a href='sales/$data->id/pos-voucher' class='btn btn-icon btn-warning' title='Invoice Preview'><i class='fa fa-eye'></i></a>
                             $delete
                         </div>
                    </div>";
