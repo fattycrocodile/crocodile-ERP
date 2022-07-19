@@ -11,7 +11,7 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li class="dropdown nav-item" data-menu="dropdown">
+<!--            <li class="dropdown nav-item" data-menu="dropdown">
                 <a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">
                     <i class="ft-settings"></i><span>Software Settings</span>
                 </a>
@@ -50,7 +50,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li>-->
 
             <li class="dropdown nav-item" data-menu="dropdown">
                 <a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">
