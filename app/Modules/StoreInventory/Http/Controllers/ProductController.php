@@ -58,12 +58,11 @@ class ProductController extends BaseController
             'min_order_qty' => 'required',
             'sell_price' => 'required',
             'whole_sell_price' => 'required',
-            'description' => 'required',
         ]);
         $product = new Product();
         $sellPrice = new SellPrice();
         $product->name = $req->name;
-        $product->description = $req->description;
+        $product->description = $req->description?$req->description:'';
         $product->category_id = $req->category_id;
         $product->brand_id = $req->brand_id;
         $product->unit_id = $req->unit_id;
@@ -122,12 +121,11 @@ class ProductController extends BaseController
             'min_order_qty' => 'required',
             'sell_price' => 'required',
             'whole_sell_price' => 'required',
-            'description' => 'required',
         ]);
         $product = Product::find($id);
         $sellPrice = new SellPrice();
         $product->name = $req->name;
-        $product->description = $req->description;
+        $product->description = $req->description?$req->description:'';
         $product->category_id = $req->category_id;
         $product->brand_id = $req->brand_id;
         $product->unit_id = $req->unit_id;

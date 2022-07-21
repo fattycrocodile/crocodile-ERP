@@ -18,7 +18,7 @@ class CreateCustomersTable extends Migration
             $table->integer('max_sn');
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('id')->on('stores');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('address')->nullable();
             $table->string('contact_no')->nullable();
             $table->string('code');

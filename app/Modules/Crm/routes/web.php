@@ -70,5 +70,8 @@ Route::group(['middleware' => ['auth:web']], function () {
 
         Route::get('/product_wise_sales_report', 'InvoiceController@productWiseSalesReport')->name('crm.reports.product-wise-sales');
         Route::post('/product_wise_sales_report_view', 'InvoiceController@productWiseSalesReportView')->name('crm.reports.product-wise-sales-view');
+        
+        Route::get('/unsold_products_report', 'InvoiceController@unsoldProductsReport')->name('crm.reports.unsold-products');
+        Route::post('/unsold_products_report_view', 'InvoiceController@unsoldProductsReportView')->name('crm.reports.unsold-products-view');
     });
 });

@@ -483,7 +483,7 @@
                 </ul>
             </li>
 
-            <li class="dropdown nav-item" data-menu="dropdown">
+<!--            <li class="dropdown nav-item" data-menu="dropdown">
                 <a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">
                     <i class="ft-users"></i><span>Supply Chain</span>
                 </a>
@@ -566,7 +566,7 @@
                         </ul>
                     </li>
                 </ul>
-            </li>
+            </li>-->
 
             <li class="dropdown nav-item" data-menu="dropdown">
                 <a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">
@@ -632,6 +632,12 @@
                             <li data-menu="">
                                 <a class="dropdown-item" href="{{ route('crm.reports.product-wise-sales') }}"
                                    data-toggle="dropdown">Product Wise Sales Report
+                                    <submenu class="name"></submenu>
+                                </a>
+                            </li>
+                            <li data-menu="">
+                                <a class="dropdown-item" href="{{ route('crm.reports.unsold-products') }}"
+                                   data-toggle="dropdown">Unsold Products Report
                                     <submenu class="name"></submenu>
                                 </a>
                             </li>

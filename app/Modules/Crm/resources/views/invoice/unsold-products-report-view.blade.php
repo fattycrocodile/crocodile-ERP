@@ -4,35 +4,39 @@
 </div>
 <div class="row" id="printableArea">
     <div class="col-12">
-        <h2 class="text-center">Product Wise Sales Report From {{  date("F jS, Y", strtotime($start_date)) }}
+        <h2 class="text-center">Unsold Products Report From {{  date("F jS, Y", strtotime($start_date)) }}
             TO {{  date("F jS, Y", strtotime($end_date)) }}</h2>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th class="text-center">#</th>
-                    <th class="text-center">Date</th>
                     <th>Product Name</th>
-                    <th class="text-center">Quantity</th>
-                    <th>Amount</th>
+                    <th>Product Code</th>
+                    <th class="text-center">Stock</th>
+                    <th>Stock Value</th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
                 $grand_total = 0;
                 $count = 0;
+                $stockValue = 0;
                 ?>
                 @foreach($data as $key => $dt)
                     <?php
-                    $grand_total += $dt->amount;
                     $count++;
+                    $stockQty = \App\Modules\StoreInventory\Models\Inventory::closingStock($dt->id);
+                    $price = \App\Modules\StoreInventory\Models\Product::productAvaragePrice($dt->id);
+                    $stockValue = ($stockQty * $price);
+                    $grand_total += $stockValue;
                     ?>
                     <tr>
                         <th scope="row" class="text-center">{{ ++$key }}</th>
-                        <td class="text-center">{{ $dt->date }}</td>
-                        <td>{{ isset($dt->name)?$dt->name:"N/A" }}</td>
-                        <td class="text-center">{{ $dt->qty }}</td>
-                        <td class="text-right">{{ number_format($dt->amount, 2) }}</td>
+                        <td>{{ $dt->name}}</td>
+                        <td>{{ $dt->code}}</td>
+                        <td class="text-center">{{ $stockQty }}</td>
+                        <td class="text-right">{{ number_format($stockValue, 2) }}</td>
                     </tr>
                 @endforeach
                 @if($count > 0)

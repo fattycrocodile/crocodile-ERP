@@ -100,10 +100,10 @@ class CustomersController extends BaseController
     {
         //validate Form Data
         $request->validate([
-            'name' => "required|min:3",
+            //'name' => "required|min:3",
             'contact_no' => "required|min:11",
-            'store' => "required",
-            'address' => "required",
+            /*'store' => "required",
+            'address' => "required",*/
         ]);
 
         //Get store information by store id

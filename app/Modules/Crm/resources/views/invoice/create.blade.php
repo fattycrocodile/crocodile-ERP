@@ -63,7 +63,7 @@
                                         <select id="store" name="store" class="select2 form-control @error('store_id') is-invalid @enderror">
                                             <option value="none" selected="" disabled="">Select Store</option>
                                             @foreach($stores as $store)
-                                                <option value="{{$store->id}}" {{ old('store_id')==$store->id?'selected':'' }}>{{$store->name}}</option>
+                                                <option value="{{$store->id}}" {{$store->id==(old('store_id')?old('store_id'):1)?'selected':''}}>{{$store->name}}</option>
                                             @endforeach
                                         </select>
                                         @error('store_id')<div class="help-block text-danger">{{ $message }} </div> @enderror
@@ -504,10 +504,10 @@
                 var contract_no = $.trim($('#customerContact').val());
                 var address = $.trim($('#address').val());
 
-                if (name === '') {
+                /*if (name === '') {
                     toastr.warning(" Please Enter Customer Name!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
-                }
+                }*/
                 if (store === '') {
                     toastr.warning(" Please select  store!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
@@ -516,10 +516,10 @@
                     toastr.warning(" Please Enter Customer Mobile no!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 }
-                if (address === '') {
+                /*if (address === '') {
                     toastr.warning(" Please Enter Customer Address!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
-                }
+                }*/
                 ajaxSave();
             });
 
@@ -540,9 +540,9 @@
                 cache: false,
                 data: $('form#customer-form').serialize(),
                 beforeSend: function () {
-                    var name = $.trim($('#customerName').val());
-                    if (name == "" || name == null) {
-                        toastr.warning(" Please Enter Customer name!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
+                    var contact = $.trim($('#customerContact').val());
+                    if (contact == "" || contact == null) {
+                        toastr.warning(" Please Enter Customer Phone No!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                         return false;
                     }
                 },

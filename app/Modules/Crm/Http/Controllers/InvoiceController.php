@@ -490,4 +490,28 @@ class InvoiceController extends BaseController
         $returnHTML = view('Crm::invoice.product-wise-sales-report-view', compact('data', 'start_date', 'end_date', 'product_id'))->render();
         return response()->json(array('success' => true, 'html' => $returnHTML));
     }
+
+    public function unsoldProductsReport()
+    {
+        $this->setPageTitle('Unsold Products Report', 'Unsold Products Report');
+        return view('Crm::invoice.unsold-products-report');
+    }
+
+    public function unsoldProductsReportView(Request $request): ?jsonResponse
+    {
+        $response = array();
+        $data = NULL;
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = trim($request->start_date);
+            $end_date = trim($request->end_date);
+            $data = DB::select("SELECT p.* FROM products p
+                        WHERE p.id NOT IN( SELECT invd.product_id from invoices inv
+                        INNER JOIN invoice_details invd on invd.invoice_id = inv.id
+                        WHERE inv.date BETWEEN '$start_date' AND '$end_date' GROUP BY invd.product_id)");
+            
+        }
+
+        $returnHTML = view('Crm::invoice.unsold-products-report-view', compact('data', 'start_date', 'end_date'))->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
 }

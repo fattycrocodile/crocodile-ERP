@@ -194,7 +194,7 @@
 
 
                                 <div class="form-group">
-                                    <label for="desc">Description <span class="required text-danger">*</span></label>
+                                    <label for="desc">Description</label>
                                     <textarea name="description" id="desc" cols="50" rows="20"
                                               class="form-control @error('description') is-invalid @enderror">{{old('description')?old('description'):$product->description}}</textarea>
                                     @error('description')
