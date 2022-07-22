@@ -372,7 +372,21 @@
                                                     </tbody>
                                                     <tfoot>
                                                     <tr>
-                                                        <th colspan="6" class="text-right"><label for="discount">Discount</label></th>
+                                                        <th colspan="6" class="text-right"><label for="discount">Discount Percentage</label></th>
+                                                        <th style="text-align: center;">
+                                                            <div class="form-group">
+                                                                <input type="text"
+                                                                       class="form-control discount_percent @error('discount_percent') is-invalid @enderror"
+                                                                       id="discount_percent" name="discount_percent">
+                                                                @error('discount_percent')
+                                                                <div class="help-block text-danger">{{ $message }} </div> @enderror
+                                                            </div>
+
+                                                        </th>
+                                                        <th></th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th colspan="6" class="text-right"><label for="discount">Discount Amount</label></th>
                                                         <th style="text-align: center;">
                                                                 <div class="form-group">
                                                                     <input type="text"
@@ -957,6 +971,10 @@
             calculateGrandTotal();
         });
 
+        $(document).on('input keyup drop paste', ".discount_percent", function (e) {
+            calculateDiscountAmount();
+        });
+
         function deleteRows(element) {
             var result = confirm("Are you sure you want to Delete?");
             if (result) {
@@ -1098,6 +1116,21 @@
             $("#grand_total").val(grand_total-discount);
         }
 
+        function calculateDiscountAmount() {
+            var grand_total = 0;
+            var discount = 0;
+            var discount_percent = nanCheck(parseFloat($("#discount_percent").val()));
+            $('#table-data-list .temp_row_sell_price').each(function () {
+                grand_total += nanCheck(parseFloat(this.value));
+            });
+
+            discount = (grand_total * discount_percent) / 100;
+
+            $("#discount").val(discount);
+            $("#grand_total_text").html(grand_total-discount);
+            $("#grand_total").val(grand_total-discount);
+        }
+
         function calculateRowTotalOnChange() {
             var serial = 0;
             var grandTotal = 0;
@@ -1134,6 +1167,7 @@
                 }
             );
             calculateGrandTotal();
+            calculateDiscountAmount();
         }
 
         // Restricts input for the set of matched elements to the given inputFilter function.
