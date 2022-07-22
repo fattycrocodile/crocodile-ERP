@@ -88,7 +88,7 @@
                                         <br>{{ config('settings.road_no') }}</li>
                                     <li style="font-size: 14pt;">{{ config('settings.phone') }}</li>
                                     <li style="font-size: 14pt;">{{ config('settings.phone_2') }}</li>
-                                    <li style="font-size: 14pt;">ssbleather.com</li>
+                                    <li style="font-size: 14pt;">www.ssbleather.com</li>
                                 </ul>
                             </div>
                         </div>
