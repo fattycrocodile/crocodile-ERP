@@ -133,14 +133,14 @@ class ProductsDataTable extends DataTable
 
             Column::make('description'),
 
-            Column::make('category_id')->title('Category'),
+            Column::make('category_id')->title('Category')->searchable(false),
 
-            Column::make('brand_id')->title('Brand'),
+            Column::make('brand_id')->title('Brand')->searchable(false),
 
-            Column::make('unit_id')->title('Unit'),
+            Column::make('unit_id')->title('Unit')->searchable(false),
 
             Column::make('code')->title('Product Code'),
-            Column::make('sell_price')->title('Price'),
+            Column::make('sell_price')->title('Price')->searchable(false),
 
         ];
     }
