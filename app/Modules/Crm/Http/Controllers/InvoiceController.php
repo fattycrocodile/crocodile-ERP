@@ -346,9 +346,9 @@ class InvoiceController extends BaseController
                 $returnAmount = InvoiceReturn::totalReturnAmountOfInvoice($dt->id);
                 $totalMrWithReturn = $mrAmount + $returnAmount;
                 $due_amount = $dt->grand_total - $totalMrWithReturn;
-                if ($due_amount > 0) {
+                //if ($due_amount > 0) {
                     $response[] = array("id" => $dt->id, "label" => $dt->invoice_no, "name" => $dt->invoice_no, 'due' => $due_amount);
-                }
+                //}
 
             }
         } else {
