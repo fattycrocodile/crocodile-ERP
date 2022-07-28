@@ -771,7 +771,7 @@
                     return false;
                 }
 
-                if (invoice_no === '' || invoice_no <= 0) {
+                /*if (invoice_no === '' || invoice_no <= 0) {
                     toastr.warning(" Please select a PO!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
                 }
@@ -784,7 +784,7 @@
                 if (invoice_due < grand_total) {
                     toastr.warning(" Grand total exceeded PO due amount!", 'Message <i class="fa fa-bell faa-ring animated"></i>');
                     return false;
-                }
+                }*/
 
                 var rowCount = $('#table-data-list tbody tr.cartList').length;
                 if (nanCheck(rowCount) <= 0 || rowCount === 'undefined') {

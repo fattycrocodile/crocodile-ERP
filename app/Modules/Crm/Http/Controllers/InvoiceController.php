@@ -315,7 +315,7 @@ class InvoiceController extends BaseController
             $customer_id = trim($request->customer_id);
             $data = new Invoice();
             $data = $data->where('customer_id', '=', $customer_id);
-            $data = $data->where('full_paid', '=', Invoice::NOT_PAID);
+            //$data = $data->where('full_paid', '=', Invoice::NOT_PAID);
             $data = $data->orderby('id', 'asc');
             $data = $data->get();
         }
@@ -335,7 +335,7 @@ class InvoiceController extends BaseController
             $customer_id = trim($request->customer_id);
             $data = new Invoice();
             $data = $data->where('customer_id', '=', $customer_id);
-            $data = $data->where('full_paid', '=', Invoice::NOT_PAID);
+            //$data = $data->where('full_paid', '=', Invoice::NOT_PAID);
             $data = $data->orderby('id', 'asc');
             $data = $data->get();
         }
@@ -508,7 +508,7 @@ class InvoiceController extends BaseController
                         WHERE p.id NOT IN( SELECT invd.product_id from invoices inv
                         INNER JOIN invoice_details invd on invd.invoice_id = inv.id
                         WHERE inv.date BETWEEN '$start_date' AND '$end_date' GROUP BY invd.product_id)");
-            
+
         }
 
         $returnHTML = view('Crm::invoice.unsold-products-report-view', compact('data', 'start_date', 'end_date'))->render();

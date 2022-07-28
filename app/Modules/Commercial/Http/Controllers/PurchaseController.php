@@ -216,7 +216,7 @@ class PurchaseController extends BaseController
             $supplier_id = trim($request->supplier_id);
             $data = new Purchase();
             $data = $data->where('supplier_id', '=', $supplier_id);
-            $data = $data->where('full_paid', '=', Purchase::NOT_PAID);
+            //$data = $data->where('full_paid', '=', Purchase::NOT_PAID);
             $data = $data->orderby('id', 'asc');
             $data = $data->get();
         }
